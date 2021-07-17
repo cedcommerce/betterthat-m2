@@ -21,7 +21,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <uiComponent name="Betterthat_profile_edit"/>
+            <uiComponent name="betterthat_profile_edit"/>
         </referenceContainer>
         <!--<referenceContainer name="left">
             <block class="Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tabs" name="profile_edit_tabs"/>

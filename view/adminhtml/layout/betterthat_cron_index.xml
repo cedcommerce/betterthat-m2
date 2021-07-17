@@ -21,7 +21,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <uiComponent name="Betterthat_cron_index"/>
+            <uiComponent name="betterthat_cron_index"/>
         </referenceContainer>
     </body>
 </page>

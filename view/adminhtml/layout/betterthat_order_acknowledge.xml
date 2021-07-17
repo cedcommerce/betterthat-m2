@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Ced\Betterthat\Block\Adminhtml\Order\Acknnowledge" name="Betterthat_order_acknowledge" template="order/acknowledge.phtml"/>
+            <block class="Ced\Betterthat\Block\Adminhtml\Order\Acknnowledge" name="betterthat_order_acknowledge" template="order/acknowledge.phtml"/>
         </referenceContainer>
     </body>
 </page>

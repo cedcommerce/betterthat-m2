@@ -24,7 +24,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Ced\Betterthat\Block\Adminhtml\Category\Index" name="ced_Betterthat_category" template="category/index.phtml"/>
+            <block class="Ced\Betterthat\Block\Adminhtml\Category\Index" name="ced_betterthat_category" template="category/index.phtml"/>
         </referenceContainer>
     </body>
 </page>

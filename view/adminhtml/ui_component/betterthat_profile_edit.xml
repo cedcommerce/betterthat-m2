@@ -11,7 +11,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category    Ced
- * @package     Ced_Slider
+ * @package     Ced_betterthat
  * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
  * @license     http://cedcommerce.com/license-agreement.txt
@@ -21,9 +21,9 @@
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">Betterthat_profile_edit.Betterthat_profile_edit_data_source</item>
-            <item name="namespace" xsi:type="string">Betterthat_profile_edit</item>
-            <item name="deps" xsi:type="string">Betterthat_profile_edit.Betterthat_profile_edit_data_source</item>
+            <item name="provider" xsi:type="string">betterthat_profile_edit.betterthat_profile_edit_data_source</item>
+            <item name="namespace" xsi:type="string">betterthat_profile_edit</item>
+            <item name="deps" xsi:type="string">betterthat_profile_edit.betterthat_profile_edit_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">Profile Information</item>
         <item name="layout" xsi:type="array">
@@ -39,16 +39,16 @@
             <item name="save" xsi:type="string">Ced\Betterthat\Block\Adminhtml\Profile\Ui\Button\Save</item>
         </item>
     </argument>
-    <dataSource name="Betterthat_profile_edit_data_source">
+    <dataSource name="betterthat_profile_edit_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Ced\Betterthat\Ui\DataProvider\Profile\Form\DataProvider</argument>
-            <argument name="name" xsi:type="string">Betterthat_profile_edit_data_source</argument>
+            <argument name="name" xsi:type="string">betterthat_profile_edit_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="submit_url" xsi:type="url" path="Betterthat/profile/save"/>
-                    <item name="validate_url" xsi:type="url" path="Betterthat/profile/validate"/>
+                    <item name="submit_url" xsi:type="url" path="betterthat/profile/save"/>
+                    <item name="validate_url" xsi:type="url" path="betterthat/profile/validate"/>
                 </item>
             </argument>
         </argument>
@@ -73,7 +73,7 @@
                     <item name="visible" xsi:type="boolean">false</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
                 </item>
             </argument>
         </field>
@@ -84,7 +84,7 @@
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
                     <item name="label" xsi:type="string" translate="true">Profile Code</item>
                     <item name="validation" xsi:type="array">
                         <item name="letters-only" xsi:type="boolean">true</item>
@@ -99,7 +99,7 @@
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
                     <item name="label" xsi:type="string" translate="true">Profile Name</item>
                     <item name="validation" xsi:type="array">
                         <item name="validate-alphanum-with-spaces" xsi:type="boolean">true</item>
@@ -116,7 +116,7 @@
                     <item name="component" xsi:type="string">Ced_Betterthat/js/profile/profile-status/options</item>
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">select</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
                     <item name="label" xsi:type="string" translate="true">Profile Status</item>
                 </item>
             </argument>
@@ -138,7 +138,7 @@
                     <item name="visible" xsi:type="boolean">false</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
                 </item>
             </argument>
         </field>
@@ -150,7 +150,7 @@
                     <item name="component" xsi:type="string">Ced_Betterthat/js/profile/profile-status/options</item>
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">select</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
                     <item name="label" xsi:type="string" translate="true">Logistic Class</item>
                 </item>
             </argument>
@@ -161,7 +161,7 @@
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
                     <item name="label" xsi:type="string" translate="true">Tax-Au</item>
                     <item name="validation" xsi:type="array">
                         <item name="validate-number" xsi:type="boolean">true</item>
@@ -178,12 +178,12 @@
                     <item name="component" xsi:type="string">Ced_Betterthat/js/profile/profile-status/options</item>
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">select</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
                     <item name="label" xsi:type="string" translate="true">Offer State</item>
                 </item>
             </argument>
         </field>
-        <field name="profile_Betterthat_club_eligible">
+        <field name="profile_betterthat_club_eligible">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\ClubEligibe</item>
                 <item name="config" xsi:type="array">
@@ -191,8 +191,8 @@
                     <item name="component" xsi:type="string">Ced_Betterthat/js/profile/profile-status/options</item>
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">select</item>
-                    <item name="source" xsi:type="string">Betterthat_profile_edit_data_source</item>
-                    <item name="label" xsi:type="string" translate="true">Betterthat Club Eligible</item>
+                    <item name="source" xsi:type="string">betterthat_profile_edit_data_source</item>
+                    <item name="label" xsi:type="string" translate="true">betterthat Club Eligible</item>
                 </item>
             </argument>
         </field>
@@ -230,14 +230,14 @@
             </argument>
         </field>
     </fieldset>
-    <fieldset name="Betterthat_category" sortOrder="50">
+    <fieldset name="betterthat_category" sortOrder="50">
         <settings>
             <collapsible>false</collapsible>
-            <label translate="true">Betterthat category</label>
+            <label translate="true">betterthat category</label>
         </settings>
-        <container name="Betterthat_category_container" sortOrder="170">
+        <container name="betterthat_category_container" sortOrder="170">
             <htmlContent name="html_content">
-                <block name="Betterthat_category_mapping" class="Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\BetterthatCategory"/>
+                <block name="betterthat_category_mapping" class="Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\BetterthatCategory"/>
             </htmlContent>
         </container>
     </fieldset>

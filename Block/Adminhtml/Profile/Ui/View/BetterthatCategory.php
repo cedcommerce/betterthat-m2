@@ -7,7 +7,7 @@ class BetterthatCategory extends \Magento\Backend\Block\Template
      /**
      * @var string
      */
-    public $_template = 'Ced_Betterthat::profile/category/Betterthat_category.phtml';
+    public $_template = 'Ced_Betterthat::profile/category/betterthat_category.phtml';
 
     public $_objectManager;
 

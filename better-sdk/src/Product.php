@@ -457,7 +457,7 @@ class Product extends \BetterthatSdk\Core\Request
                             'http://seller.marketplace.Betterthat.com/pricing/v5 ../../../../../rest/pricing/import/v5/pricing.xsd',
                     ],
                     '_value' => [
-                        'fbm-pricing' => [
+        'fbm-pricing' => [
                             '_attribute' => [],
                             '_value' => $data
                         ],

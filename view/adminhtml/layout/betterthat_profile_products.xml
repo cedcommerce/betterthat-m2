@@ -20,6 +20,6 @@
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
     <update handle="formkey"/>
     <container name="root" label="Root">
-        <block class="Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\Grid\Product" name="Betterthat.profile.products.grid"/>
+        <block class="Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\Grid\Product" name="betterthat.profile.products.grid"/>
     </container>
 </layout>

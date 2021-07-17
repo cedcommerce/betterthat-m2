@@ -24,7 +24,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Ced\Betterthat\Block\Adminhtml\Attribute\Index" name="ced_Betterthat_attribute" template="attribute/index.phtml"/>
+            <block class="Ced\Betterthat\Block\Adminhtml\Attribute\Index" name="ced_betterthat_attribute" template="attribute/index.phtml"/>
         </referenceContainer>
     </body>
 </page>

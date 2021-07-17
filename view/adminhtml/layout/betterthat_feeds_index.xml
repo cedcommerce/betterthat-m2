@@ -24,7 +24,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <uiComponent name="Betterthat_feeds_index"/>
+            <uiComponent name="betterthat_feeds_index"/>
         </referenceContainer>
     </body>
 </page>

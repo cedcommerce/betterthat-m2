@@ -22,7 +22,7 @@
     <update handle="styles"/>
     <body>
         <referenceContainer name="content">
-            <uiComponent name="Betterthat_order_grid"/>
+            <uiComponent name="betterthat_order_grid"/>
         </referenceContainer>
     </body>
 </page>

@@ -20,7 +20,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Ced\Betterthat\Block\Adminhtml\Request\Help" name="Betterthat_help" template="request/help.phtml"/>
+            <block class="Ced\Betterthat\Block\Adminhtml\Request\Help" name="betterthat_help" template="request/help.phtml"/>
         </referenceContainer>
     </body>
 </page>

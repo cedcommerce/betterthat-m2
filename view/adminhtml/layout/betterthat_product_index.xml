@@ -30,8 +30,8 @@
             </action>
         </referenceBlock>
         <referenceContainer name="content">
-            <uiComponent name="Betterthat_product_listing"/>
-            <block class="Ced\Betterthat\Block\Adminhtml\Product\Button" name="Betterthat_product_list"/>
+            <uiComponent name="betterthat_product_listing"/>
+            <block class="Ced\Betterthat\Block\Adminhtml\Product\Button" name="betterthat_product_list"/>
         </referenceContainer>
     </body>
 </page>
