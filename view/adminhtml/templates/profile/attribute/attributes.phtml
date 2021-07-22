@@ -246,7 +246,7 @@ echo $_htmlId ?>"
                             var values = [];
                             try {
                                 var values = JSON.parse(enumVal);
-                            } Betterthat(err) {
+                            } catch(err) {
 
                             }
                             if(values['values_list'] != undefined){
@@ -327,7 +327,7 @@ echo $_htmlId ?>"
                         var loadOptionsMapping = $(idPrefix + id + '_option_mapping').value;
                         try{
                             loadOptionsMapping = JSON.parse(loadOptionsMapping);
-                        } Betterthat (e){}
+                        } catch (e){}
 
 
                         var magentoOptions = '[]';

@@ -33,10 +33,10 @@ interface RequestInterface
     /**
      * Default API URLs
      */
-    const Betterthat_API_URL = 'https://marketplace.Betterthat.com.au/';
-    const Betterthat_SANDBOX_API_URL = 'https://Betterthat-dev.mirakl.net/';
+    const Betterthat_API_URL = 'https://api.betterthat.shop:8083/';
+    const Betterthat_SANDBOX_API_URL = 'https://api.betterthat.shop:8083/';
 
-    const GET_CATEGORIES_SUB_URL = 'api/hierarchies';
+    const GET_CATEGORIES_SUB_URL = 'categories/';
     const GET_ATTRIBUTES_SUB_URL = 'api/products/attributes';
     const GET_ATTRIBUTES_VALUE_LIST = 'api/values_lists?code=';
     const GET_OFFERS = 'api/offers';

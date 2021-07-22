@@ -90,6 +90,7 @@ abstract class Request implements \BetterthatSdk\Core\RequestInterface
         $this->logger = $config->getLogger();
         $this->apiAuthKey = $config->getApiKey();
         $this->apiUrl = $config->getApiUrl();
+
     }
 
     /**
@@ -187,9 +188,10 @@ abstract class Request implements \BetterthatSdk\Core\RequestInterface
             }
 
             $headers = array(
-                'Authorization: ' . $this->apiAuthKey,
-                'Accept: application/xml',
-                'Content-Type: multipart/form-data',
+                //'Authorization: ' . $this->apiAuthKey,2021-07-22 11:24:27,424 [  35527]   WARN - .diagnostic.PerformanceWatcher - UI was frozen for 17458ms, details saved to /home/rajneesh/.cache/JetBrains/PhpStorm2020.3/log/threadDumps-freeze-20210722-112414-PS-203.5981.175-ProjectFrameHelper.init-17sec
+
+                'Accept: application/json',
+                //'Content-Type: application/json',
             );
 
             $ch = curl_init();

@@ -17,7 +17,7 @@
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 
-namespace Ced\MPCatch\Model\Source\Config;
+namespace Ced\BetterThat\Model\Source\Config;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 

@@ -15,10 +15,11 @@
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
  */
-/*$block Ced_Bonanza_Block_Adminhtml_Category_Mapping*/
+/*$block Ced_BetterThat_Block_Adminhtml_Category_Mapping*/
 $current_profile_id = $this->getCurrentProfile();
 $cat_url = $this->getBetterthatCategoryUrl();
 $cat_attr_url = $this->getCategoryAttributeUrl();
+
 ?>
 <div class="entry-edit">
     <div class="section" id="Betterthat-category">
@@ -31,7 +32,7 @@ $cat_attr_url = $this->getCategoryAttributeUrl();
 <script type="text/javascript">
  require(["jquery"],function($) {
         $(document).ready(function() {
-
+            console.log('test');
             var url = "<?php echo $cat_url; ?>";
 
             var current_profile_id = "<?php echo $current_profile_id?>";

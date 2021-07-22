@@ -40,15 +40,13 @@ class Product extends \BetterthatSdk\Core\Request
                 if(isset($params['hierarchy']) && ($params['hierarchy']==''))
                     unset($params['hierarchy']);
 
-                $response = $this->getRequest(self::GET_CATEGORIES_SUB_URL, $params);
-                $responseParsed = $this->xmlToArray($response);
-                if (isset($responseParsed['body']['hierarchies']['hierarchy'])) {
-                    file_put_contents(
-                        $this->getFile($this->baseDirectory . DS . 'categories', 'categories-library'.$params['max_level'].$hierarchy.'.xml'),
-                        $response
-                    );
-                    $categories = $responseParsed['body']['hierarchies']['hierarchy'];
-                }
+                $response = $this->postRequest(self::GET_CATEGORIES_SUB_URL, $params);
+
+                $categories = json_decode($response,1);
+                print_r($categories);
+
+                die('all good');
+
             }
         } catch (\Exception $e) {
             if ($this->debugMode) {

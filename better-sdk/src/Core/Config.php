@@ -127,9 +127,7 @@ class Config implements \BetterthatSdk\Core\ConfigInterface
      */
     public function getApiUrl()
     {
-        if (!isset($this->apiUrl)) {
-            $this->apiUrl = \BetterthatSdk\Core\RequestInterface::Betterthat_SANDBOX_API_URL;
-        }
+        $this->apiUrl = \BetterthatSdk\Core\RequestInterface::Betterthat_SANDBOX_API_URL;
         return $this->apiUrl;
     }
 

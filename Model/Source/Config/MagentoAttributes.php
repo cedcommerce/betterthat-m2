@@ -17,7 +17,7 @@
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 
-namespace Ced\MPCatch\Model\Source\Config;
+namespace Ced\BetterThat\Model\Source\Config;
 
 class MagentoAttributes implements \Magento\Framework\Option\ArrayInterface
 {

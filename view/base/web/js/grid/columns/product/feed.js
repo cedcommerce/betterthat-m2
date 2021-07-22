@@ -147,7 +147,7 @@ define(
                             return o;
                         }
                     }
-                    Betterthat (e) { }
+                    catch (e) { }
 
                     return false;
                 }

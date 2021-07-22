@@ -68,6 +68,7 @@ class Fetch extends Action
      */
     public function execute()
     {
+
         $id = $this->getRequest()->getPost('id');
         $current_profile_id = $this->getRequest()->getPost('current_profile_id');
         $level = $this->getRequest()->getPost('level');

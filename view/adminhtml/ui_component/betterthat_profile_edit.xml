@@ -233,7 +233,7 @@
     <fieldset name="betterthat_category" sortOrder="50">
         <settings>
             <collapsible>false</collapsible>
-            <label translate="true">betterthat category</label>
+            <label translate="true">BetterThat category</label>
         </settings>
         <container name="betterthat_category_container" sortOrder="170">
             <htmlContent name="html_content">
