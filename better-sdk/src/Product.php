@@ -25,29 +25,86 @@ class Product extends \BetterthatSdk\Core\Request
      * @param bool $forceFetch
      * @return array
      */
-    public function getCategories($params, $forceFetch = false)
+    public function getCategories($params)
     {
-        $categories = array();
-
+        $params['level'] = empty($params['level']) ? 0 : $params['level'];
+        //print_r($params); die;
+        $categories = [];
+        $levelCollect = [];
         try {
-            $itemsFile = $this->baseDirectory . DS . 'categories' . DS . 'categories-library'.$params['max_level'].$params['hierarchy'].'.xml';
-            if (file_exists($itemsFile) && !$forceFetch) {
-                $categories = file_get_contents($itemsFile);
-                $categories = $this->xmlToArray($categories);
-                $categories = $categories['body']['hierarchies']['hierarchy'];
-            } else {
-                $hierarchy =$params['hierarchy'];
-                if(isset($params['hierarchy']) && ($params['hierarchy']==''))
-                    unset($params['hierarchy']);
-
-                $response = $this->postRequest(self::GET_CATEGORIES_SUB_URL, $params);
-
+                if (!file_exists(__DIR__ . '/allcategories.json')){
+                    $response = $this->postRequest(self::GET_CATEGORIES_SUB_URL, $params);
+                     file_put_contents(__DIR__ . '/allcategories.json', $response);
+                }else{
+                    $response = file_get_contents(__DIR__ . '/allcategories.json');
+                }
                 $categories = json_decode($response,1);
-                print_r($categories);
+                switch($params['level']){
+                    case 0:
+                        $levelCollect = [];
+                        foreach ($categories as $category)
+                        {
+                            if($category['parent_id'] == null)
+                            {
+                                $category['level'] = 0;
+                                $levelCollect[] = $category;
+                            }
 
-                die('all good');
+                        }
+                    break;
+                    case 1:
+                        $levelCollect = [];
+                        foreach ($categories as $category)
+                        {
+                            if($category['parent_id'] == $params['category_id'])
+                            {
+                                $category['level'] = 1;
+                                $levelCollect[] = $category;
+                            }
 
-            }
+                        }
+                        break;
+                    case 2:
+                        $levelCollect = [];
+                        foreach ($categories as $category)
+                        {
+                            if($category['parent_id'] == $params['category_id'])
+                            {
+                                $category['level'] = 2;
+                                $levelCollect[] = $category;
+                            }
+
+                        }
+                        break;
+                    case 3:
+                        $levelCollect = [];
+                        foreach ($categories as $category)
+                        {
+                            if($category['parent_id'] == $params['category_id'])
+                            {
+                                $category['level'] = 3;
+                                $levelCollect[] = $category;
+                            }
+
+                        }
+                        break;
+                    case 4:
+                        $levelCollect = [];
+                        foreach ($categories as $category)
+                        {
+                            if($category['parent_id'] == $params['category_id'])
+                            {
+                                $category['level'] = 4;
+                                $levelCollect[] = $category;
+                            }
+
+                        }
+                        break;
+
+                }
+
+                return $levelCollect;
+
         } catch (\Exception $e) {
             if ($this->debugMode) {
                 $this->logger->debug(
@@ -70,6 +127,7 @@ class Product extends \BetterthatSdk\Core\Request
         $attributes = array();
         try {
             if(isset($params['hierarchy']) && $params['hierarchy']) {
+                die('if');
                 $itemsFile = $this->baseDirectory . DS . 'attributes' . DS . 'attribute-library' . $params['hierarchy'] . '.xml';
                 if (file_exists($itemsFile) && !$forceFetch) {
                     $attributes = file_get_contents($itemsFile);
@@ -82,6 +140,7 @@ class Product extends \BetterthatSdk\Core\Request
                     }
                     $attributes = $attributes['body']['attributes']['attribute'];
                 } else {
+                    die('ss');
                     $response = [];
                     if (isset($params['hierarchy']) && $params['hierarchy'])
                         $response = $this->getRequest(self::GET_ATTRIBUTES_SUB_URL, $params);

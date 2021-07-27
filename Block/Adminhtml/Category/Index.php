@@ -34,6 +34,6 @@ class Index extends \Magento\Backend\Block\Template
 
     public function getCategories()
     {
-        return $this->category->getCategories(['hierarchy'=>'','max_level'=>'3']);
+        return $this->category->getCategories(['level'=> 0]);
     }
 }

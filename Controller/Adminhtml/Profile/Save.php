@@ -10,13 +10,13 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
- * @package   Ced_MPCatch
+ * @package   Ced_BetterThat
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright Copyright CedCommerce (http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 
-namespace Ced\MPCatch\Controller\Adminhtml\Profile;
+namespace Ced\BetterThat\Controller\Adminhtml\Profile;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -26,7 +26,7 @@ use Magento\Framework\DataObject;
 /**
  * Class Save
  *
- * @package Ced\MPCatch\Controller\Adminhtml\Profile
+ * @package Ced\BetterThat\Controller\Adminhtml\Profile
  */
 class Save extends \Magento\Backend\App\Action
 {
@@ -46,7 +46,7 @@ class Save extends \Magento\Backend\App\Action
     public $categoryCollection;
 
     /**
-     * @var \Ced\MPCatch\Model\ProfileProductFactory
+     * @var \Ced\BetterThat\Model\ProfileProductFactory
      */
     public $profileProduct;
 
@@ -56,12 +56,12 @@ class Save extends \Magento\Backend\App\Action
     public $moduleDataSetup;
 
     /**
-     * @var \Ced\MPCatch\Model\ProfileFactory
+     * @var \Ced\BetterThat\Model\ProfileFactory
      */
     public $profileFactory;
 
     /**
-     * @var \Ced\MPCatch\Helper\Profile
+     * @var \Ced\BetterThat\Helper\Profile
      */
     public $profileHelper;
 
@@ -69,9 +69,18 @@ class Save extends \Magento\Backend\App\Action
      * @var DataObject
      */
     public $data;
+    public $configFactory;
+
+    public $configStructure;
+
+    public $productConfigFactory;
+
+    public $resultPageFactory;
 
     public $logger;
-    public $mpcatchCache;
+    public $BetterThatCache;
+
+    public $profileresource;
 
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -84,10 +93,11 @@ class Save extends \Magento\Backend\App\Action
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Framework\DataObject $data,
         \Psr\Log\LoggerInterface $logger,
-        \Ced\MPCatch\Model\ProfileProductFactory $profileProduct,
-        \Ced\MPCatch\Model\ProfileFactory $profileFactory,
-        \Ced\MPCatch\Helper\Cache $mpcatchCache,
-        \Ced\MPCatch\Helper\Profile $profileHelper
+        \Ced\Betterthat\Model\ProfileProductFactory $profileProduct,
+        \Ced\Betterthat\Model\ProfileFactory $profileFactory,
+        \Ced\Betterthat\Helper\Cache $BetterThatCache,
+        \Ced\Betterthat\Helper\Profile $profileHelper,
+        \Ced\Betterthat\Model\ResourceModel\ProfileFactory $resourceModel
     )
     {
         parent::__construct($context);
@@ -100,8 +110,9 @@ class Save extends \Magento\Backend\App\Action
         $this->categoryCollection = $categoryCollection;
         $this->profileHelper = $profileHelper;
         $this->profileFactory = $profileFactory;
+        $this->profileresource = $resourceModel;
         $this->profileProduct = $profileProduct;
-        $this->mpcatchCache = $mpcatchCache;
+        $this->BetterThatCache = $BetterThatCache;
         $this->data = $data;
         $this->logger = $logger;
     }
@@ -114,25 +125,27 @@ class Save extends \Magento\Backend\App\Action
 
         if ($this->validate()) {
             try {
-                $profile = $this->profileFactory->create()->load($this->data->getProfileId());
-                $profile->addData($this->data->getData());
-                
-                $profile->save();
-               
-                $profile->removeProducts($profile->getMagentoCategory());
-                $profile->addProducts($profile->getMagentoCategory());
-                $profileId = $profile->getId();
+                $profileModel = $this->profileFactory->create();
+                $profile = $this->profileresource->create()->load($profileModel,$this->data->getProfileId(),'id');
+                //$profile = $this->profileFactory->create()->load($this->data->getProfileId());
+                $profileModel->addData($this->data->getData());
+
+                $profile->save($profileModel);
+
+                $profileModel->removeProducts($profileModel->getMagentoCategory());
+                $profileModel->addProducts($profileModel->getMagentoCategory());
+                $profileId = $profileModel->getId();
                 if($profileId) {
-                    $this->mpcatchCache->removeValue(\Ced\MPCatch\Helper\Cache::PROFILE_CACHE_KEY . $profileId);
+                    $this->BetterThatCache->removeValue(\Ced\BetterThat\Helper\Cache::PROFILE_CACHE_KEY . $profileId);
                 }
                 $this->messageManager->addSuccessMessage(__('Profile save successfully.'));
             } catch (\Magento\Framework\Exception\AlreadyExistsException $e) {
                 $this->messageManager->addErrorMessage(__('Profile code already exists. '.$e->getMessage()));
-            }    
+            }
             catch (\Exception $e) {
                 $this->messageManager->addErrorMessage(__($e->getMessage()));
             }
-            
+
         }
 
 
@@ -140,17 +153,17 @@ class Save extends \Magento\Backend\App\Action
         if ($returnToEdit) {
             if ($profileId) {
                 $resultRedirect->setPath(
-                    'mpcatch/profile/edit',
+                    'Betterthat/profile/edit',
                     ['id' => $profileId, '_current' => true]
                 );
             } else {
                 $resultRedirect->setPath(
-                    'mpcatch/profile/edit',
+                    'Betterthat/profile/edit',
                     ['_current' => true]
                 );
             }
         } else {
-            $resultRedirect->setPath('mpcatch/profile/index');
+            $resultRedirect->setPath('BetterThat/profile/index');
         }
         $this->logger->info('Saving Ended');
         return $resultRedirect;
@@ -158,27 +171,27 @@ class Save extends \Magento\Backend\App\Action
 
     private function validate()
     {
-  
+
         $generalInformation = $this->getRequest()->getParam('general_information');
         $offer_information = $this->getRequest()->getParam('offer_information');
-        $mpcatch = $this->getRequest()->getParam('mpcatch');
+        $BetterThat = $this->getRequest()->getParam('BetterThat');
         $store_categories = $this->getRequest()->getParam('store_categories');
-        $mpcatchAttributes = $this->getRequest()->getParam('mpcatch_attributes');
+        $BetterThatAttributes = $this->getRequest()->getParam('BetterThat_attributes');
 
-        if (!empty($mpcatchAttributes)) {
-            $mpcatchAttributes = $this->mergeAttributes($mpcatchAttributes, 'name');
+        if (!empty($BetterThatAttributes)) {
+            $BetterThatAttributes = $this->mergeAttributes($BetterThatAttributes, 'name');
 
             $requiredAttributes = $optionalAttributes = [];
 
-            foreach ($mpcatchAttributes as $mpcatchAttribute_key => $mpcatchAttribute_value) {
-                if (isset($mpcatchAttribute_value['delete']) and $mpcatchAttribute_value['delete']) {
-                     continue;   
-                }        
-                if (isset($mpcatchAttribute_value['isMandatory']) and $mpcatchAttribute_value['isMandatory'] == 'true') {
-                    $requiredAttributes[$mpcatchAttribute_key] = $mpcatchAttribute_value;
+            foreach ($BetterThatAttributes as $BetterThatAttribute_key => $BetterThatAttribute_value) {
+                if (isset($BetterThatAttribute_value['delete']) and $BetterThatAttribute_value['delete']) {
+                     continue;
+                }
+                if (isset($BetterThatAttribute_value['isMandatory']) and $BetterThatAttribute_value['isMandatory'] == 'true') {
+                    $requiredAttributes[$BetterThatAttribute_key] = $BetterThatAttribute_value;
                 } else {
-                    $optionalAttributes[$mpcatchAttribute_key] = $mpcatchAttribute_value;
-                    $optionalAttributes[$mpcatchAttribute_key]['isMandatory'] = 0;
+                    $optionalAttributes[$BetterThatAttribute_key] = $BetterThatAttribute_value;
+                    $optionalAttributes[$BetterThatAttribute_key]['isMandatory'] = 0;
                 }
             }
 
@@ -188,9 +201,9 @@ class Save extends \Magento\Backend\App\Action
         //$this->data->addData($offer_information);
         $this->data->addData($generalInformation);
 
-        if (isset($mpcatch)) {
-            $this->data->setData('profile_categories', json_encode($mpcatch));
-            $this->data->setData('profile_category', end($mpcatch));
+        if (isset($BetterThat)) {
+            $this->data->setData('profile_categories', json_encode($BetterThat));
+            $this->data->setData('profile_category', end($BetterThat));
         }
 
 
@@ -208,7 +221,7 @@ class Save extends \Magento\Backend\App\Action
         }
 
         return true;
-        
+
     }
 
 

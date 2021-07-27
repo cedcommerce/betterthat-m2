@@ -67,21 +67,7 @@ interface RequestInterface
     const FEED_CODE_PRICE_UPDATE = 'price-update';
     const FEED_CODE_ORDER_SHIPMENT = 'order-shipment';
     const FEED_CANCEL_ORDER_ITEM = 'order-accept';
-    /**
-     * Get Request
-     * @param $url
-     * @param array $params
-     * @return mixed
-     */
-    public function getRequest($url, $params = []);
 
-    /**
-     * Put Request
-     * @param $url
-     * @param array $params
-     * @return mixed
-     */
-    public function putRequest($url, $params = []);
 
     /**
      * Post Request

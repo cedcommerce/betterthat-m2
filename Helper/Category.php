@@ -36,16 +36,10 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
 
     public $defaultMapping = [
         'title' => 'name',
-        'short_description' => 'short_description',
-        'product-description' => 'description',
-        'internal-sku' => 'sku',
-        'color' => 'color',
-        'brand' => 'brand',
-        'price' => 'price',
-        'length' => 'package_length',
-        'width' =>  'package_width',
-        'height' => 'package_height',
-        'weight' => 'weight',
+        'body_html' => 'description',
+        'retailer_id' => 'retailer_id',
+        'manufacturer' => 'manufacturer',
+        'product_shipping_options' => ''
     ];
 
     public function __construct(
@@ -79,6 +73,15 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 $response = $category->getAttributes($params);
                 $response = array_merge($response, $offerAttributes);
+
+
+                $tempmap = ['product-reference-type' => 'title:Product Title',
+                            'price' => 'body_html:Description',
+                            'state' => 'retailer_id:Retailer Id',
+                            'club-Betterthat-eligible' => 'manufacturer:Manufacturer',
+                            'product_shipping_options' => 'product_shipping_options:ProductShippingOptions'
+                            ];
+
                 $attibute_to_skip = ['category', 'variant-id', 'image-1', 'image-2', 'image-3', 'image-4', 'image-5', 'image-6'];
                 if (isset($response) && count($response)) {
                     foreach ($response as $value) {
@@ -87,7 +90,11 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
 
                         $optionValues = (isset($value['values']['_value']['values_list']['values']['value'])) ? array_column($value['values']['_value']['values_list']['values']['value'], 'label', 'code') : array();
                         $value['option_values'] = $optionValues;
-
+                        if(isset($tempmap[$value['code']])){
+                            $data = explode(':',$tempmap[$value['code']]);
+                            $value['code'] = @$data[0];
+                            $value['label'] = @$data[1];
+                        }
                         if ($params['isMandatory']) {
                             if (trim($value['required']) == 'true') {
                                 if (isset($this->defaultMapping[$value['code']])) {

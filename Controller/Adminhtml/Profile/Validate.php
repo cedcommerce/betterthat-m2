@@ -90,7 +90,6 @@ class Validate extends \Magento\Backend\App\Action
 
     public function execute()
     {
-
         $response = new \Magento\Framework\DataObject();
         $response->setError(0);
         $resultJson = $this->resultJsonFactory->create();

@@ -32,14 +32,13 @@ $cat_attr_url = $this->getCategoryAttributeUrl();
 <script type="text/javascript">
  require(["jquery"],function($) {
         $(document).ready(function() {
-            console.log('test');
             var url = "<?php echo $cat_url; ?>";
 
             var current_profile_id = "<?php echo $current_profile_id?>";
             document.getElementById('Betterthat-category').style.display = 'none';
-            getCategoryFronBonanza(url,level=1,category_id=0,current_profile_id);
+            getCategoryFromBetterThat(url,level=0,category_id=0,current_profile_id);
 
-            function getCategoryFronBonanza(url,level,category_id,current_profile_id){
+            function getCategoryFromBetterThat(url,level,category_id,current_profile_id){
                 if(level >1 && !category_id){
                     alert('Please select Parent Category.');
                     document.getElementById("select-level-"+level).value = category_id;
@@ -57,12 +56,12 @@ $cat_attr_url = $this->getCategoryAttributeUrl();
                 data: { id:category_id, current_profile_id: current_profile_id, level:level },
                 showLoader: true,
             complete: function(transport) {
-                if(level==1 && transport.responseText=='Unable to fetch category') {
+                if(level==0 && transport.responseText=='Unable to fetch category') {
                            document.getElementById('Betterthat-category').innerHTML = transport.responseText+' Please check configuration.' ;
                         }
                         createNewCategoryLevel(level,transport.responseText);
                         if(document.getElementById("select-level-"+level) && document.getElementById("select-level-"+level).value && ( transport.responseText!='Unable to fetch category')){
-                            getCategoryFronBonanza(url,level+1,document.getElementById("select-level-"+level).value,current_profile_id);
+                            getCategoryFromBetterThat(url,level+1,document.getElementById("select-level-"+level).value,current_profile_id);
                         }
                         document.getElementById('Betterthat-category').style.display = 'block';
                 },
@@ -93,14 +92,15 @@ $cat_attr_url = $this->getCategoryAttributeUrl();
                     container_div.appendChild(selectList);
                     selectList.innerHTML = array;
                     selectList.onchange =  function() {
-                        getCategoryFronBonanza(url,level+1,this.value , current_profile_id);
+                        getCategoryFromBetterThat(url,level+1,this.value , current_profile_id);
                     };
                 } else {
-                    updateCategoryAttribute(level-1);
+                    //updateCategoryAttribute(level-1);
                 }
                 var children =  document.getElementById('Betterthat-category');
                 var elementlengh = children.childElementCount;
-                for (var i = level+1; i <= elementlengh ; i++) {
+                console.log(elementlengh);
+                for (var i = level+1; i < elementlengh ; i++) {
                    document.getElementById("select-container-level-"+i).remove();
                 }
             }

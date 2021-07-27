@@ -68,7 +68,6 @@ class AttributeMapping extends \Magento\Backend\Block\Template
         // For AJAX
         $this->_BetterthatAttribute = $this->getAttributes();
 
-
         if (isset($this->_BetterthatAttribute) and !empty($this->_BetterthatAttribute)) {
             return $this->_BetterthatAttribute;
         }
@@ -80,7 +79,6 @@ class AttributeMapping extends \Magento\Backend\Block\Template
             'isMandatory' => 1
         ];
         $requiredAttributes = $this->category->getAttributes($params);
-
         $params = [
             'hierarchy' => '',
             'isMandatory' => 0

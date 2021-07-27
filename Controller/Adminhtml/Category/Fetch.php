@@ -83,25 +83,19 @@ class Fetch extends Action
 
         if(!empty($id)) {
             $this->session->setCategoryM($id);
-            $args['hierarchy'] = $id;
+            $args['level'] = $level;
+            $args['category_id'] = $id;
         } else {
-            $args['hierarchy']='';
+            $args['level']='0';
+            $args['category_id'] = $id;
         }
-
         $response = $this->category->getCategories($args);
 
-        if (count($response)) {
+        if (count($response) > 0) {
             $categoryHtml = '<option></option>';
             foreach ($response as $value) {
-                if (isset($value['level']) && ($value["level"] >= $level)) {
+                        $categoryHtml .= '<option value="'.$value["_id"].'">'.$value["Name"].'</option>';
 
-
-                    if (isset($check['select-level'.$level]) && $value["code"] == $check['select-level'.$level]) {
-                        $categoryHtml .= '<option selected="selected" value="'.$value["code"].'">'.$value["label"].'</option>';
-                    } else {
-                        $categoryHtml .= '<option value="'.$value["code"].'">'.$value["label"].'</option>';
-                    }
-                }
             }
             if($categoryHtml=='<option></option>')
                 $this->getResponse()->setBody("Unable to fetch category");
