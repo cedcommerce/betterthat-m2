@@ -16,25 +16,31 @@
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 /*$block Ced_BetterThat_Block_Adminhtml_Category_Mapping*/
-$current_profile_id = $this->getCurrentProfile();
+/*$current_profile_id = $this->getCurrentProfile();
 $cat_url = $this->getBetterthatCategoryUrl();
-$cat_attr_url = $this->getCategoryAttributeUrl();
+$cat_attr_url = $this->getCategoryAttributeUrl();*/
 
 ?>
-<div class="entry-edit">
+<!--<div class="entry-edit admin__field _required" style="font-weight: 600;
+    line-height: 3.2rem;
+    padding: 0;
+    white-space: nowrap;">
+    <label>
+        <span>Choose BetterThat Categories</span>
+    </label>
     <div class="section" id="Betterthat-category">
 
     </div>
-</div>
+</div>-->
 <div class="hor-scroll" id="Betterthat_attribute">
     <?php echo $block->getChildHtml('Betterthat_attributes'); ?>
 </div>
-<script type="text/javascript">
+<!--<script type="text/javascript">
  require(["jquery"],function($) {
         $(document).ready(function() {
-            var url = "<?php echo $cat_url; ?>";
+            var url = "<?php /*echo $cat_url; */?>";
 
-            var current_profile_id = "<?php echo $current_profile_id?>";
+            var current_profile_id = "<?php /*echo $current_profile_id*/?>";
             document.getElementById('Betterthat-category').style.display = 'none';
             getCategoryFromBetterThat(url,level=0,category_id=0,current_profile_id);
 
@@ -106,7 +112,7 @@ $cat_attr_url = $this->getCategoryAttributeUrl();
             }
 
             function updateCategoryAttribute(level) {
-                var attr_update_url = "<?php echo $cat_attr_url; ?>";
+                var attr_update_url = "<?php /*echo $cat_attr_url; */?>";
                 $.ajax({
                     url: attr_update_url,
                     type: 'POST',
@@ -126,3 +132,4 @@ $cat_attr_url = $this->getCategoryAttributeUrl();
         });
     });
 </script>
+-->

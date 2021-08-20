@@ -76,12 +76,12 @@ class Validate extends \Magento\Backend\Block\Widget\Container
     public function _getCreateUrl()
     {
         return $this->getUrl(
-            'Betterthat/product/index'
+            'betterthat/product/index'
         );
     }
 
     public function getAjaxUrl()
     {
-        return $this->getUrl('Betterthat/product/validate');
+        return $this->getUrl('betterthat/product/validate');
     }
 }

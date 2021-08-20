@@ -312,10 +312,10 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return string
      */
-    public function getProfileCategory()
+    public function getBetterThatCategory()
     {
-        if (isset($this->profile['profile_category'])) {
-            return $this->profile['profile_category'];
+        if (isset($this->profile['betterthat_categories'])) {
+            return $this->profile['betterthat_categories'];
         }
         return '';
     }

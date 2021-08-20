@@ -338,17 +338,18 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->key = 0;
                 $this->data = [];
                 $this->prepareSimpleProducts($ids['simple']);
-
                 $this->prepareConfigurableProducts($ids['configurable']);
+
                 $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->createProduct($this->data);
 
-                if ($response && (isset($response['feed_id']) || isset($response[0]['feed_id']))
-                ) {
+                if (@$response['message'] &&
+                    in_array($response['message'],["product already exists","Product imported successfully!"]))
+                 {
                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::UPLOADED);
                 } else {
                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::INVALID);
                 }
-                $response = $this->saveResponse($response);
+                //$response = $this->saveResponse($response);
                 return $response;
             }
             return $response;
@@ -357,6 +358,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
     }
+
+
 
     /**
      * Create/Update Product on Betterthat
@@ -612,8 +615,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     $validatedProducts['configurable'][$parentId][$product->getId()]['isprimary'] = 'true';
                                     $key = 1;
                                 }
-                                $product->setData('Betterthat_validation_errors', $this->json->jsonEncode(array('valid')));
-                                $product->getResource()->saveAttribute($product, 'Betterthat_validation_errors');
+                                $product->setData('betterthat_validation_errors', $this->json->jsonEncode(array('valid')));
+                                $product->getResource()->saveAttribute($product, 'betterthat_validation_errors');
                                 continue;
                             } else {
                                 $errorIndex = implode(", ", $unmappedVariantAttribute);
@@ -633,7 +636,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 $childError[$productId['errors']['sku']]['errors'][] = $productId['errors']['errors'];
 
                                 $product->setBetterthatValidationErrors($this->json->jsonEncode($childError));
-                                $product->getResource()->saveAttribute($product, 'Betterthat_validation_errors');
+                                $product->getResource()->saveAttribute($product, 'betterthat_validation_errors');
                             }
 
                         }
@@ -654,11 +657,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                         $configurableProduct->setBetterthatValidationErrors($this->json->jsonEncode($errors));
                         $configurableProduct->getResource()
-                            ->saveAttribute($configurableProduct, 'Betterthat_validation_errors');
+                            ->saveAttribute($configurableProduct, 'betterthat_validation_errors');
                     } else {
                         $configurableProduct->setBetterthatValidationErrors('["valid"]');
                         $configurableProduct->getResource()
-                            ->saveAttribute($configurableProduct, 'Betterthat_validation_errors');
+                            ->saveAttribute($configurableProduct, 'betterthat_validation_errors');
                     }
                 } elseif (($product->getTypeId() == 'simple') && ($product->getVisibility() != 1)) {
 
@@ -671,7 +674,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             'type' => 'simple',
                             'variantid' => null,
                             'variantattr' => null,
-                            'category' => $profile->getProfileCategory(),
+                            'category' => $profile->getBetterThatCategory(),
                             'profile_id' => $profile->getId()
                         ];
                     } elseif (isset($productId['errors']) and is_array($productId['errors'])) {
@@ -682,10 +685,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 ->getUrl('catalog/product/edit', ['id' => $product->getId()]),
                             'errors' => $productId['errors']
                         ];
-                        $errorsInRegistry = $this->registry->registry('Betterthat_product_validaton_errors');
-                        $this->registry->unregister('Betterthat_product_validaton_errors');
+                        $errorsInRegistry = $this->registry->registry('betterthat_product_validaton_errors');
+                        $this->registry->unregister('betterthat_product_validaton_errors');
                         $this->registry->register(
-                            'Betterthat_product_validaton_errors',
+                            'betterthat_product_validaton_errors',
                             is_array($errorsInRegistry) ? array_merge($errorsInRegistry, $errors) :
                                 $errors
                         );
@@ -731,30 +734,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $errors = [];
             //Case 1: Profile is Available
             if (isset($profileId) and $profileId != false) {
-                $category = $profile->getProfileCategory();
+                $category = $profile->getBetterThatCategory();
                 $requiredAttributes = $profile->getRequiredAttributes();
                 foreach ($requiredAttributes as $BetterthatAttributeId => $BetterthatAttribute) {
-
-                    if ($BetterthatAttributeId === 'product-reference-value') {
-                        if (isset($productArray[$BetterthatAttribute['magento_attribute_code']]) and
-                            !empty($productArray[$BetterthatAttribute['magento_attribute_code']])
-                        ) {
-                            $refType = (isset($requiredAttributes['product-reference-type']['magento_attribute_code'])
-                                && $requiredAttributes['product-reference-type']['magento_attribute_code'] == 'default')
-                                ? $requiredAttributes['product-reference-type']['default'] : (isset($productArray[$requiredAttributes['product-reference-type']['magento_attribute_code']]) ? $productArray[$requiredAttributes['product-reference-type']['magento_attribute_code']] : '');
-                            $flag = $this->validateProductId(
-                                $productArray[$BetterthatAttribute['magento_attribute_code']],
-                                $refType
-                            );
-                            if (!$flag) {
-                                $errors[$BetterthatAttributeId] = 'Invalid Product Identifier(EAN/UPC/ISBN/MPN) Digits Or Invalid Reference Type';
-                            }
-                            continue;
-                        } else {
-                            $errors[$BetterthatAttributeId] = 'Invalid Product Identifier(EAN/UPC/ISBN/MPN) Digits Or Empty';
-                            continue;
-                        }
-                    }
 
                     $skippedAttribute = [];
                     if (in_array($BetterthatAttributeId, $skippedAttribute)) {
@@ -821,20 +803,21 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             ->getUrl('catalog/product/edit', ['id' => $product->getId()]),
                         'errors' => [$errors]
                     ];
-                    $product->setBetterthatValidationErrors($this->json->jsonEncode($e));
+                    $product->setbetterthat_validation_errors($this->json->jsonEncode($e));
                     $product->getResource()
-                        ->saveAttribute($product, 'Betterthat_validation_errors');
+                        ->saveAttribute($product, 'betterthat_validation_errors');
                 } else {
                     // insert product id for status update.
                     $this->ids[] = $product->getId();
-
-                    $product->setData('Betterthat_validation_errors', '["valid"]');
+                    $product->setData('betterthat_validation_errors', '["valid"]');
                     $product->getResource()
-                        ->saveAttribute($product, 'Betterthat_validation_errors');
+                        ->saveAttribute($product, 'betterthat_validation_errors');
                     $validatedProduct['id'] = $id;
                     $validatedProduct['category'] = $category;
                 }
             } else {
+                //primebanking@hdfcbank.com
+                //customerservices.cards@hdfcbank.com
                 //Case 2: Profile is not available, not needed case
                 $errors = [
                     "sku" => "$sku",
@@ -848,9 +831,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 ];
                 $validatedProduct['errors'] = $errors;
                 $errors = $this->json->jsonEncode([$errors]);
-                $product->setData('Betterthat_validation_errors', $errors);
+                $product->setData('betterthat_validation_errors', $errors);
                 $product->getResource()
-                    ->saveAttribute($product, 'Betterthat_validation_errors');
+                    ->saveAttribute($product, 'betterthat_validation_errors');
             }
             return $validatedProduct;
         } catch (\Exception $e) {
@@ -863,10 +846,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     {
         try {
             $product_array = [];
+            $retailer_id = $this->scopeConfigManager
+                ->getValue("betterthat_config/betterthat_setting/retailer_id");
             foreach ($ids as $key => $id) {
                 $product = $this->product->create()->load($id['id']);
                 $profile = $this->profileHelper->getProfile($product->getId(), $id['profile_id']);
-                $category = $this->profileHelper->getProfileCategory();
+                $categories = json_decode($id['category'],1);
                 $this->ids[] = $product->getId();
                 $price = $this->getPrice($product);
                 $attributes = $this->prepareAttributes(
@@ -874,50 +859,142 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $profile
                 );
 
-                $attrKey = 0;
-                /*$requiredArray = array('internal-sku', 'title', 'product-reference-type',
-                            'product-reference-value', 'product-description', 'brand');*/
-                $requiredArray = array('sku', 'product-id', 'product-id-type',
-                    'description', 'internal-description', 'price', 'price-additional-info', 'quantity',
-                    'min-quantity-alert', 'state', 'available-start-date', 'available-end-date', 'logistic-class',
-                    'discount-price', 'discount-start-date', 'discount-end-date', 'leadtime-to-ship', 'update-delete',
-                    'club-Betterthat-eligible', 'tax-au', 'best-before-date', 'expiry-date');
-
-                foreach ($attributes as $attKey => $attrValue) {
-
-                    if (!in_array($attKey, $requiredArray)) {
-                        $product_array[$attrKey] = array(
-                            'attribute' => array(
-                                '_attribute' => array(),
-                                '_value' => array(
-                                    'code' => (string)$attKey,
-                                    'value' => (string)$attrValue
-                                )
-                            )
-                        );
-                        $attrKey++;
-                    }
-                }
-
-                $product_array[$attrKey] = array(
-                    'attribute' => array(
-                        '_attribute' => array(),
-                        '_value' => array(
-                            'code' => 'category',
-                            'value' => $category
-                        )
-                    )
+                $qty = (string)$this->stockState->getStockQty(
+                    $product->getId(),
+                    $product->getStore()->getWebsiteId()
                 );
+                /*$price = $this->getPrice($product);
+                $data['price'] = $price['price'];*/
 
-                $additionalImages = $this->prepareImages($product, $attrKey);
-                $pdata = array_merge($product_array, $additionalImages);
-                $this->data[$this->key]['product'] = array(
-                    '_attribute' => array(),
-                    '_value' => $pdata
+                $product_array = [
+                    "id" => $id['id'],
+                    "title" => $attributes['title'],
+                    "body_html"=> $attributes['body_html'],
+                    "retailer_id"=> $retailer_id,
+                    "dimensions"=> [
+                        "length"=> 0,
+                        "height"=> 0,
+                        "width"=> 0,
+                        "weight"=> 0,
+                        "weight_unit"=> "kg"
+                    ],
+                    "product_categories"=> $categories,
+                    "can_be_bundled"=>$attributes['can_be_bundled'],
+                    "manufacturer"=>$attributes['can_be_bundled'],
+                    "policy_description_option"=>"",
+                    "policy_description_val"=>"",
+                    "product_shipping_options"=>[$attributes['product_shipping_options']],
+                    "shipping_option_charges"=>[$attributes['shipping_option_charges']],
+                    "standard_delivery_timeframe"=>$attributes['standard_delivery_timeframe'],
+                    "product_return_window"=> $attributes['product_return_window'],
+                    "variants" => [
+                          [
+                              "id"=> $id['id'],
+                            "product_id"=> $id['id'],
+                            "title"=> $attributes['title'],
+                            "price"=> $product->getPrice(),
+                            "sku"=> "",
+                            "position"=> 1,
+                            "inventory_policy"=> "deny",
+                            "compare_at_price"=> null,
+                            "option1"=> $attributes['title'],
+                            "option2"=> null,
+                            "option3"=> null,
+                            "inventory_quantity"=> $qty
+                          ]
+                        ],
+                       "options"=> [
+                          [
+                              "id" => $id['id'],
+                            "product_id" => $id['id'],
+                            "name" => "Title",
+                            "position" => 1,
+                            "values" => [
+                                $attributes['title']
+                            ]
+                          ]
+                        ],
+                    "images"=>[
+                        [
+                            "id"=>28110122745945,
+                            "product_id"=>$id['id'],
+                            "position"=>1,
+                            "alt"=>null,
+                            "src"=>"https=>//cdn.shopify.com/s/files/1/0279/2793/7113/products/cups_e17348f7-2a1c-4db9-af78-418c74a0c8ed.jpg?v=1623252015",
+                            "variant_ids"=>[]
+                        ],
+                        [
+                            "id"=>28159679037529,
+                            "product_id"=>$id['id'],
+                            "position"=>2,
+                            "alt"=>null,
+                            "src"=>"https=>//cdn.shopify.com/s/files/1/0279/2793/7113/products/mugs1_844daba0-9a84-430d-bab5-049e054f3070.jpg?v=1623252015",
+                            "variant_ids"=>[]
+                        ],
+                        [
+                            "id" => 28159679070297,
+                            "product_id" => $id['id'],
+                            "position" => 3,
+                            "alt" => null,
+                            "src" => "https=>//cdn.shopify.com/s/files/1/0279/2793/7113/products/mugs2_a7a12411-db23-4504-8a6f-ed862ca9ce78.jpg?v=1623252015",
+                            "variant_ids"=> []
+                        ]
+                    ],
+                    "image"=>[
+                        "id"=>28110122745945,
+                        "product_id"=>$id['id'],
+                        "position"=>1,
+                        "alt"=>null,
+                        "src"=>"https=>//cdn.shopify.com/s/files/1/0279/2793/7113/products/cups_e17348f7-2a1c-4db9-af78-418c74a0c8ed.jpg?v=1623252015",
+                        "variant_ids"=>[]
+                    ]
+                ];
 
-                );
-                $this->data = array_values($this->data);
-                $this->key++;
+                /*"variants"=>[
+                    [
+                        "id"=>39326433017945,
+                        "product_id"=>6573718667353,
+                        "title"=>"Blue",
+                        "price"=>"0.00",
+                        "sku"=>"",
+                        "position"=>1,
+                        "option1"=>"Blue",
+                        "option2"=>null,
+                        "option3"=>null,
+                        "inventory_quantity"=>10
+                    ],
+                    [
+                        "id"=>39326433050713,
+                        "product_id"=>6573718667353,
+                        "title"=>"Green",
+                        "price"=>"120.00",
+                        "sku"=>"",
+                        "position"=>2,
+                        "option1"=>"Green",
+                        "option2"=>null,
+                        "option3"=>null,
+                        "inventory_quantity"=>9
+                    ]
+                ],
+   "options"=>[
+                    [
+                        "id"=>8448358580313,
+                        "product_id"=>6573718667353,
+                        "name"=>"Color",
+                        "position"=>1,
+                        "values"=>[
+                            "Blue",
+                            "Green",
+                            "Orange",
+                            "Yellow",
+                            "Red"
+                        ]
+                    ]
+                ],
+                */
+
+                $this->data = $product_array;
+                return;
             }
         } catch (\Exception $e) {
             $this->logger->error('Create Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
@@ -1180,13 +1257,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $fromParentAttrs = $this->config->getFromParentAttributes();
             foreach ($ids as $parentId => $products) {
                 $configurableProduct = $this->product->create()->load($parentId);
+
                 $this->ids[] = $configurableProduct->getId();
+                print_($this->ids);die;
                 $firstProduct = reset($products);
                 $profile = $this->profileHelper->getProfile($configurableProduct->getId(), $firstProduct['profile_id']);
                 $category = $profile->getProfileCategory();
 
                 // Adding Variant Items
-
                 $skus = [];
                 foreach ($products as $productId => $id) {
                     $product_array = [];
@@ -1718,14 +1796,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 in_array($status, \Ced\Betterthat\Model\Source\Product\Status::STATUS)
         ) {
             foreach ($ids as $index => $product) {
-            //$products = $this->product->create()->getCollection()
-              //  ->addAttributeToSelect(['Betterthat_product_status'])
-                //->addAttributeToFilter('entity_id', ['in' => $this->ids]);
-            //foreach ($products as $product) {
                 $product = $this->product->create()->load($product);
                 $product->setData('Betterthat_product_status', $status);
-                $product->getResource()->saveAttribute($product, 'Betterthat_product_status');
-            //}
+                $product->getResource()->saveAttribute($product, 'betterthat_product_status');
             }
             return true;
         }
@@ -2042,7 +2115,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->key = 0;
                 $this->data = [];
                 $this->prepareSimpleProducts($ids['simple']);
-
                 $this->prepareConfigurableProducts($ids['configurable']);
             }
             return $response;

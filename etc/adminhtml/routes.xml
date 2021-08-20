@@ -19,7 +19,7 @@
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="admin">
-        <route id="Betterthat" frontName="Betterthat">
+        <route id="betterthat" frontName="betterthat">
             <module name="Ced_Betterthat" />
         </route>
     </router>

@@ -88,22 +88,13 @@ class InstallSchema implements InstallSchemaInterface
                 'Profile Name'
             )
             ->addColumn(
-                'profile_category',
+                'better_categories',
                 Table::TYPE_TEXT,
                 255,
                 [
                     'nullable' => true,
                 ],
-                'Profile Category'
-            )
-            ->addColumn(
-                'profile_categories',
-                Table::TYPE_TEXT,
-                500,
-                [
-                    'nullable' => true,
-                ],
-                'Profile Categories'
+                'Betterthat Category'
             )
             ->addColumn(
                 'profile_required_attributes',
@@ -122,42 +113,6 @@ class InstallSchema implements InstallSchemaInterface
                     'nullable' => true,
                 ],
                 'Profile Optional Attributes'
-            )
-            ->addColumn(
-                'profile_logistic_class',
-                Table::TYPE_TEXT,
-                '2M',
-                [
-                    'nullable' => true,
-                ],
-                'Profile Logistic Class'
-            )
-            ->addColumn(
-                'profile_tax_au',
-                Table::TYPE_TEXT,
-                '2M',
-                [
-                    'nullable' => true,
-                ],
-                'Profile Tax Au'
-            )
-            ->addColumn(
-                'profile_offer_state',
-                Table::TYPE_TEXT,
-                '2M',
-                [
-                    'nullable' => true,
-                ],
-                'Profile OfferState'
-            )
-            ->addColumn(
-                'profile_Betterthat_club_eligible',
-                Table::TYPE_TEXT,
-                '2M',
-                [
-                    'nullable' => true,
-                ],
-                'Profile Betterthat Club Eligible'
             )
             ->addColumn(
                 'magento_category',

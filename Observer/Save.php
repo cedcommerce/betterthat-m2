@@ -22,8 +22,9 @@ class Save implements \Magento\Framework\Event\ObserverInterface
 		if($product = $observer->getEvent()->getProduct()) {
 			try{
 				$product = $observer->getEvent()->getProduct();
-				if($product->getBetterthatProfileId())
-				$this->productHelper->updatePriceInventory([$product->getId()]);
+				if($product->getBetterthatProfileId()) {
+                    //$this->productHelper->updatePriceInventory([$product->getId()]);
+                }
 			} catch (\Exception $e){
                 $this->logger->error('Save Observer', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
 			}

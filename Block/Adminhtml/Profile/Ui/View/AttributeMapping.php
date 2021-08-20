@@ -54,12 +54,12 @@ class AttributeMapping extends \Magento\Backend\Block\Template
         )->setData(
             [
                 'label' => __('Add Attribute'),
-                'onclick' => 'return BetterthatAttributeControl.addItem()',
+                'onclick' => 'return betterthatAttributeControl.addItem()',
                 'class' => 'add'
             ]
         );
 
-        $button->setName('Betterthat_add_attribute_mapping_button');
+        $button->setName('betterthat_add_attribute_mapping_button');
         return $button->toHtml();
     }
 

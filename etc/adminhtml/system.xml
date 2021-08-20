@@ -24,11 +24,11 @@
             <label>Cedcommerce</label>
         </tab>
         <!-- section start for Betterthat Configuration Tab in Cedcommerce section -->
-        <section id="Betterthat_config" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="betterthat_config" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Betterthat Configuration</label>
             <tab>cedcommerce</tab>
             <resource>Ced_Betterthat::system_config</resource>
-            <group id="Betterthat_setting" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+            <group id="betterthat_setting" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
                    showInStore="0"
                    showInProfile="1"
             >
@@ -41,63 +41,46 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <field id="mode" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0"
+                <field id="client_id" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0"
                        showInStore="0"
                        showInProfile="1"
                 >
-                    <label>Mode</label>
-                    <options>
-                        <option label="Sandbox">sandbox</option>
-                        <option label="Live">live</option>
-                    </options>
+                    <label>Client Id</label>
                     <depends>
                         <field id="enable">1</field>
                     </depends>
                 </field>
 
-                <field id="live_endpoint" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0"
+                <field id="client_secret" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="0"
                        showInStore="0"
                        showInProfile="1"
                 >
-                    <label>Default Service Url</label>
-                    <source_model>Ced\Betterthat\Model\Source\Config\Endpoints</source_model>
+                    <label>Client Secret</label>
                     <depends>
                         <field id="enable">1</field>
-                        <field id="mode">live</field>
                     </depends>
                 </field>
 
-                <field id="sandbox_endpoint" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0"
+                <field id="client_domain" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="0"
                        showInStore="0"
                        showInProfile="1"
                 >
-                    <label>Default Service Url</label>
-                    <source_model>Ced\Betterthat\Model\Source\Config\SandboxEndpoints</source_model>
-                    <depends>
-                        <field id="enable">1</field>
-                        <field id="mode">sandbox</field>
-                    </depends>
-                </field>
-                <field id="version" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
-                       showInStore="1"
-                       showInProfile="1"
-                >
-                    <label>Version</label>
+                    <label>Client Domain</label>
                     <depends>
                         <field id="enable">1</field>
                     </depends>
-                    <frontend_model>Ced\Betterthat\Block\System\Config\Form\Field\Disable</frontend_model>
                 </field>
 
-                <field id="api_key" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="0"
+                <field id="retailer_id" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="0"
                        showInStore="0"
                        showInProfile="1"
                 >
-                    <label>Api Key</label>
+                    <label>Retailer Id</label>
                     <depends>
                         <field id="enable">1</field>
                     </depends>
                 </field>
+
                 <field id="storeid" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="0"
                        showInStore="0"
                        showInProfile="1"
@@ -136,7 +119,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="Betterthat_product" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1"
+            <group id="betterthat_product" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1"
                    showInStore="0"
                    showInProfile="1"
             >
@@ -232,33 +215,33 @@
                         </depends>
                     </field>
                 </group>
-                <group id="Betterthat_other_prod_setting" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" showInProfile="1">
+                <group id="betterthat_other_prod_setting" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" showInProfile="1">
                     <label>Other Product Settings</label>
-                    <field id="Betterthat_merge_parent_images" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                    <field id="betterthat_merge_parent_images" translate="label comment" type="select" sortOrder="30" showInDefault="1"
                            showInWebsite="0" showInStore="0">
                         <label>Merge Parent Product Images</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="Betterthat_use_other_parent" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" showInProfile="1">
+                    <field id="betterthat_use_other_parent" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" showInProfile="1">
                         <label>Use Parent Product Info</label>
                         <can_be_empty>1</can_be_empty>
                         <source_model>Ced\Betterthat\Model\Source\Config\Attributes</source_model>
                         <comment>Select all attribute which you want from configurable parent product.</comment>
                     </field>
-                    <field id="Betterthat_skip_from_validation" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" showInProfile="1">
+                    <field id="betterthat_skip_from_validation" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" showInProfile="1">
                         <label>Attributes to skip validation</label>
                         <can_be_empty>1</can_be_empty>
                         <source_model>Ced\Betterthat\Model\Source\Config\MagentoAttributes</source_model>
                         <comment>These attributes will skip from configurable product validation and upload.</comment>
                     </field>
-                    <field id="Betterthat_upload_config_as_simple" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                    <field id="betterthat_upload_config_as_simple" translate="label comment" type="select" sortOrder="30" showInDefault="1"
                            showInWebsite="0" showInStore="0">
                         <label>Upload Config As Simple</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
                 </group>
             </group>
-            <group id="Betterthat_order" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1"
+            <group id="betterthat_order" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1"
                    showInStore="0"
             >
                 <label>Betterthat Order Settings</label>
@@ -313,18 +296,18 @@
                     </depends>
                     <validate>required-entry validate-email</validate>
                 </field>
-                <field id="Betterthat_refund_from_core" translate="label comment" type="select" sortOrder="50" showInDefault="1"
+                <field id="betterthat_refund_from_core" translate="label comment" type="select" sortOrder="50" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Refund Order On Betterthat</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Complete item will refund on Betterthat.</comment>
                     <tooltip>Magento shipping price doesn't matter. Let's take example if order has two item with shipping price 10 and 20 respectively. Then if you will refund first item on Magento then that item refund with their tax and shipping price.</tooltip>
                 </field>
-                <field id="Betterthat_refund_reason" translate="label comment" type="select" sortOrder="60" showInDefault="1"
+                <field id="betterthat_refund_reason" translate="label comment" type="select" sortOrder="60" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Refund Reason For Betterthat</label>
                     <depends>
-                        <field id="Betterthat_refund_from_core">1</field>
+                        <field id="betterthat_refund_from_core">1</field>
                     </depends>
                     <validate>required-entry</validate>
                     <source_model>Ced\Betterthat\Model\Source\Config\RefundReason</source_model>
@@ -337,7 +320,7 @@
                     <comment>Credit Memo will generate for those items which was refunded on Betterthat panel.</comment>
                 </field> -->
             </group>
-            <group id="Betterthat_cron" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="betterthat_cron" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Betterthat Cron Settings</label>
                 <field id="order_cron" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Order Cron</label>

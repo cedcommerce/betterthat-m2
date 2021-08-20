@@ -82,10 +82,10 @@ class InstallData implements InstallDataInterface
         $eavSetup->addAttributeGroup($entityTypeId, $attributeSetId, $groupName, 1000);
         $eavSetup->getAttributeGroupId($entityTypeId, $attributeSetId, $groupName);
 
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'Betterthat_state')) {
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_state')) {
             $eavSetup->addAttribute(
                 'catalog_product',
-                'Betterthat_state',
+                'betterthat_state',
                 [
                     'group' => 'Betterthat Marketplace',
                     'note' => 'Please Select State',
@@ -105,49 +105,6 @@ class InstallData implements InstallDataInterface
             );
         }
 
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'logistic_class')) {
-            $eavSetup->addAttribute(
-                'catalog_product',
-                'logistic_class',
-                [
-                    'group' => 'Betterthat Marketplace',
-                    'note' => 'Please Select Logistic class',
-                    'input' => 'select',
-                    'type' => 'varchar',
-                    'label' => 'Logistic Class',
-                    'backend' => '',
-                    'visible' => 1,
-                    'required' => 0,
-                    'sort_order' => 1,
-                    'user_defined' => 1,
-                    'source' => 'Ced\Betterthat\Model\Source\LogisticClass',
-                    'comparable' => 0,
-                    'visible_on_front' => 0,
-                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                ]
-            );
-        }
-
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'barcode_ean')) {
-            $eavSetup->addAttribute(
-                'catalog_product',
-                'barcode_ean',
-                [
-                    'group' => 'Betterthat Marketplace',
-                    'input' => 'text',
-                    'type' => 'text',
-                    'label' => 'Barcode',
-                    'backend' => '',
-                    'visible' => 1,
-                    'required' => 0,
-                    'sort_order' => 2,
-                    'user_defined' => 1,
-                    'searchable' => 1,
-                    'visible_on_front' => 0,
-                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                ]
-            );
-        }
 
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'brand')) {
             $eavSetup->addAttribute(
@@ -174,10 +131,10 @@ class InstallData implements InstallDataInterface
             );
         }
 
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'Betterthat_product_status')) {
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_product_status')) {
             $eavSetup->addAttribute(
                 'catalog_product',
-                'Betterthat_product_status',
+                'betterthat_product_status',
                 [
                     'group' => 'Betterthat Marketplace',
                     'note' => 'product status on Betterthat',
@@ -197,111 +154,11 @@ class InstallData implements InstallDataInterface
             );
         }
 
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'package_length')) {
+
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_validation_errors')) {
             $eavSetup->addAttribute(
                 'catalog_product',
-                'package_length',
-                [
-                    'group' => 'Betterthat Marketplace',
-                    'note' => "Please enter package length. \n
-                    Use only 'C.M.",
-                    'input' => 'text',
-                    'type' => 'text',
-                    'label' => 'Package Length (cm)',
-                    'backend' => '',
-                    'visible' => 1,
-                    'required' => 0,
-                    'sort_order' => 14,
-                    'user_defined' => 1,
-                    'searchable' => 1,
-                    'filterable' => 0,
-                    'comparable' => 0,
-                    'visible_on_front' => 0,
-                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                ]
-            );
-        }
-
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'package_width')) {
-            $eavSetup->addAttribute(
-                'catalog_product',
-                'package_width',
-                [
-                    'group' => 'Betterthat Marketplace',
-                    'note' => "Please enter package width. \n
-                    Use only 'C.M.",
-                    'input' => 'text',
-                    'type' => 'text',
-                    'label' => 'Package Width (cm)',
-                    'backend' => '',
-                    'visible' => 1,
-                    'required' => 0,
-                    'sort_order' => 14,
-                    'user_defined' => 1,
-                    'searchable' => 1,
-                    'filterable' => 0,
-                    'comparable' => 0,
-                    'visible_on_front' => 0,
-                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                ]
-            );
-        }
-
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'package_height')) {
-            $eavSetup->addAttribute(
-                'catalog_product',
-                'package_height',
-                [
-                    'group' => 'Betterthat Marketplace',
-                    'note' => "Please enter package height. \n
-                    Use only 'C.M.",
-                    'input' => 'text',
-                    'type' => 'text',
-                    'label' => 'Package Height (cm)',
-                    'backend' => '',
-                    'visible' => 1,
-                    'required' => 0,
-                    'sort_order' => 14,
-                    'user_defined' => 1,
-                    'searchable' => 1,
-                    'filterable' => 0,
-                    'comparable' => 0,
-                    'visible_on_front' => 0,
-                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                ]
-            );
-        }
-
-
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'Betterthat_club_eligibe')) {
-            $eavSetup->addAttribute(
-                'catalog_product',
-                'Betterthat_club_eligibe',
-                [
-                    'group' => 'Betterthat Marketplace',
-                    'note' => "Please enter tax class",
-                    'input' => 'select',
-                    'type' => 'varchar',
-                    'label' => 'Betterthat Club Eligibe',
-                    'backend' => '',
-                    'visible' => 1,
-                    'required' => 0,
-                    'sort_order' => 14,
-                    'user_defined' => 1,
-                    'searchable' => 1,
-                    'filterable' => 0,
-                    'source' => 'Ced\Betterthat\Model\Source\ClubEligibe',
-                    'comparable' => 0,
-                    'visible_on_front' => 0,
-                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                ]
-            );
-        }
-
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'Betterthat_validation_errors')) {
-            $eavSetup->addAttribute(
-                'catalog_product',
-                'Betterthat_validation_errors',
+                'betterthat_validation_errors',
                 [
                     'group' => 'Betterthat Marketplace',
                     'note' => "Betterthat Validation Errors",
@@ -326,7 +183,7 @@ class InstallData implements InstallDataInterface
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'Betterthat_feed_errors')) {
             $eavSetup->addAttribute(
                 'catalog_product',
-                'Betterthat_feed_errors',
+                'betterthat_feed_errors',
                 [
                     'group' => 'Betterthat Marketplace',
                     'note' => "Betterthat Feed Errors",

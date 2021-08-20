@@ -62,6 +62,8 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public $endpoint;
 
+    public $domain;
+
     /**
      * Debug Log Mode
      *
@@ -75,6 +77,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public $config;
 
     public $generator;
+
 
     /**
      * Config constructor.
@@ -122,17 +125,23 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $config = false;
         try {
-            $mode = $this->getMode();
-
             //loading configurations
             $this->debugMode = $this->scopeConfigManager
-                ->getValue('Betterthat_config/Betterthat_setting/debug_mode');
+                ->getValue('betterthat_config/betterthat_setting/debug_mode');
             $this->userId = $this->scopeConfigManager
-                ->getValue("Betterthat_config/Betterthat_setting/user_id");
+                ->getValue("betterthat_config/betterthat_setting/user_id");
             $this->apiKey = $this->scopeConfigManager
-                ->getValue("Betterthat_config/Betterthat_setting/api_key");
-            $this->endpoint = $this->scopeConfigManager
-                ->getValue("Betterthat_config/Betterthat_setting/{$mode}_endpoint");
+                ->getValue("betterthat_config/betterthat_setting/api_key");
+            $this->endpoint = \BetterthatSdk\Core\Request::Betterthat_API_URL;
+
+            $this->client_id = $this->scopeConfigManager
+                ->getValue("betterthat_config/betterthat_setting/client_id");
+            $this->client_secret = $this->scopeConfigManager
+                ->getValue("betterthat_config/betterthat_setting/client_secret");
+            $this->client_domain = $this->scopeConfigManager
+                ->getValue("betterthat_config/betterthat_setting/client_domain");
+
+
             /**
              * @var \BetterthatSdk\Api\Config
              */
@@ -141,6 +150,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
                 'params' => [
                     'userId' => $this->userId,
                     'apiKey' => $this->apiKey,
+                    'client_id' => $this->client_id,
+                    'client_secret' => $this->client_secret,
+                    'client_domain' => $this->client_domain,
                     'apiUrl' => $this->endpoint,
                     'debugMode' => $this->debugMode,
                     'baseDirectory' => $this->dl->getPath('var') . DS . 'Betterthat',

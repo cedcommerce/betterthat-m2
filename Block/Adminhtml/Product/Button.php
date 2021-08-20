@@ -71,7 +71,7 @@ class Button extends Container
         $splitButtonOptions['massimport'] = [
             'label' => __('Bulk Product Upload'),
             'onclick' => "setLocation('" . $this->getUrl(
-                'Betterthat/product/additems'
+                'betterthat/product/additems'
             ) . "')",
             'default' => true,
         ];
@@ -79,7 +79,7 @@ class Button extends Container
         $splitButtonOptions['sync_price_inv'] = [
             'label' => __('Sync Inventory And Price'),
             'onclick' => "setLocation('" . $this->getUrl(
-                'Betterthat/product/sync'
+                'betterthat/product/sync'
             ) . "')",
             'default' => false,
         ];

@@ -93,12 +93,12 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
             );
         }
 
-        $this->addField('Betterthat_product_status');
-        $this->addField('Betterthat_profile_id');
-        $this->addField('Betterthat_validation_errors');
-        $this->addField('Betterthat_feed_errors');
-        $this->addFilter(
-            $this->filterBuilder->setField('Betterthat_profile_id')->setConditionType('notnull')
+        $this->addField('betterthat_product_status');
+        $this->addField('betterthat_profile_id');
+        $this->addField('betterthat_validation_errors');
+        $this->addField('betterthat_feed_errors');
+       $this->addFilter(
+            $this->filterBuilder->setField('betterthat_profile_id')->setConditionType('notnull')
                 ->setValue('true')
                 ->create()
         );

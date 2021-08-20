@@ -113,13 +113,13 @@ class Profile extends \Magento\Framework\Model\AbstractModel
         $id = $this->getId();
 
         $products = $this->product->create()
-            ->addAttributeToSelect('Betterthat_profile_id');
+            ->addAttributeToSelect('betterthat_profile_id');
         $products->addCategoriesFilter(['in' => $values]);
         $products->addAttributeToFilter('type_id', ['in' => ['simple','configurable']]);
         foreach ($products as $product) {
             $product->setBetterthatProfileId($id);
             $product->getResource()
-                ->saveAttribute($product, 'Betterthat_profile_id');
+                ->saveAttribute($product, 'betterthat_profile_id');
         }
     }
 

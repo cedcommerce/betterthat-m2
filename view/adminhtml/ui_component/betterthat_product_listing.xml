@@ -11,7 +11,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
- * @package   Ced_Betterthat
+ * @package   Ced_betterthat
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
@@ -20,12 +20,12 @@
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">Betterthat_product_listing.product_listing_data_source</item>
-            <item name="deps" xsi:type="string">Betterthat_product_listing.product_listing_data_source</item>
+            <item name="provider" xsi:type="string">betterthat_product_listing.product_listing_data_source</item>
+            <item name="deps" xsi:type="string">betterthat_product_listing.product_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">product_columns</item>
         <!-- <item name="buttons" xsi:type="array">
-            <item name="back" xsi:type="string">Ced\Betterthat\Block\Adminhtml\Product\Back</item>
+            <item name="back" xsi:type="string">Ced\betterthat\Block\Adminhtml\Product\Back</item>
         </item> -->
     </argument>
     <dataSource name="product_listing_data_source">
@@ -66,7 +66,7 @@
                         </item>
                         <item name="type" xsi:type="string">validate</item>
                         <item name="label" xsi:type="string" translate="true">Validate Product</item>
-                        <item name="url" xsi:type="url" path="Betterthat/product/validate"/>
+                        <item name="url" xsi:type="url" path="betterthat/product/validate"/>
                     </item>
                 </argument>
             </action>
@@ -76,11 +76,11 @@
                     <item name="config" xsi:type="array">
                         <item name="confirm" xsi:type="array">
                             <item name="title" xsi:type="string" translate="true">Upload Product(s)</item>
-                            <item name="message" xsi:type="string" translate="true">Upload Product(s) to Betterthat?</item>
+                            <item name="message" xsi:type="string" translate="true">Upload Product(s) to betterthat?</item>
                         </item>
                         <item name="type" xsi:type="string">upload</item>
                         <item name="label" xsi:type="string" translate="true">Upload Product(s)</item>
-                        <item name="url" xsi:type="url" path="Betterthat/product/upload"/>
+                        <item name="url" xsi:type="url" path="betterthat/product/upload"/>
                     </item>
                 </argument>
             </action>
@@ -89,37 +89,11 @@
                     <item name="config" xsi:type="array">
                         <item name="confirm" xsi:type="array">
                             <item name="title" xsi:type="string" translate="true">Update Inventory &amp; Price</item>
-                            <item name="message" xsi:type="string" translate="true">Update Inventory &amp; Price  to Betterthat?</item>
+                            <item name="message" xsi:type="string" translate="true">Update Inventory &amp; Price  to betterthat?</item>
                         </item>
                         <item name="type" xsi:type="string">inventoryprice</item>
                         <item name="label" xsi:type="string" translate="true">Update Inventory  &amp; Price</item>
-                        <item name="url" xsi:type="url" path="Betterthat/product/inventoryprice"/>
-                    </item>
-                </argument>
-            </action>
-            <action name="productwithoffer">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Upload Product With Offer</item>
-                            <item name="message" xsi:type="string" translate="true">Upload Product With Offer to Betterthat?</item>
-                        </item>
-                        <item name="type" xsi:type="string">prodwithoffer</item>
-                        <item name="label" xsi:type="string" translate="true">Upload Product With Offer</item>
-                        <item name="url" xsi:type="url" path="Betterthat/product/uploadprodwithoffer"/>
-                    </item>
-                </argument>
-            </action>
-            <action name="inactiveprod">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Inactive On Betterthat</item>
-                            <item name="message" xsi:type="string" translate="true">Sure to make this product as OutOfStock on Betterthat?</item>
-                        </item>
-                        <item name="type" xsi:type="string">inactiveprod</item>
-                        <item name="label" xsi:type="string" translate="true">Inactive (OutOfStock) on Betterthat</item>
-                        <item name="url" xsi:type="url" path="Betterthat/product/inactive"/>
+                        <item name="url" xsi:type="url" path="betterthat/product/inventoryprice"/>
                     </item>
                 </argument>
             </action>
@@ -131,7 +105,7 @@
             <item name="config" xsi:type="array">
                 <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <!--<item name="provider" xsi:type="string">Betterthat_product_listing.Betterthat_product_listing.product_columns.actions</item>-->
+                        <!--<item name="provider" xsi:type="string">betterthat_product_listing.betterthat_product_listing.product_columns.actions</item>-->
                         <item name="target" xsi:type="string">applyAction</item>
                         <item name="params" xsi:type="array">
                             <!--<item name="0" xsi:type="string">edit</item>-->
@@ -261,7 +235,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Betterthat_product_status"  class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Status">
+        <column name="betterthat_product_status"  class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Status">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\Product\Status</item>
                 <item name="config" xsi:type="array">
@@ -273,7 +247,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Betterthat_profile_id"  class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Profiles">
+        <column name="betterthat_profile_id"  class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Profiles">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\Profiles</item>
                 <item name="config" xsi:type="array">
@@ -285,7 +259,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Betterthat_validation_errors" class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Validation">
+        <column name="betterthat_validation_errors" class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Validation">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Ced_Betterthat/js/grid/columns/product/validation</item>
@@ -295,7 +269,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Betterthat_feed_errors" class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Feed">
+        <column name="betterthat_feed_errors" class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Feed">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Ced_Betterthat/js/grid/columns/product/feed</item>
@@ -305,7 +279,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Betterthat_exclude_from_sync">
+        <column name="betterthat_exclude_from_sync">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\Yesno</item>
                 <item name="config" xsi:type="array">

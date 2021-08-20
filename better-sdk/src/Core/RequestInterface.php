@@ -46,7 +46,7 @@ interface RequestInterface
     const GET_ORDERS_DOCUMENT_DOWNLOAD_URL = '/api/orders/documents/download';
     const PUT_SHIPMENT_SUB_URL = 'oms/asn/v7?sellerId=';
     const GET_FEEDS_SUB_URL = 'api/products/imports/%s/error_report';
-    const POST_ITEMS_SUB_URL = 'api/products/imports';
+    const POST_ITEMS_SUB_URL = 'product-upload/';
     const POST_OFFER_IMPORT  = 'api/offers/imports';
     const PUT_INVENTORY_SUB_URL = 'inventory/fbm-lmp/v7?sellerId=';
     const GET_INVENTORY_SUB_URL = 'inventory/v5?itemIds=%s&sellerId=%s';

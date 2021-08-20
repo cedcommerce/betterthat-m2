@@ -174,52 +174,15 @@ class Product extends \BetterthatSdk\Core\Request
     }
 
     /**
-     * Create/Update Product on Betterthat
-     * @param $data
-     * @return bool|array
+     * @param $product_data
+     * @return false
      */
-    public function createProduct($data)
+    public function createProduct($product_data)
     {
-
-        if (isset($data[0]['product']) or isset($data[0]['variation-group'])) {
-            $product = array(
-                'catalog' =>
-                    array(
-                        '_attribute' => array(),
-                        '_value' => array(
-                            'products' => array(
-                                '_attribute' => array(),
-                                '_value' => $data
-                            )
-                        )
-                    )
-            );
-
-            $path = $this->getFile($this->baseDirectory, 'lmp-item.xml');
-            $product = $this->xml->arrayToXml($product);
-            $product->save($path);
-
-            //check Xml via Xsd validator
-            //$validate = $this->validateXml($path, $this->xsdPath . 'lmp-item.xsd', self::FEED_CODE_ITEM_UPDATE);
-            //echo "<pre>";print_r($validate);die('df');
-            //if (isset($validate['feed_errors']) && empty($validate['feed_errors'])) {
-
-            $response = $this->postRequest(self::POST_ITEMS_SUB_URL, array('file' => $path));
-            //$response = $this->putRequest(self::PUT_ITEMS_SUB_URL, ['data' => $product->__toString()]);
-            if ($this->debugMode) {
-                $cpPath = $this->getFile(
-                    $this->baseDirectory,
-                    self::FEED_CODE_ITEM_UPDATE . '-' . time() . '.xml'
-                );
-                $product->save($cpPath);
-                return $this->responseParse($response, self::FEED_CODE_ITEM_UPDATE, $cpPath);
-            }
-            return $this->responseParse($response, self::FEED_CODE_ITEM_UPDATE);
-            //}
-            $response = $this->xmlToArray($response);
+        if (is_array($product_data) && count($product_data) > 0 ) {
+            $response = $this->postRequest(self::POST_ITEMS_SUB_URL, array('data' => $product_data));
             return $response;
         }
-
         return false;
     }
 
@@ -642,7 +605,7 @@ class Product extends \BetterthatSdk\Core\Request
      */
     public function getAllAttributes($forceFetch = false)
     {
-        $attributes = array();
+        $attributes = [];
         try {
             $itemsFile = $this->baseDirectory . DS . 'attributes' . DS . 'attribute-library.xml';
             if (file_exists($itemsFile) && !$forceFetch) {
@@ -651,7 +614,7 @@ class Product extends \BetterthatSdk\Core\Request
                 $attributes = $attributes['body']['attributes']['attribute'];
             } else {
                 $response = [];
-                $response = $this->getRequest(self::GET_ATTRIBUTES_SUB_URL, array());
+                /*$response = $this->getRequest(self::GET_ATTRIBUTES_SUB_URL, array());
                 $responseParsed = $this->xmlToArray($response);
                 if (isset($responseParsed['body']['attributes']['attribute'])) {
                     file_put_contents(
@@ -661,8 +624,8 @@ class Product extends \BetterthatSdk\Core\Request
                         ),
                         $response
                     );
-                    $attributes = $responseParsed['body']['attributes']['attribute'];
-                }
+                    $attributes = $responseParsed['body']['attributes']['attribute'];*/
+                //}
             }
         } catch (\Exception $e) {
             if ($this->debugMode) {

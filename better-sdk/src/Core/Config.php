@@ -66,6 +66,12 @@ class Config implements \BetterthatSdk\Core\ConfigInterface
      */
     protected $logger;
 
+    protected $client_id;
+
+    protected $client_secret;
+
+    protected $client_domain;
+
     /**
      * [
      * 'apiKey' => 'rOnMU7LxyLSE1VtaNUtTcpEbXje/0FFrE29g+isl',
@@ -102,23 +108,23 @@ class Config implements \BetterthatSdk\Core\ConfigInterface
     }
 
     /**
-     * Get Betterthat ApiKey
-     * @return mixed
-     */
-    public function getApiKey()
-    {
-        return $this->apiKey;
-    }
-
-    /**
-     * Set Betterthat ApiKey
+     * Set Betterthat ClientId
      * @param string $apiKey
      * @return boolean
      */
-    public function setApiKey($apiKey)
+    public function getClientId()
     {
-        $this->apiKey = $apiKey;
-        return true;
+        return $this->client_id;
+    }
+
+    public function getClientDomain()
+    {
+        return $this->client_domain;
+    }
+
+    public function getClientSecret()
+    {
+        return $this->client_secret;
     }
 
     /**

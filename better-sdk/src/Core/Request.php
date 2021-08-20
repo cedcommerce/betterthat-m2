@@ -77,7 +77,14 @@ abstract class Request implements \BetterthatSdk\Core\RequestInterface
      */
     public $xsdDir;
 
-    /**
+    public $clientId;
+
+    public $clientSecret;
+
+    public $client_domain;
+
+
+        /**
      * Request constructor.
      * @param ConfigInterface $config
      */
@@ -87,8 +94,11 @@ abstract class Request implements \BetterthatSdk\Core\RequestInterface
         $this->xml = $config->getGenerator();
         $this->parser = $config->getParser();
         $this->logger = $config->getLogger();
-        $this->apiAuthKey = $config->getApiKey();
+        $this->clientId = $config->getClientId();
+        $this->clientSecret = $config->getClientSecret();
         $this->apiUrl = $config->getApiUrl();
+        $this->client_domain = $config->getClientDomain();
+
     }
 
    /**
@@ -104,53 +114,32 @@ abstract class Request implements \BetterthatSdk\Core\RequestInterface
         $response = null;
         try {
             $body = '';
-            $cFile = '';
-            if (isset($params['file'])) {
-                if (function_exists('curl_file_create')) {
-                    $cFile = curl_file_create($params['file']);
-                } else {
-                    $cFile = '@' . realpath($params['file']);
-                }
-            } elseif (isset($params['data'])) {
-                $body = $params['data'];
+            if (isset($params['data'])) {
+                $body = json_encode($params['data']);
             }
-
             $url= $this->apiUrl.$url;
-
-            if($uploadType == "offer") {
-                $withProducts = ($params['with_products'] == 'true') ? 'true' : 'false';
-                $body = array('file' => $cFile, 'import_mode' => 'NORMAL', 'with_products' => $withProducts);
-            } else {
-                $body = array('file' => $cFile);
-            }
-
-            $headers = array(
-                //'Authorization: ' . $this->apiAuthKey,2021-07-22 11:24:27,424 [  35527]   WARN - .diagnostic.PerformanceWatcher - UI was frozen for 17458ms, details saved to /home/rajneesh/.cache/JetBrains/PhpStorm2020.3/log/threadDumps-freeze-20210722-112414-PS-203.5981.175-ProjectFrameHelper.init-17sec
-
-                'Accept: application/json',
-                //'Content-Type: application/json',
-            );
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_HEADER, 1);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            $servererror = curl_error($ch);
-            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-            //$header = substr($response, 0, $header_size);
-            $body = substr($response, $header_size);
-            if (!empty($servererror)) {
-                $request = curl_getinfo($ch);
-                curl_close($ch);
-                throw new \Exception($servererror);
-            }
-            curl_close($ch);
-            return $body;
+            $headers = [
+                'clientId: '. $this->clientId,
+                'clientSecret: '. $this->clientSecret,
+                'Content-Type: application/json',
+                'origin: '.$this->client_domain
+            ];
+            $curl = curl_init();
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => $body,
+                CURLOPT_HTTPHEADER => $headers,
+            ]);
+            $response = curl_exec($curl);
+            curl_close($curl);
+            return $this->isJson($response) ? json_decode($response,1) : $response;
         } catch(\Exception $e) {
             if ($this->debugMode) {
                 $this->logger->debug(
@@ -162,6 +151,11 @@ abstract class Request implements \BetterthatSdk\Core\RequestInterface
             }
             return false;
         }
+    }
+
+    public function isJson($string):string {
+        json_decode($string);
+        return json_last_error() === JSON_ERROR_NONE;
     }
 
 }

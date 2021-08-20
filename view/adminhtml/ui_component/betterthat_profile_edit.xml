@@ -47,8 +47,8 @@
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="submit_url" xsi:type="url" path="Betterthat/profile/save"/>
-                    <item name="validate_url" xsi:type="url" path="Betterthat/profile/validate"/>
+                    <item name="submit_url" xsi:type="url" path="betterthat/profile/save"/>
+                    <item name="validate_url" xsi:type="url" path="betterthat/profile/validate"/>
                 </item>
             </argument>
         </argument>
@@ -198,16 +198,23 @@
         </field>
     </fieldset>-->
 
-    <fieldset name="store_categories" sortOrder="40">
+    <!--<fieldset name="store_categories" sortOrder="40">
         <settings>
             <collapsible>false</collapsible>
             <label translate="true">Store Categories</label>
         </settings>
-         <field name="magento_category">
+
+    </fieldset>-->
+    <fieldset name="betterthat_category" sortOrder="50">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Category/Attribute Mapping</label>
+        </settings>
+        <field name="magento_category">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Magento\Catalog\Ui\Component\Product\Form\Categories\Options</item>
                 <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Choose Store Categories</item>
+                    <item name="label" xsi:type="string" translate="true">Store Categories</item>
                     <item name="componentType" xsi:type="string">field</item>
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
@@ -229,12 +236,32 @@
                 </item>
             </argument>
         </field>
-    </fieldset>
-    <fieldset name="betterthat_category" sortOrder="50">
-        <settings>
-            <collapsible>false</collapsible>
-            <label translate="true">BetterThat category</label>
-        </settings>
+        <field name="betterthat_categories">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ced\Betterthat\Ui\Component\Profile\Form\Categories\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Betterthat Categories</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                    <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                    <item name="dataScope" xsi:type="string">betterthat_category</item>
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="showCheckbox" xsi:type="boolean">true</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="listens" xsi:type="array">
+                        <item name="${ $.namespace }.${ $.namespace }:responseData" xsi:type="string">setParsed</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
         <container name="betterthat_category_container" sortOrder="170">
             <htmlContent name="html_content">
                 <block name="betterthat_category_mapping" class="Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\BetterthatCategory"/>

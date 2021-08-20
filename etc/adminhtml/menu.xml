@@ -43,7 +43,7 @@
              module="Ced_Betterthat"
              sortOrder="1"
              parent="Ced_Betterthat::product"
-             action="Betterthat/profile/index"
+             action="betterthat/profile/index"
              resource="Ced_Betterthat::Betterthat_profile"
         />
         <add id="Ced_Betterthat::Betterthat_product"
@@ -52,7 +52,7 @@
              module="Ced_Betterthat"
              sortOrder="2"
              parent="Ced_Betterthat::product"
-             action="Betterthat/product/index"
+             action="betterthat/product/index"
              resource="Ced_Betterthat::Betterthat_product"
         />
 
@@ -73,7 +73,7 @@
              module="Ced_Betterthat"
              sortOrder="10"
              parent="Ced_Betterthat::Betterthat_orders"
-             action="Betterthat/order/index"
+             action="betterthat/order/index"
              resource="Ced_Betterthat::Betterthat_order_listing"
         />
         <add id="Ced_Betterthat::Betterthat_failed_order"
@@ -82,7 +82,7 @@
              module="Ced_Betterthat"
              sortOrder="20"
              parent="Ced_Betterthat::Betterthat_orders"
-             action="Betterthat/failedorder"
+             action="betterthat/failedorder"
              resource="Ced_Betterthat::Betterthat_failed_order"
         />
         <!--orders end-->
@@ -102,7 +102,7 @@
              module="Ced_Betterthat"
              sortOrder="10"
              parent="Ced_Betterthat::developer"
-             action="Betterthat/feeds"
+             action="betterthat/feeds"
              resource="Ced_Betterthat::Betterthat_feeds"
         />
 
@@ -122,7 +122,7 @@
              module="Ced_Betterthat"
              sortOrder="30"
              parent="Ced_Betterthat::developer"
-             action="Betterthat/cron"
+             action="betterthat/cron"
              resource="Ced_Betterthat::Betterthat_cron"
         />
 
@@ -132,7 +132,7 @@
              module="Ced_Betterthat"
              sortOrder="40"
              parent="Ced_Betterthat::developer"
-             action="Betterthat/logs"
+             action="betterthat/logs"
              resource="Ced_Betterthat::Betterthat_logs"
         />
 
@@ -165,12 +165,12 @@
              parent="Ced_Betterthat::Betterthat"
              resource="Ced_Betterthat::configuration"
         />
-        <add id="Ced_Betterthat::Betterthat_configuration"
+        <add id="Ced_Betterthat::1"
              title="Configuration"
              module="Ced_Betterthat"
              sortOrder="1"
              parent="Ced_Betterthat::configuration"
-             action="adminhtml/system_config/edit/section/Betterthat_config"
+             action="adminhtml/system_config/edit/section/betterthat_config"
              resource="Ced_Betterthat::Betterthat_configuration"
         />
 
@@ -190,11 +190,9 @@
              module="Ced_Betterthat"
              sortOrder="10"
              parent="Ced_Betterthat::extras"
-             action="Betterthat/help"
+             action="betterthat/help"
              resource="Ced_Betterthat::Betterthat_support"
         />
-
-
 
     </menu>
 </config>

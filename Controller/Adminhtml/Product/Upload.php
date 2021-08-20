@@ -115,8 +115,8 @@ class Upload extends \Magento\Backend\App\Action
             if (isset($productIds[$batchId]) && $response) {
                 return $resultJson->setData(
                     [
-                    'success' => count($productIds[$batchId]) . " Product(s) Uploaded successfully",
-                    'messages' => $response//$this->registry->registry('Betterthat_product_errors')
+                    'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) .' '. $response['message'],
+                    'messages' => $response['message']
                     ]
                 );
             }

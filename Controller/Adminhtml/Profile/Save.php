@@ -128,6 +128,7 @@ class Save extends \Magento\Backend\App\Action
                 $profileModel = $this->profileFactory->create();
                 $profile = $this->profileresource->create()->load($profileModel,$this->data->getProfileId(),'id');
                 //$profile = $this->profileFactory->create()->load($this->data->getProfileId());
+
                 $profileModel->addData($this->data->getData());
 
                 $profile->save($profileModel);
@@ -153,17 +154,17 @@ class Save extends \Magento\Backend\App\Action
         if ($returnToEdit) {
             if ($profileId) {
                 $resultRedirect->setPath(
-                    'Betterthat/profile/edit',
+                    'betterthat/profile/edit',
                     ['id' => $profileId, '_current' => true]
                 );
             } else {
                 $resultRedirect->setPath(
-                    'Betterthat/profile/edit',
+                    'betterthat/profile/edit',
                     ['_current' => true]
                 );
             }
         } else {
-            $resultRedirect->setPath('BetterThat/profile/index');
+            $resultRedirect->setPath('*/*/index');
         }
         $this->logger->info('Saving Ended');
         return $resultRedirect;
@@ -171,30 +172,29 @@ class Save extends \Magento\Backend\App\Action
 
     private function validate()
     {
-
         $generalInformation = $this->getRequest()->getParam('general_information');
         $offer_information = $this->getRequest()->getParam('offer_information');
         $BetterThat = $this->getRequest()->getParam('BetterThat');
-        $store_categories = $this->getRequest()->getParam('store_categories');
-        $BetterThatAttributes = $this->getRequest()->getParam('BetterThat_attributes');
+        $store_categories = $this->getRequest()->getParam('betterthat_category');
+        $BetterThatAttributes = $this->getRequest()->getParam('betterthat_attributes');
 
         if (!empty($BetterThatAttributes)) {
-            $BetterThatAttributes = $this->mergeAttributes($BetterThatAttributes, 'name');
 
+            $BetterThatAttributes = $this->mergeAttributes($BetterThatAttributes, 'name');
             $requiredAttributes = $optionalAttributes = [];
 
             foreach ($BetterThatAttributes as $BetterThatAttribute_key => $BetterThatAttribute_value) {
                 if (isset($BetterThatAttribute_value['delete']) and $BetterThatAttribute_value['delete']) {
                      continue;
                 }
-                if (isset($BetterThatAttribute_value['isMandatory']) and $BetterThatAttribute_value['isMandatory'] == 'true') {
+
+                if (isset($BetterThatAttribute_value['isMandatory']) and $BetterThatAttribute_value['isMandatory'] == 1) {
                     $requiredAttributes[$BetterThatAttribute_key] = $BetterThatAttribute_value;
                 } else {
                     $optionalAttributes[$BetterThatAttribute_key] = $BetterThatAttribute_value;
                     $optionalAttributes[$BetterThatAttribute_key]['isMandatory'] = 0;
                 }
             }
-
             $this->data->setData('profile_required_attributes', json_encode($requiredAttributes));
             $this->data->setData('profile_optional_attributes', json_encode($optionalAttributes));
         }
@@ -210,6 +210,9 @@ class Save extends \Magento\Backend\App\Action
         if (isset($store_categories['magento_category'])) {
             $this->data->setData('magento_category', json_encode($store_categories['magento_category']));
         }
+        if (isset($store_categories['betterthat_category']))
+            $this->data->setData('betterthat_categories', json_encode($store_categories['betterthat_category']));
+
 
         if (isset($generalInformation['profile_name'])) {
             $this->data->addData($generalInformation);
@@ -232,7 +235,6 @@ class Save extends \Magento\Backend\App\Action
      */
     private function mergeAttributes($attributes, $key)
     {
-
         $tempArray = [];
         $i = 0;
         $keyArray = [];

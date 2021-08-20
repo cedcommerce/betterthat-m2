@@ -30,8 +30,8 @@ class Actions extends Column
  * Url path
 */
     const URL_PATH_EDIT = 'catalog/product/edit';
-    const URL_PATH_VIEW = 'Betterthat/product/view';
-    const URL_PATH_SYNC = 'Betterthat/product/validatesingle';
+    const URL_PATH_VIEW = 'betterthat/product/view';
+    const URL_PATH_SYNC = 'betterthat/product/validatesingle';
 
     /**
      * @var UrlBuilder

@@ -100,7 +100,8 @@ class DataProvider extends AbstractDataProvider
             ];
 
             $products = [
-                'magento_category' => json_decode($item['magento_category'], true)
+                'magento_category' => json_decode($item['magento_category'], true),
+                'betterthat_category' => json_decode($item['betterthat_categories'], true),
             ];
 
             $info = [
@@ -120,7 +121,7 @@ class DataProvider extends AbstractDataProvider
                 'general_information' => $info,
                 'offer_information' => $offers,
                 'profile_mappings' => $categoryAndAttributes,
-                'store_categories' => $products
+                'betterthat_category' => $products
             ];
         }
 

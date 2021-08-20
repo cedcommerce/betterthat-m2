@@ -41,18 +41,9 @@ interface ConfigInterface
      */
     public function getBaseDirectory();
 
-    /**
-     * Set Betterthat ApiKey
-     * @param string $apiKey
-     * @return boolean
-     */
-    public function setApiKey($apiKey);
+    public function getClientId();
 
-    /**
-     * Get Betterthat ApiKey
-     * @return mixed
-     */
-    public function getApiKey();
+    public function getClientSecret();
 
     /**
      * Set Betterthat Service Url
@@ -106,6 +97,8 @@ interface ConfigInterface
      */
     public function setGenerator($generator);
 
+
+    public function getClientDomain();
     /**
      * Get Logger
      * @return \Psr\Log\LoggerInterface

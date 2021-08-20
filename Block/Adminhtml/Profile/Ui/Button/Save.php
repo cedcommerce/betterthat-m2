@@ -34,6 +34,6 @@ class Save extends GenericButton implements ButtonProviderInterface
 
     public function getBackUrl()
     {
-        return $this->getUrl('Betterthat/profile/save');
+        return $this->getUrl('*/*/save');
     }
 }

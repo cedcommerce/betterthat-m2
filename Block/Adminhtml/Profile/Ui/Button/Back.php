@@ -44,6 +44,6 @@ class Back extends Container implements ButtonProviderInterface
 
     public function getBackUrl()
     {
-        return $this->getUrl('Betterthat/profile/index');
+        return $this->getUrl('*/*/index');
     }
 }
