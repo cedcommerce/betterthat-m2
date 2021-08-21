@@ -713,6 +713,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function validateProduct($id, $product = null, $profile = null, $parentId = null)
     {
+
         try {
             $validatedProduct = false;
 
@@ -734,6 +735,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $errors = [];
             //Case 1: Profile is Available
             if (isset($profileId) and $profileId != false) {
+
                 $category = $profile->getBetterThatCategory();
                 $requiredAttributes = $profile->getRequiredAttributes();
                 foreach ($requiredAttributes as $BetterthatAttributeId => $BetterthatAttribute) {
@@ -778,11 +780,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 "] has invalid option value: <b> " . json_encode($value) . "/" . json_encode($valueId) .
                                 "</b> or default value: " . json_encode($defaultValue);
                         }
+
                     }
+
+                }
+
+                if(!$product->getImage()){
+                    $errors['Image'] = 'Product should have Images';
                 }
                 $additionalImages = $this->prepareImages($product, 0);
-
-                if (count($additionalImages) == 0 && $parentId) {
+                /* if (count($additionalImages) == 0 && $parentId) {
                     $configurableProduct = $this->product->create()->load($parentId)
                         ->setStoreId($this->selectedStore);
                     $additionalImages = $this->prepareImages($configurableProduct, 0);
@@ -790,7 +797,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                 if (count($additionalImages) == 0) {
                     $errors['Image'] = 'One image must be above 450 x 367 px';
-                }
+                }*/
 
                 //Setting Errors in product validation attribute
                 if (!empty($errors)) {
@@ -837,6 +844,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             }
             return $validatedProduct;
         } catch (\Exception $e) {
+            die($e->getMessage());
             $this->logger->error('Validate Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
@@ -865,7 +873,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 );
                 /*$price = $this->getPrice($product);
                 $data['price'] = $price['price'];*/
-
+                $images = $this->prepareImages($product,0,false);
                 $product_array = [
                     "id" => $id['id'],
                     "title" => $attributes['title'],
@@ -914,41 +922,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             ]
                           ]
                         ],
-                    "images"=>[
-                        [
-                            "id"=>28110122745945,
-                            "product_id"=>$id['id'],
-                            "position"=>1,
-                            "alt"=>null,
-                            "src"=>"https=>//cdn.shopify.com/s/files/1/0279/2793/7113/products/cups_e17348f7-2a1c-4db9-af78-418c74a0c8ed.jpg?v=1623252015",
-                            "variant_ids"=>[]
-                        ],
-                        [
-                            "id"=>28159679037529,
-                            "product_id"=>$id['id'],
-                            "position"=>2,
-                            "alt"=>null,
-                            "src"=>"https=>//cdn.shopify.com/s/files/1/0279/2793/7113/products/mugs1_844daba0-9a84-430d-bab5-049e054f3070.jpg?v=1623252015",
-                            "variant_ids"=>[]
-                        ],
-                        [
-                            "id" => 28159679070297,
-                            "product_id" => $id['id'],
-                            "position" => 3,
-                            "alt" => null,
-                            "src" => "https=>//cdn.shopify.com/s/files/1/0279/2793/7113/products/mugs2_a7a12411-db23-4504-8a6f-ed862ca9ce78.jpg?v=1623252015",
-                            "variant_ids"=> []
-                        ]
-                    ],
-                    "image"=>[
-                        "id"=>28110122745945,
-                        "product_id"=>$id['id'],
-                        "position"=>1,
-                        "alt"=>null,
-                        "src"=>"https=>//cdn.shopify.com/s/files/1/0279/2793/7113/products/cups_e17348f7-2a1c-4db9-af78-418c74a0c8ed.jpg?v=1623252015",
-                        "variant_ids"=>[]
-                    ]
+                    "images"=> $images,
+                    "image"=> @$images[1] ? @$images[1] : [],
                 ];
+
 
                 /*"variants"=>[
                     [
@@ -1196,25 +1173,25 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     }
                     if ($image && $image->getUrl()) {
                         if ($handle = fopen($image->getUrl(), 'r')) {
-                            list($prodWidth, $prodHeight) = getimagesize($image->getUrl());
-                            if ($prodWidth > 450 && $prodHeight > 367) {
-                                $images[$index] = array(
-                                    'attribute' => array(
-                                        '_attribute' => array(),
-                                        '_value' => array(
-                                            'code' => 'image-' . $image_index,
-                                            'value' => $image->getUrl(),
-                                        )
-                                    )
-                                );
+                            //list($prodWidth, $prodHeight) = getimagesize($image->getUrl());
+                            //if ($prodWidth > 450 && $prodHeight > 367) {
+                                $images[] =
+                                    [
+                                        "id" => $product->getId(),
+                                        "product_id" => $product->getId(),
+                                        "position" => $image_index,
+                                        "alt" => null,
+                                        "src" => $image->getUrl(),
+                                        "variant_ids" => []
+                                    ];
                                 $image_index++;
-                            }
+                            //}
                         }
                     }
                     $index++;
                 }
             }
-            if($configProduct != null && $mergeImages == '1'){
+            /* if($configProduct != null && $mergeImages == '1'){
                 $productImages = $configProduct->getMediaGalleryImages();
                 if ($productImages->getSize() > 0) {
                     $image_index = (isset($image_index)) ? $image_index : 1;
@@ -1243,7 +1220,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $index++;
                     }
                 }
-            }
+            } */
             return $images;
         } catch (\Exception $e) {
             $this->logger->error('Validate/Create Product Images Prepare', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
@@ -1355,7 +1332,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                     if (count($additionalImages) == 0) {
                         $additionalImages = $this->prepareImages($configurableProduct, $attrKey);
-
                     }
 
                     $pdata = array_merge($product_array, $additionalImages);
@@ -1797,7 +1773,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         ) {
             foreach ($ids as $index => $product) {
                 $product = $this->product->create()->load($product);
-                $product->setData('Betterthat_product_status', $status);
+                $product->setData('betterthat_product_status', $status);
                 $product->getResource()->saveAttribute($product, 'betterthat_product_status');
             }
             return true;
