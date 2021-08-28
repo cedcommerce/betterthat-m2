@@ -11,7 +11,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
- * @package   Ced_Betterthat
+ * @package   Ced_betterthat
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
@@ -21,23 +21,23 @@
          xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">Betterthat_order_grid.Betterthat_order_grid_source</item>
-            <item name="deps" xsi:type="string">Betterthat_order_grid.Betterthat_order_grid_source</item>
+            <item name="provider" xsi:type="string">betterthat_order_grid.betterthat_order_grid_source</item>
+            <item name="deps" xsi:type="string">betterthat_order_grid.betterthat_order_grid_source</item>
         </item>
-        <item name="spinner" xsi:type="string">Betterthat_order_grid_columns</item>
+        <item name="spinner" xsi:type="string">betterthat_order_grid_columns</item>
         <item name="buttons" xsi:type="array">
             <item name="add" xsi:type="array">
                 <item name="name" xsi:type="string">add</item>
-                <item name="label" xsi:type="string" translate="true">Fetch Betterthat Orders</item>
+                <item name="label" xsi:type="string" translate="true">Fetch betterthat Orders</item>
                 <item name="class" xsi:type="string">primary</item>
                 <item name="url" xsi:type="string">*/*/fetch</item>
             </item>
         </item>
     </argument>
-    <dataSource name="Betterthat_order_grid_source">
+    <dataSource name="betterthat_order_grid_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Ced\Betterthat\Ui\DataProvider\Order\DataProvider</argument>
-            <argument name="name" xsi:type="string">Betterthat_order_grid_source</argument>
+            <argument name="name" xsi:type="string">betterthat_order_grid_source</argument>
             <argument name="primaryFieldName" xsi:type="string">id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
@@ -65,7 +65,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
-                        <item name="namespace" xsi:type="string">Betterthat_order_grid</item>
+                        <item name="namespace" xsi:type="string">betterthat_order_grid</item>
                     </item>
                 </item>
             </argument>
@@ -88,7 +88,7 @@
                         </item>
                         <item name="type" xsi:type="string">delete</item>
                         <item name="label" xsi:type="string" translate="true">Delete Order(s)</item>
-                        <item name="url" xsi:type="url" path="Betterthat/order/delete"/>
+                        <item name="url" xsi:type="url" path="betterthat/order/delete"/>
                     </item>
                 </argument>
             </action>
@@ -97,7 +97,7 @@
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">sync</item>
                         <item name="label" xsi:type="string" translate="true">Sync Order(s)</item>
-                        <item name="url" xsi:type="url" path="Betterthat/order/sync"/>
+                        <item name="url" xsi:type="url" path="betterthat/order/sync"/>
                     </item>
                 </argument>
             </action>
@@ -106,7 +106,7 @@
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">acknowledge</item>
                         <item name="label" xsi:type="string" translate="true">Acknowledge Order(s)</item>
-                        <item name="url" xsi:type="url" path="Betterthat/order/acknowledge"/>
+                        <item name="url" xsi:type="url" path="betterthat/order/acknowledge"/>
                     </item>
                 </argument>
             </action>
@@ -115,10 +115,10 @@
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">mark_shipped</item>
                         <item name="label" xsi:type="string" translate="true">Mark As Shipped</item>
-                        <item name="url" xsi:type="url" path="Betterthat/order/massShip"/>
+                        <item name="url" xsi:type="url" path="betterthat/order/massShip"/>
                         <item name="confirm" xsi:type="array">
                             <item name="title" xsi:type="string" translate="true">Ship Complete Orders</item>
-                            <item name="message" xsi:type="string" translate="true">This would mark selected Betterthat orders as shipped if they are complete in Magento?</item>
+                            <item name="message" xsi:type="string" translate="true">This would mark selected betterthat orders as shipped if they are complete in Magento?</item>
                         </item>
                     </item>
                 </argument>
@@ -126,16 +126,16 @@
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
-    <columns name="Betterthat_order_grid_columns">
+    <columns name="betterthat_order_grid_columns">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="storageConfig" xsi:type="array">
-                    <item name="provider" xsi:type="string">Betterthat_order_grid.Betterthat_order_grid.listing_top.bookmarks</item>
+                    <item name="provider" xsi:type="string">betterthat_order_grid.betterthat_order_grid.listing_top.bookmarks</item>
                     <item name="namespace" xsi:type="string">current</item>
                 </item>
                 <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_order_grid.Betterthat_order_grid.Betterthat_order_grid_columns.actions</item>
+                        <item name="provider" xsi:type="string">betterthat_order_grid.betterthat_order_grid.betterthat_order_grid_columns.actions</item>
                         <item name="target" xsi:type="string">applyAction</item>
                         <item name="params" xsi:type="array">
                             <item name="0" xsi:type="string">edit</item>
@@ -143,7 +143,7 @@
                         </item>
                     </item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_order_grid.Betterthat_order_grid.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">betterthat_order_grid.betterthat_order_grid.listing_top.bookmarks</item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
                         <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
                     </item>
@@ -169,7 +169,7 @@
             </argument>
         </column>
 
-        <column name="Betterthat_order_id">
+        <column name="betterthat_order_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

@@ -71,8 +71,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                     "code" => "title",
                     "default_value" => "",
                     "description" => "",
-                    "description_translations" => [
-                ],
+                    "description_translations" => [],
                 "example" => "",
                 "hierarchy_code" => "",
                 "label" => "Title",

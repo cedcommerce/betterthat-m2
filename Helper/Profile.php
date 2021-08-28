@@ -296,9 +296,8 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
             if (isset($type) and !empty($type)) {
                 $attributes = [];
                 foreach ($this->profile['profile_required_attributes'] as $id => $attribute) {
-                    if ($attribute['attributeType'] == $type) {
                         $attributes[$id] = $attribute;
-                    }
+
                 }
                 return $attributes;
             }

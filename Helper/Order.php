@@ -274,25 +274,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
             $response = $orderList->getOrders();
             $count = 0;
-            if (isset($response['body']['orders']) && count($response['body']['orders']) > 0) {
-                //case: single purchase order
-                if (!isset($response['body']['orders']['order'][0])) {
-                    $response['body']['orders']['order'] = array(
-                        0 => $response['body']['orders']['order'],
-                    );
-                }
+            if (isset($response['data']) && count($response['data']) > 0) {
 
-                foreach ($response['body']['orders']['order'] as $order) {
+                foreach ($response['data'] as $order) {
 
-
-                    //case: single order line
-                    if (!isset($order['order_lines']['order_line'][0])) {
-                        $order['order_lines']['order_line'] = array(
-                            0 => $order['order_lines']['order_line'],
-                        );
-                    }
-
-                    $BetterthatOrderId = $order['order_id'];
+                    $BetterthatOrderId = $order['_id'];
                     $BetterthatOrder = $this->orders->create()
                         ->getCollection()
                         ->addFieldToFilter('Betterthat_order_id', $BetterthatOrderId);
@@ -348,26 +334,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public function getCustomer($order, $websiteId)
     {
         try {
-            /*$customerId = $this->config->getDefaultCustomer();
-            if ($customerId !== false) {
-                // Case 1: Use default customer.
-                $customer = $this->customerFactory->create()
-                    ->setWebsiteId($websiteId)
-                    ->load($customerId);
-                if (!isset($customer) or empty($customer)) {
-                    $this->logger->log(
-                        'ERROR',
-                        "Default Customer does not exists. Customer Id: #{$customerId}."
-                    );
-                    return false;
-                }
-            } else {*/
-            // Case 2: Use Customer from Order.
-            $email = $this->getEmail($order);
+            $customer_data  = $order['Customer_data'][0];
             // Case 2.1 Get Customer if already exists.
+
             $customer = $this->customerFactory->create()
                 ->setWebsiteId($websiteId)
-                ->loadByEmail($email);
+                ->loadByEmail($customer_data['email']);
 
             if (!isset($customer) or empty($customer) or empty($customer->getData())) {
                 // Case 2.1 : Create customer if does not exists.
@@ -377,18 +349,21 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     $store = $this->storeManager->getStore($storeId);
                     $customer->setStore($store);
                     $customer->setWebsiteId($websiteId);
-                    $customer->setEmail($this->getEmail($order));
+                    $customer->setEmail($customer_data['email']);
                     $customer->setFirstname(
-                        (isset($order['customer']['firstname']) and !empty($order['customer']['firstname']))
-                            ? $order['customer']['firstname'] : '.'
+                        (isset($customer_data['firstname']) and !empty($customer_data['firstname']))
+                            ? $customer_data['firstname'] : '.'
                     );
                     $customer->setLastname(
-                        (isset($order['customer']['lastname']) and !empty($order['customer']['lastname'])) ?
-                            $order['customer']['lastname'] : '.'
+                        (isset($customer_data['lastname']) and !empty($customer_data['lastname'])) ?
+                            $customer_data['lastname'] : '.'
                     );
-                    $customer->setPassword("Betterthatpassword");
+                    $customer->setPassword($customer_data['password']);
                     $customer->save();
+
+
                 } catch (\Exception $e) {
+                    print_r($e->getMessage()); die;
                     $this->logger->log(
                         'ERROR',
                         'Customer create failed. Order Id: #' .
@@ -397,10 +372,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     return false;
                 }
             }
-            //}
 
             return $customer;
         } catch (\Exception $e) {
+            print_r($e->getMessage());
+            die;
             $this->logger->error('Create Customer', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
@@ -430,124 +406,79 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $itemAccepted = 0;
         $subTotal = 0;
         $rejectItemsArray = $acceptItemsArray = [];
+
         try {
             $reason = [];
+            $qtyArray = [];
+            //**grab qty
+            foreach ($order['Order_product'] as $prod_data){
+                $qtyArray[$prod_data['product_id']] = $prod_data['quantity'];
+            }
 
-            if (isset($order['order_lines']['order_line'])) {
+            if (isset($order['Product_data'][0])) {
                 $failedOrder = false;
-                foreach ($order['order_lines']['order_line'] as $item) {
-                    if (isset($item['offer_sku'])) {
-                        $lineNumber = $item['order_line_id'];
-                        $qty = $item['quantity'];
-                        $product = $this->product->create()->loadByAttribute('sku', $item['offer_sku']);
+                foreach ($order['Product_data'] as $item) {
+                    if (isset($item['product_id'])) {
+                        $qty = $qtyArray[$item['_id']];
+
+                        $product = $this->product->create()->load($item['product_id']);
                         if (isset($product) and !empty($product)) {
                             $product = $this->product->create()->load($product->getEntityId());
                             if ($product->getStatus() == '1') {
                                 /* Get stock item */
                                 $stock = $this->stockRegistry
                                     ->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
-                                $stockStatus = ($stock->getQty() > 0) ? ($stock->getIsInStock() == '1' ?
+                                /*$stockStatus = ($stock->getQty() > 0) ? ($stock->getIsInStock() == '1' ?
                                     ($stock->getQty() >= $qty ? true : false)
-                                    : false) : false;
+                                    : false) : false;*/
                                 $stockStatus = $this->checkStockQtyStatus($product, $qty);
                                 if($stockStatus) {
                                     $itemAccepted++;
-                                    $price = $item['price_unit'];
+                                    $price = $item['rrp'];
                                     $baseprice = $qty * $price;
-                                    $shippingcost += isset($item ['shipping_price']) ?
-                                        $item ['shipping_price'] : 0;
-                                    $rowTotal = $price * $qty;
-                                    $subTotal += $rowTotal;
+
                                     $product->setPrice($price)
                                         ->setBasePrice($baseprice)
                                         ->setSpecialPrice($baseprice)
                                         ->setOriginalCustomPrice($price)
-                                        ->setRowTotal($rowTotal)
-                                        ->setBaseRowTotal($rowTotal);
+                                        ->setRowTotal($baseprice)
+                                        ->setBaseRowTotal($baseprice);
                                     $quote->addProduct($product, (int)$qty);
-                                    if($item['order_line_state'] == "WAITING_ACCEPTANCE") {
-                                        $acceptItemsArray[] = [
-                                            'order_line' => [
-                                                '_attribute' => [],
-                                                '_value' => [
-                                                    'accepted' => "true",
-                                                    'id' => $lineNumber
-                                                ]
-                                            ]
-                                        ];
-                                    }
+
                                 } else {
                                     $reason[] = $item['offer_sku'] . "SKU out of stock";
                                     $failedOrder = true;
-                                    /*if($item['order_line_state'] == "WAITING_ACCEPTANCE") {
-                                        $rejectItemsArray[] = [
-                                            'order_line' => [
-                                                '_attribute' => [],
-                                                '_value' => [
-                                                    'accepted' => "false",
-                                                    'id' => $lineNumber
-                                                ]
-                                            ]
-                                        ];
-                                    }*/
+
                                 }
                             } else {
                                 $reason[] = $item['offer_sku'] . " SKU not enabled on store";
                                 $failedOrder = true;
-                                /*if($item['order_line_state'] == "WAITING_ACCEPTANCE") {
-                                    $rejectItemsArray[] = [
-                                        'order_line' => [
-                                            '_attribute' => [],
-                                            '_value' => [
-                                                'accepted' => "false",
-                                                'id' => $lineNumber
-                                            ]
-                                        ]
-                                    ];
-                                }*/
                             }
                         } else {
                             $reason[] = $item['offer_sku'] . " not exist on store";
                             $failedOrder = true;
-                            /*if($item['order_line_state'] == "WAITING_ACCEPTANCE") {
-                                $rejectItemsArray[] = [
-                                    'order_line' => [
-                                        '_attribute' => [],
-                                        '_value' => [
-                                            'accepted' => "false",
-                                            'id' => $lineNumber
-                                        ]
-                                    ]
-                                ];
-                            }*/
+
                         }
                     } else {
                         $reason[] = "SKU not exist in order item";
                         $failedOrder = true;
-                        /*if($item['order_line_state'] == "WAITING_ACCEPTANCE") {
-                            $rejectItemsArray[] = [
-                                'order_line' => [
-                                    '_attribute' => [],
-                                    '_value' => [
-                                        'accepted' => "false",
-                                        'id' => $lineNumber
-                                    ]
-                                ]
-                            ];
-                        }*/
+
                     }
                 }
 
                 if ($failedOrder) {
-                    $this->rejectOrder($order, $order['order_lines']['order_line'], $reason);
+                    $this->rejectOrder($order, $order['Product_data'], $reason);
                 } else if(!$failedOrder) {
-                    $countryCode = isset($order['customer']['shipping_address']['country_iso_code']) ? $order['customer']['shipping_address']['country_iso_code'] : 'AU';
+                    $countryCode = isset($order['Shipping_data'][0]['country']) ? ($order['Shipping_data'][0]['country'] == 13 ? 'AU' : 'AU') : 'AU';
                     $stateCode = 'N/A';
+                    print_r($countryCode);die;
                     $stateModel = $this->objectManager->create('Magento\Directory\Model\RegionFactory')->create()
                         ->getCollection()->addFieldToFilter('country_id', $countryCode)->getFirstItem();
                     if($stateModel && $stateModel->getCode()) {
                         $stateCode = $stateModel->getCode();
                     }
+                    print_r($stateCode);
+                    die;
                     try {
                         $shipping_address_street_2 = '';
                         if(isset($order['customer']['shipping_address']['street_2']) && !is_array($order['customer']['shipping_address']['street_2']))

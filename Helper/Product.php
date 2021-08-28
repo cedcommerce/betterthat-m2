@@ -137,6 +137,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public $stockState;
     public $debugMode;
 
+    public $images;
+
     /**
      * Product constructor.
      * @param \Magento\Framework\App\Helper\Context $context
@@ -412,7 +414,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
             foreach ($ids as $id) {
                 $product = $this->product->create()->load($id)->setStoreId($this->selectedStore);
-
+                $profile_id = $product->getBetterthatProfileId();
                 // get profile
                 $productParents = $this->objectManager
                     ->create('Magento\ConfigurableProduct\Model\Product\Type\Configurable')
@@ -450,11 +452,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $parentId = $configurableProduct->getId();
                     $productType = $configurableProduct->getTypeInstance();
                     $products = $productType->getUsedProducts($configurableProduct);
-                    $attributes = $productType->getConfigurableAttributesAsArray($configurableProduct);
-                    $magentoVariantAttributes = [];
-                    foreach ($attributes as $attribute) {
-                        $magentoVariantAttributes[] = $attribute['attribute_code'];
-                    }
+                    $variantAttributes = $productType->getConfigurableAttributesAsArray($configurableProduct);
+
                     $errors = [
                         $sku => [
                             'sku' => $sku,
@@ -464,54 +463,30 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             'errors' => []
                         ]
                     ];
-                    $BetterthatRequiredAttributes = $profile->getRequiredAttributes();
-                    $BetterthatVariantAttributes = $profile->getAttributes(self::ATTRIBUTE_TYPE_SKU);
-
 
                     //common attributes check start
                     $commonErrors = [];
-                    foreach ($profile->getRequiredAttributes(self::ATTRIBUTE_TYPE_NORMAL) as $attributeId => $validationAttribute) {
+                    $reqAttributes = $profile->getRequiredAttributes(self::ATTRIBUTE_TYPE_NORMAL);
+                    foreach ($reqAttributes as $attributeId => $validationAttribute) {
                         $value = $configurableProduct->getData($validationAttribute['magento_attribute_code']);
-                        if (!isset($value) || empty($value)) {
+
+                        if ((!isset($value) || empty($value)) && !$validationAttribute['default'] ) {
                             $commonErrors[$attributeId] = 'Common required attribute empty.';
                         }
                     }
                     if (!empty($commonErrors)) {
                         $errors[$sku]['errors'][] = $commonErrors;
                     }
+
                     //common attributes check end.
-
-                    // variant attribute mapping check start.
-                    $unmappedVariantAttribute = [];
-                    $mappedVariantAttributes = [];
-
-                    $magentoAttrbuteCode = array_column($BetterthatVariantAttributes, 'name', 'magento_attribute_code');
-                    foreach ($magentoVariantAttributes as $code) {
-                        //check mapping
-                        if (!isset($magentoAttrbuteCode[$code])) {
-                            if (!isset($skipAttributes[$code])) {
-                                $unmappedVariantAttribute[] = $code;
-                            }
-                        } else {
-                            $mappedVariantAttributes[] = $code;
-                        }
-                    }
-                    $BetterthatVariantAttributesValues = [];
-                    foreach ($BetterthatVariantAttributes as $attributeId => $variantAttribute) {
-                        if (isset($variantAttribute['magento_attribute_code']) and in_array($variantAttribute['magento_attribute_code'], $mappedVariantAttributes)) {
-                            $BetterthatVariantAttributesValues[$variantAttribute['magento_attribute_code']] =
-                                $variantAttribute;
-                        }
-                    }
-                    // variant attribute mapping check end.
 
                     $key = 0;
                     if (empty($products))
                         $errors[$configurableProduct->getSku()]['errors'][]['Configurable'] = ['Product has no variation in it.'];
 
-                    if ((!isset($BetterthatVariantAttributes['variant-size-value']) && !isset($BetterthatVariantAttributes['variant-colour-value'])) && $uploadAsSimple == '1') {
+                    /*if ((!isset($BetterthatVariantAttributes['variant-size-value']) && !isset($BetterthatVariantAttributes['variant-colour-value'])) && $uploadAsSimple == '1') {
                         $uploadConfigAsSimple = true;
-                    }
+                    }*/
 
                     foreach ($products as $product) {
                         $modifiedParentSKU = $sku;
@@ -527,7 +502,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             ->setStoreId($this->selectedStore)
                             ->load($product->getId());
 
-                        $profileAttributes = $profile->getAttributes('normal');
+                        $profileAttributes = $reqAttributes;
                         foreach ($fromParentAttrs as $fromParentAttr) {
                             $magentoAttr = isset($profileAttributes[$fromParentAttr]) ? $profileAttributes[$fromParentAttr]['magento_attribute_code'] : '';
                             if (!empty($magentoAttr)) {
@@ -537,55 +512,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 }
                             }
                         }
-
                         $productId = $this->validateProduct($product->getId(), $product, $profile, $parentId);
-                        $sizeValue = '';
-                        if (isset($BetterthatVariantAttributes['variant-size-value']['magento_attribute_code'])) {
-                            $sizeValue = $product->getData($BetterthatVariantAttributes['variant-size-value']['magento_attribute_code']);
-                        }
-                        $colorValue = '';
-                        if (isset($BetterthatVariantAttributes['variant-colour-value']['magento_attribute_code'])) {
-                            $colorValue = $product->getData($BetterthatVariantAttributes['variant-colour-value']['magento_attribute_code']);
-                        }
-                        if (((!isset($BetterthatVariantAttributes['variant-size-value']) || (isset($BetterthatVariantAttributes['variant-size-value']) && empty($sizeValue))) && (!isset($BetterthatVariantAttributes['variant-colour-value']) || (isset($BetterthatVariantAttributes['variant-colour-value']) && empty($colorValue)))) && $uploadAsSimple != '1') {
-                            $errors[$product->getSku()]['errors'][]['variant-size/color-value'] = 'Variant Size/Colour Value is not mappped with size/colour or mapped attribute has no value. You can skip this validation from CONFIGURATION.';
-                        }
-                        if (empty($sizeValue) && $uploadAsSimple == '1' && $uploadConfigAsSimple === false) {
-                            $uploadConfigAsSimple = true;
-                        }
-
                         // variant attribute option value check start.
-                        foreach ($mappedVariantAttributes as $mappedVariantAttribute) {
-                            if (isset($BetterthatVariantAttributesValues[$mappedVariantAttribute]['options'])) {
-                                $valueId = $product->getData($mappedVariantAttribute);
-                                $value = "";
-                                $defaultValue = "";
-
-                                //case 1: default value
-                                if (isset($BetterthatVariantAttributesValues[$mappedVariantAttribute]['default_value']) and
-                                    !empty($BetterthatVariantAttributesValues[$mappedVariantAttribute]['default_value'])
-                                ) {
-                                    $defaultValue =
-                                        $BetterthatVariantAttributesValues[$mappedVariantAttribute]['default_value'];
+                        foreach ($variantAttributes as $attributes) {
+                                $value = $product->getData($attributes['attribute_code']);
+                                if(!$value){
+                                    $errors[$product->getSku()]['errors'][]['variant-size/color-value'] = 'Variant attribute '.$attributes['attribute_code'].' has no value.';
                                 }
-
-                                //case 3: magento attribute option value
-                                $attr = $product->getResource()->getAttribute($mappedVariantAttribute);
-                                if ($attr && ($attr->usesSource() || $attr->getData('frontend_input') == 'select')) {
-                                    $value = $attr->getSource()->getOptionText($valueId);
-                                    if (is_object($value)) {
-                                        $value = $value->getText();
-                                    }
-                                }
-                            }
                         }
 
-                        foreach ($magentoVariantAttributes as $code) {
-                            if (isset($magentoAttrbuteCode[$code]) && ($magentoAttrbuteCode[$code] == 'variant-size-value' || $magentoAttrbuteCode[$code] == 'variant-colour-value')) {
-                                continue;
-                            }
-                            $modifiedParentSKU .= '_' . $product->getData($code);
-                        }
+
 
                         // variant attribute option value check end.
 
@@ -598,16 +534,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             if (empty($unmappedVariantAttribute)) {
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['id'] = $productId['id'];
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['type'] = 'configurable';
-                                $validatedProducts['configurable'][$parentId][$product->getId()]['variantid'] = $modifiedParentSKU;
+                                $validatedProducts['configurable'][$parentId][$product->getId()]['variantid'] = '';
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['parentid'] = $parentId;
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['variantattr'] =
-                                    $mappedVariantAttributes;
+                                    [];
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['variantattrmapped'] =
-                                    $BetterthatVariantAttributesValues;
+                                    [];
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['isprimary'] = 'false';
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['isprimary'] = 'false';
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['category'] =
-                                    $profile->getProfileCategory();
+                                    $profile->getData('betterthat_categories');
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['profile_id'] =
                                     $profile->getId();
                                 $validatedProducts['configurable'][$parentId][$product->getId()]['upload_as_simple'] = ($uploadConfigAsSimple == true) ? 'true' : 'false';
@@ -615,7 +551,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     $validatedProducts['configurable'][$parentId][$product->getId()]['isprimary'] = 'true';
                                     $key = 1;
                                 }
-                                $product->setData('betterthat_validation_errors', $this->json->jsonEncode(array('valid')));
+                                $product->setData('betterthat_validation_errors', '["valid"]');
                                 $product->getResource()->saveAttribute($product, 'betterthat_validation_errors');
                                 continue;
                             } else {
@@ -625,17 +561,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             }
                         } elseif (isset($productId['errors'])) {
                             $errors[$product->getSku()]['errors'][] = $productId['errors'];
-
-                            if (empty($mappedVariantAttributes)) {
-                                $errorIndex = implode(", ", $unmappedVariantAttribute);
-                                $errors[$product->getSku()]['errors'][][$errorIndex] = [
-                                    'Configurable attributes not mapped.'];
-                            }
                             $childError = [];
+
                             if (isset($productId['errors']['sku']) && isset($productId['errors']['errors'])) {
                                 $childError[$productId['errors']['sku']]['errors'][] = $productId['errors']['errors'];
-
-                                $product->setBetterthatValidationErrors($this->json->jsonEncode($childError));
+                                $product->setbetterthat_validation_errors($this->json->jsonEncode($childError));
                                 $product->getResource()->saveAttribute($product, 'betterthat_validation_errors');
                             }
 
@@ -643,23 +573,17 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     }
 
                     if (!empty($errors)) {
-                        if (!empty($unmappedVariantAttribute)) {
-                            $errorIndex = implode(", ", $unmappedVariantAttribute);
-                            $errors[$configurableProduct->getSku()]['errors'][][$errorIndex] = [
-                                'Configurable attributes not mapped.'];
-                        }
-                        $errorsInRegistry = $this->registry->registry('Betterthat_product_validaton_errors');
-                        $this->registry->unregister('Betterthat_product_validaton_errors');
+                        $errorsInRegistry = $this->registry->registry('betterthat_product_validaton_errors');
+                        $this->registry->unregister('betterthat_product_validaton_errors');
                         $this->registry->register(
-                            'Betterthat_product_validaton_errors',
+                            'betterthat_product_validaton_errors',
                             is_array($errorsInRegistry) ? array_merge($errorsInRegistry, $errors) : $errors
                         );
-
-                        $configurableProduct->setBetterthatValidationErrors($this->json->jsonEncode($errors));
+                        $configurableProduct->setbetterthat_validation_errors($this->json->jsonEncode($errors));
                         $configurableProduct->getResource()
                             ->saveAttribute($configurableProduct, 'betterthat_validation_errors');
                     } else {
-                        $configurableProduct->setBetterthatValidationErrors('["valid"]');
+                        $configurableProduct->setbetterthat_validation_errors('["valid"]');
                         $configurableProduct->getResource()
                             ->saveAttribute($configurableProduct, 'betterthat_validation_errors');
                     }
@@ -788,16 +712,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 if(!$product->getImage()){
                     $errors['Image'] = 'Product should have Images';
                 }
-                $additionalImages = $this->prepareImages($product, 0);
-                /* if (count($additionalImages) == 0 && $parentId) {
-                    $configurableProduct = $this->product->create()->load($parentId)
-                        ->setStoreId($this->selectedStore);
-                    $additionalImages = $this->prepareImages($configurableProduct, 0);
-                }
-
-                if (count($additionalImages) == 0) {
-                    $errors['Image'] = 'One image must be above 450 x 367 px';
-                }*/
 
                 //Setting Errors in product validation attribute
                 if (!empty($errors)) {
@@ -873,7 +787,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 );
                 /*$price = $this->getPrice($product);
                 $data['price'] = $price['price'];*/
-                $images = $this->prepareImages($product,0,false);
+                $images = $this->prepareImages($product);
                 $product_array = [
                     "id" => $id['id'],
                     "title" => $attributes['title'],
@@ -931,7 +845,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     [
                         "id"=>39326433017945,
                         "product_id"=>6573718667353,
-                        "title"=>"Blue",
+      $images                  "title"=>"Blue",
                         "price"=>"0.00",
                         "sku"=>"",
                         "position"=>1,
@@ -1151,19 +1065,63 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return $price;
     }
 
+
+
+    /**
+     * Prepare prepareConfigImages
+     * @param Object $product
+     * @return string|array
+     */
+    private function prepareConfigImages($product)
+    {
+        try {
+            $productImages = $product->getMediaGalleryImages();
+            $images = [];
+            if ($productImages->getSize() > 0) {
+                $image_index = 1;
+                foreach ($productImages as $key => $image) {
+
+                    if ($image_index > 6) {
+                        break;
+                    }
+                    if ($image && $image->getUrl()) {
+                        if ($handle = fopen($image->getUrl(), 'r')) {
+                            //list($prodWidth, $prodHeight) = getimagesize($image->getUrl());
+                            //if ($prodWidth > 450 && $prodHeight > 367) {
+                            $this->images[] =
+                                [
+                                    "id" => $product->getId(),
+                                    "product_id" => $product->getId(),
+                                    "position" => $image_index,
+                                    "alt" => null,
+                                    "src" => $image->getUrl(),
+                                    "variant_ids" => []
+                                ];
+                            $image_index++;
+                            //}
+                        }
+                    }
+                }
+            }
+            return $this->images;
+        } catch (\Exception $e) {
+            $this->logger->error('Validate/Create Product Images Prepare', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return false;
+        }
+    }
+
+
+
     /**
      * Prepare images
      * @param Object $product
      * @return string|array
      */
-    private function prepareImages($product, $index, $configProduct = null)
+    private function prepareImages($product)
     {
         try {
-            $mergeImages = $this->config->getMergeParentImages();
             $productImages = $product->getMediaGalleryImages();
-            $mainImage = $product->getData('image');
             $images = [];
-            $index = $index + 1;
             if ($productImages->getSize() > 0) {
                 $image_index = 1;
                 foreach ($productImages as $key => $image) {
@@ -1188,39 +1146,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             //}
                         }
                     }
-                    $index++;
                 }
             }
-            /* if($configProduct != null && $mergeImages == '1'){
-                $productImages = $configProduct->getMediaGalleryImages();
-                if ($productImages->getSize() > 0) {
-                    $image_index = (isset($image_index)) ? $image_index : 1;
-                    foreach ($productImages as $key => $image) {
-
-                        if ($image_index > 6) {
-                            break;
-                        }
-                        if ($image && $image->getUrl()) {
-                            if ($handle = fopen($image->getUrl(), 'r')) {
-                                list($prodWidth, $prodHeight) = getimagesize($image->getUrl());
-                                if ($prodWidth > 450 && $prodHeight > 367) {
-                                    $images[$index] = array(
-                                        'attribute' => array(
-                                            '_attribute' => array(),
-                                            '_value' => array(
-                                                'code' => 'image-' . $image_index,
-                                                'value' => $image->getUrl(),
-                                            )
-                                        )
-                                    );
-                                    $image_index++;
-                                }
-                            }
-                        }
-                        $index++;
-                    }
-                }
-            } */
             return $images;
         } catch (\Exception $e) {
             $this->logger->error('Validate/Create Product Images Prepare', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
@@ -1231,125 +1158,131 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     private function prepareConfigurableProducts($ids = [])
     {
         try {
-            $fromParentAttrs = $this->config->getFromParentAttributes();
-            foreach ($ids as $parentId => $products) {
-                $configurableProduct = $this->product->create()->load($parentId);
+            $retailer_id = $this->scopeConfigManager
+                ->getValue("betterthat_config/betterthat_setting/retailer_id");
+            foreach ($ids as $parentId => $id) {
+                $product = $this->product->create()->load($parentId);
+                $profile = $this->profileHelper->getProfile($product->getId(), $product->getbetterthat_profile_id());
+                $categories = json_decode($profile->getBetterThatCategory(),1);
+                $this->ids[] = $product->getId();
+                //$price = $this->getPrice($product);
+                $attributes = $this->prepareAttributes(
+                    $product,
+                    $profile
+                );
 
-                $this->ids[] = $configurableProduct->getId();
-                print_($this->ids);die;
-                $firstProduct = reset($products);
-                $profile = $this->profileHelper->getProfile($configurableProduct->getId(), $firstProduct['profile_id']);
-                $category = $profile->getProfileCategory();
-
-                // Adding Variant Items
-                $skus = [];
-                foreach ($products as $productId => $id) {
-                    $product_array = [];
-                    $productIds[] = $id;
-                    $product = $this->product->create()->load($productId);
-                    $profileAttributes = $profile->getAttributes('normal');
-                    foreach ($fromParentAttrs as $fromParentAttr) {
-                        $magentoAttr = isset($profileAttributes[$fromParentAttr]) ? $profileAttributes[$fromParentAttr]['magento_attribute_code'] : '';
-                        if (!empty($magentoAttr)) {
-                            $configProdValue = $configurableProduct->getData($magentoAttr);
-                            $product->setData($magentoAttr, $configProdValue);
-                        }
-                    }
-                    $this->ids[] = $product->getId();
-                    $attributes = $this->prepareAttributes(
-                        $product,
-                        $profile
-                    );
-
-                    $attrKey = 0;
-                    /*$requiredArray = array('internal-sku', 'title', 'product-reference-type',
-                                'product-reference-value', 'product-description', 'brand');*/
-                    $requiredArray = array('sku', 'product-id', 'product-id-type',
-                        'description', 'internal-description', 'price', 'price-additional-info', 'quantity',
-                        'min-quantity-alert', 'state', 'available-start-date', 'available-end-date', 'logistic-class',
-                        'discount-price', 'discount-start-date', 'discount-end-date', 'leadtime-to-ship', 'update-delete',
-                        'club-Betterthat-eligible', 'tax-au', 'best-before-date', 'expiry-date');
-
-                    foreach ($attributes as $attKey => $attrValue) {
-
-                        if (!in_array($attKey, $requiredArray)) {
-                            $product_array[$attrKey] = array(
-                                'attribute' => array(
-                                    '_attribute' => array(),
-                                    '_value' => array(
-                                        'code' => (string)$attKey,
-                                        'value' => (string)$attrValue
-                                    )
-                                )
-                            );
-                            $attrKey++;
-                        }
-                    }
-                    if ($id['upload_as_simple'] == 'false') {
-                        $product_array[$attrKey] = array(
-                            'attribute' => array(
-                                '_attribute' => array(),
-                                '_value' => array(
-                                    'code' => 'variant-id',
-                                    'value' => $id['variantid']
-                                )
-                            )
-                        );
-                        $attrKey++;
-                    }
-                    $product_array[$attrKey] = array(
-                        'attribute' => array(
-                            '_attribute' => array(),
-                            '_value' => array(
-                                'code' => 'category',
-                                'value' => $category
-                            )
-                        )
-                    );
-                    $attrKey++;
-                    /*$product_array[$attrKey] = array(
-                        'attribute' => array(
-                            '_attribute' => array(),
-                                '_value' => array(
-                                    'code' => 'product-reference-type',
-                                    'value' => strtolower($this->getProductReference('type',$product))
-                                )
-                            )
-                        );
-                    $attrKey++;
-
-                    $product_array[$attrKey] = array(
-                        'attribute' => array(
-                            '_attribute' => array(),
-                                '_value' => array(
-                                    'code' => 'product-reference-value',
-                                    'value' => $this->getProductReference('value',$product)
-                                )
-                            )
-                        );
-                    $attrKey++;*/
-                    $additionalImages = $this->prepareImages($product, $attrKey, $configurableProduct);
-
-                    if (count($additionalImages) == 0) {
-                        $additionalImages = $this->prepareImages($configurableProduct, $attrKey);
-                    }
-
-                    $pdata = array_merge($product_array, $additionalImages);
-                    $this->data[$this->key]['product'] = array(
-                        '_attribute' => array(),
-                        '_value' => $pdata
-
-                    );
-                    $this->data = array_values($this->data);
-                    $this->key++;
-                }
+                $productType = $product->getTypeInstance();
+                $variantAttributes = $productType->getConfigurableAttributesAsArray($product);
+                /*$qty = (string)$this->stockState->getStockQty(
+                    $product->getId(),
+                    $product->getStore()->getWebsiteId()
+                );*/
+                /*$price = $this->getPrice($product);
+                $data['price'] = $price['price'];*/
+                $parentId = (string)$parentId;
+                $collectVariant = $this->prepareVariants($ids[$parentId],$profile,$variantAttributes,$parentId);
+                $this->data = [
+                    "id" => $parentId,
+                    "title" => $attributes['title'],
+                    "body_html" => $attributes['body_html'],
+                    "retailer_id" => $retailer_id,
+                    "dimensions" => [
+                        "length" => 0,
+                        "height" => 0,
+                        "width" => 0,
+                        "weight" => 0,
+                        "weight_unit" => "kg"
+                    ],
+                    "product_categories" => $categories,
+                    "slug" => $attributes['slug'],
+                    "can_be_bundled" => $attributes['can_be_bundled'],
+                    "manufacturer" => $attributes['can_be_bundled'],
+                    "policy_description_option" => "",
+                    "policy_description_val" => "",
+                    "product_shipping_options" => [$attributes['product_shipping_options']],
+                    "shipping_option_charges" => [$attributes['shipping_option_charges']],
+                    "standard_delivery_timeframe" => $attributes['standard_delivery_timeframe'],
+                    "product_return_window" => $attributes['product_return_window'],
+                    "variants" => $collectVariant['variant'],
+                    "options" => $collectVariant['variantOptions'],
+                    "images" => $this->images,
+                    "image" => @$this->images[0] ? @$this->images[0] : [],
+                ];
             }
+
+            return $this->data;
         } catch (\Exception $e) {
+            die($e->getMessage());
             $this->logger->error('Create Configurable Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
     }
 
+    /**
+     * @param array $ids
+     * @param null $profile
+     * @return array
+     */
+
+
+    public function prepareVariants($ids = [],$profile = null,$variantAttributes ,$parentId ) : array
+    {
+        $pos = 1;
+        $varindex = 0;
+        $variant = [];
+        $optionsPreparation = [];
+        $optionflag = false;
+        foreach ($ids as $key => $id){
+            $childproduct = $this->product->create()->load($id['id']);
+            $this->prepareConfigImages($childproduct);
+            $attributes = $this->prepareAttributes(
+                $childproduct,
+                $profile
+            );
+            $qty = (string)$this->stockState->getStockQty(
+                $id['id'],
+                $childproduct->getStore()->getWebsiteId()
+            );
+               $variant[$varindex] = [
+                    "id" => $id['id'],
+                    "product_id" => $parentId,
+                    "title" => $attributes['title'],
+                    "price" => $childproduct->getPrice(),
+                    "sku" => $childproduct->getSku(),
+                    "position" => $pos,
+                    "inventory_policy" => "deny",
+                    "compare_at_price" => null,
+                    "inventory_quantity" => $qty
+                ];
+            $optionIndex = 1;
+            foreach($variantAttributes as  $variantAttribute){
+                $variant[$varindex]['option'.$optionIndex] = $childproduct->getAttributeText($variantAttribute['attribute_code']);
+                $filteredOptions = array_column($variantAttribute['options'],'label');
+
+                if(!$optionflag){
+                    $optionsPreparation[] = [
+                        "id" => $id['id'],
+                        "product_id" => $parentId,
+                        "name" => $variantAttribute['label'],
+                        "position" => $optionIndex,
+                        "values" => $filteredOptions
+                    ];
+                }
+
+                $optionIndex++;
+            }
+            $optionflag = true;
+            $varindex++;
+            $pos++;
+        }
+
+        return $collectVariant = [
+            'variant' => $variant,
+            'variantOptions' => $optionsPreparation,
+
+        ];
+
+    }
     /**
      * Save Response to db
      * @param array $response

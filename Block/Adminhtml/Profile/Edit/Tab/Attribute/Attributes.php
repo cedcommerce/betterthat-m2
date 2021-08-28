@@ -53,7 +53,6 @@ class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Frame
         $this->_objectManager = $objectManager;
         $this->_coreRegistry = $registry;
         $this->category = $category;
-
         $this->profile = $this->_coreRegistry->registry('current_profile');
 
         parent::__construct($context, $data);

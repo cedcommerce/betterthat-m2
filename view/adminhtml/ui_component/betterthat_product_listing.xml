@@ -279,7 +279,7 @@
                 </item>
             </argument>
         </column>
-        <column name="betterthat_exclude_from_sync">
+       <!-- <column name="betterthat_exclude_from_sync">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\Yesno</item>
                 <item name="config" xsi:type="array">
@@ -292,7 +292,7 @@
                     <item name="sortOrder" xsi:type="number">140</item>
                 </item>
             </argument>
-        </column>
+        </column>-->
         <actionsColumn name="actions" class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

@@ -215,7 +215,7 @@
                         </depends>
                     </field>
                 </group>
-                <group id="betterthat_other_prod_setting" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" showInProfile="1">
+                <!--<group id="betterthat_other_prod_setting" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" showInProfile="1">
                     <label>Other Product Settings</label>
                     <field id="betterthat_merge_parent_images" translate="label comment" type="select" sortOrder="30" showInDefault="1"
                            showInWebsite="0" showInStore="0">
@@ -239,7 +239,7 @@
                         <label>Upload Config As Simple</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                </group>
+                </group>-->
             </group>
             <group id="betterthat_order" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1"
                    showInStore="0"
@@ -255,24 +255,7 @@
                     <label>Order Notification Email</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="auto_accept_order" translate="label comment" type="select" sortOrder="30" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
-                    <label>Auto Accept Order</label>
-                    <validate>required-entry</validate>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="hold_order_until_shipping" translate="label comment" type="select" sortOrder="35" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
-                    <label>Hold Order Until Shipping</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <tooltip>If this is enabled then order will put on hold until the order goes in SHIPPING State on Betterthat and address details get synced in Magento.</tooltip>
-                </field>
-                <!--<field id="auto_cancel_order" translate="label comment" type="select" sortOrder="30" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
-                    <label>Auto Cancel Order</label>
-                    <validate>required-entry</validate>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>-->
+
                 <field id="enable_default_customer" translate="label comment" type="select" sortOrder="40" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Enable Default Customer</label>
@@ -296,7 +279,7 @@
                     </depends>
                     <validate>required-entry validate-email</validate>
                 </field>
-                <field id="betterthat_refund_from_core" translate="label comment" type="select" sortOrder="50" showInDefault="1"
+               <!-- <field id="betterthat_refund_from_core" translate="label comment" type="select" sortOrder="50" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Refund Order On Betterthat</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -312,7 +295,7 @@
                     <validate>required-entry</validate>
                     <source_model>Ced\Betterthat\Model\Source\Config\RefundReason</source_model>
                     <comment>This reason will applied for all refund items.</comment>
-                </field>
+                </field>-->
                 <!-- <field id="Betterthat_creditmemo_on_magento" translate="label comment" type="select" sortOrder="70" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Order Refund/Cancel Syncing</label>
@@ -337,16 +320,16 @@
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Inventory Sync Cron</comment>
                 </field>
-                <field id="feed_sync_cron" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                <!--<field id="feed_sync_cron" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Feed Cron</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Feed Sync Cron</comment>
-                </field>
-                <field id="full_offer_sync_cron" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                </field>-->
+                <!--<field id="full_offer_sync_cron" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Full Offer Sync Cron</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Full Offer Sync Cron</comment>
-                </field>
+                </field>-->
                 <field id="order_shipment_cron" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Order Shipment Cron</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>

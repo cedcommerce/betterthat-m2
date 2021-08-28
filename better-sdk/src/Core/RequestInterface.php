@@ -41,7 +41,7 @@ interface RequestInterface
     const GET_ATTRIBUTES_VALUE_LIST = 'api/values_lists?code=';
     const GET_OFFERS = 'api/offers';
 
-    const GET_ORDERS_SUB_URL = 'api/orders';
+    const GET_ORDERS_SUB_URL = 'orders-list';
     const GET_ORDERS_DOCUMENT_URL = 'api/orders/documents';
     const GET_ORDERS_DOCUMENT_DOWNLOAD_URL = '/api/orders/documents/download';
     const PUT_SHIPMENT_SUB_URL = 'oms/asn/v7?sellerId=';

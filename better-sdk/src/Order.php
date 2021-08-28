@@ -38,16 +38,11 @@ class Order extends \BetterthatSdk\Core\Request
         }
     }
 
-    public function getOrders($status = 'WAITING_ACCEPTANCE', $subUrl = self::GET_ORDERS_SUB_URL)
+    public function getOrders($subUrl = self::GET_ORDERS_SUB_URL)
     {
-        $response = $this->getRequest($subUrl . '?order_state_codes=' . $status);
-       // $response = file_get_contents('Betterthat_order.xml');
-        try {
-            $response = $this->parser->loadXML($response)->xmlToArray();
-            return $response;
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
+        $response = $this->postRequest($subUrl ,
+            ['data'=> ['start' => '1','sort' => '[{\'dir\':asc},{\'column\':\'1\'}]']] );
+        return $response;
     }
 
     /**

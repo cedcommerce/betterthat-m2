@@ -97,7 +97,7 @@ abstract class Request implements \BetterthatSdk\Core\RequestInterface
         $this->clientId = $config->getClientId();
         $this->clientSecret = $config->getClientSecret();
         $this->apiUrl = $config->getApiUrl();
-        $this->client_domain = $config->getClientDomain();
+        $this->client_domain =                                           $config->getClientDomain();
 
     }
 
@@ -124,6 +124,7 @@ abstract class Request implements \BetterthatSdk\Core\RequestInterface
                 'Content-Type: application/json',
                 'origin: '.$this->client_domain
             ];
+
             $curl = curl_init();
             curl_setopt_array($curl, [
                 CURLOPT_URL => $url,
