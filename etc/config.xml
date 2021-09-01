@@ -30,7 +30,7 @@
 				</inventory_settings>
 			</Betterthat_product>
 			<Betterthat_order>
-				<order_id_prefix>Betterthat-</order_id_prefix>
+				<order_id_prefix>BT-</order_id_prefix>
 			</Betterthat_order>
 		</Betterthat_config>
 		<carriers>

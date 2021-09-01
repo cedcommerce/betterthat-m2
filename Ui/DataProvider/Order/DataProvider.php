@@ -86,11 +86,6 @@ class DataProvider extends AbstractDataProvider
             $this->getCollection()->load();
         }
 
-        $items = $this->getCollection()->getData();
-        return [
-            'totalRecords' => $this->size,
-            'items' => array_values($items),
-
-        ];
+        return $this->getCollection()->toArray();
     }
 }

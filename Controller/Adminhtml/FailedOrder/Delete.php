@@ -87,6 +87,6 @@ class Delete extends Action
         } else {
             $this->messageManager->addErrorMessage('Failed orders delete failed.');
         }
-        $this->_redirect('Betterthat/failedorder');
+        $this->_redirect('betterthat/failedorder');
     }
 }

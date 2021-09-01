@@ -81,6 +81,6 @@ class Delete extends \Magento\Backend\App\Action
             $this->messageManager->addErrorMessage('Order(s) delete failed.');
         }
 
-        return $this->_redirect('Betterthat/order/index');
+        return $this->_redirect('betterthat/order/index');
     }
 }

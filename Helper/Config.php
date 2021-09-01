@@ -295,7 +295,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         $prefix = $this->scopeConfigManager
             ->getValue("Betterthat_config/Betterthat_order/order_id_prefix");
         if (isset($prefix) and !empty($prefix)) {
-            return $prefix . '-';
+            return $prefix;
         }
         return '';
     }

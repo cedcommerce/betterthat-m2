@@ -57,14 +57,9 @@ class Fetch extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $status = $this->orderHelper->importOrders();
-        if ($status === true) {
-            $this->messageManager->addSuccessMessage(" New Betterthat Orders fetched successfully");
-        } else {
-            $this->messageManager->addErrorMessage("No New Betterthat Orders");
-        }
+        $this->orderHelper->importOrders();
         $result = $this->resultRedirectFactory->create();
-        $result->setPath('Betterthat/order/index');
+        $result->setPath('betterthat/order/index');
         return $result;
     }
 }

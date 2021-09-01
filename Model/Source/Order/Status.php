@@ -28,20 +28,13 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
  */
 class Status extends AbstractSource
 {
-    const STAGING = 'STAGING';
-    const WAITING_ACCEPTANCE = 'WAITING_ACCEPTANCE';
-    const WAITING_DEBIT = 'WAITING_DEBIT';
-    const WAITING_DEBIT_PAYMENT = 'WAITING_DEBIT_PAYMENT';
-    const SHIPPING = 'SHIPPING';
-    const SHIPPED = 'SHIPPED';
-    const COMPLETED = 'COMPLETED';
-    const CANCELED = 'CANCELED';
-    const TO_COLLECT = 'TO_COLLECT';
-    const RECEIVED = 'RECEIVED';
-    const CLOSED = 'CLOSED';
-    const REFUSED = 'REFUSED';
-    const INCIDENT_OPEN = 'INCIDENT_OPEN';
-    const REFUNDED = 'REFUNDED';
+    const STAGING = 'staging';
+    const COMPLETED = 'completed';
+    const CANCELED = 'cancelled';
+    const CLOSED = 'closed';
+    const INPROGRESS = 'inprogress';
+    const REFUNDED = 'refunded';
+    const SHIPPED = 'shipped';
 
     /**
      * @return array
@@ -50,52 +43,20 @@ class Status extends AbstractSource
     {
         return [
             [
-                'value' => self::STAGING,
-                'label' => __('STAGING'),
-            ],
-            [
-                'value' => self::WAITING_ACCEPTANCE,
-                'label' => __('WAITING_ACCEPTANCE'),
-            ],
-            [
-                'value' => self::WAITING_DEBIT,
-                'label' => __('WAITING_DEBIT'),
-            ],
-            [
-                'value' => self::WAITING_DEBIT_PAYMENT,
-                'label' => __('WAITING_DEBIT_PAYMENT'),
-            ],
-            [
-                'value' => self::SHIPPING,
-                'label' => __('SHIPPING'),
+                'value' => self::INPROGRESS,
+                'label' => __('INPROGRESS'),
             ],
             [
                 'value' => self::SHIPPED,
                 'label' => __('SHIPPED'),
             ],
             [
-                'value' => self::TO_COLLECT,
-                'label' => __('TO_COLLECT'),
-            ],
-            [
-                'value' => self::RECEIVED,
-                'label' => __('RECEIVED'),
-            ],
-            [
                 'value' => self::CLOSED,
                 'label' => __('CLOSED'),
             ],
             [
-                'value' => self::REFUSED,
-                'label' => __('REFUSED'),
-            ],
-            [
                 'value' => self::CANCELED,
                 'label' => __('CANCELED'),
-            ],
-            [
-                'value' => self::INCIDENT_OPEN,
-                'label' => __('INCIDENT_OPEN'),
             ],
             [
                 'value' => self::REFUNDED,

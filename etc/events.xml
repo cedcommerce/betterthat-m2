@@ -18,7 +18,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="sales_order_place_after">
+    <!--<event name="sales_order_place_after">
         <observer name="ced_Betterthat_inventory_afterorderplace" instance="Ced\Betterthat\Observer\SalesModelOrderObserver"/>
-    </event>
+    </event>-->
 </config>

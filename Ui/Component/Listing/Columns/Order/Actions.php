@@ -30,10 +30,10 @@ class Actions extends Column
  * Url path
 */
     const URL_PATH_EDIT = 'sales/order/view';
-    const URL_PATH_VIEW = 'Betterthat/order/view';
-    const URL_PATH_SYNC = 'Betterthat/order/sync';
-    const URL_PATH_DELETE = 'Betterthat/order/delete';
-    const URL_PATH_DOWNLOAD = 'Betterthat/order/download';
+    const URL_PATH_VIEW = 'betterthat/order/view';
+    const URL_PATH_SYNC = 'betterthat/order/sync';
+    const URL_PATH_DELETE = 'betterthat/order/delete';
+    const URL_PATH_DOWNLOAD = 'betterthat/order/download';
 
     /**
      * @var UrlBuilder
@@ -100,20 +100,15 @@ class Actions extends Column
                         'label' => __('Edit'),
                         'class' => 'cedcommerce actions edit'
                     ];
-                    /*$item[$name]['sync'] = [
+                    $item[$name]['sync'] = [
                         'href' => $this->urlBuilder->getUrl(self::URL_PATH_SYNC, ['id' => $item['id']]),
                         'label' => __('Sync'),
                         'class' => 'cedcommerce actions sync'
-                    ];*/
+                    ];
                     $item[$name]['delete'] = [
                         'href' => $this->urlBuilder->getUrl(self::URL_PATH_DELETE, ['id' => $item['id']]),
                         'label' => __('Delete'),
                         'class' => 'cedcommerce actions delete'
-                    ];
-                    $item[$name]['download'] = [
-                        'href' => $this->urlBuilder->getUrl(self::URL_PATH_DOWNLOAD, ['id' => $item['id']]),
-                        'label' => __('Download Documents'),
-                        'class' => 'cedcommerce actions download'
                     ];
                 }
             }

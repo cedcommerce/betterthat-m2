@@ -20,15 +20,15 @@
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder_source</item>
-            <item name="deps" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder_data_source</item>
+            <item name="provider" xsi:type="string">betterthat_failedorder.betterthat_failedorder_source</item>
+            <item name="deps" xsi:type="string">betterthat_failedorder.betterthat_failedorder_data_source</item>
         </item>
-        <item name="spinner" xsi:type="string">Betterthat_failedorder_columns</item>
+        <item name="spinner" xsi:type="string">betterthat_failedorder_columns</item>
     </argument>
-    <dataSource name="Betterthat_failedorder_data_source">
+    <dataSource name="betterthat_failedorder_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Ced\Betterthat\Ui\DataProvider\Order\FailedDataProvider</argument>
-            <argument name="name" xsi:type="string">Betterthat_failedorder_data_source</argument>
+            <argument name="name" xsi:type="string">betterthat_failedorder_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
@@ -53,7 +53,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
-                        <item name="namespace" xsi:type="string">Betterthat_failedorder</item>
+                        <item name="namespace" xsi:type="string">betterthat_failedorder</item>
                     </item>
                 </item>
             </argument>
@@ -62,7 +62,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.Betterthat_failedorder_columns</item>
+                        <item name="provider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.betterthat_failedorder_columns</item>
                     </item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
@@ -72,9 +72,9 @@
         <filters name="listing_filters">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="columnsProvider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.Betterthat_failedorder_columns</item>
+                    <item name="columnsProvider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.betterthat_failedorder_columns</item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.listing_top.bookmarks</item>
                         <item name="namespace" xsi:type="string">current.filters</item>
                     </item>
                     <item name="templates" xsi:type="array">
@@ -86,9 +86,9 @@
                         </item>
                     </item>
                     <item name="childDefaults" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.listing_top.listing_filters</item>
+                        <item name="provider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.listing_top.listing_filters</item>
                         <item name="imports" xsi:type="array">
-                            <item name="visible" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.Betterthat_failedorder_columns.${ $.index }:visible</item>
+                            <item name="visible" xsi:type="string">betterthat_failedorder.betterthat_failedorder.betterthat_failedorder_columns.${ $.index }:visible</item>
                         </item>
                     </item>
                 </item>
@@ -100,7 +100,7 @@
         <massaction name="listing_massaction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="selectProvider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.Betterthat_failedorder_columns.ids</item>
+                    <item name="selectProvider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.betterthat_failedorder_columns.ids</item>
                     <item name="indexField" xsi:type="string">id</item>
                 </item>
             </argument>
@@ -113,7 +113,7 @@
                         </item>
                         <item name="type" xsi:type="string">delete</item>
                         <item name="label" xsi:type="string" translate="true">Delete</item>
-                        <item name="url" xsi:type="url" path="Betterthat/failedorder/delete"/>
+                        <item name="url" xsi:type="url" path="betterthat/failedorder/delete"/>
                     </item>
                 </argument>
             </action>
@@ -122,7 +122,7 @@
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">sync</item>
                         <item name="label" xsi:type="string" translate="true">Sync Order Status</item>
-                        <item name="url" xsi:type="url" path="Betterthat/failedorder/syncStatus"/>
+                        <item name="url" xsi:type="url" path="betterthat/failedorder/syncStatus"/>
                     </item>
                 </argument>
             </action>
@@ -135,7 +135,7 @@
                         </item>
                         <item name="type" xsi:type="string">reject</item>
                         <item name="label" xsi:type="string" translate="true">Reject/Cancel Order</item>
-                        <item name="url" xsi:type="url" path="Betterthat/failedorder/reject"/>
+                        <item name="url" xsi:type="url" path="betterthat/failedorder/reject"/>
                     </item>
                 </argument>
             </action>
@@ -144,24 +144,24 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.listing_top.bookmarks</item>
                         <item name="namespace" xsi:type="string">current.paging</item>
                     </item>
-                    <item name="selectProvider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.Betterthat_failedorder_columns.ids</item>
+                    <item name="selectProvider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.betterthat_failedorder_columns.ids</item>
                 </item>
             </argument>
         </paging>
     </container>
-    <columns name="Betterthat_failedorder_columns">
+    <columns name="betterthat_failedorder_columns">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="storageConfig" xsi:type="array">
-                    <item name="provider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.listing_top.bookmarks</item>
+                    <item name="provider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.listing_top.bookmarks</item>
                     <item name="namespace" xsi:type="string">current</item>
                 </item>
                 <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.Betterthat_failedorder_columns.actions</item>
+                        <item name="provider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.betterthat_failedorder_columns.actions</item>
                         <item name="target" xsi:type="string">applyAction</item>
                         <item name="params" xsi:type="array">
                             <item name="0" xsi:type="string">edit</item>
@@ -170,7 +170,7 @@
                     </item>
                     <item name="controlVisibility" xsi:type="boolean">true</item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_failedorder.Betterthat_failedorder.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">betterthat_failedorder.betterthat_failedorder.listing_top.bookmarks</item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
                         <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
                     </item>
@@ -219,8 +219,8 @@
         <column name="order_date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="filter" xsi:type="string">date</item>
+                    <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Order Date</item>
                     <item name="sortOrder" xsi:type="number">6</item>
                 </item>
