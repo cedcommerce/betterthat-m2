@@ -67,6 +67,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public $orderService;
 
+    /** @var \Magento\Quote\Model\Quote\Address\RateFactory */
+    public $rateFactory;
+
     /**
      * @var \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoaderFactory
      */
@@ -230,7 +233,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Sales\Model\Order\AddressRepository $repositoryAddress,
         \Magento\Sales\Api\Data\OrderInterface $salesOrderApi,
         \Ced\Betterthat\Helper\Tax $taxHelper,
-        \Magento\Framework\Escaper $_escaper
+        \Magento\Quote\Model\Quote\Address\RateFactory $rateFactory
     ) {
         parent::__construct($context);
         $this->objectManager = $objectManager;
@@ -260,7 +263,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->salesOrder = $salesOrderApi;
         $this->taxHelper = $taxHelper;
         $this->failedCount = 0;
-        $this->_escaper=$_escaper;
+        $this->rateFactory= $rateFactory;
 
     }
 
@@ -497,6 +500,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     $stateCode = 'N/A';
                     $stateModel = $this->objectManager->create('Magento\Directory\Model\RegionFactory')->create()
                         ->getCollection()->addFieldToFilter('country_id', $countryCode)->getFirstItem();
+
                     if($stateModel && $stateModel->getCode()) {
                         $stateCode = $stateModel->getCode();
                     }
@@ -524,8 +528,32 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         $this->registerShippingTaxPercentage($this->taxHelper->getShippingTaxRate($store));
                         $quote->getBillingAddress()->addData($shipAddress);
                         $shippingAddress = $quote->getShippingAddress()->addData($shipAddress);
+                        $shippingMethod = 'shipbyBetterthat_shipbyBetterthat';
                         $shippingAddress->setCollectShippingRates(true)->collectShippingRates()
-                            ->setShippingMethod('shipbyBetterthat_shipbyBetterthat');
+                            ->setShippingMethod($shippingMethod);
+
+                        $rate = $shippingAddress->getShippingRateByCode($shippingMethod);
+                        if (!$rate instanceof \Magento\Quote\Model\Quote\Address\Rate) {
+                            $rate = $this->rateFactory->create();
+                        }
+                        $titles  = [
+                            'Standard' => 'Standard Delivery - Retailer Managed',
+                            'Instore' => 'Instore',
+                            'International'=> 'International Delivery - Retailer Managed',
+                            'InternationalDelivery' => 'International Delivery',
+                            'StandardDeliverySendle' => 'Standard Delivery - Sendle',
+                            'ExpressDelivery' => 'Express Delivery'
+                            ];
+                            $shipTitle = @$titles[$order['shipping_type']];
+                            $rate->setCode($shippingMethod)
+                            ->setMethod($shippingMethod)
+                            ->setMethodTitle($shipTitle)
+                            ->setCarrier('shipbyBetterthat')
+                            ->setCarrierTitle('Betterthat Shipping')
+                            ->setPrice($shippingcost)
+                            ->setAddress($shippingAddress);
+                        $shippingAddress->addShippingRate($rate);
+
                         $quote->setPaymentMethod('paybyBetterthat');
                         $quote->setInventoryProcessed(false);
                         $quote->save();
@@ -1120,124 +1148,18 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public function syncOrders($orderIds)
     {
         try {
-            //$orderIds = $orderCollection->getColumnValues('Betterthat_order_id');
             $orderIds = implode(',', $orderIds);
             $storeId = $this->config->getStore();
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
             $store = $this->storeManager->getStore($storeId);
 
-            $orderList = $this->Betterthat->create(
-                [
-                    'config' => $this->config->getApiConfig(),
-                ]
-            );
-
             $response = $orderList->getOrderByIds($orderIds);
             $count = 0;
-            if (isset($response['body']['orders']) && count($response['body']['orders']) > 0) {
-                //case: single purchase order
-                if (!isset($response['body']['orders']['order'][0])) {
-                    $response['body']['orders']['order'] = array(
-                        0 => $response['body']['orders']['order'],
-                    );
-                }
-                /*$BetterthatOrderId = isset($response['body']['orders']['order']) ? array_column($response['body']['orders']['order'], 'order_id') : array();
-                $BetterthatOrder = $this->orders->create()
-                    ->getCollection()
-                    ->addFieldToFilter('Betterthat_order_id', $BetterthatOrderId);*/
-
-                foreach ($response['body']['orders']['order'] as $order) {
-                    $BetterthatOrderId = $order['order_id'];
-                    $BetterthatOrder = $this->orders->create()
-                        ->getCollection()
-                        ->addFieldToFilter('Betterthat_order_id', $BetterthatOrderId)->getFirstItem();
-                    $magentoOrder = $this->salesOrder->loadByIncrementId($BetterthatOrder->getIncrementId());
-                    if ($this->validateString($BetterthatOrder->getData())) {
-                        $shipping_address_street_2 = '';
-                        if (isset($order['customer']['shipping_address']['street_2']) && !is_array($order['customer']['shipping_address']['street_2']))
-                            $shipping_address_street_2 = $order['customer']['shipping_address']['street_2'];
-
-                        $billing_address_street_2 = '';
-                        if (isset($order['customer']['billing_address']['street_2']) && !is_array($order['customer']['billing_address']['street_2']))
-                            $billing_address_street_2 = $order['customer']['billing_address']['street_2'];
-
-                        $shipping_address_street_1 = '';
-                        if (isset($order['customer']['shipping_address']['street_1']) && !is_array($order['customer']['shipping_address']['street_1']))
-                            $shipping_address_street_1 = $order['customer']['shipping_address']['street_1'];
-
-                        $billing_address_street_1 = '';
-                        if (isset($order['customer']['billing_address']['street_1']) && !is_array($order['customer']['billing_address']['street_1']))
-                            $billing_address_street_1 = $order['customer']['billing_address']['street_1'];
-
-                        $shipping_address_company = '';
-                        if (isset($order['customer']['shipping_address']['company']) && !is_array($order['customer']['shipping_address']['company']))
-                            $shipping_address_company = $order['customer']['shipping_address']['company'];
-
-                        $billing_address_company = '';
-                        if (isset($order['customer']['billing_address']['company']) && !is_array($order['customer']['billing_address']['company']))
-                            $billing_address_company = $order['customer']['billing_address']['company'];
-
-                        $shipAddress = $this->repositoryAddress->get($magentoOrder->getShippingAddress()->getId());
-                        if ($shipAddress->getId()) {
-                            $shipAddress->setFirstname((isset($order['customer']['shipping_address']['firstname']) and
-                                !empty($order['customer']['shipping_address']['firstname'])) ?
-                                ($order['customer']['shipping_address']['firstname']) : $order['customer']['firstname'])
-                                ->setLastname((isset($order['customer']['shipping_address']['lastname']) &&
-                                    !empty($order['customer']['shipping_address']['lastname'])) ?
-                                    $order['customer']['shipping_address']['lastname'] : $order['customer']['lastname'])
-                                ->setStreet((!empty($shipping_address_street_1)) ? $shipping_address_street_1 . " " . $shipping_address_street_2 : 'N/A')
-                                ->setCity(isset($order['customer']['shipping_address']['city']) ? $order['customer']['shipping_address']['city'] : 'N/A')
-                                ->setCountry(isset($order['customer']['shipping_address']['city']) ? $order['customer']['billing_address']['city'] : 'N/A')
-                                ->setCountryId(isset($order['customer']['shipping_address']['country_iso_code']) ? $this->getCountryId($order['customer']['billing_address']['country_iso_code']) : 'AU')
-                                ->setRegion(isset($order['customer']['shipping_address']['state']) ? $order['customer']['shipping_address']['state'] : 'N/A')
-                                ->setPostcode(isset($order['customer']['shipping_address']['zip_code']) ? $order['customer']['shipping_address']['zip_code'] : 'N/A')
-                                ->setTelephone(isset($order['customer']['shipping_address']['phone']) &&
-                                !empty($order['customer']['shipping_address']['phone']) ? $order['customer']['shipping_address']['phone'] :
-                                    '+00000000000')
-                                ->setCompany($shipping_address_company);
-                            $this->repositoryAddress->save($shipAddress);
-                        }
-                        $billAddress = $this->repositoryAddress->get($magentoOrder->getBillingAddress()->getId());
-                        if ($billAddress->getId()) {
-                            $billAddress->setFirstname((isset($order['customer']['billing_address']['firstname']) and
-                                !empty($order['customer']['billing_address']['firstname'])) ?
-                                ($order['customer']['billing_address']['firstname']) : $order['customer']['firstname'])
-                                ->setLastname((isset($order['customer']['billing_address']['lastname']) &&
-                                    !empty($order['customer']['billing_address']['lastname'])) ?
-                                    $order['customer']['billing_address']['lastname'] : $order['customer']['lastname'])
-                                ->setStreet((!empty($billing_address_street_1)) ? $billing_address_street_1 . " " . $billing_address_street_2 : 'N/A')
-                                ->setCity(isset($order['customer']['billing_address']['city']) ? $order['customer']['billing_address']['city'] : 'N/A')
-                                ->setCountry(isset($order['customer']['billing_address']['city']) ? $order['customer']['billing_address']['city'] : 'N/A')
-                                ->setCountryId(isset($order['customer']['billing_address']['country_iso_code']) ? $this->getCountryId($order['customer']['billing_address']['country_iso_code']) : 'AU')
-                                ->setRegion(isset($order['customer']['billing_address']['state']) ? $order['customer']['billing_address']['state'] : 'N/A')
-                                ->setPostcode(isset($order['customer']['billing_address']['zip_code']) ? $order['customer']['billing_address']['zip_code'] : 'N/A')
-                                ->setTelephone(isset($order['customer']['billing_address']['phone']) &&
-                                !empty($order['customer']['billing_address']['phone']) ? $order['customer']['billing_address']['phone'] :
-                                    '+1123456789')
-                                ->setCompany($billing_address_company);
-                            $this->repositoryAddress->save($billAddress);
-                        }
-                        $BetterthatOrder->setStatus($order['order_state'])->save();
-                        $count++;
-                        if($order['order_state'] == 'SHIPPING' && $magentoOrder->canUnHold()) {
-                            $magentoOrder->unhold()->save();
-                        }
-                        /*if( $order['order_state'] == 'CLOSED' || $order['order_state'] == 'CANCELED' || $order['order_state'] == 'REFUSED' || $order['order_state'] == 'SHIPPING'){
-                            $cancelOrderOnMagento = $this->config->getCreditMemoOnMagento();
-                            if($cancelOrderOnMagento == '1') {
-                                $increment_id= $magentoOrder->getIncrementId();
-                                $this->createCreditMemo($increment_id, $order);
-                            }
-                        }*/
-                    }
-                }
-            }
 
             if ($count > 0) {
                 $this->notificationSuccess($count);
                 return true;
             }
-
             return false;
         } catch (\Exception $e) {
             $this->logger->error('Sync Order', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);

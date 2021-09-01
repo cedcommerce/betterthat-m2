@@ -78,18 +78,6 @@ class Actions extends Column
             foreach ($dataSource['data']['items'] as &$item) {
                 $name = $this->getData('name');
                 if (isset($item['id'])) {
-                    /*$item[$name]['view'] = [
-                        'label' => __('View'),
-                        'class' => 'cedcommerce actions view',
-                        'popup' => [
-                            'title' => __("Betterthat Order #{$item['magento_increment_id']}"),
-                            'file' =>  $this->urlBuilder->getUrl(
-                                self::URL_PATH_VIEW,
-                                ['order_id' => $item['magento_order_id']]
-                            ),
-                            'type' => 'xml',
-                        ],
-                    ];*/
                     $item[$name]['edit'] = [
                         'href' => $this->urlBuilder->getUrl(
                             self::URL_PATH_EDIT,

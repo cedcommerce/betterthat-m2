@@ -96,26 +96,6 @@
              resource="Ced_Betterthat::developer"
         />
 
-        <add id="Ced_Betterthat::Betterthat_feeds"
-             title="Feeds"
-             translate="title"
-             module="Ced_Betterthat"
-             sortOrder="10"
-             parent="Ced_Betterthat::developer"
-             action="betterthat/feeds"
-             resource="Ced_Betterthat::Betterthat_feeds"
-        />
-
-       <!-- <add id="Ced_Betterthat::Betterthat_queue"
-             title="Feed Queues"
-             translate="title"
-             module="Ced_Betterthat"
-             sortOrder="20"
-             parent="Ced_Betterthat::developer"
-             action="Betterthat/queue"
-             resource="Ced_Betterthat::Betterthat_queue"
-        />-->
-
         <add id="Ced_Betterthat::Betterthat_cron"
              title="Cron Logs"
              translate="title"

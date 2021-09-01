@@ -23,9 +23,9 @@ use Magento\Quote\Model\Quote\Address\RateRequest;
 class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     \Magento\Shipping\Model\Carrier\CarrierInterface
 {
-    const REGISTRY_INDEX_SHIPPING_TOTAL = 'ebay_shipping_total';
+    const REGISTRY_INDEX_SHIPPING_TOTAL = 'betterthat_shipping_total';
 
-    const REGISTRY_INDEX_SHIPPING_TAX_PERCENTAGE = 'ebay_shipping_tax_percentage';
+    const REGISTRY_INDEX_SHIPPING_TAX_PERCENTAGE = 'betterthat_shipping_tax_percentage';
 
     /**
      * @var string

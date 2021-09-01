@@ -11,13 +11,13 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
- * @package   Ced_MPCatch
+ * @package   Ced_Betterthat
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 
-namespace Ced\MPCatch\Cron\Order;
+namespace Ced\Betterthat\Cron\Order;
 
 class Sync
 {
@@ -31,14 +31,14 @@ class Sync
     /**
      * Import constructor.
      *
-     * @param \Ced\MPCatch\Helper\Order  $order
-     * @param \Ced\MPCatch\Helper\Logger $logger
+     * @param \Ced\Betterthat\Helper\Order  $order
+     * @param \Ced\Betterthat\Helper\Logger $logger
      */
     public function __construct(
-        \Ced\MPCatch\Helper\Order $order,
-        \Ced\MPCatch\Helper\Logger $logger,
-        \Ced\MPCatch\Model\Orders $collection,
-        \Ced\MPCatch\Helper\Config $config
+        \Ced\Betterthat\Helper\Order $order,
+        \Ced\Betterthat\Helper\Logger $logger,
+        \Ced\Betterthat\Model\Orders $collection,
+        \Ced\Betterthat\Helper\Config $config
     ) {
         $this->order = $order;
         $this->logger = $logger;
@@ -56,7 +56,7 @@ class Sync
             if ($orderSyncCron == '1') {
                 $orderCollection = $this->orders->getCollection()
                     ->addFieldToFilter('status', array('in', array('WAITING_ACCEPTANCE', 'WAITING_DEBIT', 'WAITING_DEBIT_PAYMENT', 'SHIPPING', 'WAITING_DEBIT_PAYMEN')));
-                $orderIds = $orderCollection->getColumnValues('mpcatch_order_id');
+                $orderIds = $orderCollection->getColumnValues('Betterthat_order_id');
                 $syncResponse = $this->order->syncOrders($orderIds);
                 $this->logger->info('Order Sync Cron Response', ['path' => __METHOD__, 'OrderIds' => implode(',', $orderIds), 'OrderShipmentReponse' => var_export($syncResponse)]);
                 return $syncResponse;

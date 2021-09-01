@@ -28,13 +28,12 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
  */
 class Status extends AbstractSource
 {
-    const STAGING = 'staging';
-    const COMPLETED = 'completed';
-    const CANCELED = 'cancelled';
-    const CLOSED = 'closed';
+    const PENDING = 'pending';
     const INPROGRESS = 'inprogress';
-    const REFUNDED = 'refunded';
-    const SHIPPED = 'shipped';
+    const COMPLETE = 'complete';
+    const SHIPPED = 'Shipped';
+    const DELIVERED = 'Delivered';
+    const CANCELLED = 'cancelled';
 
     /**
      * @return array
@@ -43,24 +42,28 @@ class Status extends AbstractSource
     {
         return [
             [
+                'value' => self::PENDING,
+                'label' => __('PENDING'),
+            ],
+            [
                 'value' => self::INPROGRESS,
                 'label' => __('INPROGRESS'),
+            ],
+            [
+                'value' => self::COMPLETE,
+                'label' => __('COMPLETE'),
             ],
             [
                 'value' => self::SHIPPED,
                 'label' => __('SHIPPED'),
             ],
             [
-                'value' => self::CLOSED,
-                'label' => __('CLOSED'),
+                'value' => self::DELIVERED,
+                'label' => __('DELIVERED'),
             ],
             [
-                'value' => self::CANCELED,
-                'label' => __('CANCELED'),
-            ],
-            [
-                'value' => self::REFUNDED,
-                'label' => __('REFUNDED'),
+                'value' => self::CANCELLED,
+                'label' => __('CANCELLED'),
             ]
         ];
     }

@@ -11,7 +11,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
- * @package   Ced_Betterthat
+ * @package   Ced_betterthat
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
@@ -21,8 +21,8 @@
     <!--Declare data source, columns list, button...-->
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index_data_source</item>
-            <item name="deps" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index_data_source</item>
+            <item name="provider" xsi:type="string">betterthat_cron_index.betterthat_cron_index_data_source</item>
+            <item name="deps" xsi:type="string">betterthat_cron_index.betterthat_cron_index_data_source</item>
             <!--Declare the data source name which will be defined below-->
         </item>
         <item name="spinner" xsi:type="string">cron_columns</item>
@@ -36,11 +36,11 @@
         </item>
         <!--Declare the listing of columns which will be defined below-->
     </argument>
-    <dataSource name="Betterthat_cron_index_data_source">
+    <dataSource name="betterthat_cron_index_data_source">
         <!--The data source-->
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Ced\Betterthat\Ui\DataProvider\Cron\DataProvider</argument>
-            <argument name="name" xsi:type="string">Betterthat_cron_index_data_source</argument>
+            <argument name="name" xsi:type="string">betterthat_cron_index_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
@@ -64,7 +64,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
-                        <item name="namespace" xsi:type="string">Betterthat_cron_index</item>
+                        <item name="namespace" xsi:type="string">betterthat_cron_index</item>
                     </item>
                 </item>
             </argument>
@@ -73,7 +73,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index.cron_columns</item>
+                        <item name="provider" xsi:type="string">betterthat_cron_index.betterthat_cron_index.cron_columns</item>
                     </item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
@@ -84,15 +84,15 @@
         <filters name="listing_filters">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="columnsProvider" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index.cron_columns</item>
+                    <item name="columnsProvider" xsi:type="string">betterthat_cron_index.betterthat_cron_index.cron_columns</item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">betterthat_cron_index.betterthat_cron_index.listing_top.bookmarks</item>
                         <item name="namespace" xsi:type="string">current.filters</item>
                     </item>
                     <item name="childDefaults" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index.listing_top.listing_filters</item>
+                        <item name="provider" xsi:type="string">betterthat_cron_index.betterthat_cron_index.listing_top.listing_filters</item>
                         <item name="imports" xsi:type="array">
-                            <item name="visible" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index.cron_columns.${ $.index }:visible</item>
+                            <item name="visible" xsi:type="string">betterthat_cron_index.betterthat_cron_index.cron_columns.${ $.index }:visible</item>
                         </item>
                     </item>
                 </item>
@@ -102,10 +102,10 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">betterthat_cron_index.betterthat_cron_index.listing_top.bookmarks</item>
                         <item name="namespace" xsi:type="string">current.paging</item>
                     </item>
-                    <item name="selectProvider" xsi:type="string">Betterthat_cron_index.Betterthat_cron_index.cron_columns.ids</item>
+                    <item name="selectProvider" xsi:type="string">betterthat_cron_index.betterthat_cron_index.cron_columns.ids</item>
                 </item>
             </argument>
         </paging>

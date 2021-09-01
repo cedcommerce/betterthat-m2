@@ -88,7 +88,7 @@ class Sync extends \Magento\Backend\App\Action
     {
         if (!$this->Betterthat->checkForConfiguration()) {
             $this->messageManager->addErrorMessage(
-                __('Products Upload Failed. Betterthat API not enabled or Invalid. Please check Betterthat Configuration.')
+                __('OrderSync Failed. Betterthat API not enabled or Invalid. Please check Betterthat Configuration.')
             );
             $resultRedirect = $this->resultFactory->create('redirect');
             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
