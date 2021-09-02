@@ -471,21 +471,21 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                     $quote->addProduct($product, (int)$qty);
 
                                 } else {
-                                    $reason[] = $item['offer_sku'] . "SKU out of stock";
+                                    $reason[] = $item['product_id'] . "Product is out of stock";
                                     $failedOrder = true;
 
                                 }
                             } else {
-                                $reason[] = $item['offer_sku'] . " SKU not enabled on store";
+                                $reason[] = $item['product_id'] . " Product is not enabled on store";
                                 $failedOrder = true;
                             }
                         } else {
-                            $reason[] = $item['offer_sku'] . " not exist on store";
+                            $reason[] = $item['product_id'] . " not exist on store";
                             $failedOrder = true;
 
                         }
                     } else {
-                        $reason[] = "SKU not exist in order item";
+                        $reason[] = "product id not exist in order item";
                         $failedOrder = true;
 
                     }

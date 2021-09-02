@@ -95,10 +95,6 @@ class DataProvider extends AbstractDataProvider
         $data = [];
 
         foreach ($items as $item) {
-            $categoryAndAttributes = [
-                'profile_category' => $item['profile_category']
-            ];
-
             $products = [
                 'magento_category' => json_decode($item['magento_category'], true),
                 'betterthat_category' => json_decode($item['betterthat_categories'], true),
@@ -111,16 +107,10 @@ class DataProvider extends AbstractDataProvider
                 'profile_name' => $item['profile_name'],
             ];
 
-            $offers = [
-                'profile_logistic_class' => $item['profile_logistic_class'],
-                'profile_tax_au' => $item['profile_tax_au'],
-                'profile_offer_state' => $item['profile_offer_state'],
-                'profile_Betterthat_club_eligible' => $item['profile_Betterthat_club_eligible'],
-            ];
             $data[$item['id']] = [
                 'general_information' => $info,
-                'offer_information' => $offers,
-                'profile_mappings' => $categoryAndAttributes,
+                'offer_information' => [],
+                'profile_mappings' => [],
                 'betterthat_category' => $products
             ];
         }
