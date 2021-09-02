@@ -198,19 +198,19 @@ define([
                     }
                 });
             }
-            console.log(popupData);
-            var content = '<div style="max-height: 300px; overflow: auto;"><pre><code>'+popupData.message+'</code></pre></div>';
+            var content = '<div style="max-height: 90%; max-width: 90%; overflow: auto;"><pre><code>'+popupData.message+'</code></pre></div>';
             if (popupData.render === 'html' && dataType === 'json') {
                 var data = this.tryParseJSON(popupData.message);
                 if (data && Object.keys(data).length > 0) {
                     var result = this.CreateTableView(data);
                 }
-                content = '<div style="max-height: 300px; overflow: auto;">'+result+'</div>';
+                content = '<div style=max-height: 90%; max-width: 90%; overflow: auto;">'+result+'</div>';
             }
 
             popup({
                 title: popupData.title,
                 content: content,
+                type: 'slide',
                 actions: {
                     confirm: callback
                 }
@@ -427,8 +427,12 @@ define([
 
             // If the returned data is an object do nothing, else try to parse
             var array = typeof objArray != 'object' ? JSON.parse(objArray) : new Array(objArray);
-            var keys = Object.keys(array[0]);
+            //return str;
+            if(typeof array == 'number'){
+                return ;
+            }
 
+            var keys = Object.keys(array[0]);
             var str = '<table class="' + theme.table + '">';
 
             // table head

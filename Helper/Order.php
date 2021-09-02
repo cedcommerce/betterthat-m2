@@ -443,9 +443,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             if (isset($order['Product_data'][0])) {
                 $failedOrder = false;
                 foreach ($order['Product_data'] as $item) {
+                    $item['product_id'] = @$item['product_id'][0] ? $item['product_id'][0] : '';
                     if (isset($item['product_id'])) {
                         $qty = $qtyArray[$item['_id']];
-
                         $product = $this->product->create()->load($item['product_id']);
                         if (isset($product) and !empty($product)) {
                             $product = $this->product->create()->load($product->getEntityId());
