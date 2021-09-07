@@ -85,6 +85,6 @@ class Truncate extends Action
         // Delete feeds from db
         $collection->walk('delete');
         $this->messageManager->addSuccessMessage('Logs deleted successfully.');
-        $this->_redirect('Betterthat/logs');
+        $this->_redirect('betterthat/logs');
     }
 }

@@ -26,7 +26,7 @@ namespace Ced\Betterthat\Controller\Adminhtml\Product;
  */
 class InventoryPrice extends \Magento\Backend\App\Action
 {
-    const CHUNK_SIZE = 5;
+    const CHUNK_SIZE = 1;
 
     /**
      * @var \Magento\Ui\Component\MassAction\Filter
@@ -110,17 +110,18 @@ class InventoryPrice extends \Magento\Backend\App\Action
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
             $response = $this->Betterthat->updatePriceInventory($productIds[$batch_id]);
-            if (isset($productIds[$batch_id]) && $response) {
+
+            if (@$response['n']) {
                 return $resultJson->setData(
                     [
-                    'success' => count($productIds[$batch_id]) . " Product(s) Updated successfully",
+                    'success' => count($productIds[$batch_id]) . " Product(s) Inventory/Price Updated successfully. Product Id: ". json_encode($productIds[$batch_id]),
                     'messages' => $response
                     ]
                 );
             }
             return $resultJson->setData(
                 [
-                'error' => count($productIds[$batch_id]) . " Product(s) Update Failed",
+                'errors' => count($productIds[$batch_id]) . " Product(s) Inventory/Price Update Failed. Product Id: ". json_encode($productIds[$batch_id]) ,
                 'messages' => $this->registry->registry('Betterthat_product_errors'),
                 ]
             );
@@ -139,11 +140,12 @@ class InventoryPrice extends \Magento\Backend\App\Action
 
         // case 3.1 normal uploading if current ids are equal to chunk size.
         if (count($productIds) == self::CHUNK_SIZE) {
+            $batch_id = @$batch_id ? $batch_id : 0;
             $response = $this->Betterthat->updatePriceInventory($productIds);
-            if ($response) {
-                $this->messageManager->addSuccessMessage(count($productIds) . ' Product(s) Updated Successfully');
+            if (@$response['n']) {
+                $this->messageManager->addSuccessMessage(count($productIds) . " Product(s) Inventory/Price Updated successfully. Product Id: ".json_encode($productIds[$batch_id]));
             } else {
-                $message = 'Product(s) Update Failed.';
+                $message = 'Product(s) Inventory/Price Update Failed. Product Id: '.json_encode($productIds[$batch_id]);
                 $errors = $this->registry->registry('Betterthat_product_errors');
                 if (isset($errors)) {
                     $message = "Product(s) Update Failed. \nErrors: " . (string)json_encode($errors);

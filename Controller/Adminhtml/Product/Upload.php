@@ -27,7 +27,7 @@ namespace Ced\Betterthat\Controller\Adminhtml\Product;
 class Upload extends \Magento\Backend\App\Action
 {
 
-    const CHUNK_SIZE = 5;
+    const CHUNK_SIZE = 1;
 
     /**
      * @var \Magento\Ui\Component\MassAction\Filter
@@ -112,7 +112,14 @@ class Upload extends \Magento\Backend\App\Action
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
             $response = $this->Betterthat->createProducts($productIds[$batchId]);
-            if (isset($productIds[$batchId]) && $response) {
+            if(@$response['err_code'] && $response['err_code'] == 'validation_err'){
+                return $resultJson->setData(
+                    [
+                        'errors' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) . " Upload Failed. Reason: ".$response['message'],
+                        'messages' => $response['message'],
+                    ]
+                );
+            }elseif (isset($productIds[$batchId]) && $response) {
                 return $resultJson->setData(
                     [
                     'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) .' '. $response['message'],
@@ -120,12 +127,6 @@ class Upload extends \Magento\Backend\App\Action
                     ]
                 );
             }
-            return $resultJson->setData(
-                [
-                'error' => count($productIds[$batchId]) . " Product(s) Upload Failed",
-                'messages' => $this->registry->registry('Betterthat_product_errors'),
-                ]
-            );
         }
 
         // case 3 normal uploading and chunk creating

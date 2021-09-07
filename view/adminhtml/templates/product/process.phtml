@@ -168,25 +168,25 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                                 'status': true,
                                 'errors': ''
                             };
-                            if (json.hasOwnProperty('error')) {
+                            if (json.hasOwnProperty('errors')) {
                                 //errorMessage = json.error;
                                 //console.log(parseErrors(json.messages));
-                                errorMessage = parseErrors(json.messages);
+                                errorMessage = json.errors;
                                 //console.log(json.hasOwnProperty('count'));
                                 var heading = '<span>' +
                                     '<img src="<?php  echo $errorImg ?>"> Errors in product validation.</span>';
-                                if (errorMessage.status === false && json.hasOwnProperty('count')) {
+                                /*if (errorMessage.status === false && json.hasOwnProperty('count')) {
                                     heading = '<img src="<?php  echo $successImg ?>"><span>' +
                                         json.count + ' Product(s) Validated successfully</span>';
-                                }
+                                }*/
 
                                 var errorTemplate = '<div class="batch-container">' +
                                     '<div data-role="collapsible" style="cursor: pointer;">' +
-                                    '<div data-role="trigger">' + heading + '</div></div>' +
-                                    '<div data-role="content">'+errorMessage.errors+'</div></div>';
+                                    '<div data-role="trigger">' + errorMessage + '</div></div>';
+
                             }
-                            //span.innerHTML = '<img src="<?php  //echo $errorImg ?>"><span>' + errorMessage + '</span>';
-                            span.innerHTML = errorTemplate;
+                            span.innerHTML = '<img src="<?php  echo $errorImg ?>"><span>' + errorMessage + '</span>';
+                            //span.innerHTML = errorTemplate;
                             span.id = 'id-' + id;
                             updateRow.parentNode.insertBefore(span, updateRow);
                             $( ".batch-container" ).accordion({ collapsible: true, active: false});
@@ -246,6 +246,7 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                         '<th style="padding:15px">Sl. No.</th>' +
                         '<th style="padding:15px">Sku</th>' +
                         '<th style="padding:15px">Errors</th></tr>';
+                    console.log('test errors');
                     var products = Object.keys(data).length;
                     var counter = 0;
                     $.each(data, function (index, value) {

@@ -35,18 +35,21 @@ interface RequestInterface
      */
     const Betterthat_API_URL = 'https://api.betterthat.shop:8083/';
     const Betterthat_SANDBOX_API_URL = 'https://api.betterthat.shop:8083/';
-
+    const POST_INVPRICE = 'updateInventoryStockAndPrice/';
     const GET_CATEGORIES_SUB_URL = 'categories/';
+    const GET_ORDERS_SUB_URL = 'orders-list';
+    const POST_ITEMS_SUB_URL = 'product-upload/';
+
+
+
     const GET_ATTRIBUTES_SUB_URL = 'api/products/attributes';
     const GET_ATTRIBUTES_VALUE_LIST = 'api/values_lists?code=';
     const GET_OFFERS = 'api/offers';
 
-    const GET_ORDERS_SUB_URL = 'orders-list';
     const GET_ORDERS_DOCUMENT_URL = 'api/orders/documents';
     const GET_ORDERS_DOCUMENT_DOWNLOAD_URL = '/api/orders/documents/download';
     const PUT_SHIPMENT_SUB_URL = 'oms/asn/v7?sellerId=';
     const GET_FEEDS_SUB_URL = 'api/products/imports/%s/error_report';
-    const POST_ITEMS_SUB_URL = 'product-upload/';
     const POST_OFFER_IMPORT  = 'api/offers/imports';
     const PUT_INVENTORY_SUB_URL = 'inventory/fbm-lmp/v7?sellerId=';
     const GET_INVENTORY_SUB_URL = 'inventory/v5?itemIds=%s&sellerId=%s';

@@ -95,6 +95,6 @@ class Delete extends Action
         } else {
             $this->messageManager->addErrorMessage('Logs delete failed.');
         }
-        $this->_redirect('Betterthat/logs');
+        $this->_redirect('betterthat/logs');
     }
 }

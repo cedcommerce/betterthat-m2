@@ -136,7 +136,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public $Betterthat;
     public $stockState;
     public $debugMode;
-
+    public $response;
     public $images;
 
     /**
@@ -343,15 +343,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->prepareConfigurableProducts($ids['configurable']);
 
                 $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->createProduct($this->data);
-
                 if (@$response['message'] &&
                     in_array($response['message'],["product already exists","Product imported successfully!"]))
                  {
-                    $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::UPLOADED);
+                     $this->response = @$response['data'];
+                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::UPLOADED);
                 } else {
+                    $this->response = @$response['data'];
                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::INVALID);
                 }
-                //$response = $this->saveResponse($response);
+                $this->saveResponse($response);
                 return $response;
             }
             return $response;
@@ -758,7 +759,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             }
             return $validatedProduct;
         } catch (\Exception $e) {
-            die($e->getMessage());
             $this->logger->error('Validate Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
@@ -1212,7 +1212,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
             return $this->data;
         } catch (\Exception $e) {
-            die($e->getMessage());
             $this->logger->error('Create Configurable Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
@@ -1427,128 +1426,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $products = $productType->getUsedProducts($configurableProduct);
                         $profileAttributes = $profile->getAttributes('normal');
                         $cindex = $index;
+                        $quantity = $this->getFinalQuantityToUpload($product);
                         foreach ($products as $product) {
                             $product = $this->product->create()->load($product->getId());
-                            foreach ($fromParentAttrs as $fromParentAttr) {
-                                $magentoAttr = isset($profileAttributes[$fromParentAttr]) ? $profileAttributes[$fromParentAttr]['magento_attribute_code'] : '';
-                                if (!empty($magentoAttr)) {
-                                    $configProdValue = $configurableProduct->getData($magentoAttr);
-                                    $product->setData($magentoAttr, $configProdValue);
-                                }
-                            }
-                            $this->ids[] = $product->getId();
-                            $attributes = $this->prepareAttributes(
-                                $product,
-                                $profile
-                            );
-                            $this->data[$cindex]['offer']['sku'] = (string)($product->getSku());
-                            $this->data[$cindex]['offer']['product-id'] = (string)($product->getSku());
-                            $this->data[$cindex]['offer']['product-id-type'] = 'SHOP_SKU';
-
-                            if ($threshold_status) {
-                                $quantity = $this->stockState->getStockQty(
-                                    $product->getId(),
-                                    $product->getStore()->getWebsiteId()
-                                );
-                                if ($quantity <= $threshold_limit) {
-                                    $this->data[$cindex]['offer']['quantity'] = (string)$threshold_min;
-                                } else {
-                                    $this->data[$cindex]['offer']['quantity'] = (string)$threshold_max;
-                                }
-                            } else {
-                                $this->data[$cindex]['offer']['quantity'] = (string)$this->stockState->getStockQty(
-                                    $product->getId(),
-                                    $product->getStore()->getWebsiteId()
-                                );
-                            }
-                            if ($makeInactive === true) {
-                                $this->data[$cindex]['offer']['quantity'] = '0';
-                            }
-
-                            $stateArray = array(
-                                'New' => 11,
-                                'Refurbished' => 10,
-                                'Outlet - Refurbished' => 7,
-                                'Outlet - New' => 8,
-                            );
-
-                            $requiredArray = array('sku', 'product-id', 'product-id-type',
-                                'description', 'internal-description', 'price', 'price-additional-info', 'quantity',
-                                'min-quantity-alert', 'state', 'available-start-date', 'available-end-date', 'logistic-class',
-                                'discount-price', 'discount-start-date', 'discount-end-date', 'leadtime-to-ship', 'update-delete',
-                                'club-Betterthat-eligible', 'tax-au', 'best-before-date', 'expiry-date');
-
-                            foreach ($attributes as $attKey => $attrValue) {
-                                if (in_array($attKey, $requiredArray)) {
-                                    if ($attKey == "price") {
-                                        $this->data[$cindex]['offer'][$attKey] = (string)($this->getPrice($product, $attrValue)['special_price']);
-                                        continue;
-                                    }
-                                    if ($attKey == "state") {
-                                        $this->data[$cindex]['offer'][$attKey] = (string)isset($stateArray[$attrValue]) ? (string)$stateArray[$attrValue] : (string)$attrValue;
-                                        continue;
-                                    }
-                                    if (in_array($attKey, array('discount-start-date', 'discount-end-date', 'available-start-date', 'available-end-date'))) {
-                                        if (in_array($attKey, array('discount-start-date', 'discount-end-date'))) {
-                                            if ($attrValue != NULL && isset($attributes['discount-price'])) {
-                                                $attrValue = date('Y-m-d', strtotime($attrValue));
-                                                $this->data[$cindex]['offer'][$attKey] = (string)$attrValue;
-                                            }
-                                            continue;
-                                        }
-                                        if ($attrValue != NULL) {
-                                            $attrValue = date('Y-m-d', strtotime($attrValue));
-                                            $this->data[$cindex]['offer'][$attKey] = (string)$attrValue;
-                                        }
-                                        continue;
-                                    }
-                                    if (in_array($attKey, array('best-before-date', 'expiry-date'))) {
-                                        if ($attrValue != NULL) {
-                                            $attrValue = date('Y-m-d', strtotime($attrValue));
-                                            $this->data[$cindex]['offer']['offer-additional-fields'][] = array(
-                                                'offer-additional-field' => array(
-                                                    '_attribute' => array(),
-                                                    '_value' => array(
-                                                        'code' => $attKey,
-                                                        'value' => (string)$attrValue
-                                                    )
-                                                )
-                                            );
-                                        }
-                                        continue;
-                                    }
-                                    if (in_array($attKey, array('club-Betterthat-eligible', 'tax-au'))) {
-                                        if ($attrValue != NULL) {
-                                            $this->data[$cindex]['offer']['offer-additional-fields'][] = array(
-                                                'offer-additional-field' => array(
-                                                    '_attribute' => array(),
-                                                    '_value' => array(
-                                                        'code' => $attKey,
-                                                        'value' => (string)$attrValue
-                                                    )
-                                                )
-                                            );
-                                        }
-                                        continue;
-                                    }
-                                    if ($attrValue != NULL) {
-                                        $this->data[$cindex]['offer'][$attKey] = (string)$attrValue;
-                                    }
-                                }
-                            }
-                            if (isset($this->data[$cindex]['offer']['offer-additional-fields'])) {
-                                $this->data[$cindex]['offer']['offer-additional-fields'] = array(
-                                    '_attribute' => array(),
-                                    '_value' => $this->data[$cindex]['offer']['offer-additional-fields']
-
-                                );
-                            }
-                            if (!isset($this->data[$cindex]['offer']['discount-end-date']) && isset($this->data[$cindex]['offer']['discount-price'])) {
-                                $this->data[$cindex]['offer']['discount-end-date'] = '';
-                            }
-                            if (!isset($this->data[$cindex]['offer']['discount-start-date']) && isset($this->data[$cindex]['offer']['discount-price'])) {
-                                $this->data[$cindex]['offer']['discount-start-date'] = '';
-                            }
+                            $invupdatejson = '{
+                                "product_id": "",
+                                "_id": "",
+                                "base_stock": "$quantity"
+                            }';
                             $cindex++;
                         }
                         $index = $cindex;
@@ -1556,142 +1441,29 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $product->getVisibility() != 1
                     ) {
                         $this->ids[] = $product->getId();
-                        $attributes = $this->prepareAttributes(
-                            $product,
-                            $profile
-                        );
-                        $this->data[$index]['offer']['sku'] = (string)($product->getSku());
-                        $this->data[$index]['offer']['product-id'] = (string)($product->getSku());
-                        $this->data[$index]['offer']['product-id-type'] = 'SHOP_SKU';
-
-                        if ($threshold_status) {
                             $quantity = $this->getFinalQuantityToUpload($product);
-                            /*$quantity = $this->stockState->getStockQty(
-                                $product->getId(),
-                                $product->getStore()->getWebsiteId()
-                            );*/
-                            if ($quantity <= $threshold_limit) {
-                                $this->data[$index]['offer']['quantity'] = (string)$threshold_min;
-                            } else {
-                                $this->data[$index]['offer']['quantity'] = (string)$threshold_max;
-                            }
-                        } else {
-                            $quantity = $this->getFinalQuantityToUpload($product);
-                            $this->data[$index]['offer']['quantity'] = (string) $quantity;
-                            /*$this->data[$index]['offer']['quantity'] = (string)$this->stockState->getStockQty(
-                                $product->getId(),
-                                $product->getStore()->getWebsiteId()
-                            );*/
-                        }
-                        if ($makeInactive === true) {
-                            $this->data[$index]['offer']['quantity'] = '0';
-                        }
+                            $betterThatId = explode(':' , $product->getBetterthatProductId());
 
-                        $stateArray = array(
-                            'New' => 11,
-                            'Refurbished' => 10,
-                            'Outlet - Refurbished' => 7,
-                            'Outlet - New' => 8,
-                        );
+                            $product_id = @$betterThatId[0] ? $betterThatId[0] : '';
+                            $_id = @$betterThatId[1] ? $betterThatId[1] : '';;
+                            $invupdate = [
+                                'product_id' => $product_id,
+                                '_id' => $_id,
+                                'base_stock' => $quantity
+                            ];
+                        $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->updateInventory($invupdate);
 
-                        $requiredArray = array('sku', 'product-id', 'product-id-type',
-                            'description', 'internal-description', 'price', 'price-additional-info', 'quantity',
-                            'min-quantity-alert', 'state', 'available-start-date', 'available-end-date', 'logistic-class',
-                            'discount-price', 'discount-start-date', 'discount-end-date', 'leadtime-to-ship', 'update-delete',
-                            'club-Betterthat-eligible', 'tax-au', 'best-before-date', 'expiry-date');
-
-                        foreach ($attributes as $attKey => $attrValue) {
-                            if (in_array($attKey, $requiredArray)) {
-                                if ($attKey == "price") {
-                                    $this->data[$index]['offer'][$attKey] = (string)($this->getPrice($product, $attrValue)['special_price']);
-                                    continue;
-                                }
-                                if ($attKey == "state") {
-                                    $this->data[$index]['offer'][$attKey] = (string)isset($stateArray[$attrValue]) ? (string)$stateArray[$attrValue] : (string)$attrValue;
-                                    continue;
-                                }
-                                if (in_array($attKey, array('discount-start-date', 'discount-end-date', 'available-start-date', 'available-end-date'))) {
-                                    if (in_array($attKey, array('discount-start-date', 'discount-end-date'))) {
-                                        if ($attrValue != NULL && isset($attributes['discount-price'])) {
-                                            $attrValue = date('Y-m-d', strtotime($attrValue));
-                                            $this->data[$index]['offer'][$attKey] = (string)$attrValue;
-                                        }
-                                        continue;
-                                    }
-                                    if ($attrValue != NULL) {
-                                        $attrValue = date('Y-m-d', strtotime($attrValue));
-                                        $this->data[$index]['offer'][$attKey] = (string)$attrValue;
-                                    }
-                                    continue;
-                                }
-                                if (in_array($attKey, array('best-before-date', 'expiry-date'))) {
-                                    if ($attrValue != NULL) {
-                                        $attrValue = date('Y-m-d', strtotime($attrValue));
-                                        $this->data[$index]['offer']['offer-additional-fields'][] = array(
-                                            'offer-additional-field' => array(
-                                                '_attribute' => array(),
-                                                '_value' => array(
-                                                    'code' => $attKey,
-                                                    'value' => (string)$attrValue
-                                                )
-                                            )
-                                        );
-                                    }
-                                    continue;
-                                }
-                                if (in_array($attKey, array('club-Betterthat-eligible', 'tax-au'))) {
-                                    if ($attrValue != NULL) {
-                                        $this->data[$index]['offer']['offer-additional-fields'][] = array(
-                                            'offer-additional-field' => array(
-                                                '_attribute' => array(),
-                                                '_value' => array(
-                                                    'code' => $attKey,
-                                                    'value' => (string)$attrValue
-                                                )
-                                            )
-                                        );
-                                    }
-                                    continue;
-                                }
-                                if ($attrValue != NULL) {
-                                    $this->data[$index]['offer'][$attKey] = (string)$attrValue;
-                                }
-                            }
-                        }
-                        if (isset($this->data[$index]['offer']['offer-additional-fields'])) {
-                            $this->data[$index]['offer']['offer-additional-fields'] = array(
-                                '_attribute' => array(),
-                                '_value' => $this->data[$index]['offer']['offer-additional-fields']
-
-                            );
-                        }
-                        if (!isset($this->data[$index]['offer']['discount-end-date']) && isset($this->data[$index]['offer']['discount-price'])) {
-                            $this->data[$index]['offer']['discount-end-date'] = '';
-                        }
-                        if (!isset($this->data[$index]['offer']['discount-start-date']) && isset($this->data[$index]['offer']['discount-price'])) {
-                            $this->data[$index]['offer']['discount-start-date'] = '';
-                        }
+                    }
                         $index++;
                     }
                 }
-                if ($withProducts) {
-                    $this->offerData = $this->data;
-                    $this->data = [];
-                    $this->prepareProductData($ids);
-                    $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])
-                        ->createOfferWithProduct($this->offerData, $this->data);
-                    $response = $this->saveResponse($response);
-                    return $response;
-                }
-                $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])
-                    ->createOffer($this->data);
-                $response = $this->saveResponse($response);
+
                 return $response;
-            }
-            return $response;
-        } catch (\Exception $e) {
+            }catch (\Exception $e) {
             $this->logger->error('Offer Update', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
+            return $response;
+
     }
 
     /**
@@ -1701,15 +1473,29 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function updateStatus($ids = [], $status = \Ced\Betterthat\Model\Source\Product\Status::UPLOADED)
     {
+        $betterthatId = null;
         if (!empty($ids) and is_array($ids) and
                 in_array($status, \Ced\Betterthat\Model\Source\Product\Status::STATUS)
         ) {
-            foreach ($ids as $index => $product) {
-                $product = $this->product->create()->load($product);
-                $product->setData('betterthat_product_status', $status);
-                $product->getResource()->saveAttribute($product, 'betterthat_product_status');
+            if(@$this->response['_id']) {
+                $betterthatId = $this->response['_id'] .':'. $this->response['retailer_products'][0]['_id'];
             }
-            return true;
+            try{
+                foreach ($ids as $index => $product) {
+                    $product = $this->product->create()->load($product);
+                    $product->setData('betterthat_product_status', $status);
+                    $product->getResource()->saveAttribute($product, 'betterthat_product_status');
+                    if($betterthatId){
+                        $product->setData('betterthat_product_id', $betterthatId);
+                        $product->getResource()->saveAttribute($product, 'betterthat_product_id');
+                    }
+                }
+                return true;
+
+            }catch(\Exception $e){
+
+            }
+
         }
 
         return false;
@@ -1764,67 +1550,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return false;
     }
+
     /**
-     * Function Product Id Validate
+     * @param $productID
+     * @param $barcodeType
+     * @return bool
+     *
      */
-    /*public function validateProductId($productID, $barcodeType)
-    {
-        $barcodeType = strtolower($barcodeType);
-        $productID = trim($productID);
-        switch ($barcodeType) {
-            case 'ean':
-                $isValid = \Ced\Betterthat\Helper\BarcodeValidator::IsValidEAN14($productID);
-
-                if($isValid){
-                    return true;
-                } else {
-                    $isValid = \Ced\Betterthat\Helper\BarcodeValidator::IsValidEAN13($productID);
-                    if($isValid){
-                        return true;
-                    } else {
-                        $isValid = \Ced\Betterthat\Helper\BarcodeValidator::IsValidEAN8($productID);
-                        if($isValid){
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-                break;
-            case 'isbn':
-                $isValid = \Ced\Betterthat\Helper\BarcodeValidator::IsValidISBN($productID);
-                if($isValid){
-                    return true;
-                } else {
-                    return false;
-                }
-                break;
-            case 'upc':
-                if(strlen($productID) % 2 == 0){
-                    $productID = 0 . $productID;
-                }
-                $isValid = \Ced\Betterthat\Helper\BarcodeValidator::IsValidUPCA($productID);
-                if($isValid){
-                    return true;
-                } else {
-                    $isValid = \Ced\Betterthat\Helper\BarcodeValidator::IsValidUPCE($productID);
-                    if($isValid){
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-                break;
-            case 'mpn':
-                return true;
-                break;
-
-            default:
-                return false;
-                break;
-        }
-    }*/
-
     public function validateProductId($productID, $barcodeType) {
         if(!in_array($barcodeType, array('upc', 'ean', 'isbn', 'mpn'))) {
             return false;

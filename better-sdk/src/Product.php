@@ -419,43 +419,8 @@ class Product extends \BetterthatSdk\Core\Request
      */
     public function updateInventory($data)
     {
-        if (isset($data[0]['item'])) {
-            $inventory = [
-                'store-inventory' => [
-                    '_attribute' => [
-                        'xmlns' => 'http://seller.marketplace.Betterthat.com/catalog/v7',
-                        'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
-                        'xsi:schemaLocation' =>
-                            'http://seller.marketplace.Betterthat.com/catalog/v7 ../../../../../rest/inventory/import/v7/store-inventory.xsd'],
-                    '_value' => $data
-                ]
-            ];
-
-            $path = $this->getFile($this->baseDirectory, 'store-inventory.xml');
-            $xml = new \BetterthatSdk\Generator();
-            $inventory = $xml->arrayToXml($inventory);
-            $inventory->save($path);
-
-            //check Xml via Xsd validator
-            $validate = $this->validateXml(
-                $path,
-                $this->xsdPath . 'store-inventory.xsd',
-                self::FEED_CODE_INVENTORY_UPDATE
-            );
-
-            if (isset($validate['feed_errors']) && empty($validate['feed_errors'])) {
-                $response = $this->putRequest(self::PUT_INVENTORY_SUB_URL, ['data' => $inventory->__toString()]);
-                if ($this->debugMode) {
-                    $cpPath = $this->getFile(
-                        $this->baseDirectory,
-                        self::FEED_CODE_INVENTORY_UPDATE . '-' . time() . '.xml'
-                    );
-                    $inventory->save($cpPath);
-                    return $this->responseParse($response, self::FEED_CODE_INVENTORY_UPDATE, $cpPath);
-                }
-                return $this->responseParse($response, self::FEED_CODE_INVENTORY_UPDATE);
-            }
-            return $validate;
+        if ($data) {
+           return $response = $this->postRequest(self::POST_INVPRICE, ['data' => $data]);
         }
         return false;
     }
