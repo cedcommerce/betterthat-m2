@@ -95,17 +95,6 @@ class Upload extends \Magento\Backend\App\Action
     public function execute()
     {
 
-        //print_r($this->getRequest()->getParams());die;
-        // case 1 check if api config are valid
-        if (!$this->Betterthat->checkForConfiguration()) {
-            $this->messageManager->addErrorMessage(
-                __('Products Upload Failed. Betterthat API not enabled or Invalid. Please check Betterthat Configuration.')
-            );
-            $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedirect;
-        }
-
         // case 2 ajax request for chunk processing
         $batchId = $this->getRequest()->getParam('batchid');
         if (isset($batchId)) {
@@ -124,6 +113,13 @@ class Upload extends \Magento\Backend\App\Action
                     [
                     'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) .' '. $response['message'],
                     'messages' => $response['message']
+                    ]
+                );
+            }else{
+                return $resultJson->setData(
+                    [
+                        'errors' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) . " Upload Failed. Reason: Invalid item ",
+                        'messages' => @$response['message'],
                     ]
                 );
             }

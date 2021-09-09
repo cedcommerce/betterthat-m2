@@ -77,52 +77,6 @@ class Edit extends Action
      */
     public function execute()
     {
-        // case 1 check if api config are valid
-        if (!$this->config->isValid()) {
-            $this->messageManager->addErrorMessage(
-                __('Betterthat API not enabled or credentials are invalid. Please check Betterthat Configuration.')
-            );
-        }
-
-        // Case 2 api credentials are valid, for block form
-
-        /*
-        // Case 2.1: Block form
-        $profileCode = $this->getRequest()->getParam('pcode');
-        $id = $this->getRequest()->getParam('id');
-        if (isset($profileCode) or isset($id)) {
-            if (isset($profileCode) and !empty($profileCode)) {
-                $profile = $this->profile->getCollection()
-                    ->addFieldToFilter('profile_code', $profileCode)
-                    ->getFirstItem();
-            } else {
-                $profile = $this->profile->getCollection()
-                    ->addFieldToFilter('id', $id)
-                    ->getFirstItem();
-            }
-
-            $this->getRequest()->setParam('is_profile', 1);
-            $this->_coreRegistry->register('current_profile', $profile);
-            $resultPage = $this->resultPageFactory->create();
-            $resultPage->getConfig()->getTitle()
-                ->prepend($profile->getId() ? $profile->getProfileName() : __('New Profile'));
-            $resultPage->getLayout()->getBlock('profile_edit_js')
-                ->setIsPopup((bool)$this->getRequest()->getParam('popup'));
-            return $resultPage;
-        } else {
-            $profile = $this->profile;
-            $this->_coreRegistry->register('current_profile', $this->profile);
-            $breadCrumb = __('Add New Profile');
-            $breadCrumbTitle = __('Add New Profile');
-            $item = __('New Profile');
-            $resultPage = $this->resultPageFactory->create();
-            $resultPage->getConfig()->getTitle()->prepend(__('New Profile'));
-            $resultPage->getLayout()
-                ->getBlock('profile_edit_js')
-                ->setIsPopup((bool)$this->getRequest()->getParam('popup'));
-            return $resultPage;
-        }*/
-
         // Case 2.1 : Ui form
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Ced_Betterthat::Betterthat_profile');

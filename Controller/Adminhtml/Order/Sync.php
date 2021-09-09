@@ -103,31 +103,14 @@ class Sync extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        // case 2 ajax request for chunk processing
-        $batchId = $this->getRequest()->getParam('batchid');
-        if (isset($batchId)) {
-            $resultJson = $this->resultJsonFactory->create();
-            $orderIds = $this->session->getBetterthatOrders();
-            $response = $this->orderHelper->syncOrders($orderIds[$batchId]);
-            if (isset($orderIds[$batchId]) && $response) {
-                return $resultJson->setData(
-                    [
-                        'success' => count($orderIds[$batchId]) . "Order Sync Successfully",
-                        'messages' => $response//$this->registry->registry('Betterthat_product_errors')
-                    ]
-                );
-            }
-            return $resultJson->setData(
-                [
-                    'error' => count($orderIds[$batchId]) . "Order Sync Failed",
-                    'messages' => $this->registry->registry('Betterthat_order_errors'),
-                ]
-            );
+        $id = $this->getRequest()->getParam('id');
+        if(!$id){
+            $collection = $this->filter->getCollection($this->orderModel->getCollection());
+            $ids = $collection->getAllIds();
+            $id = @$ids[0];
         }
 
-        // case 3 normal uploading and chunk creating
-        $id = $this->getRequest()->getParam('id');
-        $orderIds = [$id];
+
         $this->orders->load($this->orderModel, $id, 'id');
         $betterthatOrderId = $this->orderModel->getData('Betterthat_order_id');
         $orderList = $this->Betterthat->create(
@@ -147,41 +130,54 @@ class Sync extends \Magento\Backend\App\Action
                 'ExpressDelivery' => 'Australia Post'
             ];
             $title = $titles[@$response['data'][0]['shipping_type']];
+            $tracking = [[
+                'carrier_code' => 'ups',
+                'title' => 'United Parcel Service',//$title,
+                'number' => $trackingNumber,
+            ]];
+        }else{
+            $orderStatus = @$response['data'][0]['order_status'];
+            if($orderStatus){
+                $this->orderModel->setData('status',$orderStatus);
+                $this->orders->save($this->orderModel);
+            }
+            $this->messageManager->addSuccessMessage("Ordered status & shipment synced successfully !!");
+            return $this->_redirect('betterthat/order/index');
         }
         $shipment = $this->createShipment($order,$trackingNumber,$title);
 
-
         if ($shipment) {
+            $orderStatus = @$response['data'][0]['order_status'];
+            if($orderStatus){
+                $this->orderModel->setData('status',$orderStatus);
+                $this->orders->save($this->orderModel);
+            }
             $this->messageManager->addSuccessMessage("Order Id : ".$order->getIncrementId()." Synced Successfully. Shipment generated!!");
-            $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedirect;
-        }else {
-            $this->messageManager->addErrorMessage("Shipment Already generated!!");
-            $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedirect;
+            return $this->_redirect('betterthat/order/index');
+        }else{
+            $this->messageManager->addErrorMessage("Order Id : ".$order->getIncrementId()." Shipment Already generated!!");
+            return $this->_redirect('betterthat/order/index');
         }
 
         // case 3.1 normal uploading if current ids are less than chunk size.
-       /* if (count($orderIds) <= self::CHUNK_SIZE) {
-            die('ff');
-            $response = $this->orderHelper->syncOrders($orderIds);
-            if ($response) {
-                $this->messageManager->addSuccessMessage(count($orderIds) . ' Order(s) Synced Successfully');
-            } else {
-                $message = 'Order(s) Syncing Failed.';
-                $errors = $this->registry->registry('Betterthat_order_errors');
-                if (isset($errors)) {
-                    $message = "Order(s) Syncing Failed. \nErrors: " . (string)json_encode($errors);
-                }
-                $this->messageManager->addError($message);
-            }
+        /* if (count($orderIds) <= self::CHUNK_SIZE) {
+             die('ff');
+             $response = $this->orderHelper->syncOrders($orderIds);
+             if ($response) {
+                 $this->messageManager->addSuccessMessage(count($orderIds) . ' Order(s) Synced Successfully');
+             } else {
+                 $message = 'Order(s) Syncing Failed.';
+                 $errors = $this->registry->registry('Betterthat_order_errors');
+                 if (isset($errors)) {
+                     $message = "Order(s) Syncing Failed. \nErrors: " . (string)json_encode($errors);
+                 }
+                 $this->messageManager->addError($message);
+             }
 
-            $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedirect;
-        }*/
+             $resultRedirect = $this->resultFactory->create('redirect');
+             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+             return $resultRedirect;
+         }*/
         // case 3.2 normal uploading if current ids are more than chunk size.
         $orderIds = array_chunk($orderIds, self::CHUNK_SIZE);
         $this->registry->register('orderids', count($orderIds));
@@ -201,11 +197,11 @@ class Sync extends \Magento\Backend\App\Action
     {
         try {
             if ($order){
-                $data = [[
+                $data = array(array(
                     'carrier_code' => $order->getShippingMethod(),
                     'title' => $title,
                     'number' => $trackingNumber,
-                ]];
+                ));
                 $shipment = $this->prepareShipment($order, $data);
                 if ($shipment) {
                     $order->setIsInProcess(true);

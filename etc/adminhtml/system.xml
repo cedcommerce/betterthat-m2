@@ -51,7 +51,7 @@
                     </depends>
                 </field>
 
-                <field id="client_secret" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="0"
+                <field id="client_secret" translate="label" type="password" sortOrder="60" showInDefault="1" showInWebsite="0"
                        showInStore="0"
                        showInProfile="1"
                 >

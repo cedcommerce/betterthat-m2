@@ -97,7 +97,7 @@ class DataProvider extends AbstractDataProvider
         foreach ($items as $item) {
             $products = [
                 'magento_category' => json_decode($item['magento_category'], true),
-                'betterthat_category' => json_decode($item['betterthat_categories'], true),
+                'betterthat_category' => @$item['betterthat_categories'] ? json_decode($item['betterthat_categories'], true) : '',
             ];
 
             $info = [

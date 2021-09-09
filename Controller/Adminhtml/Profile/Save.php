@@ -177,7 +177,6 @@ class Save extends \Magento\Backend\App\Action
         $BetterThat = $this->getRequest()->getParam('BetterThat');
         $store_categories = $this->getRequest()->getParam('betterthat_category');
         $BetterThatAttributes = $this->getRequest()->getParam('betterthat_attributes');
-
         if (!empty($BetterThatAttributes)) {
 
             $BetterThatAttributes = $this->mergeAttributes($BetterThatAttributes, 'name');
@@ -222,7 +221,6 @@ class Save extends \Magento\Backend\App\Action
         if (!$this->data->getProfileCode() or !$this->data->getProfileName()) {
             return false;
         }
-
         return true;
 
     }

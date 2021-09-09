@@ -440,10 +440,16 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 $failedOrder = false;
                 foreach ($order['Product_data'] as $item) {
                     $item['product_id'] = @$item['product_id'][0] ? $item['product_id'][0] : '';
+                    $sku = [
+                        '8517' => '30',
+                        '8516' => '60'
+                    ];
+                    // override only for demo purpose..
+                    $item['product_id'] = @$sku[$item['product_id']];
                     if (isset($item['product_id'])) {
                         $qty = $qtyArray[$item['_id']];
                         $product = $this->product->create()->load($item['product_id']);
-                        if (isset($product) and !empty($product)) {
+                        if (isset($product) and !empty($product) and $product->getId()) {
                             $product = $this->product->create()->load($product->getEntityId());
                             if ($product->getStatus() == '1') {
                                 /* Get stock item */
@@ -467,7 +473,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                     $quote->addProduct($product, (int)$qty);
 
                                 } else {
-                                    $reason[] = $item['product_id'] . "Product is out of stock";
+                                    $reason[] = $item['product_id'] . " Product is out of stock";
                                     $failedOrder = true;
 
                                 }
@@ -646,9 +652,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public function rejectOrder(array $order, array $items = [], array $reason = [])
     {
         try {
-            if(@$items[0]){
-                $reason[0] = $reason[0] . ' Order Item sku: '.$items[0];
-            }
             $orderFailed = $this->orderFailed->create()->load($order['_id'], 'Betterthat_order_id');
             $addData = [
                 'Betterthat_order_id' => $order['_id'],
@@ -663,6 +666,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $this->failedCount++;
             return true;
         } catch (\Exception $e) {
+            print_r($e->getMessage());die;
             $this->logger->error('Reject Order', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
