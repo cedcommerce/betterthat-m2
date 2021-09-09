@@ -103,31 +103,14 @@ class Sync extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        // case 2 ajax request for chunk processing
-        $batchId = $this->getRequest()->getParam('batchid');
-        if (isset($batchId)) {
-            $resultJson = $this->resultJsonFactory->create();
-            $orderIds = $this->session->getBetterthatOrders();
-            $response = $this->orderHelper->syncOrders($orderIds[$batchId]);
-            if (isset($orderIds[$batchId]) && $response) {
-                return $resultJson->setData(
-                    [
-                        'success' => count($orderIds[$batchId]) . "Order Sync Successfully",
-                        'messages' => $response//$this->registry->registry('Betterthat_product_errors')
-                    ]
-                );
-            }
-            return $resultJson->setData(
-                [
-                    'error' => count($orderIds[$batchId]) . "Order Sync Failed",
-                    'messages' => $this->registry->registry('Betterthat_order_errors'),
-                ]
-            );
+        $id = $this->getRequest()->getParam('id');
+        if(!$id){
+            $collection = $this->filter->getCollection($this->orderModel->getCollection());
+            $ids = $collection->getAllIds();
+            $id = @$ids[0];
         }
 
-        // case 3 normal uploading and chunk creating
-        $id = $this->getRequest()->getParam('id');
-        $orderIds = [$id];
+
         $this->orders->load($this->orderModel, $id, 'id');
         $betterthatOrderId = $this->orderModel->getData('Betterthat_order_id');
         $orderList = $this->Betterthat->create(
@@ -152,20 +135,28 @@ class Sync extends \Magento\Backend\App\Action
                 'title' => 'United Parcel Service',//$title,
                 'number' => $trackingNumber,
             ]];
+        }else{
+            $orderStatus = @$response['data'][0]['order_status'];
+            if($orderStatus){
+                $this->orderModel->setData('status',$orderStatus);
+                $this->orders->save($this->orderModel);
+            }
+            $this->messageManager->addSuccessMessage("Ordered status & shipment synced successfully !!");
+            return $this->_redirect('betterthat/order/index');
         }
         $shipment = $this->createShipment($order,$trackingNumber,$title);
 
-
         if ($shipment) {
+            $orderStatus = @$response['data'][0]['order_status'];
+            if($orderStatus){
+                $this->orderModel->setData('status',$orderStatus);
+                $this->orders->save($this->orderModel);
+            }
             $this->messageManager->addSuccessMessage("Order Id : ".$order->getIncrementId()." Synced Successfully. Shipment generated!!");
-            $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedirect;
+            return $this->_redirect('betterthat/order/index');
         }else{
-            $this->messageManager->addErrorMessage("Shipment Already generated!!");
-            $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedirect;
+            $this->messageManager->addErrorMessage("Order Id : ".$order->getIncrementId()." Shipment Already generated!!");
+            return $this->_redirect('betterthat/order/index');
         }
 
         // case 3.1 normal uploading if current ids are less than chunk size.

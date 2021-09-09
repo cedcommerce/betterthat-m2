@@ -88,7 +88,7 @@ class InstallSchema implements InstallSchemaInterface
                 'Profile Name'
             )
             ->addColumn(
-                'better_categories',
+                'betterthat_categories',
                 Table::TYPE_TEXT,
                 255,
                 [
