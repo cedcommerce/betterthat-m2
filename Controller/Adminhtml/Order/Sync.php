@@ -147,11 +147,6 @@ class Sync extends \Magento\Backend\App\Action
                 'ExpressDelivery' => 'Australia Post'
             ];
             $title = $titles[@$response['data'][0]['shipping_type']];
-            $tracking = [[
-                'carrier_code' => 'ups',
-                'title' => 'United Parcel Service',//$title,
-                'number' => $trackingNumber,
-            ]];
         }
         $shipment = $this->createShipment($order,$trackingNumber,$title);
 
@@ -161,7 +156,7 @@ class Sync extends \Magento\Backend\App\Action
             $resultRedirect = $this->resultFactory->create('redirect');
             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
             return $resultRedirect;
-        }else{
+        }else {
             $this->messageManager->addErrorMessage("Shipment Already generated!!");
             $resultRedirect = $this->resultFactory->create('redirect');
             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
@@ -206,11 +201,11 @@ class Sync extends \Magento\Backend\App\Action
     {
         try {
             if ($order){
-                $data = array(array(
+                $data = [[
                     'carrier_code' => $order->getShippingMethod(),
                     'title' => $title,
                     'number' => $trackingNumber,
-                ));
+                ]];
                 $shipment = $this->prepareShipment($order, $data);
                 if ($shipment) {
                     $order->setIsInProcess(true);
