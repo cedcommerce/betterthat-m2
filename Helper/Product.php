@@ -814,7 +814,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                               "id"=> $id['id'],
                             "product_id"=> $id['id'],
                             "title"=> $attributes['title'],
-                            "price"=> $product->getPrice(),
+                            "price"=> $price,
                             "sku"=> "",
                             "position"=> 1,
                             "inventory_policy"=> "deny",

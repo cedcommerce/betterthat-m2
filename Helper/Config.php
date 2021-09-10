@@ -303,7 +303,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getPriceType()
     {
         $priceType = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/price_settings/price");
+            ->getValue("betterthat_config/betterthat_product/price_settings/price");
         if (isset($priceType) and !empty($priceType)) {
             return $priceType;
         }
@@ -313,7 +313,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getFixedPrice()
     {
         $fixPrice = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/price_settings/fix_price");
+            ->getValue("betterthat_config/betterthat_product/price_settings/fix_price");
         if (isset($fixPrice) and !empty($fixPrice)) {
             return $fixPrice;
         }
@@ -323,7 +323,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getPercentPrice()
     {
         $percentPrice = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/price_settings/percentage_price");
+            ->getValue("betterthat_config/betterthat_product/price_settings/percentage_price");
         if (isset($percentPrice) and !empty($percentPrice)) {
             return $percentPrice;
         }
@@ -343,7 +343,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getReferenceType()
     {
         $product_reference_type = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_setting/product_reference_type");
+            ->getValue("betterthat_config/betterthat_setting/product_reference_type");
         if (isset($product_reference_type) and !empty($product_reference_type)) {
             return $product_reference_type;
         }
@@ -353,7 +353,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getReferenceValue()
     {
         $product_reference_value = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_setting/product_reference_value");
+            ->getValue("betterthat_config/betterthat_setting/product_reference_value");
         if (isset($product_reference_value) and !empty($product_reference_value)) {
             return $product_reference_value;
         }
@@ -363,7 +363,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAutoCancelOrderSetting()
     {
         $auto_cancel_order = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_order/auto_cancel_order");
+            ->getValue("betterthat_config/betterthat_order/auto_cancel_order");
         if (isset($auto_cancel_order) and !empty($auto_cancel_order)) {
             return $auto_cancel_order;
         }
@@ -373,7 +373,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAutoAcceptOrderSetting()
     {
         $auto_cancel_order = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_order/auto_accept_order");
+            ->getValue("betterthat_config/betterthat_order/auto_accept_order");
         if (isset($auto_cancel_order) and !empty($auto_cancel_order)) {
             return $auto_cancel_order;
         }
@@ -383,14 +383,14 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getHoldOrderUntilShipping()
     {
         $holdOrder = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_order/hold_order_until_shipping");
+            ->getValue("betterthat_config/betterthat_order/hold_order_until_shipping");
         return $holdOrder;
     }
 
     public function getStore()
     {
         $storeId = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_setting/storeid");
+            ->getValue("betterthat_config/betterthat_setting/storeid");
         if (isset($storeId) and !empty($storeId)) {
             return $storeId;
         }
@@ -400,50 +400,50 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getThrottleMode()
     {
         return $this->throttle = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/throttle");
+            ->getValue("betterthat_config/betterthat_product/throttle");
     }
         public function getThresholdStatus()
     {
         return $this->throttle = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/inventory_settings/advanced_threshold_status");
+            ->getValue("betterthat_config/betterthat_product/inventory_settings/advanced_threshold_status");
     }
     public function getThresholdLimit()
     {
         return $this->throttle = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/inventory_settings/inventory_rule_threshold");
+            ->getValue("betterthat_config/betterthat_product/inventory_settings/inventory_rule_threshold");
     }
     public function getThresholdLimitMin()
     {
         return $this->throttle = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/inventory_settings/send_inventory_for_lesser_than_threshold");
+            ->getValue("betterthat_config/betterthat_product/inventory_settings/send_inventory_for_lesser_than_threshold");
     }
     public function getThresholdLimitMax()
     {
         return $this->throttle = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/inventory_settings/send_inventory_for_greater_than_threshold");
+            ->getValue("betterthat_config/betterthat_product/inventory_settings/send_inventory_for_greater_than_threshold");
     }
 
     public function getUseMsi()
     {
         $useMsi = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/inventory_settings/use_msi");
+            ->getValue("betterthat_config/betterthat_product/inventory_settings/use_msi");
         return $useMsi;
     }
 
     public function getMsiSourceCode()
     {
         $msiSourceCode = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/inventory_settings/msi_source_code");
+            ->getValue("betterthat_config/betterthat_product/inventory_settings/msi_source_code");
         return $msiSourceCode;
     }
 
     public function getUseSalableQty() {
         return $this->scopeConfigManager
-            ->getValue('Betterthat_config/Betterthat_product/inventory_settings/use_salable_qty');
+            ->getValue('betterthat_config/betterthat_product/inventory_settings/use_salable_qty');
     }
 
     public function getSalableStockName() {
         return $this->scopeConfigManager
-            ->getValue('Betterthat_config/Betterthat_product/inventory_settings/salable_stock_name');
+            ->getValue('betterthat_config/betterthat_product/inventory_settings/salable_stock_name');
     }
 }

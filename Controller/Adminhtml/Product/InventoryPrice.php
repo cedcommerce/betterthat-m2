@@ -106,7 +106,9 @@ class InventoryPrice extends \Magento\Backend\App\Action
         }
 
         $batch_id = $this->getRequest()->getParam('batchid');
+
         if (isset($batch_id)) {
+
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
             $response = $this->Betterthat->updatePriceInventory($productIds[$batch_id]);
