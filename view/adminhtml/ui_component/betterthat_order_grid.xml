@@ -96,12 +96,12 @@
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">sync</item>
-                        <item name="label" xsi:type="string" translate="true">Sync Order(s)</item>
+                        <item name="label" xsi:type="string" translate="true">Sync Order(s)/Shipments</item>
                         <item name="url" xsi:type="url" path="betterthat/order/sync"/>
                     </item>
                 </argument>
             </action>
-            <action name="mark_shipped">
+            <!--<action name="mark_shipped">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">mark_shipped</item>
@@ -113,7 +113,7 @@
                         </item>
                     </item>
                 </argument>
-            </action>
+            </action>-->
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>

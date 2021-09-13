@@ -709,8 +709,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     }
 
                 }
+                $image = $product->getImage();
 
-                if(!$product->getImage()){
+                if(!$image || $image == 'no_selection'){
                     $errors['Image'] = 'Product should have Images';
                 }
 
