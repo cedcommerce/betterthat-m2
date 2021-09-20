@@ -16,50 +16,28 @@
  * @copyright Copyright CEDCOMMERCE(https://cedcommerce.com/)
  * @license   https://cedcommerce.com/license-agreement.txt
  */
-
-* * * * * /opt/lampp/bin/php -d memory_limit=2G  /opt/lampp/htdocs/m2.1.9/bin/magento cron:run | grep -v "Ran jobs by schedule" >> /opt/lampp/htdocs/m2.1.9/var/log/magento.cron.log
-* * * * * /opt/lampp/bin/php -d memory_limit=2G  /opt/lampp/htdocs/m2.1.9/update/cron.php >> /opt/lampp/htdocs/m2.1.9/var/log/update.cron.log
-* * * * * /opt/lampp/bin/php -d memory_limit=2G  /opt/lampp/htdocs/m2.1.9/bin/magento setup:cron:run >> /opt/lampp/htdocs/m2.1.9/var/log/setup.cron.log
-
-const CRON_CUSTOM = 'custom';
-const CRON_1MINUTE = '* * * * *';
-const CRON_5MINUTES = '*/5 * * * *';
-const CRON_10MINUTES = '*/10 * * * *';
-const CRON_15MINUTES = '*/15 * * * *';
-const CRON_20MINUTES = '*/20 * * * *';
-const CRON_HALFHOURLY = '*/30 * * * *';
-const CRON_HOURLY = '0 * * * *';
-const CRON_2HOURLY = '0 */2 * * *';
-const CRON_DAILY = '0 0 * * *';
-const CRON_TWICEDAILY = '0 0,12 * * *';
-
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
-       <job name="ced_Betterthat_order_import" instance="Ced\Betterthat\Cron\Order\Import" method="execute">
-            <!--every 1 Hour-->
-            <schedule>*/10 * * * *</schedule>
+       <job name="ced_betterthat_order_import" instance="Ced\Betterthat\Cron\Order\Import" method="execute">
+           <schedule>
+               <config_path>betterthat_config/betterthat_cron/order_cron_schedule</config_path>
+           </schedule>
         </job>
-        <job name="ced_Betterthat_order_sync" instance="Ced\Betterthat\Cron\Order\Sync" method="execute">
-            <!--every 1 Hour-->
-            <schedule>*/15 * * * *</schedule>
+        <job name="ced_betterthat_order_sync" instance="Ced\Betterthat\Cron\Order\Sync" method="execute">
+            <schedule>
+                <config_path>betterthat_config/betterthat_cron/order_sync_cron_schedule</config_path>
+            </schedule>
         </job>
-        <!--<job name="ced_Betterthat_product_inventory_sync" instance="Ced\Betterthat\Cron\Product\Inventory" method="execute">
-            &lt;!&ndash;every 2 Hours&ndash;&gt;
-            <schedule>0 */2 * * *</schedule>
-        </job>-->
-        <job name="ced_Betterthat_product_feed_sync" instance="Ced\Betterthat\Cron\Feed\Sync" method="execute">
-            <!--every 2 Hours-->
-            <schedule>0 */2 * * *</schedule>
-        </job>
-        <job name="ced_Betterthat_full_offer_sync" instance="Ced\Betterthat\Cron\Product\Sync" method="execute">
-            <!--every 1 Hour-->
-            <schedule>*/20 * * * *</schedule>
-        </job>
-        <job name="ced_Betterthat_shipment_cron" instance="Ced\Betterthat\Cron\Order\Shipment" method="execute">
-            <!--every 1 Hour-->
-            <schedule>*/15 * * * *</schedule>
+        <job name="ced_betterthat_product_inventory_sync" instance="Ced\Betterthat\Cron\Product\Inventory" method="execute">
+            <schedule>
+                <config_path>betterthat_config/betterthat_cron/inv_sync_cron_schedule</config_path>
+            </schedule>        </job>
+        <job name="ced_betterthat_shipment_cron" instance="Ced\Betterthat\Cron\Order\Shipment" method="execute">
+            <schedule>
+                <config_path>betterthat_config/betterthat_cron/order_shipment_cron_schedule</config_path>
+            </schedule>
         </job>
     </group>
 </config>
