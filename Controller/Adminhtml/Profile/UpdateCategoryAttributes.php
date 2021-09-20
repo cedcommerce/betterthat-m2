@@ -40,8 +40,11 @@ class UpdateCategoryAttributes extends Action
     public $category;
 
     /**
-     * @param \Magento\Backend\App\Action\Context        $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * UpdateCategoryAttributes constructor.
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     * @param Profile $profile
+     * @param \Ced\Betterthat\Helper\Category $category
      */
     public function __construct(
         Context $context,

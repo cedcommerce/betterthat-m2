@@ -18,9 +18,6 @@
 
 namespace Ced\BetterThat\Controller\Adminhtml\Profile;
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 use Magento\Framework\DataObject;
 
 /**
@@ -82,6 +79,24 @@ class Save extends \Magento\Backend\App\Action
 
     public $profileresource;
 
+    /**
+     * Save constructor.
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Registry $registory
+     * @param \Magento\Config\Model\Config\Structure $configStructure
+     * @param \Magento\Config\Model\Config\Factory $configFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollection
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $catalogCollection
+     * @param \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory $configurable
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param DataObject $data
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Ced\Betterthat\Model\ProfileProductFactory $profileProduct
+     * @param \Ced\Betterthat\Model\ProfileFactory $profileFactory
+     * @param \Ced\Betterthat\Helper\Cache $BetterThatCache
+     * @param \Ced\Betterthat\Helper\Profile $profileHelper
+     * @param \Ced\Betterthat\Model\ResourceModel\ProfileFactory $resourceModel
+     */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $registory,

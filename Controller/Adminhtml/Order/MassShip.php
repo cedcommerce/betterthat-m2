@@ -83,7 +83,7 @@ class MassShip extends \Magento\Backend\App\Action
 
         if (count($BetterthatOrders) == 0) {
             $this->messageManager->addErrorMessage('No Orders To Ship.');
-            $this->_redirect('Betterthat/order/index');
+            $this->_redirect('betterthat/order/index');
             return;
         } else {
             $counter = 0;
@@ -100,13 +100,11 @@ class MassShip extends \Magento\Backend\App\Action
             }
             if ($counter) {
                 $this->messageManager->addSuccessMessage($counter . ' Orders Shipment Successfull to Betterthat.com');
-                $this->_redirect('Betterthat/order/index');
-                return;
             } else {
                 $this->messageManager->addErrorMessage('Orders Shipment Unsuccessfull.');
-                $this->_redirect('Betterthat/order/index');
-                return;
             }
+            return $this->_redirect('betterthat/order/index');
+
         }
 
     }

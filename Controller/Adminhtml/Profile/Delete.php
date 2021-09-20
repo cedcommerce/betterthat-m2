@@ -45,12 +45,12 @@ class Delete extends \Magento\Customer\Controller\Adminhtml\Group
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
                 return $resultRedirect->setPath(
-                    'mpcatch/profile/edit',
+                    'betterthat/profile/edit',
                     ['pcode' => $this->getRequest()->getParam('pcode')]
                 );
                 //End
             }
         }
-        return $this->_redirect('mpcatch/profile/index');
+        return $this->_redirect('betterthat/profile/index');
     }
 }

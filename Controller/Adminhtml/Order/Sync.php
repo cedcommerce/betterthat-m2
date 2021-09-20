@@ -159,25 +159,6 @@ class Sync extends \Magento\Backend\App\Action
             return $this->_redirect('betterthat/order/index');
         }
 
-        // case 3.1 normal uploading if current ids are less than chunk size.
-        /* if (count($orderIds) <= self::CHUNK_SIZE) {
-             die('ff');
-             $response = $this->orderHelper->syncOrders($orderIds);
-             if ($response) {
-                 $this->messageManager->addSuccessMessage(count($orderIds) . ' Order(s) Synced Successfully');
-             } else {
-                 $message = 'Order(s) Syncing Failed.';
-                 $errors = $this->registry->registry('Betterthat_order_errors');
-                 if (isset($errors)) {
-                     $message = "Order(s) Syncing Failed. \nErrors: " . (string)json_encode($errors);
-                 }
-                 $this->messageManager->addError($message);
-             }
-
-             $resultRedirect = $this->resultFactory->create('redirect');
-             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-             return $resultRedirect;
-         }*/
         // case 3.2 normal uploading if current ids are more than chunk size.
         $orderIds = array_chunk($orderIds, self::CHUNK_SIZE);
         $this->registry->register('orderids', count($orderIds));
