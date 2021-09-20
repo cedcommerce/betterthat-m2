@@ -36,7 +36,7 @@ class BetterthatCategoryMapping extends \Magento\Backend\Block\Template
     }
     public function getBetterthatCategoryUrl()
     {
-        return $this->_objectManager->get('\Magento\Backend\Model\UrlInterface')->getUrl('bonanza/category/fetch');
+        return $this->_objectManager->get('\Magento\Backend\Model\UrlInterface')->getUrl('betterthat/category/fetch');
     }
 
     /**

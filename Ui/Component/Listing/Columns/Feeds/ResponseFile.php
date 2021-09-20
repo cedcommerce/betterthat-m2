@@ -7,16 +7,16 @@
  * This source file is subject to the End User License Agreement (EULA)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://cedcommerce.com/license-agreement.txt
+ * https://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
- * @package   Ced_MPCatch
+ * @package   Ced_Betterthat
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright Copyright CEDCOMMERCE (http://cedcommerce.com/)
- * @license   http://cedcommerce.com/license-agreement.txt
+ * @copyright Copyright CEDCOMMERCE (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
-namespace Ced\MPCatch\Ui\Component\Listing\Columns\Feeds;
+namespace Ced\Betterthat\Ui\Component\Listing\Columns\Feeds;
 
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
@@ -29,7 +29,7 @@ use Magento\Ui\Component\Listing\Columns\Column;
 class ResponseFile extends Column
 {
     /**
- * Url path 
+ * Url path
 */
     const URL_PATH_SYNC = 'mpcatch/feeds/sync';
 

@@ -13,7 +13,7 @@
  * @category    Ced
  * @package     Ced_CsMarketplace
  * @author        CedCommerce Core Team <coreteam@cedcommerce.com>
- * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 

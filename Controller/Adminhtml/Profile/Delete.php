@@ -5,23 +5,23 @@
  * NOTICE OF LICENSE
  *
  * This source file is subject to the Academic Free License (AFL 3.0)
- * You can check the licence at this URL: http://cedcommerce.com/license-agreement.txt
+ * You can check the licence at this URL: https://cedcommerce.com/license-agreement.txt
  * It is also available through the world-wide-web at this URL:
  * http://opensource.org/licenses/afl-3.0.php
  *
  * @category  Ced
- * @package   Ced_MPCatch
+ * @package   Ced_Betterthat
  * @author    CedCommerce Core Team <connect@cedcommerce.com >
- * @copyright Copyright CEDCOMMERCE (http://cedcommerce.com/)
- * @license   http://cedcommerce.com/license-agreement.txt
+ * @copyright Copyright CEDCOMMERCE (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
-namespace Ced\MPCatch\Controller\Adminhtml\Profile;
- 
+namespace Ced\Betterthat\Controller\Adminhtml\Profile;
+
 class Delete extends \Magento\Customer\Controller\Adminhtml\Group
 {
     protected $_objectManager;
-    
+
     protected $_session;
 
     /**
@@ -32,7 +32,7 @@ class Delete extends \Magento\Customer\Controller\Adminhtml\Group
         $code = $this->getRequest()->getParam('pcode');
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($code) {
-            $model = $this->_objectManager->create('Ced\MPCatch\Model\Profile')->getCollection()->addFieldToFilter('profile_code', $code);
+            $model = $this->_objectManager->create('Ced\Betterthat\Model\Profile')->getCollection()->addFieldToFilter('profile_code', $code);
 
             // entity type check
             try {

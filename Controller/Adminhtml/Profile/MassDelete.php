@@ -8,43 +8,84 @@
  * This source file is subject to the End User License Agreement (EULA)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://cedcommerce.com/license-agreement.txt
+ * https://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
  * @package   Ced_Betterthat
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright Copyright CedCommerce (http://cedcommerce.com/)
- * @license   http://cedcommerce.com/license-agreement.txt
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Controller\Adminhtml\Profile;
 
-class MassDelete extends \Magento\Backend\App\Action
+use \Magento\Backend\App\Action;
+use Magento\Framework\View\Result\PageFactory;
+
+class MassDelete extends Action
 {
+    /**
+     * @var
+     */
+    protected $profile;
+
+    /**
+     * @var
+     */
+    protected $profileResource;
+
+    /**
+     * @var
+     */
+    protected $collection;
+
+    /**
+     * @var \Magento\Ui\Component\MassAction\Filter
+     */
+    public $filter;
+
+    /**
+     * MassDelete constructor.
+     * @param Action\Context $context
+     * @param PageFactory $resultPageFactory
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Ced\Betterthat\Model\ProfileFactory $profile
+     * @param \Ced\Betterthat\Model\ResourceModel\Profile $profileResource
+     * @param \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collection
+     */
+    public function __construct(
+        Action\Context $context,
+        PageFactory $resultPageFactory,
+        \Magento\Ui\Component\MassAction\Filter $filter,
+        \Ced\Betterthat\Model\ProfileFactory $profile,
+        \Ced\Betterthat\Model\ResourceModel\Profile $profileResource,
+        \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collection
+    ) {
+        parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+        $this->profile = $profile->create();
+        $this->profileResource = $profileResource;
+        $this->filter = $filter;
+        $this->collection = $collection->create();
+    }
 
     /**
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
-
-        $profileIdsToDelete = $this->getRequest()->getParam('selected');
-        $excluded = $this->getRequest()->getParam('excluded', false);
-
-        if (!is_array($profileIdsToDelete) && !$excluded) {
-            $this->messageManager->addErrorMessage(__('Please select Profile(s).'));
-        } elseif ($excluded == "false") {
-            $profileIdsToDelete  = $this->_objectManager->create('Ced\Betterthat\Model\Profile')
-                ->getCollection()->getAllIds();
+        $collection = null;
+        $isFilter = $this->getRequest()->getParam('filters');
+        if (isset($isFilter)) {
+            $collection = $this->filter->getCollection($this->collection);
         }
 
-        if (!empty($profileIdsToDelete)) {
+        if ($collection) {
             try {
-                foreach ($profileIdsToDelete as $profileId) {
-                    $profile = $this->_objectManager->create('Ced\Betterthat\Model\Profile')->load($profileId);
-                    $profile->delete();
+                foreach ($collection as $item) {
+                    $item->delete();
                 }
-                $this->messageManager->addSuccessMessage(__('Total of %1 record(s) have been deleted.', count($profileIdsToDelete)));
+                $this->messageManager->addSuccessMessage(__('Total of %1 record(s) have been deleted.', $collection->count()));
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             }

@@ -8,13 +8,13 @@
  * This source file is subject to the End User License Agreement (EULA)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://cedcommerce.com/license-agreement.txt
+ * https://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
  * @package   Ced_Betterthat
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright Copyright CedCommerce (http://cedcommerce.com/)
- * @license   http://cedcommerce.com/license-agreement.txt
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Helper;
@@ -45,8 +45,14 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
 
     ];
 
-
-
+    /**
+     * Category constructor.
+     * @param Context $context
+     * @param ObjectManagerInterface $objectManager
+     * @param Config $config
+     * @param \BetterthatSdk\ProductFactory $product
+     * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
+     */
     public function __construct(
         Context $context,
         ObjectManagerInterface $objectManager,
@@ -61,6 +67,10 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         parent::__construct($context);
     }
 
+    /**
+     * @param array $params
+     * @return array|array[]
+     */
     public function getAttributes($params = [])
     {
         $attributes = [];
@@ -468,6 +478,9 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * @return array
+     */
     public function getCategoriesTree()
     {
         $this->categoriesTree = [];
@@ -477,15 +490,12 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->categoriesTree;
     }
 
-    /*
-* @ Declare the function to find hierarchy
-*/
+    /**
+     * @param $array
+     * @return mixed
+     */
     public function getHierarchy($array){
-        // echo "<pre>";
-        // print_r($array);
 
-
-        // id for parent id null: 5d5fbcd2e6802f178f97403c
         for($i = 0; $i< count($array); $i++){
             $array[$i]['hierarchy'] = '';
             // echo $array[$i]['parent_id']."<br>";
@@ -529,17 +539,17 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $array;
     }
 
+    /**
+     * @param $jsonString
+     * @return array
+     */
     public function getCategoriesTreeNode($jsonString)
     {
 
-        // $this->categoriesTree = [];
         $categoriesTree = [];
         $categories = $this->getHierarchy($jsonString);
         //$categories = json_decode($categories_json);
         $isActive = true;
-
-        // echo "<pre>";
-        // print_r($categories); exit;
 
         $item = [];
         for($i=0; $i<count($categories); $i++){
@@ -587,6 +597,10 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $item;
     }
 
+    /**
+     * @param array $params
+     * @return array
+     */
     public function getCategories($params = array())
     {
         if (empty($this->categories)) {
@@ -600,51 +614,4 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->categories;
     }
 
-   /* private function generateCategoriesTree(array $categories = [])
-    {
-        $data = [];
-        foreach ($categories as $category) {
-            $item = [];
-            $item['value'] = $category['code'];
-            $item['leaf'] = false;
-            $item['is_active'] = false;
-            if ($item['leaf']) {
-                $item['is_active'] = true;
-            }
-            $item['label'] = $category['label'];
-            if (isset($category['children']) and !empty($category['children'])) {
-                $item['optgroup'] = $this->generateCategoriesTree($category['children']);
-            }
-            $data[] = $item;
-        }
-        return $data;
-    }*/
-
-    public function getAllAttributes()
-    {
-        $attributes = [];
-        try {
-            $category = $this->product->create([
-                'config' => $this->config->getApiConfig()
-            ]);
-            $offerFile = $this->dl->getRoot() . DS . 'app/code/Ced/Betterthat/etc/setupFiles/offer-attributes.json';
-            $offerAttributes = file_get_contents($offerFile);
-            if ($offerAttributes != null) {
-                $offerAttributes = json_decode($offerAttributes, true);
-            }
-            $response = $category->getAllAttributes();
-            $response = array_merge($response, $offerAttributes);
-            $attibute_to_skip = ['category', 'variant-id', 'image-1', 'image-2', 'image-3', 'image-4', 'image-5', 'image-6'];
-            if (isset($response) && count($response)) {
-                foreach ($response as $value) {
-                    if (isset($value['code']) && in_array(trim($value['code']), $attibute_to_skip))
-                        continue;
-                    $attributes[$value['code']] = $value;
-                }
-            }
-            return $attributes;
-        } catch (\Exception $e) {
-            return $attributes;
-        }
-    }
 }
