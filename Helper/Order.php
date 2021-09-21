@@ -180,7 +180,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Framework\DataObjectFactory */
     public $dataFactory;
 
-    /** @var \Ced\Amazon\Model\MailFactory */
+    /** @var \Ced\Betterthat\Model\MailFactory */
     public $mailFactory;
 
     /**
@@ -241,7 +241,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Ced\Betterthat\Helper\Tax $taxHelper,
         \Magento\Quote\Model\Quote\Address\RateFactory $rateFactory,
         \Magento\Framework\DataObjectFactory $dataFactory,
-        \Ced\Amazon\Model\MailFactory $mailFactory
+        \Ced\Betterthat\Model\MailFactory $mailFactory
     ) {
         parent::__construct($context);
         $this->objectManager = $objectManager;
@@ -762,7 +762,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     $data = $this->dataFactory->create();
                     $data->addData([
                         'to' => $to_email,
-                        'marketplace_name' => 'Amazon',
+                        'marketplace_name' => 'Betterthat',
                         'po_id' => $betterthatOrderId,
                         'order_id' => $mageOrderId,
                         'order_date' => $placeDate,
