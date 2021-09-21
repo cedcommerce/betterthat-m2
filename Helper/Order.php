@@ -177,6 +177,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $failedCount;
 
+    /** @var \Magento\Framework\DataObjectFactory */
+    public $dataFactory;
+
+    /** @var \Ced\Amazon\Model\MailFactory */
+    public $mailFactory;
+
     /**
      * Order constructor.
      *
@@ -233,7 +239,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Sales\Model\Order\AddressRepository $repositoryAddress,
         \Magento\Sales\Api\Data\OrderInterface $salesOrderApi,
         \Ced\Betterthat\Helper\Tax $taxHelper,
-        \Magento\Quote\Model\Quote\Address\RateFactory $rateFactory
+        \Magento\Quote\Model\Quote\Address\RateFactory $rateFactory,
+        \Magento\Framework\DataObjectFactory $dataFactory,
+        \Ced\Amazon\Model\MailFactory $mailFactory
     ) {
         parent::__construct($context);
         $this->objectManager = $objectManager;
@@ -264,7 +272,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->taxHelper = $taxHelper;
         $this->failedCount = 0;
         $this->rateFactory= $rateFactory;
-
+        $this->mailFactory = $mailFactory;
+        $this->dataFactory = $dataFactory;
     }
 
     /**
@@ -599,7 +608,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         ];
                         $this->generateInvoice($magentoOrder);
 
-                          $this->orders->create()->addData($orderData)->save($this->orders);
+                        $this->orders->create()->addData($orderData)->save($this->orders);
                         /*$autoAccept = $this->config->getAutoAcceptOrderSetting();
                         if($autoAccept) {
                             $this->autoOrderAccept($order['_id'], $acceptItemsArray);
@@ -614,7 +623,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         if($autoCancellation) {
                             $this->autoOrderAccept($order['order_id'], $rejectItemsArray);
                         }*/
-                        //$this->sendMail($order['order_id'], $magentoOrder->getIncrementId(), $orderPlace);
+                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), $order['createdAt']);
 
                     } catch (\Exception $exception) {
 
@@ -743,35 +752,26 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $placeDate
      * @return bool
      */
-    public function sendMail($BetterthatOrderId, $mageOrderId, $placeDate)
+    public function sendMail($betterthatOrderId, $mageOrderId, $placeDate)
     {
+        $to_email = $this->scopeConfig->getValue('betterthat_config/betterthat_order/order_notify_email');
         try {
-            $body = '<table cellpadding="0" cellspacing="0" border="0">
-            <tr> <td> <table cellpadding="0" cellspacing="0" border="0">
-                <tr> <td class="email-heading">
-                    <h1>You have a new order from Betterthat.</h1>
-                    <p> Please review your admin panel."</p>
-                </td> </tr>
-            </table> </td> </tr>
-            <tr>
-                <td>
-                    <h4>Merchant Order Id' . $BetterthatOrderId . '</h4>
-                </td>
-                <td>
-                    <h4>Magneto Order Id' . $mageOrderId . '</h4>
-                </td>
-                <td>
-                    <h4>Order Place Date' . $placeDate . '</h4>
-                </td>
-            </tr>
-        </table>';
-            $to_email = $this->scopeConfig->getValue('Betterthat_config/Betterthat_order/order_notify_email');
-            $subject = 'Imp: New Betterthat Order Imported';
-            $senderEmail = 'Betterthatadmin@cedcommerce.com';
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $headers .= 'From: ' . $senderEmail . '' . "\r\n";
-            mail($to_email, $subject, $body, $headers);
+            if ($to_email) {
+
+                    /** @var \Magento\Framework\DataObject $data */
+                    $data = $this->dataFactory->create();
+                    $data->addData([
+                        'to' => $to_email,
+                        'marketplace_name' => 'Amazon',
+                        'po_id' => $betterthatOrderId,
+                        'order_id' => $mageOrderId,
+                        'order_date' => $placeDate,
+                    ]);
+                    /** @var \Ced\Betterthat\Model\Mail $mail */
+                    $mail = $this->mailFactory->create();
+                    $mail->send($data);
+
+            }
             return true;
         } catch (\Exception $e) {
             $this->logger->error('Send Mail', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);

@@ -155,19 +155,6 @@
                     </item>
                 </argument>
             </action>
-            <action name="assign_products">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">assign_products</item>
-                        <item name="label" xsi:type="string" translate="true">Assign Products</item>
-                        <item name="url" xsi:type="url" path="*/*/assignProducts"/>
-                        <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Assign Products</item>
-                            <item name="message" xsi:type="string" translate="true">Are you sure you want to assign all those products in this profile?</item>
-                        </item>
-                    </item>
-                </argument>
-            </action>
         </massaction>
         <paging name="listing_paging">
             <argument name="data" xsi:type="array">
