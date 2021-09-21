@@ -82,7 +82,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
 
         }
 
-        if (version_compare($context->getVersion(), '0.0.4', '<')) {
+        if (version_compare($context->getVersion(), '0.0.2', '<')) {
             // Get module table
             $tableName = $setup->getTable('Betterthat_logs');
             // Check if the table already exists
