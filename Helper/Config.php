@@ -286,14 +286,14 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getConfigAsSimple()
     {
-        $uploadAsSimple = $this->scopeConfigManager->getValue("Betterthat_config/Betterthat_product/Betterthat_other_prod_setting/Betterthat_upload_config_as_simple");
+        $uploadAsSimple = $this->scopeConfigManager->getValue("betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_upload_config_as_simple");
         return $uploadAsSimple;
     }
 
     public function getOrderIdPrefix()
     {
         $prefix = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_order/order_id_prefix");
+            ->getValue("betterthat_config/betterthat_order/order_id_prefix");
         if (isset($prefix) and !empty($prefix)) {
             return $prefix;
         }
@@ -333,7 +333,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getDifferPrice()
     {
         $differPrice = $this->scopeConfigManager
-            ->getValue("Betterthat_config/Betterthat_product/price_settings/different_price");
+            ->getValue("betterthat_config/betterthat_product/price_settings/different_price");
         if (isset($differPrice) and !empty($differPrice)) {
             return $differPrice;
         }
