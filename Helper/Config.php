@@ -204,82 +204,82 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getMode()
     {
-        $mode = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_setting/mode');
+        $mode = $this->scopeConfigManager->getValue('betterthat_config/betterthat_setting/mode');
         return $mode;
     }
 
     public function getOrderSyncCron()
     {
-        $orderSyncCron = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_cron/order_sync_cron');
+        $orderSyncCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/order_sync_cron');
         return $orderSyncCron;
     }
 
     public function getOrderCron()
     {
-        $orderCron = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_cron/order_cron');
+        $orderCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/order_cron');
         return $orderCron;
     }
 
     public function getOrderShipmentCron()
     {
-        $orderShipmentCron = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_cron/order_shipment_cron');
+        $orderShipmentCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/order_shipment_cron');
         return $orderShipmentCron;
     }
 
     public function getInventoryPriceCron()
     {
-        $invCron = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_cron/inventory_price_cron');
+        $invCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/inventory_price_cron');
         return $invCron;
     }
 
     public function getFeedSyncCron()
     {
-        $feedCron = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_cron/feed_sync_cron');
+        $feedCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/feed_sync_cron');
         return $feedCron;
     }
 
     public function getFullOfferSyncCron()
     {
-        $fullOfferCron = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_cron/full_offer_sync_cron');
+        $fullOfferCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/full_offer_sync_cron');
         return $fullOfferCron;
     }
 
     public function getRefundOnBetterthat()
     {
-        $refundOnBetterthat = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_order/Betterthat_refund_from_core');
+        $refundOnBetterthat = $this->scopeConfigManager->getValue('betterthat_config/betterthat_order/betterthat_refund_from_core');
         return $refundOnBetterthat;
     }
 
     public function getRefundReason()
     {
-        $refundReason = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_order/Betterthat_refund_reason');
+        $refundReason = $this->scopeConfigManager->getValue('betterthat_config/betterthat_order/betterthat_refund_reason');
         return $refundReason;
     }
 
     public function getCreditMemoOnMagento()
     {
-        $creditOnMagento = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_order/Betterthat_creditmemo_on_magento');
+        $creditOnMagento = $this->scopeConfigManager->getValue('betterthat_config/betterthat_order/betterthat_creditmemo_on_magento');
         return $creditOnMagento;
     }
 
     public function getFromParentAttributes()
     {
         $fromParentAttrs = array();
-        $parentAttrs = $this->scopeConfigManager->getValue("Betterthat_config/Betterthat_product/Betterthat_other_prod_setting/Betterthat_use_other_parent");
+        $parentAttrs = $this->scopeConfigManager->getValue("betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_use_other_parent");
         $fromParentAttrs = explode(',', $parentAttrs);
         return $fromParentAttrs;
     }
 
     public function getMergeParentImages()
     {
-        $mergeImages = $this->scopeConfigManager->getValue("Betterthat_config/Betterthat_product/Betterthat_other_prod_setting/Betterthat_merge_parent_images");
+        $mergeImages = $this->scopeConfigManager->getValue("betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_merge_parent_images");
         return $mergeImages;
     }
 
     public function getSkipValidationAttributes()
     {
         $skipFromValidation = array();
-        $skipAttr = $this->scopeConfigManager->getValue("Betterthat_config/Betterthat_product/Betterthat_other_prod_setting/Betterthat_skip_from_validation");
+        $skipAttr = $this->scopeConfigManager->getValue("betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_skip_from_validation");
         $skipFromValidation = explode(',', $skipAttr);
         return $skipFromValidation;
     }

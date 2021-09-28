@@ -1,5 +1,5 @@
 {
-    "name": "ced/Betterthat",
+    "name": "ced/betterthat",
     "description": "Betterthat Magento2 Integration",
     "require": {
         "php": ">=5.6"

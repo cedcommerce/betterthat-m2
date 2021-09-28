@@ -444,7 +444,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             foreach ($order['Order_product'] as $prod_data){
                 $qtyArray[$prod_data['product_id']] = $prod_data['quantity'];
             }
-
+            $priceArr =[];
+            $orderSubtotal = 0;
             if (isset($order['Product_data'][0])) {
                 $failedOrder = false;
                 foreach ($order['Product_data'] as $item) {
@@ -471,8 +472,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                 if($stockStatus) {
                                     $itemAccepted++;
                                     $price = $item['rrp'];
+                                    $orderSubtotal = $orderSubtotal + $price;
                                     $baseprice = $qty * $price;
-
+                                    $priceArr[$item['product_id']] = $price;
                                     $product->setPrice($price)
                                         ->setBasePrice($baseprice)
                                         ->setSpecialPrice($baseprice)
@@ -501,7 +503,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
                     }
                 }
-
                 if ($failedOrder) {
                     $this->rejectOrder($order, $order['Product_data'], $reason);
                 } else if(!$failedOrder) {
@@ -516,6 +517,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     if($stateModel && $stateModel->getCode()) {
                         $stateCode = $stateModel->getCode();
                     }
+
+
 
                     try {
                         $shipAddress = [
@@ -574,10 +577,20 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         );
                         $quote->collectTotals()->save();
                         foreach ($quote->getAllItems() as $item) {
+                            $price = @$priceArr[$item->getProductId()];
+                            $item->setBasePrice($price);
+                            $item->setSpecialPrice($price);
                             $item->setDiscountAmount(0);
                             $item->setBaseDiscountAmount(0);
-                            $item->setOriginalCustomPrice($item->getPrice())
-                                ->setOriginalPrice($item->getPrice())->save();
+                            $item->setPrice($price);
+                            $item->setRowTotal($price);
+                            $item->setBaseRowTotal($price);
+                            $item->setOriginalCustomPrice($price);
+                            $item->setPriceIncTax($price);
+                            $item->setBasePriceIncTax($price);
+                            $item->setRowTotalIncTax($price);
+                            $item->setBaseRowTotalIncTax($price);
+                            $item->setOriginalPrice($price)->save();
                         }
                         $magentoOrder = $this->cartManagementInterface->submit($quote);
                         $subTotal = $order['total_price'];
@@ -586,14 +599,28 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             ->setBaseShippingAmount($shippingcost)
                             ->setShippingInclTax($shippingcost)
                             ->setBaseShippingInclTax($shippingcost)
+                            ->setBaseSubTotal($orderSubtotal)
+                            ->setSubTotal($orderSubtotal)
                             ->setGrandTotal($subTotal)
                             ->setIncrementId($this->config->getOrderIdPrefix() . $magentoOrder->getIncrementId())
+                            ->setTotalDue(0)
                             ->save();
                         $count = isset($magentoOrder) ? $count + 1 : $count;
                         foreach ($magentoOrder->getAllItems() as $item) {
-                            $item->setOriginalPrice($item->getPrice())
-                                ->setBaseOriginalPrice($item->getPrice())
-                                ->save();
+                            $price = @$priceArr[$item->getProductId()];
+                            $item->setBasePrice($price);
+                            $item->setSpecialPrice($price);
+                            $item->setDiscountAmount(0);
+                            $item->setBaseDiscountAmount(0);
+                            $item->setPrice($price);
+                            $item->setRowTotal($price);
+                            $item->setBaseRowTotal($price);
+                            $item->setOriginalCustomPrice($price);
+                            $item->setPriceIncTax($price);
+                            $item->setBasePriceIncTax($price);
+                            $item->setRowTotalIncTax($price);
+                            $item->setBaseRowTotalIncTax($price);
+                            $item->setOriginalPrice($price)->save();
                         }
 
                         // after save order
@@ -606,9 +633,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             'order_data' => $this->json->jsonEncode($order),
                             'order_items' => $this->json->jsonEncode($order['Product_data'])
                         ];
-                        $this->generateInvoice($magentoOrder);
 
                         $this->orders->create()->addData($orderData)->save($this->orders);
+                        $this->generateInvoice($magentoOrder);
+
                         /*$autoAccept = $this->config->getAutoAcceptOrderSetting();
                         if($autoAccept) {
                             $this->autoOrderAccept($order['_id'], $acceptItemsArray);
@@ -675,7 +703,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $this->failedCount++;
             return true;
         } catch (\Exception $e) {
-            print_r($e->getMessage());die;
             $this->logger->error('Reject Order', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
@@ -1148,7 +1175,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     {
         try {
             $orderIds = implode(',', $orderIds);
-            print_r($orderIds);die;
             $orderList = $this->Betterthat->create(
                 [
                     'config' => $this->config->getApiConfig(),
