@@ -1,20 +1,21 @@
 {
     "name": "ced/betterthat",
-    "description": "Betterthat Magento2 Integration",
-    "require": {
-        "php": ">=5.6",
-        "ced/betterthat-sdk": "*"
-    },
-    "version": "0.0.4",
-    "type": "magento2-module",
+    "description": "Betterthat Integration",
+    "type": "package",
     "license": [
         "EULA"
     ],
+    "version": "0.0.5",
+    "require": {
+        "php": ">=5.6",
+        "ext-curl": "*",
+        "psr/log": "*",
+        "psr/container":"*",
+        "ced/betterthat-sdk":"*"
+    },
     "autoload": {
-    "files": [ "registration.php" ],
         "psr-4": {
-            "Ced\\Betterthat\\": "",
-            "BetterthatSdk\\": "Betterthat-sdk/src"
+            "BetterthatSdk\\": "src/"
         }
     }
 }
