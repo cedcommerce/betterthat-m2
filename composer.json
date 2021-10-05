@@ -1,19 +1,16 @@
 {
     "name": "ced/betterthat",
-    "description": "Betterthat Integration",
-    "type": "package",
+    "description": "Betterthat Magento2 integration",
+    "type": "magento2-module",
     "license": [
         "EULA"
     ],
-    "version": "0.0.8",
+    "version": "0.0.9",
     "require": {
-        "php": ">=5.6",
-        "ext-curl": "*",
-        "psr/log": "*",
-        "psr/container":"*",
         "ced/betterthat-sdk":"*"
     },
     "autoload": {
+        "files": [ "registration.php" ],
         "psr-4": {
             "Ced\\Betterthat\\": ""
         }
