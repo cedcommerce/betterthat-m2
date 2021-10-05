@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "BetterthatSdk\\": "src/"
+            "Ced\\Betterthat\\": "",
         }
     }
 }
