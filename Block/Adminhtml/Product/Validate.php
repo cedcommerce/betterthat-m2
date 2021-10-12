@@ -71,12 +71,27 @@ class Validate extends \Magento\Backend\Block\Widget\Container
             'onclick' => "setLocation('" . $this->_getCreateUrl() . "')"
         ];
         $this->buttonList->add('add', $buttonOptions);
+
+        $buttonOptions = [
+            'label' => __('Export'),
+            'class' => 'action-primary',
+            'onclick' => "setLocation('" . $this->_getExportUrl() . "')"
+        ];
+        $this->buttonList->add('export', $buttonOptions);
+
     }
 
     public function _getCreateUrl()
     {
         return $this->getUrl(
             'betterthat/product/index'
+        );
+    }
+
+    public function _getExportUrl()
+    {
+        return $this->getUrl(
+            'betterthat/product/export'
         );
     }
 

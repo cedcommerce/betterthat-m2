@@ -19,12 +19,15 @@
 
 namespace Ced\Betterthat\Controller\Adminhtml\Product;
 
-class Validate extends \Magento\Framework\App\Action\Action
+use Magento\Framework\App\Action\Action;
+
+class Validate extends Action
 {
 
     const CHUNK_SIZE = 10;
 
     /**
+     *
      * @var \Magento\Backend\Model\Session
      */
     public $session;

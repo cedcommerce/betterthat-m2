@@ -12,4 +12,14 @@
             </argument>
         </arguments>
     </type>
+        <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool">
+            <arguments>
+                <argument name="modifiers" xsi:type="array">
+                    <item name="sap_product" xsi:type="array">
+                        <item name="class" xsi:type="string">Ced\Betterthat\Ui\DataProvider\Product\Form\Modifier\Attributes</item>
+                        <item name="sortOrder" xsi:type="number">1000</item>
+                    </item>
+                </argument>
+            </arguments>
+        </virtualType>
 </config>
