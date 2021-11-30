@@ -341,13 +341,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->data = [];
                 $this->prepareSimpleProducts($ids['simple']);
                 $this->prepareConfigurableProducts($ids['configurable']);
-
                 $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->createProduct($this->data);
                 if (@$response['message'] &&
                     in_array($response['message'],["product already exists","Product imported successfully!"]))
-                 {
-                     $this->response = @$response['data'];
-                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::UPLOADED);
+                {
+                    $this->response = @$response['data'];
+                    $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::UPLOADED);
                 } else {
                     $this->response = @$response['data'];
                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::INVALID);
@@ -516,10 +515,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $productId = $this->validateProduct($product->getId(), $product, $profile, $parentId);
                         // variant attribute option value check start.
                         foreach ($variantAttributes as $attributes) {
-                                $value = $product->getData($attributes['attribute_code']);
-                                if(!$value){
-                                    $errors[$product->getSku()]['errors'][]['variant-size/color-value'] = 'Variant attribute '.$attributes['attribute_code'].' has no value.';
-                                }
+                            $value = $product->getData($attributes['attribute_code']);
+                            if(!$value){
+                                $errors[$product->getSku()]['errors'][]['variant-size/color-value'] = 'Variant attribute '.$attributes['attribute_code'].' has no value.';
+                            }
                         }
 
 
@@ -790,9 +789,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $data['price'] = $price['price'];*/
                 $images = $this->prepareImages($product);
                 $product_array = [
-                    "id" => $id['id'],
-                    "title" => $attributes['title'],
-                    "body_html"=> $attributes['body_html'],
+                    "id" => @$id['id'],
+                    "title" => @$attributes['title'],
+                    "body_html"=> @$attributes['body_html'],
                     "retailer_id"=> $retailer_id,
                     "dimensions"=> [
                         "length"=> 0,
@@ -802,42 +801,42 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         "weight_unit"=> "kg"
                     ],
                     "product_categories"=> $categories,
-                    "can_be_bundled"=>$attributes['can_be_bundled'],
-                    "manufacturer"=>$attributes['can_be_bundled'],
+                    "can_be_bundled"=>@$attributes['can_be_bundled'],
+                    "manufacturer"=>@$attributes['can_be_bundled'],
                     "policy_description_option"=>"",
                     "policy_description_val"=>"",
-                    "product_shipping_options"=>[$attributes['product_shipping_options']],
-                    "shipping_option_charges"=>[$attributes['shipping_option_charges']],
-                    "standard_delivery_timeframe"=>$attributes['standard_delivery_timeframe'],
-                    "product_return_window"=> $attributes['product_return_window'],
+                    "product_shipping_options"=>[@$attributes['product_shipping_options']],
+                    "shipping_option_charges"=>[@$attributes['shipping_option_charges']],
+                    "standard_delivery_timeframe"=>@$attributes['standard_delivery_timeframe'],
+                    "product_return_window"=> @$attributes['product_return_window'],
                     "variants" => [
-                          [
-                              "id"=> $id['id'],
-                            "product_id"=> $id['id'],
-                            "title"=> $attributes['title'],
-                            "price"=> $price['price'],
-                            "discounted_price"=>$price['special_price'],
+                        [
+                            "id"=> @$id['id'],
+                            "product_id"=> @$id['id'],
+                            "title"=> @$attributes['title'],
+                            "price"=> @$price['price'],
+                            "discounted_price"=>@$price['special_price'],
                             "sku"=> "",
                             "position"=> 1,
                             "inventory_policy"=> "deny",
                             "compare_at_price"=> null,
-                            "option1"=> $attributes['title'],
+                            "option1"=> @$attributes['title'],
                             "option2"=> null,
                             "option3"=> null,
                             "inventory_quantity"=> $qty
-                          ]
-                        ],
-                       "options"=> [
-                          [
-                              "id" => $id['id'],
-                            "product_id" => $id['id'],
+                        ]
+                    ],
+                    "options"=> [
+                        [
+                            "id" => @$id['id'],
+                            "product_id" => @$id['id'],
                             "name" => "Title",
                             "position" => 1,
                             "values" => [
                                 "Default Title"
                             ]
-                          ]
-                        ],
+                        ]
+                    ],
                     "images"=> $images,
                     "image"=> @$images[1] ? @$images[1] : [],
                 ];
@@ -1135,16 +1134,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         if ($handle = fopen($image->getUrl(), 'r')) {
                             //list($prodWidth, $prodHeight) = getimagesize($image->getUrl());
                             //if ($prodWidth > 450 && $prodHeight > 367) {
-                                $images[] =
-                                    [
-                                        "id" => $product->getId(),
-                                        "product_id" => $product->getId(),
-                                        "position" => $image_index,
-                                        "alt" => null,
-                                        "src" => $image->getUrl(),
-                                        "variant_ids" => []
-                                    ];
-                                $image_index++;
+                            $images[] =
+                                [
+                                    "id" => $product->getId(),
+                                    "product_id" => $product->getId(),
+                                    "position" => $image_index,
+                                    "alt" => null,
+                                    "src" => $image->getUrl(),
+                                    "variant_ids" => []
+                                ];
+                            $image_index++;
                             //}
                         }
                     }
@@ -1185,8 +1184,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $collectVariant = $this->prepareVariants($ids[$parentId],$profile,$variantAttributes,$parentId);
                 $this->data = [
                     "id" => $parentId,
-                    "title" => $attributes['title'],
-                    "body_html" => $attributes['body_html'],
+                    "title" => @$attributes['title'],
+                    "body_html" => @$attributes['body_html'],
                     "retailer_id" => $retailer_id,
                     "dimensions" => [
                         "length" => 0,
@@ -1244,17 +1243,17 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $id['id'],
                 $childproduct->getStore()->getWebsiteId()
             );
-               $variant[$varindex] = [
-                    "id" => $id['id'],
-                    "product_id" => $parentId,
-                    "title" => $attributes['title'],
-                    "price" => $childproduct->getPrice(),
-                    "sku" => $childproduct->getSku(),
-                    "position" => $pos,
-                    "inventory_policy" => "deny",
-                    "compare_at_price" => null,
-                    "inventory_quantity" => $qty
-                ];
+            $variant[$varindex] = [
+                "id" => $id['id'],
+                "product_id" => $parentId,
+                "title" => $attributes['title'],
+                "price" => $childproduct->getPrice(),
+                "sku" => $childproduct->getSku(),
+                "position" => $pos,
+                "inventory_policy" => "deny",
+                "compare_at_price" => null,
+                "inventory_quantity" => $qty
+            ];
             $optionIndex = 1;
             foreach($variantAttributes as  $variantAttribute){
                 $variant[$varindex]['option'.$optionIndex] = $childproduct->getAttributeText($variantAttribute['attribute_code']);
@@ -1450,32 +1449,32 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $variant_id = @$betterThatId[2] ? $betterThatId[2] : '';;
                         $invupdate = [
                             "products"=> [
-                            [
-                                "product_id" => $product_id,
-                                "retailer_product_id" => $_id,
-                                "stocks"=> [
-                                    [
-                                        "variant_id"=> $variant_id,
-                                        "stock"=> $quantity,
-                                        "buy_price"=> @$price['price'],
-                                        "discounted_price"=> ""
+                                [
+                                    "product_id" => $product_id,
+                                    "retailer_product_id" => $_id,
+                                    "stocks"=> [
+                                        [
+                                            "variant_id"=> $variant_id,
+                                            "stock"=> $quantity,
+                                            "buy_price"=> @$price['price'],
+                                            "discounted_price"=> ""
+                                        ]
                                     ]
                                 ]
                             ]
-                        ]
                         ];
-                       $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->updateInventory($invupdate);
+                        $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->updateInventory($invupdate);
 
                     }
-                        $index++;
-                    }
+                    $index++;
                 }
+            }
 
-                return $response;
-            }catch (\Exception $e) {
+            return $response;
+        }catch (\Exception $e) {
             $this->logger->error('Offer Update', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
-            return $response;
+        return $response;
 
     }
 
@@ -1489,7 +1488,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
         $betterthatId = null;
         if (!empty($ids) and is_array($ids) and
-                in_array($status, \Ced\Betterthat\Model\Source\Product\Status::STATUS)
+            in_array($status, \Ced\Betterthat\Model\Source\Product\Status::STATUS)
         ) {
             if(@$this->response['_id']) {
                 $betterthatId = $this->response['_id'] .':'. $this->response['retailer_products'][0]['_id'] .':'.$this->response['variants'][0]['_id'] ;
@@ -1538,26 +1537,26 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $refType = $this->config->getReferenceType();
                 if ($attr) {
                     if ($attr->getSourceModel($attr) || $attr->getData('frontend_input') == 'select') {
-                            $valueId =  $product->getData($type);
-                            $value = $attr->getSource()->getOptionText($valueId);
-                            $result = $this->validateProductId($value, $refType);
-                            if($result)
+                        $valueId =  $product->getData($type);
+                        $value = $attr->getSource()->getOptionText($valueId);
+                        $result = $this->validateProductId($value, $refType);
+                        if($result)
                             return $value;
-                            return $result;
-                        } else {
-                           $value =  $product->getData($type);
-                           $result = $this->validateProductId($value, $refType);
-                           if($result)
-                            return $value;
-                           return $result;
-                        }
+                        return $result;
                     } else {
-                           $value =  $product->getData($type);
-                           $result = $this->validateProductId($value, $refType);
-                           if($result)
+                        $value =  $product->getData($type);
+                        $result = $this->validateProductId($value, $refType);
+                        if($result)
                             return $value;
-                           return $result;
+                        return $result;
                     }
+                } else {
+                    $value =  $product->getData($type);
+                    $result = $this->validateProductId($value, $refType);
+                    if($result)
+                        return $value;
+                    return $result;
+                }
 
             }
 
