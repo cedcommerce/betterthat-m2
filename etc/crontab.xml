@@ -20,10 +20,10 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
-       <job name="ced_betterthat_order_import" instance="Ced\Betterthat\Cron\Order\Import" method="execute">
-           <schedule>
-               <config_path>betterthat_config/betterthat_cron/order_cron_schedule</config_path>
-           </schedule>
+        <job name="ced_betterthat_order_import" instance="Ced\Betterthat\Cron\Order\Import" method="execute">
+            <schedule>
+                <config_path>betterthat_config/betterthat_cron/order_cron_schedule</config_path>
+            </schedule>
         </job>
         <job name="ced_betterthat_order_sync" instance="Ced\Betterthat\Cron\Order\Sync" method="execute">
             <schedule>

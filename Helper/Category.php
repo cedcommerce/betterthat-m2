@@ -110,10 +110,6 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
             "variant" => "",
             "options" => "",
             "option_values" => [
-                "ean" => "EAN",
-                "upc" => "UPC",
-                "isbn" => "ISBN",
-                "mpn" => "MPN"
             ],
             "magento_attribute_code" => "name",
         ],
