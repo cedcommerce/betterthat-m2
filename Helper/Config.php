@@ -169,32 +169,34 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function isEnabled()
     {
-        $enabled = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_setting/enable');
+        $enabled = $this->scopeConfigManager->getValue('betterthat_config/betterthat_setting/enable');
         return $enabled;
     }
 
     public function isValid()
     {
-        $valid = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_setting/valid');
+        $valid = $this->scopeConfigManager->getValue('betterthat_config/betterthat_setting/valid');
         return $valid;
     }
 
     public function validate()
     {
-        $status = false;
         try {
             $config = $this->getApiConfig();
-
-            $categories = $this->objectManager
+            $catResponse = $this->objectManager
                 ->create('\BetterthatSdk\Product', ['config' => $config])
-                ->getCategories(['hierarchy'=>'furniture','max_level'=>1], true);
-            if (isset($categories) and !empty($categories)) {
-                $status = true;
+                ->getCatForValidation(['data'=>['name'=>'test']]);
+
+            if (isset($catResponse['error_key'])) {
+                $catResponse['status'] = false;
+                return $catResponse;
+            }else{
+                $catResponse['status'] = true;
+                return $catResponse;
             }
         } catch (\Exception $exception) {
             $this->_logger->error('Betterthat:' . $exception->getMessage());
         }
-        return $status;
     }
 
     /**
