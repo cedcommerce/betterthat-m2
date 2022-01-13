@@ -269,7 +269,7 @@
                 </item>
             </argument>
         </column>
-       <!-- <column name="betterthat_feed_errors" class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Feed">
+        <column name="betterthat_feed_errors" class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Feed">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Ced_Betterthat/js/grid/columns/product/feed</item>
@@ -278,7 +278,7 @@
                     <item name="sortOrder" xsi:type="number">130</item>
                 </item>
             </argument>
-        </column>-->
+        </column>
        <!-- <column name="betterthat_exclude_from_sync">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\Yesno</item>

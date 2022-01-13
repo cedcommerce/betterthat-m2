@@ -92,6 +92,29 @@ class UpgradeData implements UpgradeDataInterface
                 );
             }
 
+            if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_product_id')) {
+                $eavSetup->addAttribute(
+                    'catalog_product',
+                    'betterthat_feed_errors',
+                    [
+                        'group' => $groupName,
+                        'note' => 'Betterthat Feeds',
+                        'input' => 'text',
+                        'type' => 'varchar',
+                        'label' => 'Betterthat Feeds',
+                        'backend' => '',
+                        'visible' => 1,
+                        'required' => 0,
+                        'sort_order' => 1,
+                        'user_defined' => 1,
+                        'comparable' => 0,
+                        'visible_on_front' => 0,
+                        'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                    ]
+                );
+            }
+
+
             $setup->endSetup();
         }
         if(version_compare($context->getVersion(), '0.0.3', '<')) {

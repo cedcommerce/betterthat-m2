@@ -342,6 +342,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->prepareSimpleProducts($ids['simple']);
                 $this->prepareConfigurableProducts($ids['configurable']);
                 $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->createProduct($this->data);
+                $this->serverResponse = $response;
                 if (@$response['message'] &&
                     in_array($response['message'],["product already exists","Product imported successfully!"]))
                 {
@@ -1491,7 +1492,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             in_array($status, \Ced\Betterthat\Model\Source\Product\Status::STATUS)
         ) {
             if(@$this->response['_id']) {
-                $betterthatId = $this->response['_id'] .':'. $this->response['retailer_products'][0]['_id'] .':'.$this->response['variants'][0]['_id'] ;
+                $betterthatId = $this->response['_id'] .':'. $this->response['retailer_products'][0]['_id'] .':'.$this->response['variants'][0]['_id'];
             }
             try{
                 foreach ($ids as $index => $product) {
@@ -1501,6 +1502,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     if($betterthatId){
                         $product->setData('betterthat_product_id', $betterthatId);
                         $product->getResource()->saveAttribute($product, 'betterthat_product_id');
+                        $product->setData('betterthat_feed_errors', json_encode($this->serverResponse));
+                        $product->getResource()->saveAttribute($product, 'betterthat_feed_errors');
+                    }else{
+                        $product->setData('betterthat_feed_errors', json_encode($this->serverResponse));
+                        $product->getResource()->saveAttribute($product, 'betterthat_feed_errors');
                     }
                 }
                 return true;

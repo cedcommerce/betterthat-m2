@@ -82,8 +82,8 @@ class Feed extends Column
                 $class = 'grid-severity-notice';
                 $status = \Ced\Betterthat\Model\Source\Product\Status::NOT_UPLOADED;
                 if (isset($item[$fieldName])) {
-                    if (isset($item['Betterthat_product_status']) and !empty($item['Betterthat_product_status'])) {
-                        $status = $item['Betterthat_product_status'];
+                    if (isset($item['betterthat_product_status']) and !empty($item['betterthat_product_status'])) {
+                        $status = $item['betterthat_product_status'];
                         if ($status == \Ced\Betterthat\Model\Source\Product\Status::INVALID) {
                             $class = 'grid-severity-minor';
                         }
@@ -92,8 +92,8 @@ class Feed extends Column
                     $item[$fieldName . '_html'] = "<button style='width:100%' class='{$class}'>"."<span>{$status}</span></button>";
                     $item[$fieldName . '_title'] = __('Betterthat Feed Details');
                     $item[$fieldName . '_productid'] = $item['entity_id'];
-                    if (isset($item['Betterthat_feed_errors'])) {
-                        $item[$fieldName . '_product_feed_errors'] = $item['Betterthat_feed_errors'];
+                    if (isset($item['betterthat_feed_errors'])) {
+                        $item[$fieldName . '_product_feed_errors'] = $item['betterthat_feed_errors'];
                     } else {
                         $item[$fieldName . '_product_feed_errors'] = json_encode(array('Data' => 'No data available.'));
                     }
@@ -101,14 +101,14 @@ class Feed extends Column
                     $item[$fieldName . '_html'] = "<button style='width:100%' class='{$class}'>"."<span>{$status}</span></button>";
                     $item[$fieldName . '_title'] = __('Betterthat Feed Details');
                     $item[$fieldName . '_productid'] = $item['entity_id'];
-                    if (isset($item['Betterthat_feed_errors'])) {
-                        $item[$fieldName . '_product_feed_errors'] = $item['Betterthat_feed_errors'];
+                    if (isset($item['betterthat_feed_errors'])) {
+                        $item[$fieldName . '_product_feed_errors'] = $item['betterthat_feed_errors'];
                     } else {
                         $item[$fieldName . '_product_feed_errors'] = json_encode(array('Data' => 'No data available.'));
                     }
                 }
-                $childStatus = $this->productHelper->getChildProductStatus($item['entity_id']);
-                $item[$fieldName . '_child_product_status'] = json_encode($childStatus);
+                //$childStatus = $this->productHelper->getChildProductStatus($item['entity_id']);
+                //$item[$fieldName . '_child_product_status'] = json_encode($childStatus);
             }
         }
         return $dataSource;

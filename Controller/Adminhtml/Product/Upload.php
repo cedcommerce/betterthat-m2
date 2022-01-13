@@ -139,7 +139,7 @@ class Upload extends \Magento\Backend\App\Action
         // case 3.1 normal uploading if current ids are less than chunk size.
         if (count($productIds) == self::CHUNK_SIZE) {
             $response = $this->Betterthat->createProducts($productIds);
-            if ($response) {
+            if (!@$response['err_code'] && !@$response['error_key']) {
                 $this->messageManager->addSuccessMessage(count($productIds) . 'Product(s) will reviewed first and get approved soon');
             } else {
                 $message = 'Product(s) Upload Failed.';

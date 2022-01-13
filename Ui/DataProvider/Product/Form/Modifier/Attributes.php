@@ -34,6 +34,12 @@ class Attributes extends AbstractModifier
             $meta,
             true
         );
+      /*  $path = $this->arrayManager->findPath('betterthat_feed_errors', $meta, null, 'children');
+        $meta = $this->arrayManager->set(
+            "{$path}/arguments/data/config/disabled",
+            $meta,
+            true
+        );*/
         return $meta;
     }
 }
