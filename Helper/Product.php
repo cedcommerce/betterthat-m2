@@ -814,14 +814,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         [
                             "id"=> @$id['id'],
                             "product_id"=> @$id['id'],
-                            "title"=> @$attributes['title'],
+                            "title"=> "Default Title",
                             "price"=> @$price['price'],
                             "discounted_price"=>@$price['special_price'],
                             "sku"=> "",
                             "position"=> 1,
                             "inventory_policy"=> "deny",
                             "compare_at_price"=> null,
-                            "option1"=> @$attributes['title'],
+                            "option1"=> "Default Title",
                             "option2"=> null,
                             "option3"=> null,
                             "inventory_quantity"=> $qty
