@@ -34,6 +34,7 @@ class Status extends AbstractSource
     const INVALID = 'INVALID';
     const INACTIVE = 'INACTIVE';
     const PARTIAL = 'PARTIAL';
+    const DELETED = 'DELETED';
 
     const STATUS = [
         self::NOT_UPLOADED,
@@ -41,7 +42,8 @@ class Status extends AbstractSource
         self::UPLOADED,
         self::LIVE,
         self::INACTIVE,
-        self::PARTIAL
+        self::PARTIAL,
+        self::DELETED
     ];
 
     /**
@@ -77,6 +79,10 @@ class Status extends AbstractSource
             [
                 'value' => self::PARTIAL,
                 'label' => __('Partial'),
+            ],
+            [
+                'value' => self::DELETED,
+                'label' => __('Deleted'),
             ]
         ];
     }

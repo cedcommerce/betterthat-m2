@@ -1333,64 +1333,23 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return false;
     }
 
+    /**
+     * @param array $ids
+     * @return array
+     */
     public function deleteProducts($ids = [])
     {
-        $response = false;
-        if (!empty($ids)) {
-            $this->data = [
-                0 => [
-                    'Product' => [
-                        '_attribute' => [],
-                        '_value' => [
-                            0 => [
-                                'Skus' => [
-                                    '_attribute' => [],
-                                    '_value' => [
-                                        0 => [
-                                            'Sku' => [
-                                                '_attribute' => [],
-                                                '_value' => [
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-
-                ]
-            ];
-
-            foreach ($ids as $id) {
-                $product = $this->product->create()->load($id);
-                // configurable Product
-                if ($product->getTypeId() == 'configurable' &&
-                    $product->getVisibility() != 1
-                ) {
-                    $configurableProduct = $product;
-                    $productType = $configurableProduct->getTypeInstance();
-                    $products = $productType->getUsedProducts($configurableProduct);
-                    foreach ($products as $product) {
-                        $this->data[0]['Product']['_value'][0]['Skus']['_value'][0]['Sku']['_value'][]['SellerSku'] = (string)$product->getSku();
-                    }
-                } elseif ($product->getTypeId() == 'simple' &&
-                    $product->getVisibility() != 1
-                ) {
-                    $this->data[0]['Product']['_value'][0]['Skus']['_value'][0]['Sku']['_value'][]['SellerSku'] = (string)($product->getSku());
+       try{
+           $deletedIds = [];
+           foreach($ids as $id){
+               $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->deleteProduct($id,["product_id"=> $id]);
+                if(@$response['status'] && $response['status']){
+                    $deletedIds[] = $id;
                 }
-            }
-            $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->deleteProduct($this->data);
-            if ($response and
-                $response->getStatus() == \BetterthatSdk\Api\Response::REQUEST_STATUS_SUCCESS and
-                empty($response->getError())) {
-                $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::NOT_UPLOADED);
-            }
-
-            $response = $this->saveResponse($response);
-            return $response;
-        }
-        return $response;
+           }
+       }catch(\Exception $e) {
+       }
+       return $deletedIds;
     }
 
     /**

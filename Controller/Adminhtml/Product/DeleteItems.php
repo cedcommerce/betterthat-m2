@@ -97,12 +97,22 @@ class DeleteItems extends \Magento\Backend\App\Action
     {
         $collectionFactory = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory')->create();
         $collection = $this->filter->getCollection($collectionFactory);
-        $collection->getAllIds();
-        die('ss');
-        /*$this->Betterthat->deleteProducts($collection->getAllIds());
-        die;*/
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Ced_Betterthat::Betterthat');
-        return $resultPage;
+        $deletedIds = $this->Betterthat->deleteProducts($collection->getAllIds());
+        foreach ($collection as $product){
+            if(in_array($product->getId(),$deletedIds)){
+                $product->setbetterthat_product_status('DELETED');
+                $product->setbetterthat_product_id('');
+                $product->setbetterthat_feed_errors('');
+                $product->getResource()->saveAttribute($product,'betterthat_feed_errors');
+                $product->getResource()->saveAttribute($product,'betterthat_product_id');
+                $product->getResource()->saveAttribute($product,'betterthat_product_status');
+            }
+        }
+        if(count($deletedIds)>0)
+             $this->messageManager->addSuccessMessage(json_encode($deletedIds) . ' item(s) deleted successfully');
+        else
+            $this->messageManager->addErrorMessage('Something went wrong');
+
+        return $this->_redirect('*/product/index');
     }
 }
