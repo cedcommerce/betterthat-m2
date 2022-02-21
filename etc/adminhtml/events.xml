@@ -9,4 +9,7 @@
     <event name="catalog_category_change_products">
         <observer name="catalog_category_change_products" instance="Ced\Betterthat\Observer\SaveCategory" />
     </event>
+    <event name="catalog_product_delete_after">
+        <observer name="betterthat_item_delete_after" instance="Ced\Betterthat\Observer\ProductDeleteAfter" />
+    </event>
 </config>

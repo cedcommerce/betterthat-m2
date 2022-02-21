@@ -41,8 +41,7 @@ class Save implements \Magento\Framework\Event\ObserverInterface
                 }
 
 			} catch (\Exception $e){
-			    print_r($e->getMessage());
-			    die;
+
 			}
 		}
 	}

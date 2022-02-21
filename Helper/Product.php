@@ -470,7 +470,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $reqAttributes = $profile->getRequiredAttributes(self::ATTRIBUTE_TYPE_NORMAL);
                     foreach ($reqAttributes as $attributeId => $validationAttribute) {
                         $value = $configurableProduct->getData($validationAttribute['magento_attribute_code']);
-
+                        $skippedAttribute = ['short_description'];
+                        if (in_array($validationAttribute['magento_attribute_code'], $skippedAttribute)) {
+                            // Validation case 1 skip some attributes that are not to be validated.
+                            continue;
+                        }
                         if ((!isset($value) || empty($value)) && !$validationAttribute['default'] ) {
                             $commonErrors[$attributeId] = 'Common required attribute empty.';
                         }
@@ -665,7 +669,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $requiredAttributes = $profile->getRequiredAttributes();
                 foreach ($requiredAttributes as $BetterthatAttributeId => $BetterthatAttribute) {
 
-                    $skippedAttribute = [];
+                    $skippedAttribute = ['short_description'];
                     if (in_array($BetterthatAttributeId, $skippedAttribute)) {
                         // Validation case 1 skip some attributes that are not to be validated.
                         continue;
@@ -793,6 +797,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "id" => @$id['id'],
                     "title" => @$attributes['title'],
                     "body_html"=> @$attributes['body_html'],
+                    "short_description" => @$attributes['short_description'],
                     "retailer_id"=> $retailer_id,
                     "dimensions"=> [
                         "length"=> 0,
@@ -820,7 +825,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             "sku"=> "",
                             "position"=> 1,
                             "inventory_policy"=> "deny",
-                            "compare_at_price"=> null,
+                            "compare_at_price"=>@$price['special_price'],
                             "option1"=> "Default Title",
                             "option2"=> null,
                             "option3"=> null,
@@ -841,7 +846,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "images"=> $images,
                     "image"=> @$images[1] ? @$images[1] : [],
                 ];
-
 
                 /*"variants"=>[
                     [
@@ -974,7 +978,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getPrice($productObject, $attrValue = null)
     {
-        $splprice = (float)$productObject->getFinalPrice();
+        $splprice = (float)$productObject->getspecial_price();
         $price = (float)$productObject->getPrice();
         if($attrValue != '') {
             $splprice = $price = $attrValue;
@@ -1097,7 +1101,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     "position" => $image_index,
                                     "alt" => null,
                                     "src" => $image->getUrl(),
-                                    "variant_ids" => []
+                                    "variant_ids" => [$product->getId()]
                                 ];
                             $image_index++;
                             //}
@@ -1187,6 +1191,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "id" => $parentId,
                     "title" => @$attributes['title'],
                     "body_html" => @$attributes['body_html'],
+                    "short_description" => @$attributes['short_description'],
                     "retailer_id" => $retailer_id,
                     "dimensions" => [
                         "length" => 0,
@@ -1211,6 +1216,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "image" => @$this->images[0] ? @$this->images[0] : [],
                 ];
             }
+            
             return $this->data;
         } catch (\Exception $e) {
             $this->logger->error('Create Configurable Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
@@ -1248,12 +1254,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 "product_id" => $parentId,
                 "title" => $attributes['title'],
                 "price" => $childproduct->getPrice(),
+                "discounted_price"=>$childproduct->getSpecialPrice(),
                 "sku" => $childproduct->getSku(),
                 "position" => $pos,
                 "inventory_policy" => "deny",
-                "compare_at_price" => null,
+                "compare_at_price" => $childproduct->getFinalPrice(),
                 "inventory_quantity" => $qty
             ];
+            //print_r($variant);die;
             $optionIndex = 1;
             foreach($variantAttributes as  $variantAttribute){
                 $variant[$varindex]['option'.$optionIndex] = $childproduct->getAttributeText($variantAttribute['attribute_code']);
@@ -1416,7 +1424,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                             "variant_id"=> $variant_id,
                                             "stock"=> $quantity,
                                             "buy_price"=> @$price['price'],
-                                            "discounted_price"=> ""
+                                            "discounted_price"=> @$price['special_price']
                                         ]
                                     ]
                                 ]
@@ -1428,7 +1436,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $index++;
                 }
             }
-
             return $response;
         }catch (\Exception $e) {
             $this->logger->error('Offer Update', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);

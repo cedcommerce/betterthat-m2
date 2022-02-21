@@ -113,7 +113,42 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
             ],
             "magento_attribute_code" => "name",
         ],
+                    "short_description" => [
+                        "code" => "short_description",
+                        "default_value" => "",
+                        "description" => "",
+                        "description_translations" => [],
+                        "example" => "",
+                        "hierarchy_code" => "",
+                        "label" => "Short Description",
+                        "label_translations" => [
+                            [
 
+                                "locale" => "en",
+                                "value" => "Short Description"
+                            ],
+
+                        ],
+                        "required" => true,
+                        "roles" => [
+                            [
+                                "parameters" => [
+                                ],
+                                "type" => "Short Description"
+                            ]
+
+                        ],
+
+                        "type" => "TEXT",
+                        "type_parameter" => "",
+                        "values" => "",
+                        "values_list" => "",
+                        "variant" => "",
+                        "options" => "",
+                        "option_values" => [
+                        ],
+                        "magento_attribute_code" => "short_description",
+                    ],
     "body_html" => [
 
             "code" => "body_html",

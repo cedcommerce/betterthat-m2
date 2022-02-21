@@ -105,7 +105,7 @@
                             <item name="message" xsi:type="string" translate="true">Delete items to betterthat?</item>
                         </item>
                         <item name="type" xsi:type="string">deleteitems</item>
-                        <item name="label" xsi:type="string" translate="true">Delete item(s)(dev use)</item>
+                        <item name="label" xsi:type="string" translate="true">Delete item(s)</item>
                         <item name="url" xsi:type="url" path="betterthat/product/deleteItems"/>
                     </item>
                 </argument>

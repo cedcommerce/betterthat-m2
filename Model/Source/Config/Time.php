@@ -27,6 +27,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
  */
 class Time extends AbstractSource
 {
+    const CRON_5MINUTES = '*/5 * * * *';
     const CRON_15MINUTES = '*/15 * * * *';
     const CRON_30MINUTES = '*/30 * * * *';
     const CRON_HOURLY = '0 * * * *';
@@ -41,6 +42,10 @@ class Time extends AbstractSource
     public function getAllOptions()
     {
         $expressions = [
+            [
+            'label' => __('Every  5 Minutes'),
+            'value' => self::CRON_5MINUTES
+            ],
             [
                 'label' => __('Every  15 Minutes'),
                 'value' => self::CRON_15MINUTES
