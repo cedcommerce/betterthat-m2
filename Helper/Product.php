@@ -325,6 +325,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    public function _sendBetterthatVisibility($data){
+        return $this->Betterthat->create(['config' => $this->config->getApiConfig()])->_sendBetterthatVisibility($data);
+    }
+
     /**
      * Create/Update Product on Betterthat
      * @param [] $ids
@@ -1216,7 +1220,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "image" => @$this->images[0] ? @$this->images[0] : [],
                 ];
             }
-            
+
             return $this->data;
         } catch (\Exception $e) {
             $this->logger->error('Create Configurable Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
