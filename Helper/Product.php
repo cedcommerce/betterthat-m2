@@ -826,7 +826,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             "title"=> "Default Title",
                             "price"=> @$price['price'],
                             "discounted_price"=>@$price['special_price'],
-                            "sku"=> "",
+                            "sku"=> $product->getSku(),
                             "position"=> 1,
                             "inventory_policy"=> "deny",
                             "compare_at_price"=>@$price['special_price'],
@@ -1105,7 +1105,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     "position" => $image_index,
                                     "alt" => null,
                                     "src" => $image->getUrl(),
-                                    "variant_ids" => [$product->getId()]
+                                    "variant_ids" => [(int)$product->getId()]
                                 ];
                             $image_index++;
                             //}
@@ -1150,7 +1150,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     "position" => $image_index,
                                     "alt" => null,
                                     "src" => $image->getUrl(),
-                                    "variant_ids" => []
+                                    "variant_ids" => [(int)$product->getId()]
                                 ];
                             $image_index++;
                             //}
@@ -1220,7 +1220,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "image" => @$this->images[0] ? @$this->images[0] : [],
                 ];
             }
-
             return $this->data;
         } catch (\Exception $e) {
             $this->logger->error('Create Configurable Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);

@@ -35,7 +35,7 @@ class Save implements \Magento\Framework\Event\ObserverInterface
                         {
                             $message = __('Betterthat profile id is invalid, please fill correct id and previous id has been reset.');
                             $this->messageManager->addWarningMessage($message);
-                            $product->setbetterthat_profile_id($product->getOrigData('betterthat_profile_id'));
+                            $product->setbetterthat_profile_id(@$product->getOrigData('betterthat_profile_id'));
                         }
                     }
                 }
