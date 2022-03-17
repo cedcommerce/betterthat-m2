@@ -101,6 +101,7 @@ class DeleteItems extends \Magento\Backend\App\Action
         foreach ($collection as $product){
             if(in_array($product->getId(),$deletedIds)){
                 $product->setbetterthat_product_status('DELETED');
+                $product->setbetterthat_visibility('no');
                 $product->setbetterthat_product_id('');
                 $product->setbetterthat_feed_errors('');
                 $product->getResource()->saveAttribute($product,'betterthat_feed_errors');

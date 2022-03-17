@@ -330,6 +330,30 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @param $data
+     * @return array[]
+     */
+    public function deleteProduct($data){
+        if(@$data["product_id"] && @$data['delete_status']){
+            $product =$this->product->create()->load($data["product_id"]);
+            if($product->getId()){
+                $product->setData("betterthat_validation_errors",'');
+                $product->setData("betterthat_visibility",'no');
+                $product->setData("betterthat_product_status",'DELETED');
+                $product->setData("betterthat_product_id",'');
+                $product->setData("betterthat_feed_errors",'');
+                $product->save();
+                return [['success'=>"true", "message"=>"Item deleted successfully","data"=>$data]];
+            }else{
+                return [['success'=>"false", "message"=>"Item Id not found","data"=>$data]];
+            }
+        }else{
+            return [['success'=>"false", "message"=>"Please enter all required fields [product_id,delete_status]","data"=>$data]];
+        }
+        return [['success'=>"true", "message"=>"Item deleted successfully","data"=>$data]];
+    }
+
+    /**
      * Create/Update Product on Betterthat
      * @param [] $ids
      * @return bool
