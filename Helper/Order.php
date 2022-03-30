@@ -287,7 +287,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     {
         try {
 
-
             $storeId = $this->config->getStore();
             $store = $this->storeManager->getStore($storeId);
             $websiteId = $store->getWebsiteId();
@@ -478,19 +477,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     ];
                     // override only for demo purpose..
                     $item['product_id'] = @$sku[$item['product_id']];*/
-
                     if (isset($item['product_id'])) {
                         $qty = $qtyArray[$item['_id']];
                         $product = $this->product->create()->load($item['product_id']);
                         if (isset($product) and !empty($product) and $product->getId()) {
                             $product = $this->product->create()->load($product->getEntityId());
                             if ($product->getStatus() == '1') {
-                                /* Get stock item */
-                                $stock = $this->stockRegistry
-                                    ->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
-                                /*$stockStatus = ($stock->getQty() > 0) ? ($stock->getIsInStock() == '1' ?
-                                    ($stock->getQty() >= $qty ? true : false)
-                                    : false) : false;*/
                                 $stockStatus = $this->checkStockQtyStatus($product, $qty);
                                 if($stockStatus) {
                                     $itemAccepted++;
@@ -512,11 +504,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
                                 }
                             } else {
-                                $reason[] = $item['product_id'] . " Product is not enabled on store";
+                                $reason[] = $item['product_id'] . " Product id is not enabled on store";
                                 $failedOrder = true;
                             }
                         } else {
-                            $reason[] = $item['product_id'] . " not exist on store";
+                            $reason[] = $item['product_id'] . " product id does not exist on store";
                             $failedOrder = true;
 
                         }
@@ -528,12 +520,19 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 }
 
                 if ($failedOrder) {
+                    $this->webapiResponse =
+                        [
+                            'success' => false,
+                            'message' => @$reason[0],
+                            'orderId'=> 'N/A',
+                            'btorderId'=>@$order['_id']
+                        ];
                     $this->rejectOrder($order, $order['Product_data'], $reason);
                 } else if(!$failedOrder) {
                     $shippingData = $order['Shipping_data'];
                     $countryCode = isset($order['Country_Name']['id'])
                         ? ($order['Country_Name']['id'] == 13 && $order['Country_Name']['name'] == 'Australia' ? 'AU' : 'AU') : 'AU';
-                    $stateName = $order['State_Name']['name'];
+                    $stateName = @$order['State_Name']['name'] ? $order['State_Name']['name'] : @$shippingData['state'];
 
                     $stateModel = $this->objectManager->create('Magento\Directory\Model\RegionFactory')->create()
                         ->getCollection()->addFieldToFilter('country_id', $countryCode)->addFieldToFilter('name', ['like' => '%'.$stateName.'%'])
@@ -541,7 +540,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     if($stateModel && $stateModel->getCode()) {
                         $stateCode = $stateModel->getCode();
                     }
-
 
 
                     try {
@@ -690,10 +688,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         $reason[] = $exception->getMessage();
                         $orderFailed = $this->orderFailed->create()->load($order['_id'], 'Betterthat_order_id');
                         $addData = [
-                            'Betterthat_order_id' => $order['_id'],
-                            'status' => $order['order_status'],
+                            'Betterthat_order_id' => @$order['_id'],
+                            'status' => @$order['order_status'],
                             'reason' => $this->json->jsonEncode($reason),
-                            'order_date' => $order['createdAt'],
+                            'order_date' => @$order['createdAt'],
                             'order_data' => $this->json->jsonEncode($order),
                             'order_items' => isset($order['Product_data']) ? $this->json->jsonEncode($order['Product_data']) : '',
                         ];
@@ -1605,6 +1603,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         } else {
             $stock = $this->stockRegistry
                 ->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
+            if($stock->getTypeId() == "configurable" && $stock->getIsInStock() == '1'){
+                return true; // temp check configurable case
+            }
             $stockStatus = ($stock->getQty() > 0) ? ($stock->getIsInStock() == '1' ?
                 ($stock->getQty() >= $qty ? true : false)
                 : false) : false;

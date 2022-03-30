@@ -360,6 +360,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function createProducts($ids = [])
     {
+
         try {
             $response = false;
             $ids = $this->validateAllProducts($ids);
@@ -382,6 +383,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 //$this->saveResponse($response);
                 return $response;
+            }elseif(isset($ids['bt_visibility'])){
+                $response['message'] = $response['bt_visibility'] = $ids['bt_visibility'];
             }
             return $response;
         } catch (\Exception $e) {
@@ -477,6 +480,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $skipAttributes = array_flip($skipAttributes);
                     $fromParentAttrs = $this->config->getFromParentAttributes();
                     $configurableProduct = $product;
+
+                    // bt visibility check
+                    if($configurableProduct->getBetterthatVisibility() == 0) {
+                        return ["bt_visibility"=>"Item's visibility is not visible hence can't be uploaded"];
+                    }
                     $sku = $configurableProduct->getSku();
                     $parentId = $configurableProduct->getId();
                     $productType = $configurableProduct->getTypeInstance();
@@ -546,6 +554,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             }
                         }
                         $productId = $this->validateProduct($product->getId(), $product, $profile, $parentId);
+
                         // variant attribute option value check start.
                         foreach ($variantAttributes as $attributes) {
                             $value = $product->getData($attributes['attribute_code']);
@@ -624,6 +633,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                     // case 2 : for simple products
                     $productId = $this->validateProduct($product->getId(), $product, $profile);
+                    if(isset($productId['bt_visibility'])){
+                        return $productId;
+                    }
 
                     if (isset($productId['id'])) {
                         $validatedProducts['simple'][$product->getId()] = [
@@ -679,6 +691,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $product = $this->product->create()
                     ->load($id)
                     ->setStoreId($this->selectedStore);
+            }
+            if($product->getBetterthatVisibility() == 0 && !$parentId) {
+                return ["bt_visibility"=>"Item's visibility is not visible hence can't be uploaded"];
             }
 
             //if profile is not passed, get profile
@@ -824,9 +839,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $product_array = [
                     "id" => @$id['id'],
                     "title" => @$attributes['title'],
+                    "visibility" => $product->getBetterthatVisibility() ? true : false,
                     "body_html"=> @$attributes['body_html'],
                     "short_description" => @$attributes['short_description'],
-                    "retailer_id"=> $retailer_id,
+                    "retailer_id" => $retailer_id,
                     "dimensions"=> [
                         "length"=> 0,
                         "height"=> 0,
@@ -1221,6 +1237,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "body_html" => @$attributes['body_html'],
                     "short_description" => @$attributes['short_description'],
                     "retailer_id" => $retailer_id,
+                    "visibility" => $product->getBetterthatVisibility() ? true : false,
                     "dimensions" => [
                         "length" => 0,
                         "height" => 0,
@@ -1420,45 +1437,67 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $productType = $configurableProduct->getTypeInstance();
                         $products = $productType->getUsedProducts($configurableProduct);
                         $cindex = $index;
-                        $quantity = $this->getFinalQuantityToUpload($product);
+                        $configId = $configurableProduct->getId();
                         foreach ($products as $product) {
                             $product = $this->product->create()->load($product->getId());
-                            $invupdatejson = '{
-                                "product_id": "",
-                                "_id": "",
-                                "base_stock": "$quantity"
-                            }';
+                            $price = $this->getPrice($product);
+                            $product_id = $product->getId();
+                            $quantity = $this->getFinalQuantityToUpload($product);
+                            $betterThatId = explode(':' , $product->getBetterthatProductId());
+                            //$variant_id = @$betterThatId[2] ? $betterThatId[2] : '';; // bt team want to send magento store variant id
+                            $stock[] =
+                                [
+                                    "variant_id"=> $product_id,
+                                    "stock"=> $quantity,
+                                    "buy_price"=> @$price['price'],
+                                    "discounted_price"=> @$price['special_price']
+                                ];
+
                             $cindex++;
+
                         }
+                        $invupdate = [
+                            "products"=> [
+                                [
+                                    "product_id" => $configId,
+                                    "stocks"=> $stock
+                                ]
+                            ]
+                        ];
+
+                        $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->updateInventory($invupdate);
                         $index = $cindex;
                     } elseif ($product->getTypeId() == 'simple' &&
                         $product->getVisibility() != 1
                     ) {
+
                         $this->ids[] = $product->getId();
                         $price = $this->getPrice($product);
                         $quantity = $this->getFinalQuantityToUpload($product);
                         $betterThatId = explode(':' , $product->getBetterthatProductId());
-                        $product_id = @$betterThatId[0] ? $betterThatId[0] : '';
-                        $_id = @$betterThatId[1] ? $betterThatId[1] : '';;
-                        $variant_id = @$betterThatId[2] ? $betterThatId[2] : '';;
+                        //$product_id = @$betterThatId[0] ? $betterThatId[0] : '';
+                        //$_id = @$betterThatId[1] ? $betterThatId[1] : '';;
+                        //$variant_id = @$betterThatId[2] ? $betterThatId[2] : '';;
+
+                        //override product_id
+                        $product_id = $product->getId();
                         $invupdate = [
                             "products"=> [
                                 [
                                     "product_id" => $product_id,
-                                    "retailer_product_id" => $_id,
                                     "stocks"=> [
                                         [
-                                            "variant_id"=> $variant_id,
-                                            "stock"=> $quantity,
-                                            "buy_price"=> @$price['price'],
-                                            "discounted_price"=> @$price['special_price']
+                                            "variant_id"=> $product_id,
+                                            "stock"=> (int)$quantity,
+                                            "buy_price"=> (float)@$price['price'],
+                                            "discounted_price"=> (float)@$price['special_price']
                                         ]
                                     ]
                                 ]
                             ]
                         ];
-                        $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->updateInventory($invupdate);
 
+                        $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->updateInventory($invupdate);
                     }
                     $index++;
                 }
@@ -1762,6 +1801,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             $response = false;
             $ids = $this->validateAllProducts($ids);
+            if(isset($ids['bt_visibility'])) {
+                return $ids;
+            }
             if (!empty($ids['simple']) or !empty($ids['configurable'])) {
                 $this->ids = [];
                 $this->key = 0;

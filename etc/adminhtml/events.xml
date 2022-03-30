@@ -12,4 +12,7 @@
     <event name="catalog_product_delete_after">
         <observer name="betterthat_item_delete_after" instance="Ced\Betterthat\Observer\ProductDeleteAfter" />
     </event>
+    <event name="cataloginventory_stock_item_save_after">
+        <observer name="ced_betterthat_inventory_save_after" instance="Ced\Betterthat\Observer\InventoryChangeObserver"/>
+    </event>
 </config>

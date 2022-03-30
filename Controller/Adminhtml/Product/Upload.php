@@ -117,6 +117,13 @@ class Upload extends \Magento\Backend\App\Action
                             'messages' => $response['message']
                         ]
                     );
+                }elseif(isset($response['bt_visibility'])){
+                    return $resultJson->setData(
+                        [
+                            'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]).' '.$response['message']  ,
+                            'messages' => $response['message']
+                        ]
+                    );
                 }else{
                     return $resultJson->setData(
                         [
@@ -151,19 +158,29 @@ class Upload extends \Magento\Backend\App\Action
         if (count($productIds) == self::CHUNK_SIZE) {
             $response = $this->Betterthat->createProducts($productIds);
             if (!@$response['err_code'] && !@$response['error_key']) {
+
                 if (@$response['message'] &&
                     in_array($response['message'],["product already exists","product already exists in cleanse section."])) {
                     $this->messageManager->addSuccessMessage($response['message']);
-                }else{
+                }elseif(@$response['bt_visibility']){
+                    $this->messageManager->addNoticeMessage($response['message']);
+                }
+                else{
                     $this->messageManager->addSuccessMessage(count($productIds) . 'Product(s) will reviewed first and get approved soon');
                 }
             } else {
-                $message = 'Product(s) Upload Failed.';
-                $errors = $this->registry->registry('Betterthat_product_errors');
-                if (isset($errors)) {
-                    $message = "Product(s) Upload Failed. \nErrors: " . (string)json_encode($errors);
+                if(@$response['fields'][0] && $response['fields'][0] == 'visibility')
+                {
+                    $this->messageManager->addNoticeMessage("Item's visibility is not visible hence can't be uploaded, please update the visibility and try again!");
+                }else{
+                    $message = 'Product(s) Upload Failed.';
+                    $errors = $this->registry->registry('Betterthat_product_errors');
+                    if (isset($errors)) {
+                        $message = "Product(s) Upload Failed. \nErrors: " . (string)json_encode($errors);
+                    }
+                    $this->messageManager->addError($message);
                 }
-                $this->messageManager->addError($message);
+
             }
 
             $resultRedirect = $this->resultFactory->create('redirect');

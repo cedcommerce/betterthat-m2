@@ -47,8 +47,14 @@ class Save implements \Magento\Framework\Event\ObserverInterface
                     }
                 }
 
+                /*if($product->dataHasChangedFor('price')){ // need price and inv seperately since this observer unable to track inventory due to bottle neck firing of stock save
+                    $response = $this->productHelper->updatePriceInventory([$product->getId()]);
+                    if(@$response['status'] && $response['status'] == "OK"){
+                        $this->messageManager->addSuccessMessage("Price/Inventory updated on BetterThat");
+                    }
+                }*/
 
-			} catch (\Exception $e){
+            } catch (\Exception $e){
 
 			}
 		}

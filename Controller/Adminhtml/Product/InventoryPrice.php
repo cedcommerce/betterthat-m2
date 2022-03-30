@@ -112,18 +112,18 @@ class InventoryPrice extends \Magento\Backend\App\Action
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
             $response = $this->Betterthat->updatePriceInventory($productIds[$batch_id]);
-            if (@$response['n']) {
+            if (!@$response[0]['isError']) {
                 return $resultJson->setData(
                     [
-                    'success' => count($productIds[$batch_id]) . " Product(s) Inventory/Price Updated successfully. Product Id: ". json_encode($productIds[$batch_id]),
-                    'messages' => $response
+                        'success' => count($productIds[$batch_id]) . " Product(s) Inventory/Price Updated successfully. Product Id: ". json_encode($productIds[$batch_id]),
+                        'messages' => $response
                     ]
                 );
             }
             return $resultJson->setData(
                 [
-                'errors' => "Product Id:".json_encode($productIds[$batch_id])." Failed to update. You can only update for approved item",
-                'messages' => $this->registry->registry('Betterthat_product_errors'),
+                    'errors' => "Product Id:".json_encode($productIds[$batch_id])." Failed to update.Reason:".@$response[0]['message'],
+                    'messages' => $this->registry->registry('Betterthat_product_errors'),
                 ]
             );
         }
@@ -143,10 +143,10 @@ class InventoryPrice extends \Magento\Backend\App\Action
         if (count($productIds) == self::CHUNK_SIZE) {
             $batch_id = @$batch_id ? $batch_id : 0;
             $response = $this->Betterthat->updatePriceInventory($productIds);
-            if (@$response['n']) {
+            if (!@$response[0]['isError']) {
                 $this->messageManager->addSuccessMessage(count($productIds) . " Product(s) Inventory/Price Updated successfully. Product Id: ".json_encode($productIds[$batch_id]));
             } else {
-                $message = 'Product(s) Inventory/Price will update once item(s) are approved';
+                $message = @$response[0]['message'];
                 $errors = $this->registry->registry('Betterthat_product_errors');
                 if (isset($errors)) {
                     $message = "Product(s) Update Failed. \nErrors: " . (string)json_encode($errors);
