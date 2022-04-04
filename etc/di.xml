@@ -49,5 +49,6 @@
     <preference for="Ced\Betterthat\Api\OrderInterface" type="Ced\Betterthat\Model\OrderApi"/>
     <preference for="Ced\Betterthat\Api\DeleteProductInterface" type="Ced\Betterthat\Model\DeleteProductApi"/>
     <preference for="Magento\Quote\Model\ChangeQuoteControl" type="Ced\Betterthat\Model\ChangeQuoteControl" />
+    <preference for="Ced\Betterthat\Api\ShipmentInterface" type="Ced\Betterthat\Model\SubmitShipment"/>
 
 </config>

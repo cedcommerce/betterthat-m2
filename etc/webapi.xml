@@ -12,10 +12,10 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
-    <!--<route method="POST" url="/V1/betterthat/submitshipment/">
+    <route method="POST" url="/V1/betterthat/submitshipment/">
         <service class="Ced\Betterthat\Api\ShipmentInterface" method="getPost"/>
         <resources>
             <resource ref="anonymous"/>
         </resources>
-    </route>-->
+    </route>
 </routes>

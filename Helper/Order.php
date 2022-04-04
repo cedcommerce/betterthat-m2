@@ -18,6 +18,8 @@
 
 namespace Ced\Betterthat\Helper;
 
+use Ced\Betterthat\Controller\Adminhtml\Order\Sync;
+
 /**
  * Class Order
  *
@@ -184,6 +186,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public $mailFactory;
 
     public $changeQuoteControl;
+
+    public $shipmentFactory;
     /**
      * Order constructor.
      *
@@ -243,7 +247,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Quote\Model\Quote\Address\RateFactory $rateFactory,
         \Magento\Framework\DataObjectFactory $dataFactory,
         \Ced\Betterthat\Model\MailFactory $mailFactory,
-        \Ced\Betterthat\Model\ChangeQuoteControl $quoteControl
+        \Ced\Betterthat\Model\ChangeQuoteControl $quoteControl,
+        \Magento\Sales\Model\Order\ShipmentFactory $shipmentFactory
     ) {
         parent::__construct($context);
         $this->objectManager = $objectManager;
@@ -277,7 +282,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->mailFactory = $mailFactory;
         $this->dataFactory = $dataFactory;
         $this->changeQuoteControl = $quoteControl;
-
+        $this->shipmentFactory = $shipmentFactory;
     }
 
     /**
@@ -445,6 +450,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $order = null,
         $count = 0
     ) {
+
         $shippingcost = 0;
         $cart_id = $this->cartManagementInterface->createEmptyCart();
         $quote = $this->cartRepositoryInterface->get($cart_id);
@@ -550,7 +556,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             'city' => @$shippingData['state'] ? $shippingData['state'] : 'N/A',
                             'country' =>  $countryCode,
                             'country_id' => $countryCode,
-                            'region' => $stateCode,
+                            'region' => @$stateCode,
                             'postcode' => $shippingData['postcode'],
                             'telephone' => @$shippingData['phonenumber'] ? @$shippingData['phonenumber'] : 'N/A',
                             'fax' => '',
@@ -647,13 +653,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             $item->setOriginalPrice($price)->save();
                         }
 
+
                         // after save order
                         $orderData = [
-                            'Betterthat_order_id' => $order['_id'],
-                            'order_place_date' => $order['createdAt'],
+                            'Betterthat_order_id' => @$order['_id'],
+                            'order_place_date' => @$order['createdAt'] ? @$order['createdAt'] : date('Y-m-d h:i:s'),
                             'magento_order_id' => $magentoOrder->getId(),
                             'increment_id' => $magentoOrder->getIncrementId(),
-                            'status' => $order['order_status'],
+                            'status' => @$order['order_status'],
                             'order_data' => $this->json->jsonEncode($order),
                             'order_items' => $this->json->jsonEncode($order['Product_data'])
                         ];
@@ -681,7 +688,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         if($autoCancellation) {
                             $this->autoOrderAccept($order['order_id'], $rejectItemsArray);
                         }*/
-                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), $order['createdAt']);
+                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), @$order['createdAt']);
 
                     } catch (\Exception $exception) {
 
@@ -709,6 +716,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
     }
+
 
     /**
      * @param array $order
@@ -855,6 +863,66 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->logger->error('Generate Magento Invoice', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
+        }
+    }
+
+    public function submitMagentoShipment(array $data = []){
+        $orderId = @$data[0]['order_id'];
+        $title = @$data[0]['tracking_info']['shipping_company'];
+        $trackingNumber = @$data[0]['tracking_info']['tracking_number'];
+        $this->webApiResponse = $this->createShipment($orderId,$trackingNumber,$title);
+        return $this->webApiResponse;
+    }
+
+    /**
+     * @param int $orderId
+     * @param string $trackingNumber
+     * @return \Magento\Sales\Model\Shipment $shipment
+     */
+    protected function createShipment($orderId, $trackingNumber,$title)
+    {
+        try {
+            $order = $this->objectManager->create('Magento\Sales\Model\Order')
+                ->load($orderId,'increment_id');
+
+            if ($order && $order->canShip()){
+                $data = [[
+                    'carrier_code' => 'custom',
+                    'title' => $title,
+                    'number' => $trackingNumber,
+                ]];
+                $shipment = $this->prepareShipment($order, $data);
+                if ($shipment) {
+                    $order->setIsInProcess(true);
+                    $order->addStatusHistoryComment('Automatically SHIPPED', false);
+                    $transactionSave =  $this->objectManager->create('Magento\Framework\DB\TransactionFactory')->create()->addObject($shipment)->addObject($shipment->getOrder());
+                    $transactionSave->save();
+                    $this->webApiResponse = [
+                        "magento_orderId" => $orderId,
+                        "message" => "Shipment Generated Successfully",
+                        "success" => true
+                    ];
+                    return $this->webApiResponse;
+                }
+                return $this->webApiResponse = [
+                        "magento_orderId" => $orderId,
+                        "message" => "Failed to Generated Shipment",
+                        "success" => false
+                ];
+
+            }else{
+                return $this->webApiResponse = [
+                    "magento_orderId" => $orderId,
+                    "message" => "Shipment already generated!",
+                    "success" => true
+                ];
+            }
+
+
+        } catch (\Exception $e) {
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __($e->getMessage())
+            );
         }
     }
 
@@ -1031,18 +1099,32 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $order
-     * @param $cancelleditems
-     * @return bool
+     * @param $order \Magento\Sales\Model\Order
+     * @param $track array
+     * @return $this
      */
-    public function prepareShipment($order, $cancelleditems)
+    protected function prepareShipment($order, $track)
     {
-        $shipment = $this->objectManager->get('Magento\Sales\Model\Order\ShipmentFactory')
-            ->create($order, isset($cancelleditems) ? $cancelleditems : [], []);
-        if (!$shipment->getTotalQty()) {
-            return false;
+        $shipment = $this->shipmentFactory->create(
+            $order,
+            $this->prepareShipmentItems($order),
+            $track
+        );
+        return $shipment->getTotalQty() ? $shipment->register() : false;
+    }
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     * @return array
+     */
+    protected function prepareShipmentItems($order)
+    {
+        $items = [];
+
+        foreach($order->getAllItems() as $item) {
+            $items[$item->getItemId()] = $item->getQtyOrdered();
         }
-        return $shipment;
+        return $items;
     }
 
     /**

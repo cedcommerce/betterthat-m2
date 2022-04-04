@@ -15,4 +15,7 @@
     <event name="cataloginventory_stock_item_save_after">
         <observer name="ced_betterthat_inventory_save_after" instance="Ced\Betterthat\Observer\InventoryChangeObserver"/>
     </event>
+    <event name="catalog_product_attribute_update_before">
+        <observer name="ced_betterthat_product_attribute_update_before" instance="Ced\Betterthat\Observer\UpdateAttribute"/>
+    </event>
 </config>
