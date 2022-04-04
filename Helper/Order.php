@@ -484,10 +484,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     // override only for demo purpose..
                     $item['product_id'] = @$sku[$item['product_id']];*/
                     if (isset($item['product_id'])) {
-                        $qty = $qtyArray[$item['_id']];
-                        $product = $this->product->create()->load($item['product_id']);
+                        $qty = @$qtyArray[@$item['_id']];
+                        $product = $this->product->create()->load(@$item['product_id']);
                         if (isset($product) and !empty($product) and $product->getId()) {
-                            $product = $this->product->create()->load($product->getEntityId());
                             if ($product->getStatus() == '1') {
                                 $stockStatus = $this->checkStockQtyStatus($product, $qty);
                                 if($stockStatus) {
@@ -502,8 +501,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                         ->setOriginalCustomPrice($price)
                                         ->setRowTotal($baseprice)
                                         ->setBaseRowTotal($baseprice);
+                                    $product->unsSkipCheckRequiredOption();
+                                    $product->setSkipSaleableCheck(true);
+                                    $product->setData('is_salable', true);
+                                    $quote->setIsSuperMode(true);
                                     $quote->addProduct($product, (int)$qty);
-
                                 } else {
                                     $reason[] = $item['product_id'] . " Product is out of stock";
                                     $failedOrder = true;
@@ -603,7 +605,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             'method' => 'paybyBetterthat'
                             ]
                         );
-
                         $quote->collectTotals()->save();
                         foreach ($quote->getAllItems() as $item) {
                             $price = @$priceArr[$item->getProductId()];
@@ -622,6 +623,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             $item->setOriginalPrice($price)->save();
                         }
                         $this->changeQuoteControl->forceIsAllowed(true);
+                        $quote->setIsSuperMode(true);
                         $magentoOrder = $this->cartManagementInterface->submit($quote);
                         $subTotal = $order['total_price'];
                         $shippingcost = $order['shipping_price'];
@@ -657,7 +659,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         // after save order
                         $orderData = [
                             'Betterthat_order_id' => @$order['_id'],
-                            'order_place_date' => @$order['createdAt'] ? @$order['createdAt'] : date('Y-m-d h:i:s'),
+                            'order_place_date' => @$order['createdAt'] ? $order['createdAt'] : date('Y-m-d h:i:s'),
                             'magento_order_id' => $magentoOrder->getId(),
                             'increment_id' => $magentoOrder->getIncrementId(),
                             'status' => @$order['order_status'],
@@ -691,7 +693,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), @$order['createdAt']);
 
                     } catch (\Exception $exception) {
-
+                        $this->webapiResponse =
+                            [
+                                'success' => false,
+                                'message' => $exception->getMessage(),
+                                'orderId'=> 'N/A',
+                                'btorderId'=>@$order['_id']
+                            ];
                         $reason[] = $exception->getMessage();
                         $orderFailed = $this->orderFailed->create()->load($order['_id'], 'Betterthat_order_id');
                         $addData = [
@@ -711,6 +719,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
             return $count;
         } catch (\Exception $e) {
+            $this->webapiResponse =
+                [
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                    'orderId'=> 'N/A',
+                    'btorderId'=>@$order['_id']
+                ];
             $this->logger->error('Generate Quote', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             $this->rejectOrder($order, [$product->getSku()], [$e->getMessage()]);
             return false;
