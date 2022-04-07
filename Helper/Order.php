@@ -324,12 +324,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         }
                     }else{
                         $this->webapiResponse =
-                        [
-                            'success' => true,
-                            'message' => 'Magento order already created',
-                            'orderId'=> @$magentoOrderId[0],
-                            'btorderId'=>@$BetterthatOrderId
-                        ];
+                            [
+                                'success' => true,
+                                'message' => 'Magento order already created',
+                                'orderId'=> @$magentoOrderId[0],
+                                'btorderId'=>@$BetterthatOrderId
+                            ];
                     }
                 }
             }
@@ -342,12 +342,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->messageManager->addSuccessMessage($count. ' BT Orders successfully imported');
                 return true;
             }elseif($this->failedCount > 0){
-                    $this->messageManager->addComplexErrorMessage(
-                        'failedOrders',
-                        [
-                            'url' => 'betterthat/failedorder/index/'
-                        ]
-                    );
+                $this->messageManager->addComplexErrorMessage(
+                    'failedOrders',
+                    [
+                        'url' => 'betterthat/failedorder/index/'
+                    ]
+                );
                 return false;
             }else{
                 $this->messageManager->addErrorMessage("No New Orders found!");
@@ -477,12 +477,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 $failedOrder = false;
                 foreach ($order['Product_data'] as $item) {
                     $item['product_id'] = @$item['product_id'][0] ? $item['product_id'][0] : '';
-/*                    $sku = [
-                        '8517' => '30',
-                        '8516' => '60'
-                    ];
-                    // override only for demo purpose..
-                    $item['product_id'] = @$sku[$item['product_id']];*/
+                    /*                    $sku = [
+                                            '8517' => '30',
+                                            '8516' => '60'
+                                        ];
+                                        // override only for demo purpose..
+                                        $item['product_id'] = @$sku[$item['product_id']];*/
                     if (isset($item['product_id'])) {
                         $qty = @$qtyArray[@$item['_id']];
                         $product = $this->product->create()->load(@$item['product_id']);
@@ -544,7 +544,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
                     $stateModel = $this->objectManager->create('Magento\Directory\Model\RegionFactory')->create()
                         ->getCollection()->addFieldToFilter('country_id', $countryCode)->addFieldToFilter('name', ['like' => '%'.$stateName.'%'])
-                            ->getFirstItem();
+                        ->getFirstItem();
                     if($stateModel && $stateModel->getCode()) {
                         $stateCode = $stateModel->getCode();
                     }
@@ -581,18 +581,18 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         }
                         $titles  = [
                             'Standard' => 'Standard Delivery - Retailer Managed',
-                            'Instore' => 'Instore',
+                            'Instore' => 'Instore (BT managed)',
                             'International'=> 'International Delivery - Retailer Managed',
-                            'InternationalDelivery' => 'International Delivery',
-                            'StandardDeliverySendle' => 'Standard Delivery - Sendle',
-                            'ExpressDelivery' => 'Express Delivery'
-                            ];
-                            $shipTitle = @$titles[$order['shipping_type']];
-                            $rate->setCode($shippingMethod)
+                            'InternationalDelivery' => 'International Delivery(BT managed)',
+                            'StandardDeliverySendle' => 'Standard Delivery - Sendle(BT managed)',
+                            'ExpressDelivery' => 'Express Delivery(BT managed)'
+                        ];
+                        $shipTitle = @$order['formatted_shipping_type'];
+                        $rate->setCode($shippingMethod)
                             ->setMethod($shippingMethod)
                             ->setMethodTitle($shipTitle)
                             ->setCarrier('shipbyBetterthat')
-                            ->setCarrierTitle('Betterthat Shipping')
+                            ->setCarrierTitle('')
                             ->setPrice($shippingcost)
                             ->setAddress($shippingAddress);
                         $shippingAddress->addShippingRate($rate);
@@ -602,7 +602,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         $quote->save();
                         $quote->getPayment()->importData(
                             [
-                            'method' => 'paybyBetterthat'
+                                'method' => 'paybyBetterthat'
                             ]
                         );
                         $quote->collectTotals()->save();
@@ -675,21 +675,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             'btorderId'=>@$order['_id']
                         ];
                         $this->generateInvoice($magentoOrder);
-
-                        /*$autoAccept = $this->config->getAutoAcceptOrderSetting();
-                        if($autoAccept) {
-                            $this->autoOrderAccept($order['_id'], $acceptItemsArray);
-                            $this->generateInvoice($magentoOrder);
-                        }
-                        $holdOrder = $this->config->getHoldOrderUntilShipping();
-                        if($holdOrder && $magentoOrder->canHold()) {
-                            $magentoOrder->hold()->save();
-                        }*/
-                        //$this->addTransactionToOrder($magentoOrder, $order['order_id']);
-                        /*$autoCancellation = $this->config->getAutoCancelOrderSetting();
-                        if($autoCancellation) {
-                            $this->autoOrderAccept($order['order_id'], $rejectItemsArray);
-                        }*/
                         $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), @$order['createdAt']);
 
                     } catch (\Exception $exception) {
@@ -764,37 +749,37 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public function autoOrderAccept($BetterthatOrderId, $acceptanceArray)
     {
         $acceptanceData = array(
-                'order' => array(
-                    '_attribute' => array(),
-                    '_value' => array(
-                        'order_lines' => array(
-                            '_attribute' => array(),
-                            '_value' => $acceptanceArray
-                        )
+            'order' => array(
+                '_attribute' => array(),
+                '_value' => array(
+                    'order_lines' => array(
+                        '_attribute' => array(),
+                        '_value' => $acceptanceArray
                     )
                 )
+            )
         );
         $BetterthatOrder = $this->objectManager->create(
-                '\BetterthatSdk\Order',
-                ['config' => $this->config->getApiConfig()]
-            );
+            '\BetterthatSdk\Order',
+            ['config' => $this->config->getApiConfig()]
+        );
         $response = $BetterthatOrder->acceptrejectOrderLines($BetterthatOrderId, $acceptanceData);
         $this->logger->info('Auto Accept Order Acceptance Data', ['path' => __METHOD__, 'AcceptanceData' => json_encode($acceptanceData)]);
-            try {
-                $BetterthatOrder = $this->orders->create()
-                    ->getCollection()
-                    ->addFieldToFilter('Betterthat_order_id', $BetterthatOrderId)->getData();
+        try {
+            $BetterthatOrder = $this->orders->create()
+                ->getCollection()
+                ->addFieldToFilter('Betterthat_order_id', $BetterthatOrderId)->getData();
 
-                if (!empty($BetterthatOrder)) {
-                    $id = $BetterthatOrder [0] ['id'];
-                    $model = $this->orders->create()->load($id);
-                    $model->setStatus('WAITING_DEBIT');
-                    $model->save();
-                }
-            } catch (\Exception $e) {
-                $this->logger->error('Auto Accept Order', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-                return false;
+            if (!empty($BetterthatOrder)) {
+                $id = $BetterthatOrder [0] ['id'];
+                $model = $this->orders->create()->load($id);
+                $model->setStatus('WAITING_DEBIT');
+                $model->save();
             }
+        } catch (\Exception $e) {
+            $this->logger->error('Auto Accept Order', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return false;
+        }
         return $response;
     }
     public function getShipmentProviders()
@@ -838,18 +823,18 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             if ($to_email) {
 
-                    /** @var \Magento\Framework\DataObject $data */
-                    $data = $this->dataFactory->create();
-                    $data->addData([
-                        'to' => $to_email,
-                        'marketplace_name' => 'Betterthat',
-                        'po_id' => $betterthatOrderId,
-                        'order_id' => $mageOrderId,
-                        'order_date' => $placeDate,
-                    ]);
-                    /** @var \Ced\Betterthat\Model\Mail $mail */
-                    $mail = $this->mailFactory->create();
-                    $mail->send($data);
+                /** @var \Magento\Framework\DataObject $data */
+                $data = $this->dataFactory->create();
+                $data->addData([
+                    'to' => $to_email,
+                    'marketplace_name' => 'Betterthat',
+                    'po_id' => $betterthatOrderId,
+                    'order_id' => $mageOrderId,
+                    'order_date' => $placeDate,
+                ]);
+                /** @var \Ced\Betterthat\Model\Mail $mail */
+                $mail = $this->mailFactory->create();
+                $mail->send($data);
 
             }
             return true;
@@ -920,9 +905,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     return $this->webApiResponse;
                 }
                 return $this->webApiResponse = [
-                        "magento_orderId" => $orderId,
-                        "message" => "Failed to Generated Shipment",
-                        "success" => false
+                    "magento_orderId" => $orderId,
+                    "message" => "Failed to Generated Shipment",
+                    "success" => false
                 ];
 
             }else{
@@ -962,14 +947,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 { "shipping_company": "ABC", "shipping_date": "23/09/2022", "tracking_number": "TRACK35356", "tracking_url": "https://abc.com/track/TRACK35356", "notes":"any" } }
             }';*/
             $arraytoship = [
-                    "order_id" => $data['BetterthatOrderID'],
-                    "tracking_info" => [
-                        "shipping_company"=> $data['ShippingProvider'],
-                        "shipping_date" => $data['OrderShipDate'],
-                        "tracking_number" => $data['TrackingNumber'],
-                        "tracking_url" => "",
-                        "notes" => ""
-                    ]
+                "order_id" => $data['BetterthatOrderID'],
+                "tracking_info" => [
+                    "shipping_company"=> $data['ShippingProvider'],
+                    "shipping_date" => $data['OrderShipDate'],
+                    "tracking_number" => $data['TrackingNumber'],
+                    "tracking_url" => "",
+                    "notes" => ""
+                ]
             ];
 
             $order = $this->objectManager
@@ -1209,7 +1194,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $BetterthatOrderItemsData = json_decode($order->getOrderItems(), true); // update
 
         if(isset($BetterthatOrderItemsData['order_line'])) {
-                $items = $BetterthatOrderItemsData['order_line'];
+            $items = $BetterthatOrderItemsData['order_line'];
         }
 
         return $items;
@@ -1234,17 +1219,17 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 $feedModel = $this->feeds->create();
                 $feedModel->addData(
                     [
-                    'feed_id' => $response->getRequestId(),
-                    'type' => $response->getResponseType(),
-                    'feed_response' => $this->json->jsonEncode(
-                        ['Body' => $response->getBody(), 'Errors' => $response->getError()]
-                    ),
-                    'status' => (string)$response->getStatus(),
-                    'feed_file' => $response->getFeedFile(),
-                    'response_file' => $response->getFeedFile(),
-                    'feed_created_date' => $this->dateTime->date("Y-m-d"),
-                    'feed_executed_date' => $this->dateTime->date("Y-m-d"),
-                    'product_ids' => $this->json->jsonEncode($this->ids)
+                        'feed_id' => $response->getRequestId(),
+                        'type' => $response->getResponseType(),
+                        'feed_response' => $this->json->jsonEncode(
+                            ['Body' => $response->getBody(), 'Errors' => $response->getError()]
+                        ),
+                        'status' => (string)$response->getStatus(),
+                        'feed_file' => $response->getFeedFile(),
+                        'response_file' => $response->getFeedFile(),
+                        'feed_created_date' => $this->dateTime->date("Y-m-d"),
+                        'feed_executed_date' => $this->dateTime->date("Y-m-d"),
+                        'product_ids' => $this->json->jsonEncode($this->ids)
                     ]
                 );
                 $feedModel->save();

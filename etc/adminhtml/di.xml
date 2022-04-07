@@ -22,4 +22,7 @@
                 </argument>
             </arguments>
         </virtualType>
+        <type name="Magento\Backend\Block\Widget\Context">
+            <plugin name="add_custom_button_sales_view" type="Ced\Betterthat\Plugin\Block\Adminhtml\Order\View\ButtonList" sortOrder="1"/>
+        </type>
 </config>
