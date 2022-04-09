@@ -446,7 +446,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
             foreach ($ids as $id) {
                 $product = $this->product->create()->load($id)->setStoreId($this->selectedStore);
-                $profile_id = $product->getBetterthatProfileId();
+                //$profile_id = $product->getBetterthatProfileId();
                 // get profile
                 $productParents = $this->objectManager
                     ->create('Magento\ConfigurableProduct\Model\Product\Type\Configurable')
@@ -470,6 +470,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     }
                 }
 
+                if($product->getTypeId() == 'virtual')
+                    continue; // virtual item's are prohibited from BT
+                
                 // case 1 : for config products
                 if ($product->getTypeId() == 'configurable' &&
                     $product->getVisibility() != 1
@@ -525,12 +528,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     if (empty($products))
                         $errors[$configurableProduct->getSku()]['errors'][]['Configurable'] = ['Product has no variation in it.'];
 
-                    /*if ((!isset($BetterthatVariantAttributes['variant-size-value']) && !isset($BetterthatVariantAttributes['variant-colour-value'])) && $uploadAsSimple == '1') {
-                        $uploadConfigAsSimple = true;
-                    }*/
-
                     foreach ($products as $product) {
                         $modifiedParentSKU = $sku;
+                        if($product->getTypeId() == 'virtual')
+                            continue; // virtual item's are prohibited from BT
                         $errors[$product->getSku()] = [
                             'sku' => $product->getSku(),
                             'id' => $product->getId(),
@@ -554,7 +555,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             }
                         }
                         $productId = $this->validateProduct($product->getId(), $product, $profile, $parentId);
-
                         // variant attribute option value check start.
                         foreach ($variantAttributes as $attributes) {
                             $value = $product->getData($attributes['attribute_code']);
