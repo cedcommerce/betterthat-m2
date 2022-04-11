@@ -964,9 +964,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             if ($arraytoship) {
                 $status = $order->putShipOrder($arraytoship);
                 $this->logger->info('Ship Order Status Update', ['path' => __METHOD__, 'ShipData' => var_export($arraytoship, true), 'ShipResponseData' => var_export($status, true)]);
-                return $response;
+                return $status;
             } else {
-                $response['message'][] = 'There is some issue while shipment';
+                $response['message'] = 'There is some issue while shipment';
             }
         } catch (\Exception $exception) {
             $response['message'] = $exception->getMessage();

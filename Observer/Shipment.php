@@ -49,12 +49,11 @@ class Shipment implements \Magento\Framework\Event\ObserverInterface
 						$response = $this->api->shipOrder($args);
 						if(@$response['status'] == 'OK'){
                             $bo_order->setData('status','Shipped');
-                            $bo_order->save($this->orderModel);
+                            $bo_order->save();
                         }
                         $this->logger->info('Shipment Data In Observer', ['path' => __METHOD__, 'DataToShip' => json_encode($args), 'Response Data' => json_encode($response)]);
 					}
 				} catch (\Exception $e){
-				    die($e->getMessage());
                     $this->logger->error('Shipment Observer', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
 				}
 			}
