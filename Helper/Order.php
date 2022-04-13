@@ -413,14 +413,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         (isset($customer_data['lastname']) and !empty($customer_data['lastname'])) ?
                             $customer_data['lastname'] : '.'
                     );
-                    $customer->setPassword($customer_data['password']);
+                    $customer->setPassword('password@btcustomer');
                     $customer->save();
 
 
                 } catch (\Exception $e) {
                     $reason = 'Customer create failed. Order Id: #' .
                         $order['_id'] . ' Message:' . $e->getMessage();
-                    $this->rejectOrder($order, $order['Product_data'], $reason);
+                    $this->rejectOrder($order, $order['Product_data'], [$reason]);
                     $this->logger->log(
                         'ERROR',
                         $reason
@@ -431,7 +431,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
             return $customer;
         } catch (\Exception $e) {
-            $this->rejectOrder($order, $order['Product_data'], $e->getMessage());
+            $this->rejectOrder($order, $order['Product_data'], [$e->getMessage()]);
             $this->logger->error('Create Customer', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
@@ -712,7 +712,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     'btorderId'=>@$order['_id']
                 ];
             $this->logger->error('Generate Quote', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            $this->rejectOrder($order, [$product->getSku()], [$e->getMessage()]);
             return false;
         }
     }
