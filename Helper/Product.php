@@ -472,7 +472,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                 if($product->getTypeId() == 'virtual')
                     continue; // virtual item's are prohibited from BT
-                
+
                 // case 1 : for config products
                 if ($product->getTypeId() == 'configurable' &&
                     $product->getVisibility() != 1
@@ -961,7 +961,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $productAttributeValue = "";
                     // case 1: default value
                     if (isset($attribute['default']) and
-                        !empty($attribute['default'])
+                        !empty($attribute['default'] and $attribute['magento_attribute_code'] == 'default')
                     ) {
                         $productAttributeValue = str_replace("&#39;", "'", $attribute['default']);
                     } else {
@@ -1261,6 +1261,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "image" => @$this->images[0] ? @$this->images[0] : [],
                 ];
             }
+           
             return $this->data;
         } catch (\Exception $e) {
             $this->logger->error('Create Configurable Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);

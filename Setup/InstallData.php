@@ -106,10 +106,10 @@ class InstallData implements InstallDataInterface
         }
 
 
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'brand')) {
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_brand')) {
             $eavSetup->addAttribute(
                 'catalog_product',
-                'brand',
+                'betterthat_brand',
                 [
                     'group' => 'Betterthat Marketplace',
                     'note' => '1 to 50 characters',
@@ -180,7 +180,7 @@ class InstallData implements InstallDataInterface
         }
 
 
-        if (!$this->eavAttribute->getIdByCode('catalog_product', 'Betterthat_feed_errors')) {
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_feed_errors')) {
             $eavSetup->addAttribute(
                 'catalog_product',
                 'betterthat_feed_errors',
@@ -191,6 +191,31 @@ class InstallData implements InstallDataInterface
                     'type' => 'text',
                     'label' => 'Betterthat Feed Errors',
                     'backend' => '',
+                    'visible' => 1,
+                    'required' => 0,
+                    'sort_order' => 14,
+                    'user_defined' => 1,
+                    'searchable' => 1,
+                    'filterable' => 0,
+                    'comparable' => 0,
+                    'visible_on_front' => 0,
+                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+                ]
+            );
+        }
+
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_visibility')) {
+            $eavSetup->addAttribute(
+                'catalog_product',
+                'betterthat_visibility',
+                [
+                    'group' => 'Betterthat Marketplace',
+                    'note' => "Betterthat Visibility",
+                    'input' => 'int',
+                    'type' => 'boolean',
+                    'label' => 'Betterthat Visibility',
+                    'backend' => '',
+                    'source' => 'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
                     'visible' => 1,
                     'required' => 0,
                     'sort_order' => 14,
