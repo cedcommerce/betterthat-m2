@@ -5,7 +5,7 @@
     "license": [
         "EULA"
     ],
-    "version": "0.1.8",
+    "version": "0.1.9",
     "require": {
         "ced/betterthat-sdk":"*"
     },
