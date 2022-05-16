@@ -31,8 +31,8 @@ class SchemaLocator extends \Magento\Config\Model\Config\SchemaLocator
      * @param \Magento\Framework\Module\Dir\Reader $moduleReader
      */
     public function __construct(
-        \Magento\Framework\Module\Dir\Reader $moduleReader)
-    {
+        \Magento\Framework\Module\Dir\Reader $moduleReader
+    ) {
 
         $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         if ($this->_objectManager->get('Magento\Framework\Module\Manager')->isEnabled('Ced_Betterthat')) {

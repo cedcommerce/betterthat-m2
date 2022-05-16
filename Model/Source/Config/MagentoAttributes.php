@@ -31,8 +31,7 @@ class MagentoAttributes implements \Magento\Framework\Option\ArrayInterface
      * */
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection $attributeCollection
-    )
-    {
+    ) {
         $this->attributeCollection = $attributeCollection;
     }
 

@@ -9,11 +9,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_CsGroup
- * @author        CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
- * @license      https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_CsGroup
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\View;
@@ -92,7 +92,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     protected $_configStructure;
 
     /**
-     *Form fieldset factory
+     * Form fieldset factory
      *
      * @var \Magento\Config\Block\System\Config\Form\Fieldset\Factory
      */
@@ -106,14 +106,14 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     protected $_fieldFactory;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\Data\FormFactory $formFactory
-     * @param \Magento\Config\Model\Config\Factory $configFactory
-     * @param \Magento\Config\Model\Config\Structure $configStructure
+     * @param \Magento\Backend\Block\Template\Context                   $context
+     * @param \Magento\Framework\Registry                               $registry
+     * @param \Magento\Framework\Data\FormFactory                       $formFactory
+     * @param \Magento\Config\Model\Config\Factory                      $configFactory
+     * @param \Magento\Config\Model\Config\Structure                    $configStructure
      * @param \Magento\Config\Block\System\Config\Form\Fieldset\Factory $fieldsetFactory
-     * @param \Magento\Config\Block\System\Config\Form\Field\Factory $fieldFactory
-     * @param array $data
+     * @param \Magento\Config\Block\System\Config\Form\Field\Factory    $fieldFactory
+     * @param array                                                     $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -124,8 +124,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
         \Magento\Config\Block\System\Config\Form\Fieldset\Factory $fieldsetFactory,
         \Magento\Config\Block\System\Config\Form\Field\Factory $fieldFactory,
         array $data = []
-    )
-    {
+    ) {
 
         parent::__construct($context, $registry, $formFactory, $configFactory, $configStructure, $fieldsetFactory, $fieldFactory, $data);
         $this->_configFactory = $configFactory;
@@ -143,7 +142,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Check if can use default value
      *
-     * @param int $fieldValue
+     * @param  int $fieldValue
      * @return boolean
      */
 
@@ -173,7 +172,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Check if can use website value
      *
-     * @param int $fieldValue
+     * @param  int $fieldValue
      * @return boolean
      */
     public function canUseWebsiteValue($fieldValue)
@@ -186,8 +185,9 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
 
     public function isVisible()
     {
-        if (isset($this->_data['if_module_enabled']) &&
-            !$this->moduleManager->isOutputEnabled($this->_data['if_module_enabled'])) {
+        if (isset($this->_data['if_module_enabled']) 
+            && !$this->moduleManager->isOutputEnabled($this->_data['if_module_enabled'])
+        ) {
             return false;
         }
         $showInScope = [
@@ -237,9 +237,13 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     {
         $this->_initObjects();
 
-        /** @var \Magento\Framework\Data\Form $form */
+        /**
+ * @var \Magento\Framework\Data\Form $form 
+*/
         $form = $this->_formFactory->create();
-        /** @var $section \Magento\Config\Model\Config\Structure\Element\Section */
+        /**
+ * @var $section \Magento\Config\Model\Config\Structure\Element\Section 
+*/
         $section = $this->_configStructure->getElement($this->getSectionCode());
 
         if ($section && $section->isVisible()) {
@@ -278,7 +282,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Enter description here...
      *
-     * @TODO delete this methods when {^see above^} is done
+     * @TODO   delete this methods when {^see above^} is done
      * @return string
      */
     public function getSectionCode()
@@ -289,7 +293,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Enter description here...
      *
-     * @TODO delete this methods when {^see above^} is done
+     * @TODO   delete this methods when {^see above^} is done
      * @return string
      */
     public function getWebsiteCode()
@@ -300,7 +304,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Enter description here...
      *
-     * @TODO delete this methods when {^see above^} is done
+     * @TODO   delete this methods when {^see above^} is done
      * @return string
      */
     public function getStoreCode()
@@ -311,17 +315,16 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Initialize config field group
      *
-     * @param \Magento\Config\Model\Config\Structure\Element\Group $group
-     * @param \Magento\Config\Model\Config\Structure\Element\Section $section
-     * @param \Magento\Framework\Data\Form\AbstractForm $form
+     * @param  \Magento\Config\Model\Config\Structure\Element\Group   $group
+     * @param  \Magento\Config\Model\Config\Structure\Element\Section $section
+     * @param  \Magento\Framework\Data\Form\AbstractForm              $form
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _initGroup(
         \Magento\Config\Model\Config\Structure\Element\Group $group,
         \Magento\Config\Model\Config\Structure\Element\Section $section,
         \Magento\Framework\Data\Form\AbstractForm $form
-    )
-    {
+    ) {
         $data = $group->getData();
         if (!isset($data['showInProfile']) || $data['showInProfile'] != 1) {
             return;
@@ -368,7 +371,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Generate element id
      *
-     * @param string $path
+     * @param  string $path
      * @return string
      */
     protected function _generateElementId($path)
@@ -379,9 +382,9 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Generate element name
      *
-     * @param string $elementPath
-     * @param string $fieldPrefix
-     * @param string $separator
+     * @param  string $elementPath
+     * @param  string $fieldPrefix
+     * @param  string $separator
      * @return string
      */
     protected function _generateElementName($elementPath, $fieldPrefix = '', $separator = '/')
@@ -399,15 +402,17 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Populate dependencies block
      *
-     * @param array $dependencies
-     * @param string $elementId
-     * @param string $elementName
+     * @param  array  $dependencies
+     * @param  string $elementId
+     * @param  string $elementName
      * @return void
      */
     protected function _populateDependenciesBlock(array $dependencies, $elementId, $elementName)
     {
         foreach ($dependencies as $dependentField) {
-            /** @var $dependentField \Magento\Config\Model\Config\Structure\Element\Dependency\Field */
+            /**
+ * @var $dependentField \Magento\Config\Model\Config\Structure\Element\Dependency\Field 
+*/
             $fieldNameFrom = $this->_generateElementName($dependentField->getId(), null, '_');
             $this->_getDependence()->addFieldMap(
                 $elementId,
@@ -439,11 +444,11 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Initialize config group fields
      *
-     * @param \Magento\Framework\Data\Form\Element\Fieldset $fieldset
-     * @param \Magento\Config\Model\Config\Structure\Element\Group $group
-     * @param \Magento\Config\Model\Config\Structure\Element\Section $section
-     * @param string $fieldPrefix
-     * @param string $labelPrefix
+     * @param  \Magento\Framework\Data\Form\Element\Fieldset          $fieldset
+     * @param  \Magento\Config\Model\Config\Structure\Element\Group   $group
+     * @param  \Magento\Config\Model\Config\Structure\Element\Section $section
+     * @param  string                                                 $fieldPrefix
+     * @param  string                                                 $labelPrefix
      * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -453,8 +458,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
         \Magento\Config\Model\Config\Structure\Element\Section $section,
         $fieldPrefix = '',
         $labelPrefix = ''
-    )
-    {
+    ) {
         //print_r($fieldset->getData());die;
         if (!$this->_configDataObject) {
             $this->_initObjects();
@@ -463,7 +467,9 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
         // Extends for config data
         $extraConfigGroups = [];
 
-        /** @var $element \Magento\Config\Model\Config\Structure\Element\Field */
+        /**
+ * @var $element \Magento\Config\Model\Config\Structure\Element\Field 
+*/
         foreach ($group->getChildren() as $element) {
             if ($element instanceof \Magento\Config\Model\Config\Structure\Element\Group) {
                 $this->_initGroup($element, $section, $fieldset);
@@ -489,11 +495,11 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Initialize form element
      *
-     * @param \Magento\Config\Model\Config\Structure\Element\Field $field
-     * @param \Magento\Framework\Data\Form\Element\Fieldset $fieldset
-     * @param string $path
-     * @param string $fieldPrefix
-     * @param string $labelPrefix
+     * @param  \Magento\Config\Model\Config\Structure\Element\Field $field
+     * @param  \Magento\Framework\Data\Form\Element\Fieldset        $fieldset
+     * @param  string                                               $path
+     * @param  string                                               $fieldPrefix
+     * @param  string                                               $labelPrefix
      * @return void
      */
     protected function _initElement(
@@ -502,8 +508,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
         $path,
         $fieldPrefix = '',
         $labelPrefix = ''
-    )
-    {
+    ) {
         $data = $field->getData();
         if (!isset($data['showInProfile']) || $data['showInProfile'] != 1) {
             return;
@@ -592,7 +597,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Get config value
      *
-     * @param string $path
+     * @param  string $path
      * @return mixed
      */
     public function getConfigValue($path)
@@ -661,7 +666,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Get css class for "shared" functionality
      *
-     * @param \Magento\Config\Model\Config\Structure\Element\Field $field
+     * @param  \Magento\Config\Model\Config\Structure\Element\Field $field
      * @return string
      */
     protected function _getSharedCssClass(\Magento\Config\Model\Config\Structure\Element\Field $field)
@@ -677,8 +682,8 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Get css class for "requires" functionality
      *
-     * @param \Magento\Config\Model\Config\Structure\Element\Field $field
-     * @param string $fieldPrefix
+     * @param  \Magento\Config\Model\Config\Structure\Element\Field $field
+     * @param  string                                               $fieldPrefix
      * @return string
      */
     protected function _getRequiresCssClass(\Magento\Config\Model\Config\Structure\Element\Field $field, $fieldPrefix)
@@ -735,7 +740,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Retrieve label for scope
      *
-     * @param \Magento\Config\Model\Config\Structure\Element\Field $field
+     * @param  \Magento\Config\Model\Config\Structure\Element\Field $field
      * @return string
      */
     public function getScopeLabel(\Magento\Config\Model\Config\Structure\Element\Field $field)
@@ -754,7 +759,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     /**
      * Append dependence block at then end of form block
      *
-     * @param string $html
+     * @param  string $html
      * @return string
      */
     protected function _afterToHtml($html)
@@ -781,16 +786,16 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     }
 
     /* protected function _toHtml() {
-    	if($this->getRequest()->isAjax()) {
-    		return parent::_toHtml();
-    	}
-    	$switcher = $this->getLayout()->createBlock('Magento\Backend\Block\Template')->setStoreSelectOptions($this->getStoreSelectOptions())->setTemplate('csgroup/system/config/switcher.phtml')->toHtml();
-    	$switcher .= '<style>.switcher p{ display: none; }</style>';
-    	$parent = '<div id="vendor_group_configurations_section">'.parent::_toHtml().'</div>';
-    	if(strlen($parent) <= 50) {
-    		$parent .= '<div id="messages"><ul class="messages"><li class="error-msg"><ul><li><span>'.__('No Configurations are Available for Current Configuration Scope. Please Up the Configuration Scope by One Level.').'</span></li></ul></li></ul></div>';
-    		return $parent;
-    	}
-    	return $parent;
+        if($this->getRequest()->isAjax()) {
+            return parent::_toHtml();
+        }
+        $switcher = $this->getLayout()->createBlock('Magento\Backend\Block\Template')->setStoreSelectOptions($this->getStoreSelectOptions())->setTemplate('csgroup/system/config/switcher.phtml')->toHtml();
+        $switcher .= '<style>.switcher p{ display: none; }</style>';
+        $parent = '<div id="vendor_group_configurations_section">'.parent::_toHtml().'</div>';
+        if(strlen($parent) <= 50) {
+            $parent .= '<div id="messages"><ul class="messages"><li class="error-msg"><ul><li><span>'.__('No Configurations are Available for Current Configuration Scope. Please Up the Configuration Scope by One Level.').'</span></li></ul></li></ul></div>';
+            return $parent;
+        }
+        return $parent;
     } */
 }

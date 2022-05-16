@@ -9,11 +9,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author      CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
- * @license     https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Model\Source;
@@ -22,6 +22,7 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * Class MagentoCategoryMapping
+ *
  * @package Ced\Betterthat\Model\Source\Profile
  */
 class Profiles implements OptionSourceInterface
@@ -31,8 +32,7 @@ class Profiles implements OptionSourceInterface
 
     public function __construct(
         \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
-    )
-    {
+    ) {
         $this->profile = $collectionFactory;
     }
 

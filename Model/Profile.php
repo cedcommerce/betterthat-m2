@@ -30,6 +30,7 @@ class Profile extends \Magento\Framework\Model\AbstractModel
 
     /**
      * Profile products flipped
+     *
      * @var array
      */
     public $productIds = [];
@@ -73,8 +74,9 @@ class Profile extends \Magento\Framework\Model\AbstractModel
 
     public function removeProducts($values)
     {
-        if($values)
+        if($values) {
             $values = json_decode($values, true);
+        }
         if (!isset($this->objectManager)) {
             $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         }
@@ -100,8 +102,9 @@ class Profile extends \Magento\Framework\Model\AbstractModel
 
     public function addProducts($values)
     {
-        if($values)
+        if($values) {
             $values = json_decode($values, true);
+        }
         if (!isset($this->objectManager)) {
             $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         }

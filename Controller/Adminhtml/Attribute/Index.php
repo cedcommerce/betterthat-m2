@@ -35,7 +35,9 @@ class Index extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /**
+ * @var \Magento\Backend\Model\View\Result\Page $resultPage 
+*/
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Ced_Betterthat::Betterthat');
         $resultPage->getConfig()->getTitle()->prepend(__('Betterthat Category Attributes'));

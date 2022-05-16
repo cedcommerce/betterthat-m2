@@ -10,11 +10,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author      CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
- * @license     https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Controller\Adminhtml\Profile;
@@ -36,7 +36,7 @@ class Products extends \Magento\Backend\App\Action
     public $config;
 
     /**
-     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Backend\App\Action\Context        $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      */
     public function __construct(

@@ -47,10 +47,11 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Category constructor.
-     * @param Context $context
-     * @param ObjectManagerInterface $objectManager
-     * @param Config $config
-     * @param \BetterthatSdk\ProductFactory $product
+     *
+     * @param Context                                     $context
+     * @param ObjectManagerInterface                      $objectManager
+     * @param Config                                      $config
+     * @param \BetterthatSdk\ProductFactory               $product
      * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
      */
     public function __construct(
@@ -68,16 +69,16 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param array $params
+     * @param  array $params
      * @return array|array[]
      */
     public function getAttributes($params = [])
     {
         $attributes = [];
         try {
-            if (isset($params) and @$params['isMandatory'] == 1) {
+            if (isset($params['isMandatory']) and $params['isMandatory'] == 1) {
                 $attributes = [
-        "title" => [
+                "title" => [
                     "code" => "title",
                     "default_value" => "",
                     "description" => "",
@@ -92,27 +93,27 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                         "value" => "Title"
                      ],
 
-                ],
-            "required" => true,
-                "roles" => [
+                    ],
+                    "required" => true,
+                    "roles" => [
                     [
                         "parameters" => [
                         ],
                         "type" => "Title"
                         ]
 
-                ],
+                    ],
 
-            "type" => "TEXT",
-            "type_parameter" => "",
-            "values" => "",
-            "values_list" => "",
-            "variant" => "",
-            "options" => "",
-            "option_values" => [
-            ],
-            "magento_attribute_code" => "name",
-        ],
+                    "type" => "TEXT",
+                    "type_parameter" => "",
+                    "values" => "",
+                    "values_list" => "",
+                    "variant" => "",
+                    "options" => "",
+                    "option_values" => [
+                    ],
+                    "magento_attribute_code" => "name",
+                ],
                     "short_description" => [
                         "code" => "short_description",
                         "default_value" => "",
@@ -149,25 +150,25 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                         ],
                         "magento_attribute_code" => "short_description",
                     ],
-    "body_html" => [
+                "body_html" => [
 
-            "code" => "body_html",
-            "default_value" => "",
-            "description" => "",
-            "description_translations" => [
+                "code" => "body_html",
+                "default_value" => "",
+                "description" => "",
+                "description_translations" => [
 
                 ],
-            "example" => "",
-            "hierarchy_code" => "",
-            "label" => "Description",
-            "label_translations" => [
+                "example" => "",
+                "hierarchy_code" => "",
+                "label" => "Description",
+                "label_translations" => [
                      [
                         "locale" => "en",
                         "value" => "Description"
                       ]
 
                 ],
-            "required" => true,
+                "required" => true,
                 "roles" => [
                     [
                         "parameters" => [
@@ -175,13 +176,13 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                         "type" => "Description",
                     ]
                 ],
-            "type" => "TEXT",
-            "type_parameter" => "",
-            "values" => "",
-            "magento_attribute_code" => "description",
-            "option_values" => [
+                "type" => "TEXT",
+                "type_parameter" => "",
+                "values" => "",
+                "magento_attribute_code" => "description",
+                "option_values" => [
 
-            ]
+                ]
 
                 ],
                 "manufacturer" => [
@@ -516,39 +517,40 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $this->categoriesTree = [];
         $categoryJson = file_get_contents(__DIR__.'/allcategories.json');
-       $categoryArray = json_decode($categoryJson,1);
+        $categoryArray = json_decode($categoryJson, 1);
         $this->categoriesTree = $this->getCategoriesTreeNode($categoryArray);
         return $this->categoriesTree;
     }
 
     /**
-     * @param $array
+     * @param  $array
      * @return mixed
      */
-    public function getHierarchy($array){
+    public function getHierarchy($array)
+    {
 
         for($i = 0; $i< count($array); $i++){
             $array[$i]['hierarchy'] = '';
             // echo $array[$i]['parent_id']."<br>";
 
-            if($array[$i]['parent_id'] != ''){
+            if($array[$i]['parent_id'] != '') {
                 $id_level1 = $array[$i]['parent_id'];
-                if($id_level1 != ''){
+                if($id_level1 != '') {
                     for($j = 0; $j< count($array); $j++){
-                        if($array[$j]['_id'] == $id_level1){
+                        if($array[$j]['_id'] == $id_level1) {
                             $array[$i]['hierarchy'] = $array[$j]['Name']." > ".$array[$i]['Name'];
                             $id_level2 = $array[$j]['parent_id'];
 
-                            if($id_level2 != ''){
+                            if($id_level2 != '') {
                                 for($k = 0; $k< count($array); $k++){
-                                    if($array[$k]['_id'] == $id_level2){
+                                    if($array[$k]['_id'] == $id_level2) {
                                         $array[$i]['hierarchy'] = $array[$k]['Name']." > ".$array[$j]['Name']." > ".$array[$i]['Name'];
 
                                         $id_level3 = $array[$k]['parent_id'];
-                                        if($id_level3 != ''){
+                                        if($id_level3 != '') {
                                             for($l = 0; $l< count($array); $l++){
-                                                if($array[$l]['_id'] == $id_level3){
-                                                    if($array[$l]['parent_id'] == '' && $array[$k]['parent_id'] != ''){
+                                                if($array[$l]['_id'] == $id_level3) {
+                                                    if($array[$l]['parent_id'] == '' && $array[$k]['parent_id'] != '') {
                                                         $array[$i]['hierarchy'] = $array[$l]['Name']." > ".$array[$k]['Name']." > ".$array[$j]['Name']." > ".$array[$i]['Name'];
                                                     }
                                                 }
@@ -571,7 +573,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $jsonString
+     * @param  $jsonString
      * @return array
      */
     public function getCategoriesTreeNode($jsonString)
@@ -584,14 +586,14 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
 
         $item = [];
         for($i=0; $i<count($categories); $i++){
-            if($categories[$i]['parent_id'] == ''){
+            if($categories[$i]['parent_id'] == '') {
                 $val = [];
                 $val['value'] = $categories[$i]['_id'];
                 $val['is_active'] = $isActive;
                 $val['label'] = $categories[$i]['Name'];
                 $val['optgroup'] = [];
                 for($j=0; $j<count($categories); $j++){
-                    if($categories[$i]['_id'] == $categories[$j]['parent_id']){
+                    if($categories[$i]['_id'] == $categories[$j]['parent_id']) {
                         $new_val = [];
                         $new_val['value'] = $categories[$j]['_id'];
                         $new_val['is_active'] = $isActive;
@@ -599,7 +601,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                         $new_val['optgroup'] = [];
 
                         for($k=0; $k<count($categories); $k++){
-                            if($categories[$j]['_id'] == $categories[$k]['parent_id']){
+                            if($categories[$j]['_id'] == $categories[$k]['parent_id']) {
                                 $new_val1 = [];
                                 $new_val1['value'] = $categories[$k]['_id'];
                                 $new_val1['is_active'] = $isActive;
@@ -607,18 +609,18 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                                 $new_val1['optgroup'] = [];
 
                                 for($l=0; $l<count($categories); $l++){
-                                    if($categories[$k]['_id'] == $categories[$l]['parent_id']){
+                                    if($categories[$k]['_id'] == $categories[$l]['parent_id']) {
                                         $new_val2 = [];
                                         $new_val2['value'] = $categories[$l]['_id'];
                                         $new_val2['is_active'] = $isActive;
                                         $new_val2['label'] = $categories[$l]['Name'];
-                                        array_push($new_val1['optgroup'],$new_val2);
+                                        array_push($new_val1['optgroup'], $new_val2);
                                     }
                                 }
-                                array_push($new_val['optgroup'],$new_val1);
+                                array_push($new_val['optgroup'], $new_val1);
                             }
                         }
-                        array_push($val['optgroup'],$new_val);
+                        array_push($val['optgroup'], $new_val);
                     }
                 }
 
@@ -629,15 +631,17 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param array $params
+     * @param  array $params
      * @return array
      */
     public function getCategories($params = array())
     {
         if (empty($this->categories)) {
-            $product = $this->product->create([
+            $product = $this->product->create(
+                [
                 'config' => $this->config->getApiConfig()
-            ]);
+                ]
+            );
 
             $this->categories = $product->getCategories($params);
         }

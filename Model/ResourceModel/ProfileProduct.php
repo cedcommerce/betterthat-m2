@@ -30,7 +30,7 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
     }
 
     /**
-     * @param $profileId
+     * @param  $profileId
      * @return array
      */
     public function getProfileProducts($profileId)
@@ -111,7 +111,7 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
     }
 
     /**
-     * @param \Magento\Framework\Model\AbstractModel $profile
+     * @param  \Magento\Framework\Model\AbstractModel $profile
      * @return $this
      */
     public function _beforeSave(\Magento\Framework\Model\AbstractModel $profile)

@@ -31,8 +31,7 @@ class Attributes implements \Magento\Framework\Option\ArrayInterface
      * */
     public function __construct(
         \Ced\Betterthat\Helper\Category $category
-    )
-    {
+    ) {
         $this->category = $category;
     }
 

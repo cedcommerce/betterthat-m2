@@ -86,7 +86,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
      * @param \Magento\Framework\ObjectManagerInterface   $objectManager
      * @param \Magento\Framework\Xml\Generator            $generator
-     * @param \BetterthatSdk\Api\ConfigFactory               $config
+     * @param \BetterthatSdk\Api\ConfigFactory            $config
      */
     public function __construct(
         Context $context,
@@ -186,7 +186,6 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
             $catResponse = $this->objectManager
                 ->create('\BetterthatSdk\Product', ['config' => $config])
                 ->getCatForValidation(['data'=>['name'=>'test']]);
-
             if (isset($catResponse['error_key'])) {
                 $catResponse['status'] = false;
                 return $catResponse;
@@ -404,7 +403,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->throttle = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/throttle");
     }
-        public function getThresholdStatus()
+    public function getThresholdStatus()
     {
         return $this->throttle = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/inventory_settings/advanced_threshold_status");
@@ -439,12 +438,14 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $msiSourceCode;
     }
 
-    public function getUseSalableQty() {
+    public function getUseSalableQty()
+    {
         return $this->scopeConfigManager
             ->getValue('betterthat_config/betterthat_product/inventory_settings/use_salable_qty');
     }
 
-    public function getSalableStockName() {
+    public function getSalableStockName()
+    {
         return $this->scopeConfigManager
             ->getValue('betterthat_config/betterthat_product/inventory_settings/salable_stock_name');
     }

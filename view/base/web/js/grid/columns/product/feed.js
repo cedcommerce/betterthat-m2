@@ -37,7 +37,7 @@ define(
 
                 startView: function (row) {
                     if (this.getFeedErrors(row)) {
-                        var previewPopup = $('<div/>',{id : 'Betterthat-feed-popup'+this.getProductId(row) });
+                        var previewPopup = $('<div>',{id : 'Betterthat-feed-popup'+this.getProductId(row) });
                         var feedErrors = this.getFeedErrors(row);
                         var data = this.tryParseJSON(feedErrors);
                         if (data && Object.keys(data).length > 0) {
@@ -136,7 +136,7 @@ define(
 
                     return str;
                 },
-                tryParseJSON:function (jsonString){
+                tryParseJSON:function (jsonString) {
                     try {
                         var o = JSON.parse(jsonString);
 

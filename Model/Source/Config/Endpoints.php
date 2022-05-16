@@ -23,6 +23,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
  * Class ServiceUrl
+ *
  * @package Ced\Betterthat\Model\Source
  */
 class Endpoints extends AbstractSource

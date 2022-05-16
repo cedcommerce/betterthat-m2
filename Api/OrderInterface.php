@@ -2,12 +2,14 @@
 namespace Ced\Betterthat\Api;
 
 
-interface OrderInterface {
+interface OrderInterface
+{
 
 
     /**
      * Post call to create/sync betterthat orders
-     * @param mixed $data
+     *
+     * @param  mixed $data
      * @return mixed
      */
 

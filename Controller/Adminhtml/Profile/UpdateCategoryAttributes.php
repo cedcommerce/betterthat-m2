@@ -41,9 +41,10 @@ class UpdateCategoryAttributes extends Action
 
     /**
      * UpdateCategoryAttributes constructor.
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
-     * @param Profile $profile
+     *
+     * @param Context                         $context
+     * @param PageFactory                     $resultPageFactory
+     * @param Profile                         $profile
      * @param \Ced\Betterthat\Helper\Category $category
      */
     public function __construct(

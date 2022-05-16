@@ -9,17 +9,18 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author        CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
- * @license      https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Controller\Adminhtml\Profile;
 
 /**
  * Class Save
+ *
  * @package Ced\Betterthat\Controller\Adminhtml\Profile
  */
 class Validate extends \Magento\Backend\App\Action
@@ -61,18 +62,19 @@ class Validate extends \Magento\Backend\App\Action
 
     /**
      * Validate constructor.
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Registry $registory
-     * @param \Magento\Config\Model\Config\Structure $configStructure
-     * @param \Magento\Config\Model\Config\Factory $configFactory
-     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollection
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $catalogCollection
+     *
+     * @param \Magento\Backend\App\Action\Context                                 $context
+     * @param \Magento\Framework\Registry                                         $registory
+     * @param \Magento\Config\Model\Config\Structure                              $configStructure
+     * @param \Magento\Config\Model\Config\Factory                                $configFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory     $categoryCollection
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory      $catalogCollection
      * @param \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory $configurable
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Ced\Betterthat\Model\ProfileProductFactory $profileProduct
-     * @param \Ced\Betterthat\Model\ProfileFactory $profileFactory
-     * @param \Ced\Betterthat\Helper\Profile $profileHelper
-     * @param \Magento\Framework\Controller\Result\JsonFactory $jsonFactory
+     * @param \Magento\Framework\View\Result\PageFactory                          $resultPageFactory
+     * @param \Ced\Betterthat\Model\ProfileProductFactory                         $profileProduct
+     * @param \Ced\Betterthat\Model\ProfileFactory                                $profileFactory
+     * @param \Ced\Betterthat\Helper\Profile                                      $profileHelper
+     * @param \Magento\Framework\Controller\Result\JsonFactory                    $jsonFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -87,8 +89,7 @@ class Validate extends \Magento\Backend\App\Action
         \Ced\Betterthat\Model\ProfileFactory $profileFactory,
         \Ced\Betterthat\Helper\Profile $profileHelper,
         \Magento\Framework\Controller\Result\JsonFactory $jsonFactory
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->configStructure = $configStructure;

@@ -58,15 +58,16 @@ class Sync extends \Magento\Backend\App\Action
 
     /**
      * Sync constructor.
-     * @param \Magento\Backend\App\Action\Context $context
+     *
+     * @param \Magento\Backend\App\Action\Context                  $context
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Ced\Betterthat\Helper\Order $orderHelper
-     * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Ced\Betterthat\Model\ResourceModel\Orders $collection
-     * @param \Ced\Betterthat\Helper\Product $product
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\View\Result\PageFactory           $resultPageFactory
+     * @param \Ced\Betterthat\Helper\Order                         $orderHelper
+     * @param \Magento\Ui\Component\MassAction\Filter              $filter
+     * @param \Ced\Betterthat\Model\ResourceModel\Orders           $collection
+     * @param \Ced\Betterthat\Helper\Product                       $product
+     * @param \Magento\Framework\Controller\Result\JsonFactory     $resultJsonFactory
+     * @param \Magento\Framework\Registry                          $registry
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -104,10 +105,10 @@ class Sync extends \Magento\Backend\App\Action
     public function execute()
     {
         $id = $this->getRequest()->getParam('id');
-        if(!$id){
+        if(!$id) {
             $collection = $this->filter->getCollection($this->orderModel->getCollection());
             $ids = $collection->getAllIds();
-            $id = @$ids[0];
+            $id = isset($ids[0]) ? $ids[0] : null;
         }
 
 
@@ -119,10 +120,10 @@ class Sync extends \Magento\Backend\App\Action
             ]
         );
 
-        $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($this->orderModel->getData('increment_id'),'increment_id');
+        $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($this->orderModel->getData('increment_id'), 'increment_id');
         $response = $orderList->getOrders('orders-list', $betterthatOrderId);
 
-        $trackingNumber = @$response['data'][0]['shipment_response'][0]['items'][0]['tracking_details']['article_id'];
+        $trackingNumber = isset($response['data'][0]['shipment_response'][0]['items'][0]['tracking_details']['article_id']) ? $response['data'][0]['shipment_response'][0]['items'][0]['tracking_details']['article_id'] : null;
         if ($trackingNumber) {
             $titles = [
                 'Instore' => 'Instore',
@@ -130,33 +131,33 @@ class Sync extends \Magento\Backend\App\Action
                 'StandardDeliverySendle' => 'Standard Delivery - Sendle',
                 'ExpressDelivery' => 'Australia Post'
             ];
-            $title = $titles[@$response['data'][0]['shipping_type']];
+            $title = isset($titles[$response['data'][0]['shipping_type']]) ? $titles[$response['data'][0]['shipping_type']] : '';
             $tracking = [[
                 'carrier_code' => 'ups',
                 'title' => 'United Parcel Service',//$title,
                 'number' => $trackingNumber,
             ]];
 
-            $orderStatus = @$response['data'][0]['order_status'];
-            if($orderStatus){
-                $this->orderModel->setData('status',$orderStatus);
+            $orderStatus = isset($response['data'][0]['order_status']) ? $response['data'][0]['order_status'] : '';
+            if($orderStatus) {
+                $this->orderModel->setData('status', $orderStatus);
                 $this->orders->save($this->orderModel);
             }
         }else{
-            $orderStatus = @$response['data'][0]['order_status'];
-            if($orderStatus){
-                $this->orderModel->setData('status',$orderStatus);
+            $orderStatus = isset($response['data'][0]['order_status']) ? $response['data'][0]['order_status'] : '';
+            if($orderStatus) {
+                $this->orderModel->setData('status', $orderStatus);
                 $this->orders->save($this->orderModel);
             }
             $this->messageManager->addSuccessMessage("Ordered status & shipment synced successfully !!");
             return $this->_redirect('betterthat/order/index');
         }
-        $shipment = $this->createShipment($order,$trackingNumber,$title);
+        $shipment = $this->createShipment($order, $trackingNumber, $title);
 
         if ($shipment) {
-            $orderStatus = @$response['data'][0]['order_status'];
-            if($orderStatus){
-                $this->orderModel->setData('status',$orderStatus);
+            $orderStatus = isset($response['data'][0]['order_status']) ? $response['data'][0]['order_status'] : null;
+            if($orderStatus) {
+                $this->orderModel->setData('status', $orderStatus);
                 $this->orders->save($this->orderModel);
             }
             $this->messageManager->addSuccessMessage("Order Id : ".$order->getIncrementId()." Synced Successfully. Shipment generated!!");
@@ -177,14 +178,14 @@ class Sync extends \Magento\Backend\App\Action
 
     }
     /**
-     * @param int $orderId
-     * @param string $trackingNumber
+     * @param  int    $orderId
+     * @param  string $trackingNumber
      * @return \Magento\Sales\Model\Shipment $shipment
      */
     protected function createShipment($order, $trackingNumber,$title)
     {
         try {
-            if ($order){
+            if ($order) {
                 $data = array(array(
                     'carrier_code' => $order->getShippingMethod(),
                     'title' => $title,
@@ -209,8 +210,8 @@ class Sync extends \Magento\Backend\App\Action
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
-     * @param $track array
+     * @param  $order \Magento\Sales\Model\Order
+     * @param  $track array
      * @return $this
      */
     protected function prepareShipment($order, $track)
@@ -224,7 +225,7 @@ class Sync extends \Magento\Backend\App\Action
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * @param  $order \Magento\Sales\Model\Order
      * @return array
      */
     protected function prepareShipmentItems($order)

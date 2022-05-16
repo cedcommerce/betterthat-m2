@@ -2,12 +2,14 @@
 namespace Ced\Betterthat\Api;
 
 
-interface ShipmentInterface {
+interface ShipmentInterface
+{
 
 
     /**
      * Post call to submit shipment for betterthat orders
-     * @param mixed $data
+     *
+     * @param  mixed $data
      * @return mixed
      */
 

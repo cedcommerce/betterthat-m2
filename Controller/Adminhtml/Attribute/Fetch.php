@@ -52,8 +52,9 @@ class Fetch extends \Magento\Backend\App\Action
             $response['success'] = true;
             $attributesm = $this->category->getAttributes(['hierarchy' => $data['code'],'isMandatory' => 1]);
             $attributesr = $this->category->getAttributes(['hierarchy' => $data['code'],'isMandatory' => 0]);
-            if(is_array($attributesm) && is_array($attributesr))
-            $attributes = array_merge($attributesm,$attributesr);
+            if(is_array($attributesm) && is_array($attributesr)) {
+                $attributes = array_merge($attributesm, $attributesr);
+            }
         }
 
         $response['attributes'] = $attributes;

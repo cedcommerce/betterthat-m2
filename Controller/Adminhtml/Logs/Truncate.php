@@ -50,7 +50,7 @@ class Truncate extends Action
      * @param Action\Context                        $context
      * @param PageFactory                           $resultPageFactory
      * @param \Magento\Framework\Filesystem\Io\File $fileIo
-     * @param \Ced\Betterthat\Model\Feeds               $BetterthatFeeds
+     * @param \Ced\Betterthat\Model\Feeds           $BetterthatFeeds
      */
     public function __construct(
         Action\Context $context,

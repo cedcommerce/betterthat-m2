@@ -112,11 +112,11 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
-     * @param string $buttonId
-     * @param array  $data
-     * @param int    $level
-     * @param int    $sortOrder
-     * @param string $region
+     * @param  string $buttonId
+     * @param  array  $data
+     * @param  int    $level
+     * @param  int    $sortOrder
+     * @param  string $region
      * @return void
      */
 
@@ -141,7 +141,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
-     * @param $back
+     * @param  $back
      * @return string
      */
     public function getSaveAndContinueUrl($back)

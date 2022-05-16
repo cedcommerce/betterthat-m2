@@ -10,11 +10,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author      CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
- * @license     https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Helper;
@@ -28,6 +28,7 @@ if (!defined('DS')) {
 
 /**
  * Class Data For Betterthat Authenticated Seller Api
+ *
  * @package Ced\Betterthat\Helper
  */
 class Product extends \Magento\Framework\App\Helper\AbstractHelper
@@ -38,42 +39,49 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Object Manager
+     *
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
 
     /**
      * Json Parser
+     *
      * @var \Magento\Framework\Json\Helper\Data
      */
     public $json;
 
     /**
      * Xml Parser
+     *
      * @var \Magento\Framework\Convert\Xml
      */
     public $xml;
 
     /**
      * DirectoryList
+     *
      * @var \Magento\Framework\Filesystem\DirectoryList
      */
     public $directoryList;
 
     /**
      * Date/Time
+     *
      * @var $dateTime
      */
     public $dateTime;
 
     /**
      * File Manager
+     *
      * @var $fileIo
      */
     public $fileIo;
 
     /**
      * Betterthat Logger
+     *
      * @var \Ced\Betterthat\Helper\Logger
      */
     public $logger;
@@ -85,12 +93,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Selected Store Id
+     *
      * @var $selectedStore
      */
     public $selectedStore;
 
     /**
      * Api
+     *
      * @var $api
      */
     public $config;
@@ -102,6 +112,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Config Manager
+     *
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     public $scopeConfigManager;
@@ -113,6 +124,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Feeds Model
+     *
      * @var \Ced\Betterthat\Model\FeedsFactory
      */
     public $feeds;
@@ -141,24 +153,25 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Product constructor.
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Framework\Json\Helper\Data $json
-     * @param \Magento\Framework\Xml\Generator $generator
-     * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
-     * @param \Magento\Framework\Filesystem\Io\File $fileIo
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\UrlInterface $url
-     * @param \Magento\Framework\Message\ManagerInterface $manager
-     * @param \Magento\Catalog\Model\ProductFactory $product
+     *
+     * @param \Magento\Framework\App\Helper\Context             $context
+     * @param \Magento\Framework\ObjectManagerInterface         $objectManager
+     * @param \Magento\Framework\Json\Helper\Data               $json
+     * @param \Magento\Framework\Xml\Generator                  $generator
+     * @param \Magento\Framework\Filesystem\DirectoryList       $directoryList
+     * @param \Magento\Framework\Filesystem\Io\File             $fileIo
+     * @param \Magento\Framework\Stdlib\DateTime\DateTime       $dateTime
+     * @param \Magento\Framework\Registry                       $registry
+     * @param \Magento\Framework\UrlInterface                   $url
+     * @param \Magento\Framework\Message\ManagerInterface       $manager
+     * @param \Magento\Catalog\Model\ProductFactory             $product
      * @param \Magento\CatalogInventory\Api\StockStateInterface $stockState
-     * @param \BetterthatSdk\ProductFactory $Betterthat
-     * @param \Ced\Betterthat\Model\FeedsFactory $feedsFactory
-     * @param Config $config
-     * @param Logger $logger
-     * @param Profile $profile
-     * @param \BetterthatSdk\Api\Config $BetterthatConfig
+     * @param \BetterthatSdk\ProductFactory                     $Betterthat
+     * @param \Ced\Betterthat\Model\FeedsFactory                $feedsFactory
+     * @param Config                                            $config
+     * @param Logger                                            $logger
+     * @param Profile                                           $profile
+     * @param \BetterthatSdk\Api\Config                         $BetterthatConfig
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -214,9 +227,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Load File
-     * @param string $path
-     * @param string $code
-     * @return mixed|string
+     *
+     * @param      string $path
+     * @param      string $code
+     * @return     mixed|string
      * @deprecated
      */
     public function loadFile($path, $code = '')
@@ -251,13 +265,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Create Json/Xml File
-     * @param string|[] $data associative array to be converted into json or xml file
-     * @param string|[] $params
+     *
+     * @param      string|[] $data   associative array to be converted into json or xml file
+     * @param      string|[] $params
      * 'type': file type json or xml, default json,
      * 'name': file name,
      * 'path': path to save file, default 'var/Betterthat'
      * 'code': directory code, default 'var'
-     * @return boolean
+     * @return     boolean
      * @deprecated
      */
     public function createFile($data, $params = [])
@@ -306,8 +321,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Create Betterthat directory in the specified root directory.
      * used for storing json/xml files to be synced.
-     * @param string $name
-     * @param string $code
+     *
+     * @param  string $name
+     * @param  string $code
      * @return array|string
      */
     public function createDir($name = 'Betterthat', $code = 'var')
@@ -325,23 +341,25 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
-    public function _sendBetterthatVisibility($data){
+    public function _sendBetterthatVisibility($data)
+    {
         return $this->Betterthat->create(['config' => $this->config->getApiConfig()])->_sendBetterthatVisibility($data);
     }
 
     /**
-     * @param $data
+     * @param  $data
      * @return array[]
      */
-    public function deleteProduct($data){
-        if(@$data["product_id"] && @$data['delete_status']){
+    public function deleteProduct($data)
+    {
+        if(isset($data["product_id"]) && isset($data['delete_status'])) {
             $product =$this->product->create()->load($data["product_id"]);
-            if($product->getId()){
-                $product->setData("betterthat_validation_errors",'');
-                $product->setData("betterthat_visibility",'no');
-                $product->setData("betterthat_product_status",'DELETED');
-                $product->setData("betterthat_product_id",'');
-                $product->setData("betterthat_feed_errors",'');
+            if($product->getId()) {
+                $product->setData("betterthat_validation_errors", '');
+                $product->setData("betterthat_visibility", 'no');
+                $product->setData("betterthat_product_status", 'DELETED');
+                $product->setData("betterthat_product_id", '');
+                $product->setData("betterthat_feed_errors", '');
                 $product->save();
                 return [['success'=>"true", "message"=>"Item deleted successfully","data"=>$data]];
             }else{
@@ -355,7 +373,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Create/Update Product on Betterthat
-     * @param [] $ids
+     *
+     * @param  [] $ids
      * @return bool
      */
     public function createProducts($ids = [])
@@ -372,18 +391,18 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->prepareConfigurableProducts($ids['configurable']);
                 $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->createProduct($this->data);
                 $this->serverResponse = $response;
-                if (@$response['message'] &&
-                    in_array($response['message'],["Product updated successfully!","product already exists","Product imported successfully!","product already exists in cleanse section."]))
-                {
-                    $this->response = @$response['data'];
+                if (isset($response['message'])
+                    && in_array($response['message'], ["Product updated successfully!","product already exists","Product imported successfully!","product already exists in cleanse section."])
+                ) {
+                    $this->response = isset($response['data']) ? $response['data'] : '';
                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::UPLOADED);
                 } else {
-                    $this->response = @$response['data'];
+                    $this->response = isset($response['data']) ? $response['data'] : '';
                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::INVALID);
                 }
                 //$this->saveResponse($response);
                 return $response;
-            }elseif(isset($ids['bt_visibility'])){
+            }elseif(isset($ids['bt_visibility'])) {
                 $response['message'] = $response['bt_visibility'] = $ids['bt_visibility'];
             }
             return $response;
@@ -397,7 +416,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Create/Update Product on Betterthat
-     * @param [] $ids
+     *
+     * @param  [] $ids
      * @return bool
      */
     public function updateProducts($ids = [])
@@ -412,9 +432,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->prepareSimpleProducts($ids['simple']);
                 $this->prepareConfigurableProducts($ids['configurable']);
                 $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->updateProduct($this->data);
-                if ($response and
-                    $response->getStatus() == \BetterthatSdk\Api\Response::REQUEST_STATUS_SUCCESS and
-                    empty($response->getError())
+                if ($response
+                    and $response->getStatus() == \BetterthatSdk\Api\Response::REQUEST_STATUS_SUCCESS
+                    and empty($response->getError())
                 ) {
                     $this->updateStatus($this->ids, \Ced\Betterthat\Model\Source\Product\Status::LIVE);
                 } else {
@@ -432,7 +452,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Validate All Products
-     * @param array $ids
+     *
+     * @param  array $ids
      * @return array
      */
     public function validateAllProducts($ids = [])
@@ -470,12 +491,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     }
                 }
 
-                if($product->getTypeId() == 'virtual')
+                if($product->getTypeId() == 'virtual') {
                     continue; // virtual item's are prohibited from BT
+                }
 
                 // case 1 : for config products
-                if ($product->getTypeId() == 'configurable' &&
-                    $product->getVisibility() != 1
+                if ($product->getTypeId() == 'configurable'
+                    && $product->getVisibility() != 1
                 ) {
                     $uploadConfigAsSimple = false;
                     $uploadAsSimple = $this->config->getConfigAsSimple();
@@ -525,13 +547,15 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     //common attributes check end.
 
                     $key = 0;
-                    if (empty($products))
+                    if (empty($products)) {
                         $errors[$configurableProduct->getSku()]['errors'][]['Configurable'] = ['Product has no variation in it.'];
+                    }
 
                     foreach ($products as $product) {
                         $modifiedParentSKU = $sku;
-                        if($product->getTypeId() == 'virtual')
+                        if($product->getTypeId() == 'virtual') {
                             continue; // virtual item's are prohibited from BT
+                        }
                         $errors[$product->getSku()] = [
                             'sku' => $product->getSku(),
                             'id' => $product->getId(),
@@ -558,7 +582,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         // variant attribute option value check start.
                         foreach ($variantAttributes as $attributes) {
                             $value = $product->getData($attributes['attribute_code']);
-                            if(!$value){
+                            if(!$value) {
                                 $errors[$product->getSku()]['errors'][]['variant-size/color-value'] = 'Variant attribute '.$attributes['attribute_code'].' has no value.';
                             }
                         }
@@ -567,9 +591,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                         // variant attribute option value check end.
 
-                        if (isset($productId['id']) and
-                            empty($errors[$sku]['errors']) and
-                            empty($errors[$product->getSku()]['errors'])
+                        if (isset($productId['id'])
+                            and empty($errors[$sku]['errors'])
+                            and empty($errors[$product->getSku()]['errors'])
                         ) {
                             //Check if all mappedAttributes are mapped
 
@@ -633,7 +657,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                     // case 2 : for simple products
                     $productId = $this->validateProduct($product->getId(), $product, $profile);
-                    if(isset($productId['bt_visibility'])){
+                    if(isset($productId['bt_visibility'])) {
                         return $productId;
                     }
 
@@ -674,10 +698,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Validate product for availability of required Betterthat product attribute data
-     * @param $id
-     * @param null $product
-     * @param null $profile
-     * @param null $parentId
+     *
+     * @param  $id
+     * @param  null $product
+     * @param  null $profile
+     * @param  null $parentId
      * @return bool
      */
     public function validateProduct($id, $product = null, $profile = null, $parentId = null)
@@ -717,20 +742,20 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         // Validation case 1 skip some attributes that are not to be validated.
                         continue;
                     } elseif (!isset($productArray[$BetterthatAttribute['magento_attribute_code']])
-                        || empty($productArray[$BetterthatAttribute['magento_attribute_code']]) and
-                        empty($BetterthatAttribute['default'])
+                        || empty($productArray[$BetterthatAttribute['magento_attribute_code']])
+                        and empty($BetterthatAttribute['default'])
                     ) {
                         // Validation case 2 Empty or blank value check
                         $errors["$BetterthatAttributeId"] = "Required attribute empty or not mapped. [{$BetterthatAttribute['magento_attribute_code']}]";
-                    } elseif (isset($BetterthatAttribute['options']) and
-                        !empty($BetterthatAttribute['options'])
+                    } elseif (isset($BetterthatAttribute['options'])
+                        and !empty($BetterthatAttribute['options'])
                     ) {
                         $valueId = $product->getData($BetterthatAttribute['magento_attribute_code']);
                         $value = "";
                         $defaultValue = "";
                         // Case 2: default value from profile
-                        if (isset($BetterthatAttribute['default']) and
-                            !empty($BetterthatAttribute['default'])
+                        if (isset($BetterthatAttribute['default'])
+                            and !empty($BetterthatAttribute['default'])
                         ) {
                             $defaultValue = $BetterthatAttribute['default'];
                         }
@@ -743,9 +768,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             }
                         }
                         // order of check: default value > option mapping > default magento option value
-                        if (!isset($BetterthatAttribute['options'][$defaultValue]) &&
-                            !isset($BetterthatAttribute['option_mapping'][$valueId]) &&
-                            !isset($BetterthatAttribute['options'][$value])
+                        if (!isset($BetterthatAttribute['options'][$defaultValue])
+                            && !isset($BetterthatAttribute['option_mapping'][$valueId])
+                            && !isset($BetterthatAttribute['options'][$value])
                         ) {
                             $errors["$BetterthatAttributeId"] = "Betterthat attribute: [" . $BetterthatAttribute['name'] .
                                 "] mapped with [" . $BetterthatAttribute['magento_attribute_code'] .
@@ -758,7 +783,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 $image = $product->getImage();
 
-                if(!$image || $image == 'no_selection'){
+                if(!$image || $image == 'no_selection') {
                     $errors['Image'] = 'Product should have Images';
                 }
 
@@ -821,7 +846,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             foreach ($ids as $key => $id) {
                 $product = $this->product->create()->load($id['id']);
                 $profile = $this->profileHelper->getProfile($product->getId(), $id['profile_id']);
-                $categories = json_decode($id['category'],1);
+                $categories = json_decode($id['category'], 1);
                 $this->ids[] = $product->getId();
                 $price = $this->getPrice($product);
                 $attributes = $this->prepareAttributes(
@@ -837,11 +862,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $data['price'] = $price['price'];*/
                 $images = $this->prepareImages($product);
                 $product_array = [
-                    "id" => @$id['id'],
-                    "title" => @$attributes['title'],
+                    "id" => isset($id['id']) ? isset($id['id']) : '',
+                    "title" => isset($attributes['title']) ? $attributes['title'] : '',
                     "visibility" => $product->getBetterthatVisibility() ? true : false,
-                    "body_html"=> @$attributes['body_html'],
-                    "short_description" => @$attributes['short_description'],
+                    "body_html"=> isset($attributes['body_html']) ? $attributes['body_html'] : '',
+                    "short_description" => isset($attributes['short_description']) ? $attributes['short_description'] : '',
                     "retailer_id" => $retailer_id,
                     "dimensions"=> [
                         "length"=> 0,
@@ -851,25 +876,25 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         "weight_unit"=> "lb"
                     ],
                     "product_categories"=> $categories,
-                    "can_be_bundled"=>@$attributes['can_be_bundled'],
-                    "manufacturer"=>@$attributes['manufacturer'],
+                    "can_be_bundled"=>isset($attributes['can_be_bundled']) ? $attributes['can_be_bundled'] : '',
+                    "manufacturer"=>isset($attributes['manufacturer']) ? $attributes['manufacturer'] : '',
                     "policy_description_option"=>"",
                     "policy_description_val"=>"",
-                    "product_shipping_options"=>[@$attributes['product_shipping_options']],
-                    "shipping_option_charges"=>[@$attributes['shipping_option_charges']],
-                    "standard_delivery_timeframe"=>@$attributes['standard_delivery_timeframe'],
-                    "product_return_window"=> @$attributes['product_return_window'],
+                    "product_shipping_options"=>[isset($attributes['product_shipping_options']) ? $attributes['product_shipping_options'] : '' ],
+                    "shipping_option_charges"=>[isset($attributes['shipping_option_charges']) ? $attributes['shipping_option_charges'] : ''],
+                    "standard_delivery_timeframe"=>isset($attributes['standard_delivery_timeframe']) ? $attributes['standard_delivery_timeframe'] : '',
+                    "product_return_window"=> isset($attributes['product_return_window']) ? $attributes['product_return_window'] : '',
                     "variants" => [
                         [
-                            "id"=> @$id['id'],
-                            "product_id"=> @$id['id'],
+                            "id"=> isset($id['id']) ? $id['id'] : '',
+                            "product_id"=> isset($id['id']) ? $id['id'] : '',
                             "title"=> "Default Title",
-                            "price"=> @$price['price'],
-                            "discounted_price"=>@$price['special_price'],
+                            "price"=> isset($price['price']) ? $price['price'] : '',
+                            "discounted_price"=>isset($price['special_price']) ? $price['special_price'] : '',
                             "sku"=> $product->getSku(),
                             "position"=> 1,
                             "inventory_policy"=> "deny",
-                            "compare_at_price"=>@$price['special_price'],
+                            "compare_at_price"=>isset($price['special_price']) ? $price['special_price'] : '',
                             "option1"=> "Default Title",
                             "option2"=> null,
                             "option3"=> null,
@@ -878,8 +903,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     ],
                     "options"=> [
                         [
-                            "id" => @$id['id'],
-                            "product_id" => @$id['id'],
+                            "id" => isset($id['id']) ? $id['id'] : '',
+                            "product_id" => isset($id['id']) ? $id['id'] : '',
                             "name" => "Title",
                             "position" => 1,
                             "values" => [
@@ -888,14 +913,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         ]
                     ],
                     "images"=> $images,
-                    "image"=> @$images[1] ? @$images[1] : [],
+                    "image"=> isset($images[1]) ? $images[1] : [],
                 ];
 
                 /*"variants"=>[
                     [
                         "id"=>39326433017945,
                         "product_id"=>6573718667353,
-      $images                  "title"=>"Blue",
+                $images                  "title"=>"Blue",
                         "price"=>"0.00",
                         "sku"=>"",
                         "position"=>1,
@@ -917,7 +942,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         "inventory_quantity"=>9
                     ]
                 ],
-   "options"=>[
+                "options"=>[
                     [
                         "id"=>8448358580313,
                         "product_id"=>6573718667353,
@@ -946,9 +971,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     //@TODO ADD input type check
     /**
      * Prepare Attributes for Products
-     * @param $product
-     * @param null $profile
-     * @param $type
+     *
+     * @param  $product
+     * @param  null $profile
+     * @param  $type
      * @return array
      */
     private function prepareAttributes($product, $profile = null, $type = "normal")
@@ -960,8 +986,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 foreach ($mapping as $id => $attribute) {
                     $productAttributeValue = "";
                     // case 1: default value
-                    if (isset($attribute['default']) and
-                        !empty($attribute['default'] and $attribute['magento_attribute_code'] == 'default')
+                    if (isset($attribute['default'])
+                        and !empty($attribute['default'] and $attribute['magento_attribute_code'] == 'default')
                     ) {
                         $productAttributeValue = str_replace("&#39;", "'", $attribute['default']);
                     } else {
@@ -972,8 +998,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $attribute['magento_attribute_code']
                         );
 
-                        if (isset($attribute['option_mapping'][$value]) and
-                            is_array($attribute['option_mapping'])
+                        if (isset($attribute['option_mapping'][$value])
+                            and is_array($attribute['option_mapping'])
                         ) {
                             $productAttributeValue =
                                 str_replace("&#39;", "'", $attribute['option_mapping'][$value]);
@@ -981,7 +1007,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             // case 2.2: Option value
                             $productAttributeValue =
                                 $attr->getSource()
-                                    ->getOptionText($product->getData($attribute['magento_attribute_code']));
+                                ->getOptionText($product->getData($attribute['magento_attribute_code']));
                             if (is_object($productAttributeValue)) {
                                 $productAttributeValue = $productAttributeValue->getText();
                             }
@@ -1017,7 +1043,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $productObject
+     * @param  $productObject
      * @return array
      */
     public function getPrice($productObject, $attrValue = null)
@@ -1029,43 +1055,43 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
         $configPrice = $this->config->getPriceType();
         switch ($configPrice) {
-            case 'plus_fixed':
-                $fixedPrice = $this->config->getFixedPrice();
-                $price = $this->forFixPrice($price, $fixedPrice, 'plus_fixed');
-                $splprice = $this->forFixPrice($splprice, $fixedPrice, 'plus_fixed');
-                break;
+        case 'plus_fixed':
+            $fixedPrice = $this->config->getFixedPrice();
+            $price = $this->forFixPrice($price, $fixedPrice, 'plus_fixed');
+            $splprice = $this->forFixPrice($splprice, $fixedPrice, 'plus_fixed');
+            break;
 
-            case 'min_fixed':
-                $fixedPrice = $this->config->getFixedPrice();
-                $price = $this->forFixPrice($price, $fixedPrice, 'min_fixed');
-                $splprice = $this->forFixPrice($splprice, $fixedPrice, 'min_fixed');
-                break;
+        case 'min_fixed':
+            $fixedPrice = $this->config->getFixedPrice();
+            $price = $this->forFixPrice($price, $fixedPrice, 'min_fixed');
+            $splprice = $this->forFixPrice($splprice, $fixedPrice, 'min_fixed');
+            break;
 
-            case 'plus_per':
-                $percentPrice = $this->config->getPercentPrice();
-                $price = $this->forPerPrice($price, $percentPrice, 'plus_per');
-                $splprice = $this->forPerPrice($splprice, $percentPrice, 'plus_per');
-                break;
+        case 'plus_per':
+            $percentPrice = $this->config->getPercentPrice();
+            $price = $this->forPerPrice($price, $percentPrice, 'plus_per');
+            $splprice = $this->forPerPrice($splprice, $percentPrice, 'plus_per');
+            break;
 
-            case 'min_per':
-                $percentPrice = $this->config->getPercentPrice();
-                $price = $this->forPerPrice($price, $percentPrice, 'min_per');
-                $splprice = $this->forPerPrice($splprice, $percentPrice, 'min_per');
-                break;
+        case 'min_per':
+            $percentPrice = $this->config->getPercentPrice();
+            $price = $this->forPerPrice($price, $percentPrice, 'min_per');
+            $splprice = $this->forPerPrice($splprice, $percentPrice, 'min_per');
+            break;
 
-            case 'differ':
-                $customPriceAttr = $this->config->getDifferPrice();
-                try {
-                    $cprice = (float)$productObject->getData($customPriceAttr);
-                } catch (\Exception $e) {
-                    $this->_logger->debug(" Betterthat: Product Helper: getBetterthatPrice() : " . $e->getMessage());
-                }
-                $price = (isset($cprice) && $cprice != 0) ? $cprice : $price;
-                $splprice = $price;
-                break;
+        case 'differ':
+            $customPriceAttr = $this->config->getDifferPrice();
+            try {
+                $cprice = (float)$productObject->getData($customPriceAttr);
+            } catch (\Exception $e) {
+                $this->_logger->debug(" Betterthat: Product Helper: getBetterthatPrice() : " . $e->getMessage());
+            }
+            $price = (isset($cprice) && $cprice != 0) ? $cprice : $price;
+            $splprice = $price;
+            break;
 
-            default:
-                return [
+        default:
+            return [
                     'price' => (string)$price,
                     'special_price' => (string)$splprice,
                 ];
@@ -1078,9 +1104,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * ForFixPrice
-     * @param null $price
-     * @param null $fixedPrice
-     * @param string $configPrice
+     *
+     * @param  null   $price
+     * @param  null   $fixedPrice
+     * @param  string $configPrice
      * @return float|null
      */
     public function forFixPrice($price = null, $fixedPrice = null, $configPrice)
@@ -1097,9 +1124,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * ForPerPrice
-     * @param null $price
-     * @param null $percentPrice
-     * @param string $configPrice
+     *
+     * @param  null   $price
+     * @param  null   $percentPrice
+     * @param  string $configPrice
      * @return float|null
      */
     public function forPerPrice($price = null, $percentPrice = null, $configPrice)
@@ -1119,7 +1147,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Prepare prepareConfigImages
-     * @param Object $product
+     *
+     * @param  Object $product
      * @return string|array
      */
     private function prepareConfigImages($product)
@@ -1164,7 +1193,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Prepare images
-     * @param Object $product
+     *
+     * @param  Object $product
      * @return string|array
      */
     private function prepareImages($product)
@@ -1213,7 +1243,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             foreach ($ids as $parentId => $id) {
                 $product = $this->product->create()->load($parentId);
                 $profile = $this->profileHelper->getProfile($product->getId(), $product->getbetterthat_profile_id());
-                $categories = json_decode($profile->getBetterThatCategory(),1);
+                $categories = json_decode($profile->getBetterThatCategory(), 1);
                 $this->ids[] = $product->getId();
                 //$price = $this->getPrice($product);
                 $attributes = $this->prepareAttributes(
@@ -1230,12 +1260,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 /*$price = $this->getPrice($product);
                 $data['price'] = $price['price'];*/
                 $parentId = (string)$parentId;
-                $collectVariant = $this->prepareVariants($ids[$parentId],$profile,$variantAttributes,$parentId);
+                $collectVariant = $this->prepareVariants($ids[$parentId], $profile, $variantAttributes, $parentId);
                 $this->data = [
                     "id" => $parentId,
-                    "title" => @$attributes['title'],
-                    "body_html" => @$attributes['body_html'],
-                    "short_description" => @$attributes['short_description'],
+                    "title" => isset($attributes['title']) ? $attributes['title'] : '',
+                    "body_html" => isset($attributes['body_html']) ? $attributes['body_html'] : '',
+                    "short_description" => isset($attributes['short_description']) ? $attributes['short_description'] : '',
                     "retailer_id" => $retailer_id,
                     "visibility" => $product->getBetterthatVisibility() ? true : false,
                     "dimensions" => [
@@ -1246,22 +1276,22 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         "weight_unit" => "lb"
                     ],
                     "product_categories" => $categories,
-                    "slug" => @$attributes['slug'],
-                    "can_be_bundled" => @$attributes['can_be_bundled'],
-                    "manufacturer" => @$attributes['manufacturer'],
+                    "slug" => isset($attributes['slug']) ? $attributes['slug'] : '',
+                    "can_be_bundled" => isset($attributes['can_be_bundled']) ? $attributes['can_be_bundled'] : '',
+                    "manufacturer" => isset($attributes['manufacturer']) ? $attributes['manufacturer'] : '' ,
                     "policy_description_option" => "",
                     "policy_description_val" => "",
-                    "product_shipping_options" => [@$attributes['product_shipping_options']],
-                    "shipping_option_charges" => [@$attributes['shipping_option_charges']],
-                    "standard_delivery_timeframe" => @$attributes['standard_delivery_timeframe'],
-                    "product_return_window" => @$attributes['product_return_window'],
-                    "variants" => @$collectVariant['variant'],
-                    "options" => @$collectVariant['variantOptions'],
+                    "product_shipping_options" => [isset($attributes['product_shipping_options']) ? $attributes['product_shipping_options'] : ''],
+                    "shipping_option_charges" => [isset($attributes['shipping_option_charges']) ? $attributes['shipping_option_charges'] : ''],
+                    "standard_delivery_timeframe" => isset($attributes['standard_delivery_timeframe']) ? $attributes['standard_delivery_timeframe'] : '',
+                    "product_return_window" => isset($attributes['product_return_window']) ? $attributes['product_return_window'] : '',
+                    "variants" => isset($collectVariant['variant']) ? $collectVariant['variant'] : '',
+                    "options" => isset($collectVariant['variantOptions']) ? $collectVariant['variant'] : '',
                     "images" => $this->images,
-                    "image" => @$this->images[0] ? @$this->images[0] : [],
+                    "image" => isset($this->images[0]) ? $this->images[0] : [],
                 ];
             }
-           
+
             return $this->data;
         } catch (\Exception $e) {
             $this->logger->error('Create Configurable Product', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
@@ -1270,8 +1300,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param array $ids
-     * @param null $profile
+     * @param  array $ids
+     * @param  null  $profile
      * @return array
      */
 
@@ -1310,9 +1340,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $optionIndex = 1;
             foreach($variantAttributes as  $variantAttribute){
                 $variant[$varindex]['option'.$optionIndex] = $childproduct->getAttributeText($variantAttribute['attribute_code']);
-                $filteredOptions = array_column($variantAttribute['options'],'label');
+                $filteredOptions = array_column($variantAttribute['options'], 'label');
 
-                if(!$optionflag){
+                if(!$optionflag) {
                     $optionsPreparation[] = [
                         "id" => $id['id'],
                         "product_id" => $parentId,
@@ -1338,7 +1368,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
     /**
      * Save Response to db
-     * @param array $response
+     *
+     * @param  array $response
      * @return boolean
      */
     public function saveResponse($responses = [])
@@ -1353,7 +1384,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $this->registry->unregister('Betterthat_product_errors');
                     $this->registry->register('Betterthat_product_errors', $response);
                     $feedModel = $this->feeds->create();
-                    $feedModel->addData([
+                    $feedModel->addData(
+                        [
                         'feed_id' => $response['feed_id'],
                         'type' => $response['feed_type'],
                         'feed_response' => $this->json->jsonEncode(
@@ -1365,7 +1397,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         'feed_created_date' => $this->dateTime->date("Y-m-d"),
                         'feed_executed_date' => $this->dateTime->date("Y-m-d"),
                         'product_ids' => $this->json->jsonEncode($this->ids)
-                    ]);
+                        ]
+                    );
                     $feedModel->save();
 
                     foreach ($this->ids as $id) {
@@ -1387,22 +1420,22 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param array $ids
+     * @param  array $ids
      * @return array
      */
     public function deleteProducts($ids = [])
     {
-       try{
-           $deletedIds = [];
-           foreach($ids as $id){
-               $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->deleteProduct($id,["product_id"=> $id]);
-                if(@$response['status'] && $response['status']){
+        try{
+            $deletedIds = [];
+            foreach($ids as $id){
+                $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->deleteProduct($id, ["product_id"=> $id]);
+                if(isset($response['status']) && $response['status']) {
                     $deletedIds[] = $id;
                 }
-           }
-       }catch(\Exception $e) {
-       }
-       return $deletedIds;
+            }
+        }catch(\Exception $e) {
+        }
+        return $deletedIds;
     }
 
     /**
@@ -1430,8 +1463,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $profile = $this->profileHelper->getProfile($product->getId());
 
                     // configurable Product
-                    if ($product->getTypeId() == 'configurable' &&
-                        $product->getVisibility() != 1
+                    if ($product->getTypeId() == 'configurable'
+                        && $product->getVisibility() != 1
                     ) {
                         $this->ids[] = $product->getId();
                         $configurableProduct = $product;
@@ -1444,14 +1477,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $price = $this->getPrice($product);
                             $product_id = $product->getId();
                             $quantity = $this->getFinalQuantityToUpload($product);
-                            $betterThatId = explode(':' , $product->getBetterthatProductId());
+                            $betterThatId = explode(':', $product->getBetterthatProductId());
                             //$variant_id = @$betterThatId[2] ? $betterThatId[2] : '';; // bt team want to send magento store variant id
                             $stock[] =
                                 [
                                     "variant_id"=> $product_id,
                                     "stock"=> $quantity,
-                                    "buy_price"=> @$price['price'],
-                                    "discounted_price"=> @$price['special_price']
+                                    "buy_price"=> isset($price['price']) ? $price['price'] : '',
+                                    "discounted_price"=> isset($price['special_price']) ? $price['special_price'] : ''
                                 ];
 
                             $cindex++;
@@ -1468,14 +1501,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                         $response = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->updateInventory($invupdate);
                         $index = $cindex;
-                    } elseif ($product->getTypeId() == 'simple' &&
-                        $product->getVisibility() != 1
+                    } elseif ($product->getTypeId() == 'simple'
+                        && $product->getVisibility() != 1
                     ) {
 
                         $this->ids[] = $product->getId();
                         $price = $this->getPrice($product);
                         $quantity = $this->getFinalQuantityToUpload($product);
-                        $betterThatId = explode(':' , $product->getBetterthatProductId());
+                        $betterThatId = explode(':', $product->getBetterthatProductId());
                         //$product_id = @$betterThatId[0] ? $betterThatId[0] : '';
                         //$_id = @$betterThatId[1] ? $betterThatId[1] : '';;
                         //$variant_id = @$betterThatId[2] ? $betterThatId[2] : '';;
@@ -1490,8 +1523,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                         [
                                             "variant_id"=> $product_id,
                                             "stock"=> (int)$quantity,
-                                            "buy_price"=> (float)@$price['price'],
-                                            "discounted_price"=> (float)@$price['special_price']
+                                            "buy_price"=> (float)isset($price['price']) ? $price['price'] : '',
+                                            "discounted_price"=> (float)isset($price['special_price']) ? $price['special_price'] : ''
                                         ]
                                     ]
                                 ]
@@ -1513,17 +1546,18 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Update Product Status
-     * @param string $status
+     *
+     * @param  string $status
      * @return bool
      */
     public function updateStatus($ids = [], $status = \Ced\Betterthat\Model\Source\Product\Status::UPLOADED)
     {
 
         $betterthatId = null;
-        if (!empty($ids) and is_array($ids) and
-            in_array($status, \Ced\Betterthat\Model\Source\Product\Status::STATUS)
+        if (!empty($ids) and is_array($ids)
+            and in_array($status, \Ced\Betterthat\Model\Source\Product\Status::STATUS)
         ) {
-            if(@$this->response['_id']) {
+            if(isset($this->response['_id'])) {
                 $betterthatId = $this->response['_id'] .':'. $this->response['retailer_products'][0]['_id'] .':'.$this->response['variants'][0]['_id'];
             }
             try{
@@ -1531,7 +1565,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $product = $this->product->create()->load($product);
                     $product->setData('betterthat_product_status', $status);
                     $product->getResource()->saveAttribute($product, 'betterthat_product_status');
-                    if($betterthatId){
+                    if($betterthatId) {
                         $product->setData('betterthat_product_id', $betterthatId);
                         $product->getResource()->saveAttribute($product, 'betterthat_product_id');
                         $product->setData('betterthat_feed_errors', json_encode($this->serverResponse));
@@ -1554,6 +1588,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Check if configurations are valid
+     *
      * @return boolean
      */
     public function checkForConfiguration()
@@ -1564,11 +1599,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getProductReference($type='',$product='')
     {
-        if($type=='type'){
+        if($type=='type') {
             $type = $this->config->getReferenceType();
             return $type;
         }
-        if($type=='value'){
+        if($type=='value') {
             $type = $this->config->getReferenceValue();
             if($type) {
                 $attr = $product->getResource()->getAttribute($type);
@@ -1578,21 +1613,24 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $valueId =  $product->getData($type);
                         $value = $attr->getSource()->getOptionText($valueId);
                         $result = $this->validateProductId($value, $refType);
-                        if($result)
+                        if($result) {
                             return $value;
+                        }
                         return $result;
                     } else {
                         $value =  $product->getData($type);
                         $result = $this->validateProductId($value, $refType);
-                        if($result)
+                        if($result) {
                             return $value;
+                        }
                         return $result;
                     }
                 } else {
                     $value =  $product->getData($type);
                     $result = $this->validateProductId($value, $refType);
-                    if($result)
+                    if($result) {
                         return $value;
+                    }
                     return $result;
                 }
 
@@ -1603,40 +1641,39 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $productID
-     * @param $barcodeType
+     * @param  $productID
+     * @param  $barcodeType
      * @return bool
-     *
      */
-    public function validateProductId($productID, $barcodeType) {
+    public function validateProductId($productID, $barcodeType)
+    {
         if(!in_array($barcodeType, array('upc', 'ean', 'isbn', 'mpn'))) {
             return false;
         }
         if($barcodeType == 'mpn') {
             return true;
         }
-        if (preg_match('/[^0-9]/', $productID))
-        {
+        if (preg_match('/[^0-9]/', $productID)) {
             // is not numeric
             return false;
         }
         // pad with zeros to lengthen to 14 digits
         switch (strlen($productID))
         {
-            case 8:
-                $productID = "000000".$productID;
-                break;
-            case 12:
-                $productID = "00".$productID;
-                break;
-            case 13:
-                $productID = "0".$productID;
-                break;
-            case 14:
-                break;
-            default:
-                // wrong number of digits
-                return false;
+        case 8:
+            $productID = "000000".$productID;
+            break;
+        case 12:
+            $productID = "00".$productID;
+            break;
+        case 13:
+            $productID = "0".$productID;
+            break;
+        case 14:
+            break;
+        default:
+            // wrong number of digits
+            return false;
         }
         // calculate check digit
         $a = array();
@@ -1663,10 +1700,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Get Feeds, Get Single Feed, Get Single Feed with Error Details
-     * @param null $feedId
-     * @param string $subUrl
+     *
+     * @param  null   $feedId
+     * @param  string $subUrl
      * @return array|boolean
-     * @link  https://www.Betterthatcommerceservices.com/question/current-xml-puts-and-gets/
+     * @link   https://www.Betterthatcommerceservices.com/question/current-xml-puts-and-gets/
      */
     public function getFeeds($feedId = null, $feedData = null)
     {
@@ -1679,16 +1717,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 if (isset($feedData[$firstKey]['has_error_report']) && ($feedData[$firstKey]['has_error_report'] == 'true')) {
                     if($firstKey == 'product_import_tracking') {
-                        $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId ,\BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL.'/'.$feedId.'/'.'error_report');
+                        $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId, \BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL.'/'.$feedId.'/'.'error_report');
                     } else {
-                        $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId ,\BetterthatSdk\Core\Request::POST_OFFER_IMPORT.'/'.$feedId.'/'.'error_report');
+                        $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId, \BetterthatSdk\Core\Request::POST_OFFER_IMPORT.'/'.$feedId.'/'.'error_report');
                     }
                 } elseif (isset($feedData[$firstKey]['has_new_product_report']) && ($feedData[$firstKey]['has_new_product_report'] == 'true')) {
-                    $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId ,\BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL.'/'.$feedId.'/'.'new_product_report');
+                    $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId, \BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL.'/'.$feedId.'/'.'new_product_report');
                 } elseif (isset($feedData[$firstKey]['has_transformation_error_report']) && ($feedData[$firstKey]['has_transformation_error_report'] == 'true')) {
-                    $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId ,\BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL.'/'.$feedId.'/'.'transformation_error_report');
+                    $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId, \BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL.'/'.$feedId.'/'.'transformation_error_report');
                 } elseif (isset($feedData[$firstKey]['has_transformed_file']) && ($feedData[$firstKey]['has_transformed_file'] == 'true')) {
-                    $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId ,\BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL.'/'.$feedId.'/'.'transformed_file');
+                    $feedData = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feedId, \BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL.'/'.$feedId.'/'.'transformed_file');
                 }
                 return $this->json->jsonEncode($feedData);
             }
@@ -1706,10 +1744,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     {
         try {
             if ($feed and $feed->getId()) {
-                if ($feed->getType() == 'inventory-update')
+                if ($feed->getType() == 'inventory-update') {
                     $feed_data = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feed->getFeedId(), \BetterthatSdk\Core\Request::POST_OFFER_IMPORT . '/' . $feed->getFeedId());
-                else
+                } else {
                     $feed_data = $this->Betterthat->create(['config' => $this->config->getApiConfig()])->getFeeds($feed->getFeedId(), \BetterthatSdk\Core\Request::POST_ITEMS_SUB_URL . '/' . $feed->getFeedId());
+                }
 
                 $feedError = $this->getFeeds($feed->getFeedId(), $feed_data);
                 $productIds = json_decode($feed->getProductIds());
@@ -1723,8 +1762,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 if (isset($feed_data['product_import_tracking'])) {
                     $feed_data = $feed_data['product_import_tracking'];
-                    if (isset($feed_data['import_status']))
+                    if (isset($feed_data['import_status'])) {
                         $feed_data['status'] = $feed_data['import_status'];
+                    }
                     $feed->setData('transform_lines_in_error', $feed_data['transform_lines_in_error']);
                     $feed->setData('transform_lines_in_success', $feed_data['transform_lines_in_success']);
                     $feed->setData('transform_lines_read', $feed_data['transform_lines_read']);
@@ -1775,8 +1815,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     }
                     $feedError = $this->json->jsonEncode($feedError);
                     $feed_data = $feed_data['import'];
-                    if (isset($feed_data['import_status']))
+                    if (isset($feed_data['import_status'])) {
                         $feed_data['status'] = $feed_data['status'];
+                    }
                     $feed->setData('transform_lines_in_error', isset($feed_data['lines_in_error']) ? $feed_data['lines_in_error'] : '');
                     $feed->setData('transform_lines_in_success', isset($feed_data['lines_in_success']) ? $feed_data['lines_in_success'] : '');
                     $feed->setData('transform_lines_read', isset($feed_data['lines_read']) ? $feed_data['lines_read'] : '');
@@ -1794,7 +1835,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Create/Update Product on Betterthat
-     * @param [] $ids
+     *
+     * @param  [] $ids
      * @return bool
      */
     public function prepareProductData($ids = [])
@@ -1886,8 +1928,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $configurableProduct = $this->product->create()->load($productParents[0])
                             ->setStoreId($this->selectedStore);
                         if(!in_array($configurableProduct->getId(), $parentIds)) {
-                            if ($configurableProduct->getTypeId() == 'configurable' &&
-                                $configurableProduct->getVisibility() != 1
+                            if ($configurableProduct->getTypeId() == 'configurable'
+                                && $configurableProduct->getVisibility() != 1
                             ) {
                                 $parentIds[] = $configurableProduct->getId();
                                 $this->session->setData('parent_ids', $this->json->jsonEncode($parentIds));
@@ -1958,7 +2000,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return array();
     }
 
-    public function getFinalQuantityToUpload($product) {
+    public function getFinalQuantityToUpload($product)
+    {
         $quantity = 0;
         $useMSI = $this->config->getUseMsi();
         if($useMSI) {

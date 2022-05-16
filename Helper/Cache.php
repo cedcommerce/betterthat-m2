@@ -47,7 +47,7 @@ class Cache extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $key
+     * @param  $key
      * @return mixed|null
      */
     public function getValue($key)
@@ -58,10 +58,10 @@ class Cache extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $key
-     * @param $value
-     * @param array $tags
-     * @param null  $lifeTime
+     * @param  $key
+     * @param  $value
+     * @param  array $tags
+     * @param  null  $lifeTime
      * @throws \Exception
      */
     public function setValue($key, $value, array $tags = [], $lifeTime = null)

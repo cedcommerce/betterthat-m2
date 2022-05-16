@@ -35,14 +35,14 @@ class Save implements \Magento\Framework\Event\ObserverInterface
                         {
                             $message = __('Betterthat profile id is invalid, please fill correct id and previous id has been reset.');
                             $this->messageManager->addWarningMessage($message);
-                            $product->setbetterthat_profile_id(@$product->getOrigData('betterthat_profile_id'));
+                            $product->setbetterthat_profile_id($product->getOrigData('betterthat_profile_id'));
                         }
                     }
                 }
 
                 if($product->dataHasChangedFor('betterthat_visibility')){
                     $response = $this->productHelper->_sendBetterthatVisibility(["product_id"=>$product->getId(),"visible_status"=>$product->getBetterthatVisibility() ? "true" : "false"]);
-                    if(@$response['status'] && $response['status']){
+                    if(isset($response['status']) && $response['status']){
                         $this->messageManager->addSuccessMessage($response["message"]);
                     }
                 }

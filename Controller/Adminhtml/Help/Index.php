@@ -64,8 +64,8 @@ class Index extends Action
     public function execute()
     {
         /**
- 		 * @var \Magento\Backend\Model\View\Result\Page $resultPage
-	     */
+          * @var \Magento\Backend\Model\View\Result\Page $resultPage
+         */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Ced_Betterthat::Betterthat');
         $resultPage->getConfig()->getTitle()->prepend(__('Betterthat Help and Support'));

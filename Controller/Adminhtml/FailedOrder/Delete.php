@@ -50,7 +50,7 @@ class Delete extends Action
      * @param Action\Context                          $context
      * @param PageFactory                             $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Ced\Betterthat\Model\OrderFailed           $orderFailed
+     * @param \Ced\Betterthat\Model\OrderFailed       $orderFailed
      */
     public function __construct(
         Action\Context $context,

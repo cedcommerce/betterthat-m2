@@ -33,10 +33,10 @@ class ProfileProducts extends \Magento\Backend\Block\Template
     /**
      * AssignProducts constructor.
      *
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Backend\Block\Template\Context  $context
+     * @param \Magento\Framework\Registry              $registry
      * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
-     * @param array $data
+     * @param array                                    $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -88,7 +88,7 @@ class ProfileProducts extends \Magento\Backend\Block\Template
         return '{}';
     }
 
- /**
+    /**
      * @return string
      */
     public function getFilters()

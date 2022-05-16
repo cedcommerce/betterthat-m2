@@ -56,14 +56,15 @@ class DataProvider extends AbstractDataProvider
 
     /**
      * DataProvider constructor.
+     *
      * @param \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
-     * @param string $name
-     * @param string $primaryFieldName
-     * @param string $requestFieldName
-     * @param array $addFieldStrategies
-     * @param array $addFilterStrategies
-     * @param array $meta
-     * @param array $data
+     * @param string                                                        $name
+     * @param string                                                        $primaryFieldName
+     * @param string                                                        $requestFieldName
+     * @param array                                                         $addFieldStrategies
+     * @param array                                                         $addFilterStrategies
+     * @param array                                                         $meta
+     * @param array                                                         $data
      */
     public function __construct(
         \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory,
@@ -74,8 +75,7 @@ class DataProvider extends AbstractDataProvider
         array $addFilterStrategies = [],
         array $meta = [],
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->collection           = $collectionFactory->create();
         $this->addFieldStrategies   = $addFieldStrategies;

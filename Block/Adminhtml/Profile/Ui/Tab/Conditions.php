@@ -23,12 +23,12 @@ class Conditions extends Generic implements TabInterface
     protected $_conditions;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\Data\FormFactory $formFactory
-     * @param \Magento\Rule\Block\Conditions $conditions
+     * @param \Magento\Backend\Block\Template\Context              $context
+     * @param \Magento\Framework\Registry                          $registry
+     * @param \Magento\Framework\Data\FormFactory                  $formFactory
+     * @param \Magento\Rule\Block\Conditions                       $conditions
      * @param \Magento\Backend\Block\Widget\Form\Renderer\Fieldset $rendererFieldset
-     * @param array $data
+     * @param array                                                $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -46,7 +46,7 @@ class Conditions extends Generic implements TabInterface
     /**
      * Prepare content for tab
      *
-     * @return \Magento\Framework\Phrase
+     * @return             \Magento\Framework\Phrase
      * @codeCoverageIgnore
      */
     public function getTabLabel()
@@ -57,7 +57,7 @@ class Conditions extends Generic implements TabInterface
     /**
      * Prepare title for tab
      *
-     * @return \Magento\Framework\Phrase
+     * @return             \Magento\Framework\Phrase
      * @codeCoverageIgnore
      */
     public function getTabTitle()
@@ -68,7 +68,7 @@ class Conditions extends Generic implements TabInterface
     /**
      * Returns status flag about this tab can be showen or not
      *
-     * @return bool
+     * @return             bool
      * @codeCoverageIgnore
      */
     public function canShowTab()
@@ -79,7 +79,7 @@ class Conditions extends Generic implements TabInterface
     /**
      * Returns status flag about this tab hidden or not
      *
-     * @return bool
+     * @return             bool
      * @codeCoverageIgnore
      */
     public function isHidden()
@@ -90,7 +90,7 @@ class Conditions extends Generic implements TabInterface
     /**
      * Tab class getter
      *
-     * @return string
+     * @return             string
      * @codeCoverageIgnore
      */
     public function getTabClass()
@@ -101,7 +101,7 @@ class Conditions extends Generic implements TabInterface
     /**
      * Return URL link to Tab content
      *
-     * @return string
+     * @return             string
      * @codeCoverageIgnore
      */
     public function getTabUrl()
@@ -112,7 +112,7 @@ class Conditions extends Generic implements TabInterface
     /**
      * Tab should be loaded trough Ajax call
      *
-     * @return bool
+     * @return             bool
      * @codeCoverageIgnore
      */
     public function isAjaxLoaded()
@@ -127,7 +127,9 @@ class Conditions extends Generic implements TabInterface
     {
         $model = $this->_coreRegistry->registry('current_promo_catalog_rule');
 
-        /** @var \Magento\Framework\Data\Form $form */
+        /**
+ * @var \Magento\Framework\Data\Form $form 
+*/
         $form = $this->addTabToForm($model);
         $this->setForm($form);
 
@@ -135,15 +137,17 @@ class Conditions extends Generic implements TabInterface
     }
 
     /**
-     * @param \Magento\CatalogRule\Api\Data\RuleInterface $model
-     * @param string $fieldsetId
-     * @param string $formName
+     * @param  \Magento\CatalogRule\Api\Data\RuleInterface $model
+     * @param  string                                      $fieldsetId
+     * @param  string                                      $formName
      * @return \Magento\Framework\Data\Form
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function addTabToForm($model, $fieldsetId = 'conditions_fieldset', $formName = 'catalog_rule_form')
     {
-        /** @var \Magento\Framework\Data\Form $form */
+        /**
+ * @var \Magento\Framework\Data\Form $form 
+*/
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('rule_');
 
@@ -183,9 +187,9 @@ class Conditions extends Generic implements TabInterface
     }
 
     /**
-     * @param AbstractCondition $conditions
-     * @param string $formName
-     * @param string $jsFormName
+     * @param  AbstractCondition $conditions
+     * @param  string            $formName
+     * @param  string            $jsFormName
      * @return void
      */
     private function setConditionFormName(AbstractCondition $conditions, $formName, $jsFormName)

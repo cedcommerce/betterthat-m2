@@ -31,16 +31,19 @@ class SaveCategory implements \Magento\Framework\Event\ObserverInterface
         $profileId = '';
         if($productIds) {
             $storeIds = array_keys($this->storeManager->getStores());
-            $data = $this->profileCollection->create()->addFieldToFilter("magento_category",["like"=>"%".$categoryId."%"]);
+            $data = $this->profileCollection->create()->addFieldToFilter("magento_category", ["like"=>"%".$categoryId."%"]);
             foreach($data as $item){
                 $magento_cat = json_decode($item->getMagentoCategory());
-                if(in_array($categoryId,$magento_cat))
+                if(in_array($categoryId, $magento_cat)) {
                     $profileId = $item->getId();
+                }
             }
 
-            if($profileId)
-                foreach($storeIds as $storeId)
+            if($profileId) {
+                foreach($storeIds as $storeId) {
                     $this->productAction->updateAttributes($productIds, ['betterthat_profile_id'=>$profileId], $storeId);
+                }
+            }
         }
         return $this;
     }

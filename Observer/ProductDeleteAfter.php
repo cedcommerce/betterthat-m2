@@ -9,11 +9,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author      CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
- * @license     https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Observer;
@@ -41,16 +41,17 @@ class ProductDeleteAfter implements ObserverInterface
     /**
      * customer register event handler
      *
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param  \Magento\Framework\Event\Observer $observer
      * @return void
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $_product = $observer->getProduct();
         $deletedIds = $this->Betterthat->deleteProducts([$_product->getId()]);
-        if(count($deletedIds)>0)
+        if(count($deletedIds)>0) {
             $this->messageManager->addSuccessMessage(json_encode($deletedIds) . ' item(s) deleted successfully from BetterThat');
-        else
+        } else {
             $this->messageManager->addErrorMessage('Something went wrong');
+        }
     }
 }

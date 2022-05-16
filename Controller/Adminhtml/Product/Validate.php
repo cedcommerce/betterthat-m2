@@ -66,8 +66,8 @@ class Validate extends Action
      *
      * @param \Magento\Backend\App\Action\Context              $context
      * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Ced\Betterthat\Helper\Product                      $product
-     * @param \Ced\Betterthat\Helper\Config                       $config
+     * @param \Ced\Betterthat\Helper\Product                   $product
+     * @param \Ced\Betterthat\Helper\Config                    $config
      * @param \Magento\Framework\View\Result\PageFactory       $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter          $filter
      * @param \Magento\Framework\Registry                      $registry

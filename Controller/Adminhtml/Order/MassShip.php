@@ -9,11 +9,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author      CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CEDCOMMERCE (https://cedcommerce.com/)
- * @license     https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CEDCOMMERCE (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Controller\Adminhtml\Order;
@@ -24,12 +24,14 @@ class MassShip extends \Magento\Backend\App\Action
 {
     /**
      * ResultPageFactory
+     *
      * @var \Magento\Framework\View\Result\PageFactory
      */
     public $resultPageFactory;
 
     /**
      * Authorization level of a basic admin session
+     *
      * @var Constant
      * @see _isAllowed()
      */
@@ -47,9 +49,10 @@ class MassShip extends \Magento\Backend\App\Action
 
     /**
      * MassCancel constructor.
-     * @param \Magento\Backend\App\Action\Context $context
+     *
+     * @param \Magento\Backend\App\Action\Context        $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Magento\Ui\Component\MassAction\Filter    $filter
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -60,8 +63,7 @@ class MassShip extends \Magento\Backend\App\Action
         \Ced\Betterthat\Model\Orders $collection,
         \Ced\Betterthat\Helper\Order $orderHelper,
         \Ced\Betterthat\Helper\Logger $logger
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->filter = $filter;
@@ -74,7 +76,8 @@ class MassShip extends \Magento\Backend\App\Action
 
     /**
      * Execute
-     * @return  void
+     *
+     * @return void
      */
     public function execute()
     {
@@ -111,7 +114,8 @@ class MassShip extends \Magento\Backend\App\Action
 
     /**
      * Shipment
-     * @param \Magento\Framework\Event\Observer $observer
+     *
+     * @param  \Magento\Framework\Event\Observer $observer
      * @return \Magento\Framework\Event\Observer
      */
     public function shipment($order = null, $BetterthatOrder = null)
@@ -141,12 +145,12 @@ class MassShip extends \Magento\Backend\App\Action
                 $carrier_code = (in_array(strtoupper($carrier_code), $providerCode)) ? strtoupper($carrier_code) : '';
                 $args = ['TrackingNumber' => $tracking_number, 'ShippingProvider' => strtoupper($carrier_code), 'order_id' => $BetterthatOrder->getMagentoOrderId(), 'BetterthatOrderID' => $BetterthatOrder->getBetterthatOrderId(), 'ShippingProviderName' => strtolower($carrier_name)];
                 $response = $this->orderHelper->shipOrder($args);
-                $this->logger->log('ERROR',json_encode($response));
+                $this->logger->log('ERROR', json_encode($response));
                 return $response;
             }
             return false;
         } catch (\Exception $e){
-            $this->logger->log('ERROR',json_encode($e->getMessage()));
+            $this->logger->log('ERROR', json_encode($e->getMessage()));
             return false;
         }
     }

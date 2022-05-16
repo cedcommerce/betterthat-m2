@@ -10,11 +10,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author      CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CEDCOMMERCE(https://cedcommerce.com/)
- * @license     https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CEDCOMMERCE(https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 namespace Ced\Betterthat\Observer;
 
@@ -23,19 +23,23 @@ use Magento\Framework\Event\ObserverInterface;
 class SalesModelOrderObserver implements ObserverInterface
 {
 
-    /** @var \Ced\Betterthat\Helper\Logger  */
+    /**
+     * @var \Ced\Betterthat\Helper\Logger  
+     */
     public $logger;
 
     /**
      * Object Manager
+     *
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
 
     /**
      * ProductSaveAfter constructor.
+     *
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Framework\App\RequestInterface $request
+     * @param \Magento\Framework\App\RequestInterface   $request
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -62,8 +66,9 @@ class SalesModelOrderObserver implements ObserverInterface
             foreach ($order->getAllItems() as $item) {
                 $productId = $item->getProductId();
                 $product = $this->product->create()->load($productId);
-                if($product->getBetterthatProfileId())
+                if($product->getBetterthatProfileId()) {
                     $this->productHelper->updatePriceInventory([$productId]);
+                }
             }
             $this->logger->addError('Sales Order Observer: success', ['path' => __METHOD__, 'Response' => 'exit']);
         } catch (\Exception $e) {

@@ -51,7 +51,7 @@ class Edit extends Action
     public $config;
 
     /**
-     * @param Context $context
+     * @param Context     $context
      * @param PageFactory $resultPageFactory
      */
 
@@ -61,8 +61,7 @@ class Edit extends Action
         PageFactory $resultPageFactory,
         Profile $profile,
         \Ced\Betterthat\Helper\Config $config
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->_coreRegistry = $coreRegistry;
@@ -83,7 +82,7 @@ class Edit extends Action
         $id = $this->getRequest()->getParam('id');
         if (isset($id) and !empty($id)) {
             $this->profile->load($id);
-            if($this->profile && $this->profile->getData('profile_name')){
+            if($this->profile && $this->profile->getData('profile_name')) {
                 $this->_coreRegistry->register('Betterthat_profile', $this->profile);
                 $resultPage->getConfig()->getTitle()->prepend(__('Edit Profile '.$this->profile->getData('profile_name')));
             }else {

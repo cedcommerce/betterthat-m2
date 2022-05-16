@@ -9,11 +9,9 @@ class Options implements OptionSourceInterface
 {
     public $category;
 
-    public function __construct
-    (
+    public function __construct(
         \Ced\Betterthat\Helper\Category $category
-    )
-    {
+    ) {
         $this->category = $category;
     }
 

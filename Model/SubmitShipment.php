@@ -2,7 +2,8 @@
 namespace Ced\Betterthat\Model;
 
 use Psr\Log\LoggerInterface;
-class SubmitShipment {
+class SubmitShipment
+{
 
     protected $logger;
     public $orderHelper;
@@ -10,8 +11,7 @@ class SubmitShipment {
     public function __construct(
         LoggerInterface $logger,
         \Ced\Betterthat\Helper\Order $orderHelper
-    )
-    {
+    ) {
         $this->orderHelper = $orderHelper;
         $this->logger = $logger;
     }

@@ -63,8 +63,8 @@ class InventoryPrice extends \Magento\Backend\App\Action
      * @param \Magento\Framework\View\Result\PageFactory       $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter          $filter
      * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Ced\Betterthat\Helper\Product                       $product
-     * @param \Ced\Betterthat\Helper\Config                        $config
+     * @param \Ced\Betterthat\Helper\Product                   $product
+     * @param \Ced\Betterthat\Helper\Config                    $config
      * @param \Magento\Framework\Registry                      $registry
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      */
@@ -112,7 +112,7 @@ class InventoryPrice extends \Magento\Backend\App\Action
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
             $response = $this->Betterthat->updatePriceInventory($productIds[$batch_id]);
-            if (!@$response[0]['isError']) {
+            if (!isset($response[0]['isError'])) {
                 return $resultJson->setData(
                     [
                         'success' => count($productIds[$batch_id]) . " Product(s) Inventory/Price Updated successfully. Product Id: ". json_encode($productIds[$batch_id]),
@@ -122,7 +122,7 @@ class InventoryPrice extends \Magento\Backend\App\Action
             }
             return $resultJson->setData(
                 [
-                    'errors' => "Product Id:".json_encode($productIds[$batch_id])." Failed to update.Reason:".@$response[0]['message'],
+                    'errors' => isset($response[0]['message']) ? "Product Id:".json_encode($productIds[$batch_id])." Failed to update.Reason:".$response[0]['message'] : '',
                     'messages' => $this->registry->registry('Betterthat_product_errors'),
                 ]
             );
@@ -141,12 +141,12 @@ class InventoryPrice extends \Magento\Backend\App\Action
 
         // case 3.1 normal uploading if current ids are equal to chunk size.
         if (count($productIds) == self::CHUNK_SIZE) {
-            $batch_id = @$batch_id ? $batch_id : 0;
+            $batch_id = isset($batch_id) ? $batch_id : 0;
             $response = $this->Betterthat->updatePriceInventory($productIds);
-            if (!@$response[0]['isError']) {
+            if (!isset($response[0]['isError'])) {
                 $this->messageManager->addSuccessMessage(count($productIds) . " Product(s) Inventory/Price Updated successfully. Product Id: ".json_encode($productIds[$batch_id]));
             } else {
-                $message = @$response[0]['message'];
+                $message = isset($response[0]['message']) ? $response[0]['message'] : '';
                 $errors = $this->registry->registry('Betterthat_product_errors');
                 if (isset($errors)) {
                     $message = "Product(s) Update Failed. \nErrors: " . (string)json_encode($errors);

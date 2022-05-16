@@ -7,7 +7,7 @@
 /**
  * Product in category grid
  *
- * @author      Magento Core Team <core@magentocommerce.com>
+ * @author Magento Core Team <core@magentocommerce.com>
  */
 
 namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\Grid;
@@ -37,10 +37,10 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Backend\Helper\Data $backendHelper
-     * @param \Magento\Catalog\Model\ProductFactory $productFactory
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param array $data
+     * @param \Magento\Backend\Helper\Data            $backendHelper
+     * @param \Magento\Catalog\Model\ProductFactory   $productFactory
+     * @param \Magento\Framework\Registry             $coreRegistry
+     * @param array                                   $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -51,8 +51,7 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
         \Ced\Betterthat\Model\Source\Profiles $profiles,
         \Ced\Betterthat\Model\Source\Categories $categories,
         array $data = []
-    )
-    {
+    ) {
         $this->_productFactory = $productFactory;
         $this->_coreRegistry = $coreRegistry;
         $this->profiles = $profiles;
@@ -81,7 +80,7 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
-     * @param Column $column
+     * @param  Column $column
      * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
      */

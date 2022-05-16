@@ -54,14 +54,15 @@ class DataProvider extends AbstractDataProvider
 
     /**
      * DataProvider constructor.
-     * @param string $name
-     * @param string $primaryFieldName
-     * @param string $requestFieldName
+     *
+     * @param string                                                        $name
+     * @param string                                                        $primaryFieldName
+     * @param string                                                        $requestFieldName
      * @param \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
-     * @param array $addFieldStrategies
-     * @param array $addFilterStrategies
-     * @param array $meta
-     * @param array $data
+     * @param array                                                         $addFieldStrategies
+     * @param array                                                         $addFilterStrategies
+     * @param array                                                         $meta
+     * @param array                                                         $data
      */
     public function __construct(
         $name,
@@ -72,8 +73,7 @@ class DataProvider extends AbstractDataProvider
         array $addFilterStrategies = [],
         array $meta = [],
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->collection = $collectionFactory->create();
         $this->addFieldStrategies = $addFieldStrategies;
@@ -97,7 +97,7 @@ class DataProvider extends AbstractDataProvider
         foreach ($items as $item) {
             $products = [
                 'magento_category' => json_decode($item['magento_category'], true),
-                'betterthat_category' => @$item['betterthat_categories'] ? json_decode($item['betterthat_categories'], true) : '',
+                'betterthat_category' => isset($item['betterthat_categories']) ? json_decode($item['betterthat_categories'], true) : '',
             ];
 
             $info = [

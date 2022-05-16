@@ -44,7 +44,7 @@ class MagentoCategory extends Generic
 
         $fieldset = $form->addFieldset('advanced_info', ['legend' => __('Magento Category Mapping')]);
 
-       /* $fieldset->addField(
+        /* $fieldset->addField(
             'magento_category',
             'select',
             [

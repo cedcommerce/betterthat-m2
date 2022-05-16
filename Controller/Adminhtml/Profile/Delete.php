@@ -38,7 +38,7 @@ class Delete extends \Magento\Customer\Controller\Adminhtml\Group
 
             $storeId = $this->_objectManager->create('\Ced\Betterthat\Helper\Config')->getStore();
             $this->_objectManager->get('\Magento\Catalog\Model\ResourceModel\Product\Action')
-                ->updateAttributes($productIds, ['betterthat_profile_id'=> null],$storeId);
+                ->updateAttributes($productIds, ['betterthat_profile_id'=> null], $storeId);
 
             // entity type check
             try {

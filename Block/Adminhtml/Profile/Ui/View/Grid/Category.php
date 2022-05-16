@@ -32,8 +32,9 @@ class Category extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstra
         {
             $_category = $this->categoryFactory->create()->load($cat);
             $allCats.= $_category->getName();
-            if($key < count($cats)-1)
+            if($key < count($cats)-1) {
                 $allCats.= ',<br />';
+            }
         }
         return $allCats;
     }

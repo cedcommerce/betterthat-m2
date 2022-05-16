@@ -69,7 +69,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public $orderService;
 
-    /** @var \Magento\Quote\Model\Quote\Address\RateFactory */
+    /**
+     * @var \Magento\Quote\Model\Quote\Address\RateFactory
+     */
     public $rateFactory;
 
     /**
@@ -166,7 +168,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public $salesOrder;
 
-    /** @var \Ced\Betterthat\Helper\Tax $taxHelper */
+    /**
+     * @var \Ced\Betterthat\Helper\Tax $taxHelper
+     */
     public $taxHelper;
 
     /**
@@ -179,10 +183,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $failedCount;
 
-    /** @var \Magento\Framework\DataObjectFactory */
+    /**
+     * @var \Magento\Framework\DataObjectFactory
+     */
     public $dataFactory;
 
-    /** @var \Ced\Betterthat\Model\MailFactory */
+    /**
+     * @var \Ced\Betterthat\Model\MailFactory
+     */
     public $mailFactory;
 
     public $changeQuoteControl;
@@ -209,12 +217,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\AdminNotification\Model\Inbox                            $inbox
      * @param \Magento\Framework\Message\ManagerInterface                       $manager
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface              $stockRegistry
-     * @param \Ced\Betterthat\Model\OrdersFactory                                   $orders
-     * @param \Ced\Betterthat\Model\FeedsFactory                                    $feedsFactory
-     * @param \Ced\Betterthat\Model\OrderFailedFactory                              $orderFailed
+     * @param \Ced\Betterthat\Model\OrdersFactory                               $orders
+     * @param \Ced\Betterthat\Model\FeedsFactory                                $feedsFactory
+     * @param \Ced\Betterthat\Model\OrderFailedFactory                          $orderFailed
      * @param Config                                                            $config
      * @param Logger                                                            $logger
-     * @param \BetterthatSdk\OrderFactory                                          $Betterthat
+     * @param \BetterthatSdk\OrderFactory                                       $Betterthat
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -301,10 +309,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     'config' => $this->config->getApiConfig(),
                 ]
             );
-            if($data)
+            if($data) {
                 $response['data'] = $data;
-            else
+            } else {
                 $response = $orderList->getOrders();
+            }
             //$response = '{"data":[{"_id":"612494f21befab31f4767aa5","is_multi":false,"shipment_response":[{"shipment_id":"5K0K0EuRuO4AAAF7c9odiXbl","shipment_creation_date":"2021-08-24T16:43:00+10:00","items":[{"weight":1,"item_id":"ySEK0EuREpIAAAF7d9odiXbl","item_reference":"SKU-1","tracking_details":{"article_id":"111Z05043035FPP00001","consignment_id":"111Z05043035"},"product_id":"FPP","item_summary":{"status":"Created"},"item_contents":[],"packaging_type":"SAT"}],"options":{},"shipment_summary":{"total_cost":16.85,"total_cost_ex_gst":15.32,"shipping_cost":15.32,"total_gst":1.53,"freight_charge":15.32,"status":"Created","tracking_summary":{"Created":1},"number_of_items":1},"movement_type":"TRANSFER","charge_to_account":"02734739","shipment_modified_date":"2021-08-24T16:43:00+10:00"}],"sendle_label_url":[],"order_status":"inprogress","order_generated":false,"is_cancelled":false,"is_shopify_tracking_status":false,"shopify_order_id":null,"customer_id":"61248ef29b1aed428c6e6945","total_price":28.46,"shipping_price":16.85,"payable_shipping_fee":16.85,"charity_price":0,"referrer_fee":0,"charity_id":"5dc1f96ccbbf5c085defb1bc","shipping_type":"ExpressDelivery","track_url":"","transtation_id":"ch_3JRtLXLRWu5IWm1i0G3H5eGp","stripe_data":"{\"id\":\"ch_3JRtLXLRWu5IWm1i0G3H5eGp\",\"object\":\"charge\",\"amount\":2846,\"amount_captured\":2846,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3JRtLXLRWu5IWm1i0WK0qe8T\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":\"test\",\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1629787375,\"currency\":\"aud\",\"customer\":\"cus_K657qutheJwMHt\",\"description\":\"612494ef1befab31f4767aa4\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":{},\"invoice\":null,\"livemode\":false,\"metadata\":{},\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":34,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1JRszoLRWu5IWm1ihiP7Hr3X\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":null},\"country\":\"US\",\"exp_month\":10,\"exp_year\":2025,\"fingerprint\":\"mQddwyMtwK3o31pr\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1FcUxPLRWu5IWm1i/ch_3JRtLXLRWu5IWm1i0G3H5eGp/rcpt_K65WfyOIxIdXdKObW8OQwWaK8CgF86f\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_3JRtLXLRWu5IWm1i0G3H5eGp/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1JRszoLRWu5IWm1ihiP7Hr3X\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_K657qutheJwMHt\",\"cvc_check\":null,\"dynamic_last4\":null,\"exp_month\":10,\"exp_year\":2025,\"fingerprint\":\"mQddwyMtwK3o31pr\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":{\"futureReference\":\"true\"},\"name\":\"test\",\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}","stripe_card_data":"VISA 4242","retailer_id":"60f8eb6fb0482c35d61dbeb3","address_id":"61248fb49b1aed428c6e6949","sendle_remittance_amount":16.85,"order_type":"buyit","transaction_fee":1.28,"created_by":"place_order","recipient_name":"test null","master_id":"612494ef1befab31f4767aa4","order_date":"24/08/2021","order_time":"16:42","createdAt":"2021-08-24T06:42:58.763Z","label_url":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/Labels/612494f21befab31f4767aa5/297873828g7af4k2bx.pdf","return_shipment_response":[{"order":{"order_id":"TB01173258","order_creation_date":"2021-08-24T16:43:07+10:00","order_summary":{"total_cost":10.34,"total_cost_ex_gst":9.4,"total_gst":0.94,"status":"Initiated","tracking_summary":{"Sealed":1},"number_of_shipments":1,"number_of_items":1,"dangerous_goods_included":false,"shipping_methods":{"PR":1}},"shipments":[{"shipment_id":"lYgK0EVKCBsAAAF7rvUdbXbl","shipment_creation_date":"2021-08-24T16:43:07+10:00","items":[{"authority_to_leave":true,"safe_drop_enabled":true,"allow_partial_delivery":false,"item_id":"D88K0EVKR4EAAAF7svUdbXbl","item_reference":"SKU-1","tracking_details":{"article_id":"111JD600384001000650802","consignment_id":"111JD6003840"},"product_id":"PR","item_summary":{"total_cost":10.12,"total_cost_ex_gst":9.2,"total_gst":0.92,"status":"Sealed"},"item_contents":[]}],"options":{},"shipment_summary":{"total_cost":10.34,"total_cost_ex_gst":9.4,"fuel_surcharge":0.2,"total_gst":0.94,"status":"Sealed","tracking_summary":{"Sealed":1},"number_of_items":1},"movement_type":"RETURN","charge_to_account":"2012734739","shipment_modified_date":"2021-08-24T16:43:07+10:00"}],"payment_method":"CHARGE_TO_ACCOUNT"}}],"return_label_url":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/ReturnLabels/612494f21befab31f4767aa5/297873906hmvelfsxq.pdf","Order_product":[{"_id":"612494f31befab31f4767aa6","order_id":"612494f21befab31f4767aa5","product_id":"6120e518d65818cad79397e5","price":"11.61","variance_id":"6120e518d65818cad79397e6","quantity":1,"createdAt":"2021-08-24T06:42:59.205Z","updatedAt":"2021-08-24T06:42:59.205Z","__v":0}],"Product_data":[{"_id":"6120e518d65818cad79397e5","percentage_off":0,"strikethrough":11.61,"can_be_bundled":"No","product_id":["8517"],"sku_code":[],"upc_code":[],"ean_code":[],"barcode":[],"gs1_code":[],"gtin_code":[],"size_guide_id":"","Tags":[""],"deleted":false,"domain":"","status":true,"sort_order":393385093,"product_name":"Aurora - Blush and Glitter - 10\" Sweet Pea Mouse","prod_details":"10 inches in size. High quality materials make for a soft and fluffy touch. Quality materials for a soft cuddling experience. Soft and luminous outfit. Plump and stuffed with love","dimensions":{"length":25.3,"weight_unit":"kg","_id":"61248d9bc0406ca6599e33e2","dimension_value":"Extra Small Satchel -500g (275x350x10)","width":33.5,"height":4.5,"weight":1},"rrp":11.61,"image_style_rule":"contain","external_source":"magento","external_product_id":"8517","imported_product_name":"Aurora - Blush and Glitter - 10\" Sweet Pea Mouse","categories":[{"sort_weigth":1000,"_id":"5d5fbe24e6802f178f97403e","path":"Kids","slug":"kids","selected":true},{"sort_weigth":1000,"_id":"603f216dd39af08f527a95c3","path":"Kids/Accessories","slug":"kids-accessories","selected":true},{"sort_weigth":1000,"_id":"5e1e841bdbf19077b5cfbb2c","path":"Kids/Baby","slug":"kids-baby","selected":false},{"sort_weigth":1000,"_id":"5f90f0ef18eb7f336d0f611d","path":"Kids/Baby/Sleeping","slug":"kids-baby-sleeping","selected":false},{"sort_weigth":1000,"_id":"603ec9f14777bb73e3adfc6f","path":"Kids/Baby/Sleeping/Baby Blankets","slug":"kids-baby-sleeping-baby-blankets","selected":true},{"sort_weigth":1000,"_id":"5e1e844fdbf19077b5cfbb2e","path":"Kids/Teens","slug":"kids-teens","selected":true}],"manufacturer":{"isActive":true,"name":"Select Manufacturer"},"attributes":[{"values":["6120e2fbd65818cad79397e2"],"_id":"6044736588e4572ec77fcf34"}],"images":[{"id":null,"_id":"61248d97c0406ca6599e33df","image_order":1,"image_url":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/Products/6120e518d65818cad79397e5/297854957auglbbsi8.jpg"}],"variances":[{"image_urls":[],"is_available":true,"deleted":false,"un_product_id":[],"un_sku_code":[""],"un_gtin_code":[],"un_upc_code":[],"un_ean_code":[],"un_barcode":[],"un_gs1_code":[],"_id":"6120e518d65818cad79397e6","attributes":[{"_id":"6044736588e4572ec77fcf34","name":"Title","val_id":"6120e2fbd65818cad79397e2","val_name":"Aurora - Blush and Glitter - 10\" Sweet Pea Mouse"}],"order":1,"is_base_variance":false,"variance_id":"8517","createdAt":"2021-08-21T11:35:52.681Z","updatedAt":"2021-08-24T06:43:02.249Z"}],"retailer_products":[{"is_active":true,"is_visible":true,"external_status":true,"shipping_option":["Instore","Standard","ExpressDelivery"],"shipping_option_charges":[0,0,10],"transaction_charge_option":false,"buy_price":11.61,"discounted_price":0,"compare_at_price":0,"is_unique":false,"policy_description_option":false,"hideFromFront":false,"_id":"6120e518d65818cad79397ea","retailer_id":"60f8eb6fb0482c35d61dbeb3","transaction_charge_percentage":null,"standard_shipping_timeframe":"3-4 days","policy_description_val":null,"maxReturnDays":5,"international_shipping":{"timeframe":"","charge":0},"stocks":[{"old_stock":4,"discounted_price":0,"compare_at_price":0,"_id":"6120e518d65818cad79397e9","variance_id":"6120e518d65818cad79397e6","stock":3,"buy_price":11.61}]}],"product_tabs":[],"createdAt":"2021-08-21T11:35:52.682Z","updatedAt":"2021-08-24T06:43:02.249Z","slug":"aurora-blush-and-glitter-10-sweet-pea-mouse","__v":0}],"Charity_data":[{"_id":"5dc1f96ccbbf5c085defb1bc","firstName":"Rebecca","lastName":"McCormack","email":"fundraising@guidedogsqld.com.au","registeredCharityName":"Guide Dogs Queensland","registeredAbnName":"GUIDE DOGS FOR THE BLIND ASSOCIATION OF QUEENSLAND","charityAbn":"89009739664","charityPhoneNumber":"0735009088","charityMobileNnumber":"0735009088","charityWebsiteAddress":"https://www.guidedogsqld.com.au/","charityFacebookAddress":"https://www.facebook.com/guidedogsqld/","charityLogo":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/charityLogo/2262803551830yq2ks.jpg","bannerImage":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/bannerImage/979018275m8e8t5v8z.jpg","charityAddress":"1978 Gympie Rd","charitySuburb":"Bald Hills","charityCountry":13,"charityState":269,"charityPostcode":"4036","charityBankName":"Guide Dogs for the Blnd Association of Queensland","charityBsbCode":"034014","charityAccountNumber":"129206","charityDescription":"As a leader in the provision of Guide Dogs and Mobility Services, Guide Dogs Queensland is dedicated to ensuring people with low or no\r\nvision have access to the services they need. We rely on the support of the community to help fund our vital services, including our\r\niconic Guide Dogs so that vision-impaired Queenslanders can live with independence, mobility, and freedom. The demand for our\r\nservice is continually growing as the incidence of vision impairment increases, and we deliver by assisting people of all ages with\r\nour wide range of aids. All programs and services are tailored to match the needs and lifestyles of each individual, with most training\r\ndelivered locally in the person’s home, community or work environment.","charityNotes":"","updatedAt":"2021-06-02T10:00:35.543Z","createdAt":"2019-11-05T22:36:28.894Z","isDeleted":false,"isActive":true,"isDefault":false,"registeredGift":"Yes","registeredACNC":"Yes","__v":0,"deleted":false,"statesOperatingIn":["269"],"affiliate_link":"","isStaticDonation":false,"partner_referrer_code":"guide","staticDonationAmount":0}],"Retailer_data":[{"_id":"60f8eb6fb0482c35d61dbeb3","location":{"type":"Point","coordinates":[151.2021367,-33.8651342]},"is_onboarding":true,"role":"retailer","statesOperatingIn":[],"registeredACNC":"Yes","registeredGift":"Yes","isDefault":false,"isActive":true,"newsletter_subscription":false,"date_of_birth":"2003-07-17T07:00:50.640Z","user_location_preference":[],"shopping_from":"Australia","country_id":13,"state_name_id":null,"hub_spot_id":null,"deleted":false,"is_updated_good_cause":false,"firstname":"Magento Demo","lastname":"Retailer","email":"demoretailer@mailinator.com","password":"$2a$08$V4/DHOFrFwNu0y/RlXb.dOo6mUEC//WrGtm8DBLxEydEpb2lTh14u","phoneNumber":"0412345678","shop_name":"Magento Demo Retailer","shop_desc":"Magento Demo Retailer","shop_image":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/Tags/1626925936015.jpg","industry":"Select Industry","shop_abn":"","shop_reference":"","auspost_store_id":"","shop_url":"demo_retailer","bussiness_desc":"","shop_mobile_number":"","shop_website_address":"","isLive":"1","shippingCountry":13,"shippingAddress":"300 Barangaroo Av","shippingSuburb":"Sydney","shippingState":266,"shippingPostcode":"2000","average_order_val":"Select Average Order Value?","product_sell_sku":"How many products do you sell (SKUs)","total_annual_sales":"Total Annual Sales?","point_of_sale":"","inventory_system":"","exit_inventory_system":"Do you have an existing API into your Inventory Management system?","transactionChargePercentage":10,"freeExpressShippingAbove":100,"freeStandardShippingAbove":100,"freeSendleShippingAbove":100,"orderEmailCC":"","maxReturnDays":10,"shop_bank_account_name":"","shop_bank_name":"","shop_bsb_code":"","shop_account_number":"","bt_account_manager":"","sendle_api_key":"","sendle_id":"","affiliate_link":"","shop_notes":"","createdAt":"2021-07-22T03:52:15.965Z","bannerImage":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/bannerImage/retailer/26925936097p7btdia.jpg","__v":0,"banner_position":"115.625px","freeInternationalShippingAbove":null,"freeSendleInternationalAbove":null,"policy_description":"","sendle_plan_name":"Easy","shippingAddress_1":"","updatedAt":"2021-08-24T06:06:33.106Z","shipping_options":{"international_shipping":{"timeframe":"","charge":0},"shipping_option":["Instore","Standard","ExpressDelivery"],"shipping_option_charges":"10","standard_shipping_timeframe":"3-4 days"}}],"Customer_data":[{"_id":"61248ef29b1aed428c6e6945","location":{"coordinates":[]},"is_onboarding":false,"role":"customer","statesOperatingIn":[],"registeredACNC":"Yes","registeredGift":"Yes","isDefault":false,"isActive":true,"newsletter_subscription":false,"date_of_birth":null,"user_location_preference":[],"shopping_from":"Australia","country_id":13,"state_name_id":null,"hub_spot_id":null,"deleted":false,"is_updated_good_cause":false,"firstname":"halo","lastname":"halo","email":"halo@gmail.com","password":"$2a$08$9/V.Zd5YB52k2PUIP6BQweMJTY9TVXp.A2vUh2uxfQQLrdmFo8C2e","createdAt":"2021-08-24T06:17:22.988Z","stripe_customer_id":"cus_K657qutheJwMHt","verify_token":"4w3kDoFX","__v":0,"referrer":null,"charity_id":"5dc1f96ccbbf5c085defb1bc","phoneNumber":"","updatedAt":"2021-08-24T06:17:50.208Z"}],"Shipping_data":[{"_id":"61248fb49b1aed428c6e6949","location":{"coordinates":[153.3985378,-28.0891855],"type":"Point"},"deleted":false,"is_default":true,"user_id":"61248ef29b1aed428c6e6945","save_address_as":"Home","address":"1 Abbeytree Court","Suburb":"ROBINA","state":269,"postcode":"4226","first_name":"test","phonenumber":"9929182541","country":13,"last_name":null,"createdAt":"2021-08-24T06:20:36.891Z","updatedAt":"2021-08-24T06:20:36.891Z","__v":0}],"year":"2021","month":"08","day":"24"},{"_id":"612494ef1befab31f4767aa4","is_multi":true,"shipment_response":[],"sendle_label_url":[],"order_status":"inprogress","order_generated":false,"is_cancelled":false,"is_shopify_tracking_status":false,"shopify_order_id":null,"customer_id":"61248ef29b1aed428c6e6945","total_price":28.46,"shipping_price":16.85,"payable_shipping_fee":16.85,"charity_price":0,"referrer_fee":0,"shipping_type":"","track_url":"","address_id":"61248fb49b1aed428c6e6949","sendle_remittance_amount":0,"transtation_id":"ch_3JRtLXLRWu5IWm1i0G3H5eGp","order_type":"buyit","transaction_fee":1.28,"created_by":"place_order","recipient_name":"test null","order_date":"24/08/2021","order_time":"16:42","createdAt":"2021-08-24T06:42:55.661Z","stripe_card_data":"VISA 4242","stripe_data":"{\"id\":\"ch_3JRtLXLRWu5IWm1i0G3H5eGp\",\"object\":\"charge\",\"amount\":2846,\"amount_captured\":2846,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3JRtLXLRWu5IWm1i0WK0qe8T\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":\"test\",\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1629787375,\"currency\":\"aud\",\"customer\":\"cus_K657qutheJwMHt\",\"description\":\"612494ef1befab31f4767aa4\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":{},\"invoice\":null,\"livemode\":false,\"metadata\":{},\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":34,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1JRszoLRWu5IWm1ihiP7Hr3X\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":null},\"country\":\"US\",\"exp_month\":10,\"exp_year\":2025,\"fingerprint\":\"mQddwyMtwK3o31pr\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1FcUxPLRWu5IWm1i/ch_3JRtLXLRWu5IWm1i0G3H5eGp/rcpt_K65WfyOIxIdXdKObW8OQwWaK8CgF86f\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_3JRtLXLRWu5IWm1i0G3H5eGp/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1JRszoLRWu5IWm1ihiP7Hr3X\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_K657qutheJwMHt\",\"cvc_check\":null,\"dynamic_last4\":null,\"exp_month\":10,\"exp_year\":2025,\"fingerprint\":\"mQddwyMtwK3o31pr\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":{\"futureReference\":\"true\"},\"name\":\"test\",\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}","Order_product":[],"Product_data":[],"Charity_data":[],"Retailer_data":[],"Customer_data":[{"_id":"61248ef29b1aed428c6e6945","location":{"coordinates":[]},"is_onboarding":false,"role":"customer","statesOperatingIn":[],"registeredACNC":"Yes","registeredGift":"Yes","isDefault":false,"isActive":true,"newsletter_subscription":false,"date_of_birth":null,"user_location_preference":[],"shopping_from":"Australia","country_id":13,"state_name_id":null,"hub_spot_id":null,"deleted":false,"is_updated_good_cause":false,"firstname":"halo","lastname":"halo","email":"halo@gmail.com","password":"$2a$08$9/V.Zd5YB52k2PUIP6BQweMJTY9TVXp.A2vUh2uxfQQLrdmFo8C2e","createdAt":"2021-08-24T06:17:22.988Z","stripe_customer_id":"cus_K657qutheJwMHt","verify_token":"4w3kDoFX","__v":0,"referrer":null,"charity_id":"5dc1f96ccbbf5c085defb1bc","phoneNumber":"","updatedAt":"2021-08-24T06:17:50.208Z"}],"Shipping_data":[{"_id":"61248fb49b1aed428c6e6949","location":{"coordinates":[153.3985378,-28.0891855],"type":"Point"},"deleted":false,"is_default":true,"user_id":"61248ef29b1aed428c6e6945","save_address_as":"Home","address":"1 Abbeytree Court","Suburb":"ROBINA","state":269,"postcode":"4226","first_name":"test","phonenumber":"9929182541","country":13,"last_name":null,"createdAt":"2021-08-24T06:20:36.891Z","updatedAt":"2021-08-24T06:20:36.891Z","__v":0}],"year":"2021","month":"08","day":"24"},{"_id":"6124949b1befab31f4767a9e","is_multi":false,"shipment_response":[],"sendle_label_url":[],"order_status":"inprogress","order_generated":false,"is_cancelled":false,"is_shopify_tracking_status":false,"shopify_order_id":null,"customer_id":"61248ef29b1aed428c6e6945","total_price":24.53,"shipping_price":10,"payable_shipping_fee":10,"charity_price":0,"referrer_fee":0,"charity_id":"5dc1f96ccbbf5c085defb1bc","shipping_type":"Standard","track_url":"","transtation_id":"ch_3JRtK8LRWu5IWm1i0UwNvB6n","stripe_data":"{\"id\":\"ch_3JRtK8LRWu5IWm1i0UwNvB6n\",\"object\":\"charge\",\"amount\":2453,\"amount_captured\":2453,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3JRtK8LRWu5IWm1i00akHlS5\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":\"test\",\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1629787288,\"currency\":\"aud\",\"customer\":\"cus_K657qutheJwMHt\",\"description\":\"612494971befab31f4767a9d\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":{},\"invoice\":null,\"livemode\":false,\"metadata\":{},\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":16,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1JRszoLRWu5IWm1ihiP7Hr3X\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":null},\"country\":\"US\",\"exp_month\":10,\"exp_year\":2025,\"fingerprint\":\"mQddwyMtwK3o31pr\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1FcUxPLRWu5IWm1i/ch_3JRtK8LRWu5IWm1i0UwNvB6n/rcpt_K65VyddznSok42tpV2TQ1zJ132R8SFS\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_3JRtK8LRWu5IWm1i0UwNvB6n/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1JRszoLRWu5IWm1ihiP7Hr3X\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_K657qutheJwMHt\",\"cvc_check\":null,\"dynamic_last4\":null,\"exp_month\":10,\"exp_year\":2025,\"fingerprint\":\"mQddwyMtwK3o31pr\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":{\"futureReference\":\"true\"},\"name\":\"test\",\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}","stripe_card_data":"VISA 4242","retailer_id":"60f8eb6fb0482c35d61dbeb3","address_id":"61248fb49b1aed428c6e6949","sendle_remittance_amount":10,"order_type":"buyit","transaction_fee":1.59,"created_by":"place_order","recipient_name":"test null","master_id":"612494971befab31f4767a9d","order_date":"24/08/2021","order_time":"16:41","createdAt":"2021-08-24T06:41:31.852Z","Order_product":[{"_id":"6124949c1befab31f4767a9f","order_id":"6124949b1befab31f4767a9e","product_id":"6120d3d9d65818cad79397d2","price":"14.53","variance_id":"6120d3d9d65818cad79397d5","quantity":1,"createdAt":"2021-08-24T06:41:32.248Z","updatedAt":"2021-08-24T06:41:32.248Z","__v":0}],"Product_data":[{"_id":"6120d3d9d65818cad79397d2","percentage_off":0,"strikethrough":14.53,"can_be_bundled":"No","product_id":["8516"],"sku_code":[],"upc_code":[],"ean_code":[],"barcode":[],"gs1_code":[],"gtin_code":[],"size_guide_id":"","Tags":[""],"deleted":false,"domain":"","status":true,"sort_order":393385093,"product_name":"Aurora - Smokey Bear - 10\" Smokey Bear","prod_details":"10 inches in size. High Quality Materials make for a soft and fluffy touch. Sweet lovable facial expression. Quality materials for a soft cuddling experience. Based on the original Smokey bear design.","dimensions":{"length":25.3,"weight_unit":"kg","_id":"61248c34c0406ca6599e33cd","dimension_value":"Extra Small Satchel -500g (275x350x10)","width":33.5,"height":4.5,"weight":1},"rrp":14.53,"image_style_rule":"contain","external_source":"magento","external_product_id":"8516","imported_product_name":"Aurora - Smokey Bear - 10\" Smokey Bear","categories":[{"sort_weigth":1000,"_id":"5d5fbe24e6802f178f97403e","path":"Kids","slug":"kids","selected":true},{"sort_weigth":1000,"_id":"603f216dd39af08f527a95c3","path":"Kids/Accessories","slug":"kids-accessories","selected":true},{"sort_weigth":1000,"_id":"5e1e841bdbf19077b5cfbb2c","path":"Kids/Baby","slug":"kids-baby","selected":false},{"sort_weigth":1000,"_id":"5f90f0ef18eb7f336d0f611d","path":"Kids/Baby/Sleeping","slug":"kids-baby-sleeping","selected":false},{"sort_weigth":1000,"_id":"603ec9f14777bb73e3adfc6f","path":"Kids/Baby/Sleeping/Baby Blankets","slug":"kids-baby-sleeping-baby-blankets","selected":true},{"sort_weigth":1000,"_id":"5e1e844fdbf19077b5cfbb2e","path":"Kids/Teens","slug":"kids-teens","selected":true}],"manufacturer":{"isActive":true,"name":"Mattel","slug":"mattel","_id":"60590c657204bd38c70665cd"},"attributes":[{"values":["6120d3d9d65818cad79397d3"],"_id":"6044736588e4572ec77fcf34"}],"images":[{"id":null,"_id":"61248f79c0406ca6599e33fa","image_order":1,"image_url":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/Products/6120d3d9d65818cad79397d2/297859777807df9i40.jpg"}],"variances":[{"image_urls":[],"is_available":true,"deleted":false,"un_product_id":[],"un_sku_code":[""],"un_gtin_code":[],"un_upc_code":[],"un_ean_code":[],"un_barcode":[],"un_gs1_code":[],"_id":"6120d3d9d65818cad79397d5","attributes":[{"_id":"6044736588e4572ec77fcf34","name":"Title","val_id":"6120d3d9d65818cad79397d3","val_name":"Aurora - Smokey Bear - 10\" Smokey Bear"}],"order":1,"is_base_variance":false,"variance_id":"8516","createdAt":"2021-08-21T10:22:17.839Z","updatedAt":"2021-08-24T06:41:35.332Z"}],"retailer_products":[{"is_active":true,"is_visible":true,"external_status":true,"shipping_option":["Instore","Standard","ExpressDelivery"],"shipping_option_charges":[0,0,10],"transaction_charge_option":false,"buy_price":14.53,"discounted_price":0,"compare_at_price":0,"is_unique":false,"policy_description_option":false,"hideFromFront":false,"_id":"6120d3d9d65818cad79397da","retailer_id":"60f8eb6fb0482c35d61dbeb3","transaction_charge_percentage":null,"standard_shipping_timeframe":"3-4 days","policy_description_val":null,"maxReturnDays":5,"international_shipping":{"timeframe":"","charge":0},"stocks":[{"old_stock":2,"discounted_price":0,"compare_at_price":0,"_id":"6120d3d9d65818cad79397d9","variance_id":"6120d3d9d65818cad79397d5","stock":1,"buy_price":14.53}]}],"product_tabs":[],"createdAt":"2021-08-21T10:22:17.840Z","updatedAt":"2021-08-24T06:41:35.332Z","slug":"aurora-smokey-bear-10-smokey-bear","__v":0}],"Charity_data":[{"_id":"5dc1f96ccbbf5c085defb1bc","firstName":"Rebecca","lastName":"McCormack","email":"fundraising@guidedogsqld.com.au","registeredCharityName":"Guide Dogs Queensland","registeredAbnName":"GUIDE DOGS FOR THE BLIND ASSOCIATION OF QUEENSLAND","charityAbn":"89009739664","charityPhoneNumber":"0735009088","charityMobileNnumber":"0735009088","charityWebsiteAddress":"https://www.guidedogsqld.com.au/","charityFacebookAddress":"https://www.facebook.com/guidedogsqld/","charityLogo":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/charityLogo/2262803551830yq2ks.jpg","bannerImage":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/bannerImage/979018275m8e8t5v8z.jpg","charityAddress":"1978 Gympie Rd","charitySuburb":"Bald Hills","charityCountry":13,"charityState":269,"charityPostcode":"4036","charityBankName":"Guide Dogs for the Blnd Association of Queensland","charityBsbCode":"034014","charityAccountNumber":"129206","charityDescription":"As a leader in the provision of Guide Dogs and Mobility Services, Guide Dogs Queensland is dedicated to ensuring people with low or no\r\nvision have access to the services they need. We rely on the support of the community to help fund our vital services, including our\r\niconic Guide Dogs so that vision-impaired Queenslanders can live with independence, mobility, and freedom. The demand for our\r\nservice is continually growing as the incidence of vision impairment increases, and we deliver by assisting people of all ages with\r\nour wide range of aids. All programs and services are tailored to match the needs and lifestyles of each individual, with most training\r\ndelivered locally in the person’s home, community or work environment.","charityNotes":"","updatedAt":"2021-06-02T10:00:35.543Z","createdAt":"2019-11-05T22:36:28.894Z","isDeleted":false,"isActive":true,"isDefault":false,"registeredGift":"Yes","registeredACNC":"Yes","__v":0,"deleted":false,"statesOperatingIn":["269"],"affiliate_link":"","isStaticDonation":false,"partner_referrer_code":"guide","staticDonationAmount":0}],"Retailer_data":[{"_id":"60f8eb6fb0482c35d61dbeb3","location":{"type":"Point","coordinates":[151.2021367,-33.8651342]},"is_onboarding":true,"role":"retailer","statesOperatingIn":[],"registeredACNC":"Yes","registeredGift":"Yes","isDefault":false,"isActive":true,"newsletter_subscription":false,"date_of_birth":"2003-07-17T07:00:50.640Z","user_location_preference":[],"shopping_from":"Australia","country_id":13,"state_name_id":null,"hub_spot_id":null,"deleted":false,"is_updated_good_cause":false,"firstname":"Magento Demo","lastname":"Retailer","email":"demoretailer@mailinator.com","password":"$2a$08$V4/DHOFrFwNu0y/RlXb.dOo6mUEC//WrGtm8DBLxEydEpb2lTh14u","phoneNumber":"0412345678","shop_name":"Magento Demo Retailer","shop_desc":"Magento Demo Retailer","shop_image":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/Tags/1626925936015.jpg","industry":"Select Industry","shop_abn":"","shop_reference":"","auspost_store_id":"","shop_url":"demo_retailer","bussiness_desc":"","shop_mobile_number":"","shop_website_address":"","isLive":"1","shippingCountry":13,"shippingAddress":"300 Barangaroo Av","shippingSuburb":"Sydney","shippingState":266,"shippingPostcode":"2000","average_order_val":"Select Average Order Value?","product_sell_sku":"How many products do you sell (SKUs)","total_annual_sales":"Total Annual Sales?","point_of_sale":"","inventory_system":"","exit_inventory_system":"Do you have an existing API into your Inventory Management system?","transactionChargePercentage":10,"freeExpressShippingAbove":100,"freeStandardShippingAbove":100,"freeSendleShippingAbove":100,"orderEmailCC":"","maxReturnDays":10,"shop_bank_account_name":"","shop_bank_name":"","shop_bsb_code":"","shop_account_number":"","bt_account_manager":"","sendle_api_key":"","sendle_id":"","affiliate_link":"","shop_notes":"","createdAt":"2021-07-22T03:52:15.965Z","bannerImage":"https://s3-ap-southeast-2.amazonaws.com/betterthat-dev/bannerImage/retailer/26925936097p7btdia.jpg","__v":0,"banner_position":"115.625px","freeInternationalShippingAbove":null,"freeSendleInternationalAbove":null,"policy_description":"","sendle_plan_name":"Easy","shippingAddress_1":"","updatedAt":"2021-08-24T06:06:33.106Z","shipping_options":{"international_shipping":{"timeframe":"","charge":0},"shipping_option":["Instore","Standard","ExpressDelivery"],"shipping_option_charges":"10","standard_shipping_timeframe":"3-4 days"}}],"Customer_data":[{"_id":"61248ef29b1aed428c6e6945","location":{"coordinates":[]},"is_onboarding":false,"role":"customer","statesOperatingIn":[],"registeredACNC":"Yes","registeredGift":"Yes","isDefault":false,"isActive":true,"newsletter_subscription":false,"date_of_birth":null,"user_location_preference":[],"shopping_from":"Australia","country_id":13,"state_name_id":null,"hub_spot_id":null,"deleted":false,"is_updated_good_cause":false,"firstname":"halo","lastname":"halo","email":"halo@gmail.com","password":"$2a$08$9/V.Zd5YB52k2PUIP6BQweMJTY9TVXp.A2vUh2uxfQQLrdmFo8C2e","createdAt":"2021-08-24T06:17:22.988Z","stripe_customer_id":"cus_K657qutheJwMHt","verify_token":"4w3kDoFX","__v":0,"referrer":null,"charity_id":"5dc1f96ccbbf5c085defb1bc","phoneNumber":"","updatedAt":"2021-08-24T06:17:50.208Z"}],"Shipping_data":[{"_id":"61248fb49b1aed428c6e6949","location":{"coordinates":[153.3985378,-28.0891855],"type":"Point"},"deleted":false,"is_default":true,"user_id":"61248ef29b1aed428c6e6945","save_address_as":"Home","address":"1 Abbeytree Court","Suburb":"ROBINA","state":269,"postcode":"4226","first_name":"test","phonenumber":"9929182541","country":13,"last_name":null,"createdAt":"2021-08-24T06:20:36.891Z","updatedAt":"2021-08-24T06:20:36.891Z","__v":0}],"year":"2021","month":"08","day":"24"},{"_id":"612494971befab31f4767a9d","is_multi":true,"shipment_response":[],"sendle_label_url":[],"order_status":"inprogress","order_generated":false,"is_cancelled":false,"is_shopify_tracking_status":false,"shopify_order_id":null,"customer_id":"61248ef29b1aed428c6e6945","total_price":24.53,"shipping_price":10,"payable_shipping_fee":10,"charity_price":0,"referrer_fee":0,"shipping_type":"","track_url":"","address_id":"61248fb49b1aed428c6e6949","sendle_remittance_amount":0,"transtation_id":"ch_3JRtK8LRWu5IWm1i0UwNvB6n","order_type":"buyit","transaction_fee":1.59,"created_by":"place_order","recipient_name":"test null","order_date":"24/08/2021","order_time":"16:41","createdAt":"2021-08-24T06:41:27.989Z","stripe_card_data":"VISA 4242","stripe_data":"{\"id\":\"ch_3JRtK8LRWu5IWm1i0UwNvB6n\",\"object\":\"charge\",\"amount\":2453,\"amount_captured\":2453,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3JRtK8LRWu5IWm1i00akHlS5\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":\"test\",\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1629787288,\"currency\":\"aud\",\"customer\":\"cus_K657qutheJwMHt\",\"description\":\"612494971befab31f4767a9d\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":{},\"invoice\":null,\"livemode\":false,\"metadata\":{},\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":16,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1JRszoLRWu5IWm1ihiP7Hr3X\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":null},\"country\":\"US\",\"exp_month\":10,\"exp_year\":2025,\"fingerprint\":\"mQddwyMtwK3o31pr\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1FcUxPLRWu5IWm1i/ch_3JRtK8LRWu5IWm1i0UwNvB6n/rcpt_K65VyddznSok42tpV2TQ1zJ132R8SFS\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_3JRtK8LRWu5IWm1i0UwNvB6n/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1JRszoLRWu5IWm1ihiP7Hr3X\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_K657qutheJwMHt\",\"cvc_check\":null,\"dynamic_last4\":null,\"exp_month\":10,\"exp_year\":2025,\"fingerprint\":\"mQddwyMtwK3o31pr\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":{\"futureReference\":\"true\"},\"name\":\"test\",\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}","Order_product":[],"Product_data":[],"Charity_data":[],"Retailer_data":[],"Customer_data":[{"_id":"61248ef29b1aed428c6e6945","location":{"coordinates":[]},"is_onboarding":false,"role":"customer","statesOperatingIn":[],"registeredACNC":"Yes","registeredGift":"Yes","isDefault":false,"isActive":true,"newsletter_subscription":false,"date_of_birth":null,"user_location_preference":[],"shopping_from":"Australia","country_id":13,"state_name_id":null,"hub_spot_id":null,"deleted":false,"is_updated_good_cause":false,"firstname":"halo","lastname":"halo","email":"halo@gmail.com","password":"$2a$08$9/V.Zd5YB52k2PUIP6BQweMJTY9TVXp.A2vUh2uxfQQLrdmFo8C2e","createdAt":"2021-08-24T06:17:22.988Z","stripe_customer_id":"cus_K657qutheJwMHt","verify_token":"4w3kDoFX","__v":0,"referrer":null,"charity_id":"5dc1f96ccbbf5c085defb1bc","phoneNumber":"","updatedAt":"2021-08-24T06:17:50.208Z"}],"Shipping_data":[{"_id":"61248fb49b1aed428c6e6949","location":{"coordinates":[153.3985378,-28.0891855],"type":"Point"},"deleted":false,"is_default":true,"user_id":"61248ef29b1aed428c6e6945","save_address_as":"Home","address":"1 Abbeytree Court","Suburb":"ROBINA","state":269,"postcode":"4226","first_name":"test","phonenumber":"9929182541","country":13,"last_name":null,"createdAt":"2021-08-24T06:20:36.891Z","updatedAt":"2021-08-24T06:20:36.891Z","__v":0}],"year":"2021","month":"08","day":"24"}],"recordsTotal":0,"recordsFiltered":0}';
             $count = 0;
 
@@ -327,21 +336,22 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             [
                                 'success' => true,
                                 'message' => 'Magento order already created',
-                                'orderId'=> @$magentoOrderId[0],
-                                'btorderId'=>@$BetterthatOrderId
+                                'orderId'=> isset($magentoOrderId[0]) ? $magentoOrderId[0] : 'N/A',
+                                'btorderId'=>isset($BetterthatOrderId) ? $BetterthatOrderId : 'N/A'
                             ];
                     }
                 }
             }
 
-            if($data)
+            if($data) {
                 return $this->webapiResponse;
+            }
 
             if ($count > 0) {
                 $this->notificationSuccess($count);
                 $this->messageManager->addSuccessMessage($count. ' BT Orders successfully imported');
                 return true;
-            }elseif($this->failedCount > 0){
+            }elseif($this->failedCount > 0) {
                 $this->messageManager->addComplexErrorMessage(
                     'failedOrders',
                     [
@@ -361,7 +371,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $string
+     * @param  $string
      * @return bool
      */
     public function validateString($string)
@@ -373,7 +383,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public function getEmail($order)
     {
         $customerId = $this->config->getDefaultCustomer();
-        if ($customerId === false && isset($order['customer']['customer_id']) && $order['customer']['customer_id']){
+        if ($customerId === false && isset($order['customer']['customer_id']) && $order['customer']['customer_id']) {
             $customerCustomEmail = $order['customer']['customer_id'].'@Betterthat.com.au';
             return $customerCustomEmail;
         } else {
@@ -382,8 +392,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $order
-     * @param $websiteId
+     * @param  $order
+     * @param  $websiteId
      * @return bool|\Magento\Customer\Model\Customer
      */
     public function getCustomer($order, $websiteId)
@@ -448,10 +458,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param string   $store
-     * @param $customer
-     * @param array    $order
-     * @param integer  $count
+     * @param  string  $store
+     * @param  $customer
+     * @param  array   $order
+     * @param  integer $count
      * @return mixed
      */
     public function generateQuote(
@@ -486,7 +496,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             if (isset($order['Product_data'][0])) {
                 $failedOrder = false;
                 foreach ($order['Product_data'] as $item) {
-                    $item['product_id'] = @$item['product_id'][0] ? $item['product_id'][0] : '';
+                    $item['product_id'] = isset($item['product_id'][0]) ? $item['product_id'][0] : '';
                     /*                    $sku = [
                                             '8517' => '30',
                                             '8516' => '60'
@@ -494,8 +504,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                         // override only for demo purpose..
                                         $item['product_id'] = @$sku[$item['product_id']];*/
                     if (isset($item['product_id'])) {
-                        $qty = @$qtyArray[@$item['_id']];
-                        $product = $this->product->create()->load(@$item['product_id']);
+                        $qty = isset($qtyArray[isset($item['_id'])?$item['_id']: 0]) ? $qtyArray[isset($item['_id'])?$item['_id']: 1] : [];
+                        $product = $this->product->create()->load(isset($item['product_id']) ? $item['product_id']: null);
                         if (isset($product) and !empty($product) and $product->getId()) {
                             if ($product->getStatus() == '1') {
                                 $stockStatus = $this->checkStockQtyStatus($product, $qty);
@@ -541,16 +551,17 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     $this->webapiResponse =
                         [
                             'success' => false,
-                            'message' => @$reason[0],
+                            'message' => isset($reason[0]) ? $reason[0] : 'N/A',
                             'orderId'=> 'N/A',
-                            'btorderId'=>@$order['_id']
+                            'btorderId'=>isset($order['_id']) ? $order['_id'] : 'N/A'
                         ];
                     $this->rejectOrder($order, $order['Product_data'], $reason);
                 } else if(!$failedOrder) {
                     $shippingData = $order['Shipping_data'];
                     $countryCode = isset($order['Country_Name']['id'])
                         ? ($order['Country_Name']['id'] == 13 && $order['Country_Name']['name'] == 'Australia' ? 'AU' : 'AU') : 'AU';
-                    $stateName = @$order['State_Name']['name'] ? $order['State_Name']['name'] : @$shippingData['state'];
+
+                    $stateName = isset($order['State_Name']['name']) ? $order['State_Name']['name'] : (isset($shippingData['state']) ? $shippingData['state'] : '');
 
                     $stateModel = $this->objectManager->create('Magento\Directory\Model\RegionFactory')->create()
                         ->getCollection()->addFieldToFilter('country_id', $countryCode)->addFieldToFilter('name', ['like' => '%'.$stateName.'%'])
@@ -562,15 +573,15 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
                     try {
                         $shipAddress = [
-                            'firstname' => @$shippingData['first_name'] ? @$shippingData['first_name'] : $order['Customer_data'][0]['firstname']  ,
-                            'lastname' => @$shippingData['last_name'] ? @$shippingData['last_name'] : $order['Customer_data'][0]['lastname'],
-                            'street' => (@$shippingData['address'] ? $shippingData['address'] : '') .', '. (@$shippingData['address_1'] ? $shippingData['address_1'] : ''),
-                            'city' => @$shippingData['Suburb'] ? $shippingData['Suburb'] : ' ',
+                            'firstname' => isset($shippingData['first_name']) ? $shippingData['first_name'] : $order['Customer_data'][0]['firstname']  ,
+                            'lastname' => isset($shippingData['last_name']) ? $shippingData['last_name'] : $order['Customer_data'][0]['lastname'],
+                            'street' => (isset($shippingData['address']) ? $shippingData['address'] : '') .', '. (isset($shippingData['address_1']) ? $shippingData['address_1'] : ''),
+                            'city' => isset($shippingData['Suburb']) ? $shippingData['Suburb'] : ' ',
                             'country' =>  $countryCode,
                             'country_id' => $countryCode,
-                            'region' => @$stateCode,
-                            'postcode' => $shippingData['postcode'],
-                            'telephone' => @$shippingData['phonenumber'] ? @$shippingData['phonenumber'] : 'N/A',
+                            'region' => isset($stateCode) ? $stateCode : '',
+                            'postcode' => isset($shippingData['postcode']) ? $shippingData['postcode'] : '',
+                            'telephone' => isset($shippingData['phonenumber']) ? $shippingData['phonenumber'] : 'N/A',
                             'fax' => '',
                             'company' => '',
                             'save_in_address_book' => 1
@@ -597,7 +608,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             'StandardDeliverySendle' => 'Standard Delivery - Sendle(BT managed)',
                             'ExpressDelivery' => 'Express Delivery(BT managed)'
                         ];
-                        $shipTitle = @$order['formatted_shipping_type'];
+                        $shipTitle = isset($order['formatted_shipping_type']) ? $order['formatted_shipping_type'] : '';
                         $rate->setCode($shippingMethod)
                             ->setMethod($shippingMethod)
                             ->setMethodTitle($shipTitle)
@@ -617,7 +628,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         );
                         $quote->collectTotals()->save();
                         foreach ($quote->getAllItems() as $item) {
-                            $price = @$priceArr[$item->getProductId()];
+                            $price = isset($priceArr[$item->getProductId()]) ? $priceArr[$item->getProductId()] : null;
                             $item->setBasePrice($price);
                             $item->setSpecialPrice($price);
                             $item->setDiscountAmount(0);
@@ -649,7 +660,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             ->save();
                         $count = isset($magentoOrder) ? $count + 1 : $count;
                         foreach ($magentoOrder->getAllItems() as $item) {
-                            $price = @$priceArr[$item->getProductId()];
+                            $price = isset($priceArr[$item->getProductId()]) ? $priceArr[$item->getProductId()] : null;
                             $item->setBasePrice($price);
                             $item->setSpecialPrice($price);
                             $item->setDiscountAmount(0);
@@ -668,11 +679,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
                         // after save order
                         $orderData = [
-                            'Betterthat_order_id' => @$order['_id'],
-                            'order_place_date' => @$order['createdAt'] ? $order['createdAt'] : date('Y-m-d h:i:s'),
+                            'Betterthat_order_id' => isset($order['_id']) ? $order['_id'] : 'N/A',
+                            'order_place_date' => isset($order['createdAt']) ? $order['createdAt'] : date('Y-m-d h:i:s'),
                             'magento_order_id' => $magentoOrder->getId(),
                             'increment_id' => $magentoOrder->getIncrementId(),
-                            'status' => @$order['order_status'],
+                            'status' => isset($order['order_status']) ? $order['order_status'] : 'N/A',
                             'order_data' => $this->json->jsonEncode($order),
                             'order_items' => $this->json->jsonEncode($order['Product_data'])
                         ];
@@ -681,11 +692,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         $this->webapiResponse = [
                             'success' => true,
                             'message' => 'Magento order created successfully',
-                            'orderId'=>@$magentoOrder->getIncrementId(),
-                            'btorderId'=>@$order['_id']
+                            'orderId'=> $magentoOrder->getIncrementId(),
+                            'btorderId'=> isset($order['_id']) ? $order['_id'] : 'N/A'
                         ];
                         $this->generateInvoice($magentoOrder);
-                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), @$order['createdAt']);
+                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), isset($order['createdAt']) ? $order['createdAt']: null );
 
                     } catch (\Exception $exception) {
                         $this->webapiResponse =
@@ -693,15 +704,15 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                 'success' => false,
                                 'message' => $exception->getMessage(),
                                 'orderId'=> 'N/A',
-                                'btorderId'=>@$order['_id']
+                                'btorderId'=>isset($order['_id']) ? $order['_id'] : 'N/A'
                             ];
                         $reason[] = $exception->getMessage();
                         $orderFailed = $this->orderFailed->create()->load($order['_id'], 'Betterthat_order_id');
                         $addData = [
-                            'Betterthat_order_id' => @$order['_id'],
-                            'status' => @$order['order_status'],
+                            'Betterthat_order_id' => isset($order['_id']) ? $order['_id'] : '',
+                            'status' => isset($order['order_status']) ? $order['order_status'] : '',
                             'reason' => $this->json->jsonEncode($reason),
-                            'order_date' => @$order['createdAt'],
+                            'order_date' => isset($order['createdAt']) ? $order['createdAt'] : '',
                             'order_data' => $this->json->jsonEncode($order),
                             'order_items' => isset($order['Product_data']) ? $this->json->jsonEncode($order['Product_data']) : '',
                         ];
@@ -719,7 +730,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     'success' => false,
                     'message' => $e->getMessage(),
                     'orderId'=> 'N/A',
-                    'btorderId'=>@$order['_id']
+                    'btorderId'=>isset($order['_id']) ? $order['_id'] : ''
                 ];
             $this->logger->error('Generate Quote', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
@@ -728,9 +739,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
 
     /**
-     * @param array $order
-     * @param array $items
-     * @param array $reason
+     * @param  array $order
+     * @param  array $items
+     * @param  array $reason
      * @return bool
      */
     public function rejectOrder(array $order, array $items = [], array $reason = [])
@@ -821,27 +832,33 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $BetterthatOrderId
-     * @param $mageOrderId
-     * @param $placeDate
+     * @param  $BetterthatOrderId
+     * @param  $mageOrderId
+     * @param  $placeDate
      * @return bool
      */
-    public function sendMail($betterthatOrderId, $mageOrderId, $placeDate)
+    public function sendMail($betterthatOrderId, $mageOrderId, $placeDate = null)
     {
         $to_email = $this->scopeConfig->getValue('betterthat_config/betterthat_order/order_notify_email');
         try {
             if ($to_email) {
 
-                /** @var \Magento\Framework\DataObject $data */
+                /**
+ * @var \Magento\Framework\DataObject $data
+*/
                 $data = $this->dataFactory->create();
-                $data->addData([
+                $data->addData(
+                    [
                     'to' => $to_email,
                     'marketplace_name' => 'Betterthat',
                     'po_id' => $betterthatOrderId,
                     'order_id' => $mageOrderId,
                     'order_date' => $placeDate,
-                ]);
-                /** @var \Ced\Betterthat\Model\Mail $mail */
+                    ]
+                );
+                /**
+ * @var \Ced\Betterthat\Model\Mail $mail
+*/
                 $mail = $this->mailFactory->create();
                 $mail->send($data);
 
@@ -875,26 +892,27 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
-    public function submitMagentoShipment(array $data = []){
-        $orderId = @$data[0]['order_id'];
-        $title = @$data[0]['tracking_info']['shipping_company'];
-        $trackingNumber = @$data[0]['tracking_info']['tracking_number'];
-        $this->webApiResponse = $this->createShipment($orderId,$trackingNumber,$title);
+    public function submitMagentoShipment(array $data = [])
+    {
+        $orderId = isset($data[0]['order_id']) ? $data[0]['order_id'] : 'N/A';
+        $title = isset($data[0]['tracking_info']['shipping_company']) ? $data[0]['tracking_info']['shipping_company']  : 'N/A';
+        $trackingNumber = isset($data[0]['tracking_info']['tracking_number']) ? $data[0]['tracking_info']['tracking_number'] : 'N/A';
+        $this->webApiResponse = $this->createShipment($orderId, $trackingNumber, $title);
         return $this->webApiResponse;
     }
 
     /**
-     * @param int $orderId
-     * @param string $trackingNumber
+     * @param  int    $orderId
+     * @param  string $trackingNumber
      * @return \Magento\Sales\Model\Shipment $shipment
      */
     protected function createShipment($orderId, $trackingNumber,$title)
     {
         try {
             $order = $this->objectManager->create('Magento\Sales\Model\Order')
-                ->load($orderId,'increment_id');
+                ->load($orderId, 'increment_id');
 
-            if ($order && $order->canShip()){
+            if ($order && $order->canShip()) {
                 $data = [[
                     'carrier_code' => 'custom',
                     'title' => $title,
@@ -1067,7 +1085,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $count
+     * @param  $count
      * @throws \Exception
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
@@ -1108,8 +1126,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
-     * @param $track array
+     * @param  $order \Magento\Sales\Model\Order
+     * @param  $track array
      * @return $this
      */
     protected function prepareShipment($order, $track)
@@ -1123,7 +1141,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * @param  $order \Magento\Sales\Model\Order
      * @return array
      */
     protected function prepareShipmentItems($order)
@@ -1177,7 +1195,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $message
+     * @param  $message
      * @throws \Exception
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
@@ -1252,7 +1270,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getCountryId($iso3_code)
     {
-        $country_id = substr($iso3_code, 0,2);
+        $country_id = substr($iso3_code, 0, 2);
         $country = $this->objectManager->create('\Magento\Directory\Model\Country')->loadByCode($iso3_code);
         if($country_id = $country->getData('country_id')) {
             $country_id = $country->getData('country_id');
@@ -1294,7 +1312,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /*
     Function to generate Credit Memo
     */
-    public function createCreditMemo($increment_id, $result){
+    public function createCreditMemo($increment_id, $result)
+    {
         try {
             $data = array();
             $order = $this->salesOrder->loadByIncrementId($increment_id);
@@ -1540,7 +1559,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
 
-    public function refundOnBetterthat($orderIncrementId = NULL, $cancelOrder = array(), $creditMemoID = NULL)
+    public function refundOnBetterthat($orderIncrementId = null, $cancelOrder = array(), $creditMemoID = null)
     {
         try {
             $cancelOrder = array(
@@ -1615,7 +1634,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Shipment
-     * @param \Magento\Framework\Event\Observer $observer
+     *
+     * @param  \Magento\Framework\Event\Observer $observer
      * @return \Magento\Framework\Event\Observer
      */
     public function prepareShipmentData($order = null, $BetterthatOrder = null)
@@ -1679,7 +1699,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
-    public function checkStockQtyStatus($product, $qty) {
+    public function checkStockQtyStatus($product, $qty)
+    {
         $stockStatus = false;
         $useMSI = $this->config->getUseMsi();
         if($useMSI) {
@@ -1687,14 +1708,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $msiSourceDataModel = $this->objectManager->create('\Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku');
             $invSourceData = $msiSourceDataModel->execute($product->getSku());
             if($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
-                $invSourceData = array_column($invSourceData, 'quantity','source_code');
+                $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
                 $quantity = isset($invSourceData[$msiSourceCode]) ? $invSourceData[$msiSourceCode] : 0;
                 $stockStatus = ($quantity > 0) ? ($quantity >= $qty ? true : false) : false;
             }
         } else {
             $stock = $this->stockRegistry
                 ->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
-            if($stock->getTypeId() == "configurable" && $stock->getIsInStock() == '1'){
+            if($stock->getTypeId() == "configurable" && $stock->getIsInStock() == '1') {
                 return true; // temp check configurable case
             }
             $stockStatus = ($stock->getQty() > 0) ? ($stock->getIsInStock() == '1' ?
@@ -1753,6 +1774,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Set the total shipping in registry
+     *
      * @param float $amount
      */
     private function registerShippingAmount($amount)
@@ -1767,6 +1789,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Set the total shipping in registry
+     *
      * @param float $amount
      */
     private function registerShippingTaxPercentage($amount)

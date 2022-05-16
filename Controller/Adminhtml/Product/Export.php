@@ -64,13 +64,14 @@ class Export extends \Magento\Backend\App\Action
 
     /**
      * Export constructor.
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Magento\Catalog\Model\Product $collection
-     * @param \Ced\Betterthat\Helper\Config $config
-     * @param \BetterthatSdk\ProductFactory $Betterthat
-     * @param \Magento\Framework\Filesystem $filesystem
+     *
+     * @param  \Magento\Backend\App\Action\Context              $context
+     * @param  \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param  \Magento\Ui\Component\MassAction\Filter          $filter
+     * @param  \Magento\Catalog\Model\Product                   $collection
+     * @param  \Ced\Betterthat\Helper\Config                    $config
+     * @param  \BetterthatSdk\ProductFactory                    $Betterthat
+     * @param  \Magento\Framework\Filesystem                    $filesystem
      * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
@@ -112,7 +113,7 @@ class Export extends \Magento\Backend\App\Action
         $header = ['Id', 'Name','Sku','Error'];
         $stream->writeCsv($header);
 
-        $collection = $this->productFactory->create()->addAttributeToSelect(['name','betterthat_validation_errors'])->addFieldToFilter('entity_id',['in'=>$productIds]);
+        $collection = $this->productFactory->create()->addAttributeToSelect(['name','betterthat_validation_errors'])->addFieldToFilter('entity_id', ['in'=>$productIds]);
         foreach ($collection as $product) {
             $data = [];
             $data[] = $product->getId();
@@ -140,22 +141,25 @@ class Export extends \Magento\Backend\App\Action
 
 
     /**
-     * @param $errorJson
+     * @param  $errorJson
      * @return false|mixed|string|null
      */
-    public function fetchErrors($errorJson){
-        $errors = json_decode($errorJson,1);
+    public function fetchErrors($errorJson)
+    {
+        $errors = json_decode($errorJson, 1);
 
-        if(@$errors[0] == 'valid')
+        if(isset($errors[0]) && $errors[0] == 'valid') {
             return $errors[0];
-        if(!$errors){
+        }
+        if(!$errors) {
             return $errors;
         }
         foreach($errors as $error){
-            if(@$error['errors'][0])
-                return implode(':',$error['errors'][0]);
-            else
-                return json_encode($error['errors'][0]);
+            if(isset($error['errors'][0])) {
+                return implode(':', $error['errors'][0]);
+            } else {
+                return json_encode(isset($error['errors'][0]) ? $error['errors'][0] : []);
+            }
 
         }
     }

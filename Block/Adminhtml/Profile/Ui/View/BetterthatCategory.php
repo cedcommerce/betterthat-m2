@@ -5,8 +5,8 @@ namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\View;
 class BetterthatCategory extends \Magento\Backend\Block\Template
 {
      /**
-     * @var string
-     */
+      * @var string
+      */
     public $_template = 'Ced_Betterthat::profile/category/betterthat_category.phtml';
 
     public $_objectManager;
@@ -18,8 +18,7 @@ class BetterthatCategory extends \Magento\Backend\Block\Template
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\App\Request\Http $request,
         array $data = []
-    )
-    {
+    ) {
         $this->_objectManager = $objectManager;
         $this->request = $request;
         parent::__construct($context, $data);
@@ -40,7 +39,7 @@ class BetterthatCategory extends \Magento\Backend\Block\Template
     /**
      * Render form element as HTML
      *
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @param  \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      */
     public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
@@ -50,6 +49,6 @@ class BetterthatCategory extends \Magento\Backend\Block\Template
     }
     protected function _prepareLayout()
     {
-        $this->addChild('Betterthat_attributes','Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\AttributeMapping');
+        $this->addChild('Betterthat_attributes', 'Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\AttributeMapping');
     }
 }

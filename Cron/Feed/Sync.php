@@ -56,7 +56,7 @@ class Sync
                     ->addFieldToFilter('status', array('neq' => 'COMPLETE'))
                     ->setPageSize(20)
                     ->setCurPage(1)
-                    ->setOrder('id','DESC');
+                    ->setOrder('id', 'DESC');
                 foreach ($feedIds as $feed) {
                     $response = $this->product->syncFeeds($feed);
                 }

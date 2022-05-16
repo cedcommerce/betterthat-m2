@@ -5,8 +5,8 @@ namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\View;
 class BetterthatCategoryMapping extends \Magento\Backend\Block\Template
 {
      /**
-     * @var string
-     */
+      * @var string
+      */
     public $_template = 'Ced_Betterthat::profile/category/Betterthat_category_mapping.phtml';
 
     public $_objectManager;
@@ -23,8 +23,7 @@ class BetterthatCategoryMapping extends \Magento\Backend\Block\Template
         \Magento\Framework\Registry $registry,
         \Ced\Betterthat\Model\Profile $profile,
         array $data = []
-    )
-    {
+    ) {
         $this->_objectManager = $objectManager;
         $this->_coreRegistry = $registry;
         $this->request = $request;
@@ -42,7 +41,7 @@ class BetterthatCategoryMapping extends \Magento\Backend\Block\Template
     /**
      * Render form element as HTML
      *
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @param  \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      */
     public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)

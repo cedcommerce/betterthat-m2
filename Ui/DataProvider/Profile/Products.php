@@ -58,15 +58,16 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
 
     /**
      * JetProduct constructor.
-     * @param string $name
-     * @param string $primaryFieldName
-     * @param string $requestFieldName
+     *
+     * @param string            $name
+     * @param string            $primaryFieldName
+     * @param string            $requestFieldName
      * @param CollectionFactory $collectionFactory
-     * @param FilterBuilder $filterBuilder
-     * @param array $addFieldStrategies
-     * @param array $addFilterStrategies
-     * @param array $meta
-     * @param array $data
+     * @param FilterBuilder     $filterBuilder
+     * @param array             $addFieldStrategies
+     * @param array             $addFilterStrategies
+     * @param array             $meta
+     * @param array             $data
      */
     public function __construct(
         $name,
@@ -80,8 +81,7 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
         array $addFilterStrategies = [],
         array $meta = [],
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
 
         $this->bookmark = $bookmark;
@@ -115,7 +115,7 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
             }
         }
 
-//        $this->addField('Betterthat_profile_id');
+        //        $this->addField('Betterthat_profile_id');
         $this->addField('Betterthat_product_status');
         $this->addField('Betterthat_validation_errors');
         $this->addField('Betterthat_feed_errors');
@@ -126,8 +126,8 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
     /**
      * Add field to select
      *
-     * @param string|array $field
-     * @param string|null $alias
+     * @param  string|array $field
+     * @param  string|null  $alias
      * @return void
      */
     public function addField($field, $alias = null)
@@ -140,7 +140,7 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
-     * @param \Magento\Framework\Api\Filter $filter
+     * @param  \Magento\Framework\Api\Filter $filter
      * @return void
      */
     public function addFilter(\Magento\Framework\Api\Filter $filter)

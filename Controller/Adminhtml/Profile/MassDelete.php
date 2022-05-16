@@ -46,11 +46,12 @@ class MassDelete extends Action
 
     /**
      * MassDelete constructor.
-     * @param Action\Context $context
-     * @param PageFactory $resultPageFactory
-     * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Ced\Betterthat\Model\ProfileFactory $profile
-     * @param \Ced\Betterthat\Model\ResourceModel\Profile $profileResource
+     *
+     * @param Action\Context                                                $context
+     * @param PageFactory                                                   $resultPageFactory
+     * @param \Magento\Ui\Component\MassAction\Filter                       $filter
+     * @param \Ced\Betterthat\Model\ProfileFactory                          $profile
+     * @param \Ced\Betterthat\Model\ResourceModel\Profile                   $profileResource
      * @param \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collection
      */
     public function __construct(
@@ -91,7 +92,7 @@ class MassDelete extends Action
                         ->addAttributeToFilter('betterthat_profile_id', ['eq' => $item->getId()])
                         ->addAttributeToSelect('betterthat_profile_id')->getAllIds();
                     $storeId = $this->config->getStore();
-                    $this->_prodAction->updateAttributes($productIds, ['betterthat_profile_id'=> null],$storeId);
+                    $this->_prodAction->updateAttributes($productIds, ['betterthat_profile_id'=> null], $storeId);
                     $item->delete();
                 }
                 $this->messageManager->addSuccessMessage(__('Total of %1 record(s) have been deleted.', $collection->count()));

@@ -10,11 +10,11 @@
  * It is also available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category    Ced
- * @package     Ced_CsMarketplace
- * @author        CedCommerce Core Team <coreteam@cedcommerce.com>
- * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Ced
+ * @package   Ced_CsMarketplace
+ * @author    CedCommerce Core Team <coreteam@cedcommerce.com>
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 namespace Ced\Betterthat\Model\Adminhtml\Config;
@@ -92,13 +92,13 @@ class Data extends \Magento\Config\Model\Config
 
     /**
      * @param \Magento\Framework\App\Config\ReinitableConfigInterface $config
-     * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param \Magento\Config\Model\Config\Structure $configStructure
-     * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
-     * @param \Magento\Config\Model\Config\Loader $configLoader
-     * @param \Magento\Framework\App\Config\ValueFactory $configValueFactory
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param array $data
+     * @param \Magento\Framework\Event\ManagerInterface               $eventManager
+     * @param \Magento\Config\Model\Config\Structure                  $configStructure
+     * @param \Magento\Framework\DB\TransactionFactory                $transactionFactory
+     * @param \Magento\Config\Model\Config\Loader                     $configLoader
+     * @param \Magento\Framework\App\Config\ValueFactory              $configValueFactory
+     * @param \Magento\Store\Model\StoreManagerInterface              $storeManager
+     * @param array                                                   $data
      */
     public function __construct(
         \Magento\Framework\App\Config\ReinitableConfigInterface $config,
@@ -112,9 +112,8 @@ class Data extends \Magento\Config\Model\Config
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Framework\App\Request\Http $request,
         array $data = []
-    )
-    {
-        parent::__construct($config, $eventManager, $configStructure, $transactionFactory, $configLoader, $configValueFactory, $storeManager,null, $data);
+    ) {
+        parent::__construct($config, $eventManager, $configStructure, $transactionFactory, $configLoader, $configValueFactory, $storeManager, null, $data);
 
         $this->_objectManager = $objectManager;
         $this->_scopeConfig = $scopeConfig;
@@ -124,8 +123,8 @@ class Data extends \Magento\Config\Model\Config
     /**
      * Add data by path section/group/field
      *
-     * @param string $path
-     * @param mixed $value
+     * @param  string $path
+     * @param  mixed  $value
      * @return void
      * @throws \UnexpectedValueException
      */
@@ -159,9 +158,9 @@ class Data extends \Magento\Config\Model\Config
     /**
      * Get config data value
      *
-     * @param string $path
-     * @param null|bool &$inherit
-     * @param null|array $configData
+     * @param  string     $path
+     * @param  null|bool  &$inherit
+     * @param  null|array $configData
      * @return \Magento\Framework\Simplexml\Element
      */
     public function getConfigDataValue($path, &$inherit = null, $configData = null)
@@ -187,7 +186,8 @@ class Data extends \Magento\Config\Model\Config
     {
 
         $is_Betterthat = $this->_objectManager->get('Magento\Framework\Module\Manager')->isEnabled('Ced_Betterthat');
-        if (!$is_Betterthat) return parent::load();
+        if (!$is_Betterthat) { return parent::load();
+        }
         $this->initScope();
         $this->_configData = $this->_getConfig(false);
 
@@ -197,7 +197,8 @@ class Data extends \Magento\Config\Model\Config
     {
 
         $is_Betterthat = $this->_objectManager->get('Magento\Framework\Module\Manager')->isEnabled('Ced_Betterthat');
-        if (!$is_Betterthat) return parent::initScope;
+        if (!$is_Betterthat) { return parent::initScope;
+        }
 
         if ($this->getStore()) {
             $scope = 'stores';
@@ -224,13 +225,14 @@ class Data extends \Magento\Config\Model\Config
     /**
      * Return formatted config data for current section
      *
-     * @param bool $full Simple config structure or not
+     * @param  bool $full Simple config structure or not
      * @return array
      */
     protected function _getConfig($full = true)
     {
         $is_Betterthat = $this->_objectManager->get('Magento\Framework\Module\Manager')->isEnabled('Ced_Betterthat');
-        if (!$is_Betterthat) return parent::_getConfig($full);
+        if (!$is_Betterthat) { return parent::_getConfig($full);
+        }
         $profileData = $this->_request->getPost();
         $pcode = isset($profileData['profile_code']) && strlen($profileData['profile_code']) > 0 ? $profileData['profile_code'] : ($this->_request->getParam('pcode', false) ? $this->_request->getParam('pcode') : '');
         if (strlen($pcode) > 0) {
@@ -249,8 +251,7 @@ class Data extends \Magento\Config\Model\Config
         array &$oldConfig,
         \Magento\Framework\DB\Transaction $saveTransaction,
         \Magento\Framework\DB\Transaction $deleteTransaction
-    )
-    {
+    ) {
 
 
         $groupPath = $sectionPath . '/' . $groupId;
@@ -260,10 +261,11 @@ class Data extends \Magento\Config\Model\Config
 
 
         /**
-         *
          * Map field names if they were cloned
          */
-        /** @var $group \Magento\Config\Model\Config\Structure\Element\Group */
+        /**
+ * @var $group \Magento\Config\Model\Config\Structure\Element\Group 
+*/
         $group = $this->_configStructure->getElement($groupPath);
 
 
@@ -275,7 +277,9 @@ class Data extends \Magento\Config\Model\Config
                 $cloneModel = $group->getCloneModel();
                 $mappedFields = [];
 
-                /** @var $field \Magento\Config\Model\Config\Structure\Element\Field */
+                /**
+ * @var $field \Magento\Config\Model\Config\Structure\Element\Field 
+*/
                 foreach ($group->getChildren() as $field) {
                     foreach ($cloneModel->getPrefixes() as $prefix) {
                         $mappedFields[$prefix['field'] . $field->getId()] = $field->getId();
@@ -295,10 +299,14 @@ class Data extends \Magento\Config\Model\Config
                 if ($group->shouldCloneFields() && isset($mappedFields[$fieldId])) {
                     $originalFieldId = $mappedFields[$fieldId];
                 }
-                /** @var $field \Magento\Config\Model\Config\Structure\Element\Field */
+                /**
+ * @var $field \Magento\Config\Model\Config\Structure\Element\Field 
+*/
                 $field = $this->_configStructure->getElement($groupPath . '/' . $originalFieldId);
 
-                /** @var \Magento\Framework\App\Config\ValueInterface $backendModel */
+                /**
+ * @var \Magento\Framework\App\Config\ValueInterface $backendModel 
+*/
                 $backendModel = $field->hasBackendModel() ? $field
                     ->getBackendModel() : $this
                     ->_configValueFactory
@@ -392,15 +400,14 @@ class Data extends \Magento\Config\Model\Config
     /**
      * Set correct scope if isSingleStoreMode = true
      *
-     * @param \Magento\Config\Model\Config\Structure\Element\Field $fieldConfig
-     * @param \Magento\Framework\App\Config\ValueInterface $dataObject
+     * @param  \Magento\Config\Model\Config\Structure\Element\Field $fieldConfig
+     * @param  \Magento\Framework\App\Config\ValueInterface         $dataObject
      * @return void
      */
     protected function _checkSingleStoreMode(
         \Magento\Config\Model\Config\Structure\Element\Field $fieldConfig,
         $dataObject
-    )
-    {
+    ) {
         $isSingleStoreMode = $this->_storeManager->isSingleStoreMode();
         if (!$isSingleStoreMode) {
             return;
@@ -439,22 +446,22 @@ class Data extends \Magento\Config\Model\Config
             return $this->_configLoader->getConfigByPath($path, $full, $oldConfig);
         }
         switch ($is_Betterthat) {
-            case 1:
+        case 1:
 
-                $profileData = $this->_request->getPost();
-                $pcode = isset($profileData['profile_code']) && strlen($profileData['profile_code']) > 0 ? $profileData['profile_code'] : ($this->_request->getParam('pcode', false) ? $this->_request->getParam('pcode') : '');
-                if (strlen($pcode) > 0) {
-                    $path = $pcode . '/' . $path;
-                }
+            $profileData = $this->_request->getPost();
+            $pcode = isset($profileData['profile_code']) && strlen($profileData['profile_code']) > 0 ? $profileData['profile_code'] : ($this->_request->getParam('pcode', false) ? $this->_request->getParam('pcode') : '');
+            if (strlen($pcode) > 0) {
+                $path = $pcode . '/' . $path;
+            }
 
-                break;
-            case 2 :
+            break;
+        case 2 :
 
-                $vendorId = $this->_request->getParam('vendor_id', 0);
-                $vendor = $this->_objectManager->get('Ced\CsMarketplace\Model\Vendor')->load($vendorId);
-                if ($vendor && $vendor->getId()) {
-                    $path = $vendor->getId() . '/' . $path;
-                }
+            $vendorId = $this->_request->getParam('vendor_id', 0);
+            $vendor = $this->_objectManager->get('Ced\CsMarketplace\Model\Vendor')->load($vendorId);
+            if ($vendor && $vendor->getId()) {
+                $path = $vendor->getId() . '/' . $path;
+            }
         }
 
 

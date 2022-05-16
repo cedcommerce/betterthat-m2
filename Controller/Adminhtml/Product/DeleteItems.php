@@ -63,8 +63,8 @@ class DeleteItems extends \Magento\Backend\App\Action
      * @param \Magento\Framework\View\Result\PageFactory       $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter          $filter
      * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Ced\Betterthat\Helper\Product                       $product
-     * @param \Ced\Betterthat\Helper\Config                        $config
+     * @param \Ced\Betterthat\Helper\Product                   $product
+     * @param \Ced\Betterthat\Helper\Config                    $config
      * @param \Magento\Framework\Registry                      $registry
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      */
@@ -99,20 +99,21 @@ class DeleteItems extends \Magento\Backend\App\Action
         $collection = $this->filter->getCollection($collectionFactory);
         $deletedIds = $this->Betterthat->deleteProducts($collection->getAllIds());
         foreach ($collection as $product){
-            if(in_array($product->getId(),$deletedIds)){
+            if(in_array($product->getId(), $deletedIds)) {
                 $product->setbetterthat_product_status('DELETED');
                 $product->setbetterthat_visibility('no');
                 $product->setbetterthat_product_id('');
                 $product->setbetterthat_feed_errors('');
-                $product->getResource()->saveAttribute($product,'betterthat_feed_errors');
-                $product->getResource()->saveAttribute($product,'betterthat_product_id');
-                $product->getResource()->saveAttribute($product,'betterthat_product_status');
+                $product->getResource()->saveAttribute($product, 'betterthat_feed_errors');
+                $product->getResource()->saveAttribute($product, 'betterthat_product_id');
+                $product->getResource()->saveAttribute($product, 'betterthat_product_status');
             }
         }
-        if(count($deletedIds)>0)
+        if(count($deletedIds)>0) {
              $this->messageManager->addSuccessMessage(json_encode($deletedIds) . ' item(s) deleted successfully');
-        else
+        } else {
             $this->messageManager->addErrorMessage('Something went wrong');
+        }
 
         return $this->_redirect('*/product/index');
     }

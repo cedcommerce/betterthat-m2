@@ -71,7 +71,7 @@ define(
             }
 
             var shift = ['\n']; // array of shifts
-            for(ix=0;ix<100;ix++){
+            for(ix=0; ix < 100; ix++){
                 shift.push(shift[ix]+space);
             }
             return shift;
@@ -111,29 +111,23 @@ define(
                     str += ar[ix];
                     inComment = false;
                 } else
-                // <elm></elm> //
                 if( /^<\w/.exec(ar[ix-1]) && /^<\/\w/.exec(ar[ix]) &&
                     /^<[\w:\-\.\,]+/.exec(ar[ix-1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/','')) {
                     str += ar[ix];
                     if(!inComment) deep--;
                 } else
-                // <elm> //
                 if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) == -1 && ar[ix].search(/\/>/) == -1 ) {
                     str = !inComment ? str += shift[deep++]+ar[ix] : str += ar[ix];
                 } else
-                // <elm>...</elm> //
                 if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) > -1) {
                     str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
                 } else
-                // </elm> //
                 if(ar[ix].search(/<\//) > -1) {
                     str = !inComment ? str += shift[--deep]+ar[ix] : str += ar[ix];
                 } else
-                // <elm/> //
                 if(ar[ix].search(/\/>/) > -1 ) {
                     str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
                 } else
-                // <? xml ... ?> //
                 if(ar[ix].search(/<\?/) > -1) {
                     str += shift[deep]+ar[ix];
                 } else

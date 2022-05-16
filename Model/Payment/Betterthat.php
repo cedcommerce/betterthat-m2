@@ -112,7 +112,7 @@ class Betterthat extends \Magento\Payment\Model\Method\AbstractMethod
     /* END */
 
     /**
-     * @param \Magento\Quote\Api\Data\CartInterface|null $quote
+     * @param  \Magento\Quote\Api\Data\CartInterface|null $quote
      * @return bool
      */
     public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)

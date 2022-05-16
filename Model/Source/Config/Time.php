@@ -23,6 +23,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
  * Class ServiceUrl
+ *
  * @package Ced\Wish\Model\Source
  */
 class Time extends AbstractSource

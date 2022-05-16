@@ -41,7 +41,7 @@ class CategoryJs extends Widget implements RendererInterface
      *
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry             $registry
-     * @param \BetterthatSdk\Product                     $Betterthat
+     * @param \BetterthatSdk\Product                  $Betterthat
      * @param array                                   $data
      */
     public function __construct(

@@ -28,7 +28,9 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class FeedId extends Column
 {
-    /** Url path */
+    /**
+ * Url path 
+*/
     const URL_PATH_RESEND = 'Betterthat/feeds/resend';
 
     /**

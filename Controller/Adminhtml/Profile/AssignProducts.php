@@ -10,11 +10,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author        CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright CedCommerce (https://cedcommerce.com/)
- * @license      https://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CedCommerce (https://cedcommerce.com/)
+ * @license   https://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Controller\Adminhtml\Profile;
@@ -23,19 +23,26 @@ use Ced\Betterthat\Helper\Logger;
 
 /**
  * Class MassDelete
+ *
  * @package Ced\Betterthat\Controller\Adminhtml\Profile
  */
 class AssignProducts extends \Magento\Backend\App\Action
 {
     const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat';
 
-    /** @var \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $profileCollection */
+    /**
+     * @var \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $profileCollection 
+     */
     public $profileCollection;
 
-    /** @var \Ced\Betterthat\Helper\Profile  */
+    /**
+     * @var \Ced\Betterthat\Helper\Profile  
+     */
     protected $profileHelper;
 
-    /** @var Logger \Ced\Betterthat\Helper\Logger */
+    /**
+     * @var Logger \Ced\Betterthat\Helper\Logger 
+     */
     public $logger;
 
     public $filter;

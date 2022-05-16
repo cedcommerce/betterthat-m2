@@ -165,30 +165,32 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
         if (isset($profileId)) {
             $this->profile  = $this->profileFactory->create()->load($profileId)->getData();
             if (isset($this->profile) and is_array($this->profile)) {
-                if(isset($this->profile['profile_categories']) && $this->profile['profile_categories'])
-                $this->profile['profile_categories'] = $this->json->jsonDecode($this->profile['profile_categories']);
-                else
-                $this->profile['profile_categories'] =[];
+                if(isset($this->profile['profile_categories']) && $this->profile['profile_categories']) {
+                    $this->profile['profile_categories'] = $this->json->jsonDecode($this->profile['profile_categories']);
+                } else {
+                    $this->profile['profile_categories'] =[];
+                }
 
-                if(isset($this->profile['profile_required_attributes']) && $this->profile['profile_required_attributes'])
-                $requiredAttributes = $this->json->jsonDecode($this->profile['profile_required_attributes']);
-                else
+                if(isset($this->profile['profile_required_attributes']) && $this->profile['profile_required_attributes']) {
+                    $requiredAttributes = $this->json->jsonDecode($this->profile['profile_required_attributes']);
+                } else {
                     $requiredAttributes =[];
+                }
                 foreach ($requiredAttributes as &$attribute) {
                     $validOptionsModified = $optionsModified = [];
-                     try {
-                            $options = $this->json->jsonDecode($attribute['option_mapping']);
-                            $validOptions = $this->json->jsonDecode($attribute['options']);
-                        } catch(\Zend_Json_Exception $e) {
-                            $options = [];
-                            $validOptions = [];
-                        }
-                    if(count( $options)){
+                    try {
+                           $options = $this->json->jsonDecode($attribute['option_mapping']);
+                           $validOptions = $this->json->jsonDecode($attribute['options']);
+                    } catch(\Zend_Json_Exception $e) {
+                        $options = [];
+                        $validOptions = [];
+                    }
+                    if(count($options)) {
                         foreach ($options as $optionName => $optionValue) {
                             $optionsModified[$optionValue] = $optionName;
                         }
                     }
-                    if(count( $validOptions) > 0){
+                    if(count($validOptions) > 0) {
                         foreach ($validOptions as $optionName => $optionValue) {
                             $validOptionsModified[$optionName] = $optionValue;
                         }
@@ -199,10 +201,11 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->profile['profile_required_attributes'] =  $requiredAttributes;
                 //$this->json->jsonEncode($requiredAttributes);
 
-                if(isset($this->profile['profile_optional_attributes']) && $this->profile['profile_optional_attributes'])
-                $optionalAttributes = $this->json->jsonDecode($this->profile['profile_optional_attributes']);
-                else
+                if(isset($this->profile['profile_optional_attributes']) && $this->profile['profile_optional_attributes']) {
+                    $optionalAttributes = $this->json->jsonDecode($this->profile['profile_optional_attributes']);
+                } else {
                     $optionalAttributes =[];
+                }
 
                 foreach ($optionalAttributes as &$attribute) {
                     $validOptionsModified = $optionsModified = [];
@@ -215,14 +218,15 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
                             $validOptions = [];
                         }
                     }
-                    else
+                    else {
                         $options =[];
-                    if(count( $options)){
+                    }
+                    if(count($options)) {
                         foreach ($options as $optionName => $optionValue) {
                             $optionsModified[$optionValue] = $optionName;
                         }
                     }
-                    if(count( $validOptions) > 0){
+                    if(count($validOptions) > 0) {
                         foreach ($validOptions as $optionName => $optionValue) {
                             $validOptionsModified[$optionName] = $optionValue;
                         }

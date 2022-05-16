@@ -17,6 +17,11 @@
  */
 namespace Ced\Betterthat\Plugin;
 
+/**
+ * Class ExcludeFilesFromMinification
+ *
+ * @package Ced\Betterthat\Plugin
+ */
 class ExcludeFilesFromMinification
 {
     public function aroundGetExcludes(

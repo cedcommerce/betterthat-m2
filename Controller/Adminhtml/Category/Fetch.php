@@ -97,10 +97,11 @@ class Fetch extends Action
                         $categoryHtml .= '<option value="'.$value["_id"].'">'.$value["Name"].'</option>';
 
             }
-            if($categoryHtml=='<option></option>')
+            if($categoryHtml=='<option></option>') {
                 $this->getResponse()->setBody("Unable to fetch category");
-            else
-            $this->getResponse()->setBody($categoryHtml);
+            } else {
+                $this->getResponse()->setBody($categoryHtml);
+            }
         } else {
             $this->getResponse()->setBody("Unable to fetch category");
         }

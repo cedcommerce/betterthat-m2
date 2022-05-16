@@ -57,8 +57,8 @@ class Index extends Action
     {
 
         /**
- 		 * @var \Magento\Backend\Model\View\Result\Page $resultPage
-		 */
+          * @var \Magento\Backend\Model\View\Result\Page $resultPage
+         */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Ced_Betterthat::Betterthat');
         $resultPage->getConfig()->getTitle()->prepend(__('Betterthat Category'));

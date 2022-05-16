@@ -27,7 +27,7 @@ use Magento\Framework\UrlInterface;
 class AdvancedActions extends Column
 {
     /**
- 	 * Url path
+      * Url path
      */
     const URL_PATH_EDIT = 'your/url/edit';
     const URL_PATH_DELETE = 'Betterthat/feeds/delete';

@@ -28,7 +28,9 @@ class Form extends Generic
      */
     protected function _prepareForm()
     {
-        /** @var DataForm $form */
+        /**
+ * @var DataForm $form 
+*/
         $form = $this->_formFactory->create(
             ['data' =>
                 [

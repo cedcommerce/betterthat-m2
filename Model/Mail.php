@@ -10,11 +10,11 @@
  * It is also available through the world-wide-web at this URL:
  * http://cedcommerce.com/license-agreement.txt
  *
- * @category    Ced
- * @package     Ced_Betterthat
- * @author      CedCommerce Core Team <connect@cedcommerce.com>
- * @copyright   Copyright © 2018 CedCommerce. All rights reserved.
- * @license     EULA http://cedcommerce.com/license-agreement.txt
+ * @category  Ced
+ * @package   Ced_Betterthat
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright © 2018 CedCommerce. All rights reserved.
+ * @license   EULA http://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\Betterthat\Model;
@@ -46,11 +46,11 @@ class Mail
     public $escaper;
 
     /**
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder
+     * @param \Magento\Framework\App\Action\Context              $context
+     * @param \Magento\Framework\Mail\Template\TransportBuilder  $transportBuilder
      * @param \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Store\Model\StoreManagerInterface         $storeManager
      */
     public function __construct(
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
@@ -85,7 +85,7 @@ class Mail
             $transport->sendMessage();
             $this->inlineTranslation->resume();
         } catch (\Exception $e) {
-//            $this->inlineTranslation->resume();
+            //            $this->inlineTranslation->resume();
         }
     }
 }

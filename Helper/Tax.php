@@ -21,13 +21,19 @@ namespace Ced\Betterthat\Helper;
 
 class Tax
 {
-    /** @var \Magento\Tax\Model\Config $taxConfig */
+    /**
+     * @var \Magento\Tax\Model\Config $taxConfig 
+     */
     public $taxConfig;
 
-    /** @var \Magento\Tax\Api\TaxCalculationInterface $taxCalculationAPIInterface */
+    /**
+     * @var \Magento\Tax\Api\TaxCalculationInterface $taxCalculationAPIInterface 
+     */
     public $taxCalculationAPIInterface;
 
-    /** @var \Magento\Tax\Model\Calculation $taxCalculation */
+    /**
+     * @var \Magento\Tax\Model\Calculation $taxCalculation 
+     */
     public $taxCalculation;
 
     /**
@@ -43,12 +49,14 @@ class Tax
         $this->taxCalculationAPIInterface = $taxCalculation;
     }
 
-    public function getProductTaxRate($productTaxClassId, $customerId, $storeId) {
+    public function getProductTaxRate($productTaxClassId, $customerId, $storeId)
+    {
         return $this->taxCalculationAPIInterface
             ->getCalculatedRate($productTaxClassId, $customerId, $storeId);
     }
 
-    public function getShippingTaxRate($store) {
+    public function getShippingTaxRate($store)
+    {
         $request = new \Magento\Framework\DataObject();
         $request->setProductClassId($this->taxConfig->getShippingTaxClass($store));
         return $this->taxCalculation->getStoreRate($request, $store);

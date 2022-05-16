@@ -63,8 +63,8 @@ class Upload extends \Magento\Backend\App\Action
      * @param \Magento\Framework\View\Result\PageFactory       $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter          $filter
      * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Ced\Betterthat\Helper\Product                       $product
-     * @param \Ced\Betterthat\Helper\Config                        $config
+     * @param \Ced\Betterthat\Helper\Product                   $product
+     * @param \Ced\Betterthat\Helper\Config                    $config
      * @param \Magento\Framework\Registry                      $registry
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      */
@@ -101,7 +101,7 @@ class Upload extends \Magento\Backend\App\Action
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
             $response = $this->Betterthat->createProducts($productIds[$batchId]);
-            if(@$response['err_code'] && $response['err_code'] == 'validation_err'){
+            if(isset($response['err_code']) && $response['err_code'] == 'validation_err') {
                 return $resultJson->setData(
                     [
                         'errors' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) . " Upload Failed. Reason: ".$response['message'],
@@ -109,15 +109,16 @@ class Upload extends \Magento\Backend\App\Action
                     ]
                 );
             }elseif (isset($productIds[$batchId]) && $response) {
-                if (@$response['message'] &&
-                    in_array($response['message'],["product already exists","product already exists in cleanse section."])) {
+                if (isset($response['message'])
+                    && in_array($response['message'], ["product already exists","product already exists in cleanse section."])
+                ) {
                     return $resultJson->setData(
                         [
                             'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]).' '.$response['message']  ,
                             'messages' => $response['message']
                         ]
                     );
-                }elseif(isset($response['bt_visibility'])){
+                }elseif(isset($response['bt_visibility'])) {
                     return $resultJson->setData(
                         [
                             'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]).' '.$response['message']  ,
@@ -137,7 +138,7 @@ class Upload extends \Magento\Backend\App\Action
                 return $resultJson->setData(
                     [
                         'errors' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) . " Upload Failed. Reason: Invalid item ",
-                        'messages' => @$response['message'],
+                        'messages' => isset($response['message']) ? $response['message'] : '',
                     ]
                 );
             }
@@ -157,20 +158,19 @@ class Upload extends \Magento\Backend\App\Action
         // case 3.1 normal uploading if current ids are less than chunk size.
         if (count($productIds) == self::CHUNK_SIZE) {
             $response = $this->Betterthat->createProducts($productIds);
-            if (!@$response['err_code'] && !@$response['error_key']) {
-
-                if (@$response['message'] &&
-                    in_array($response['message'],["product already exists","product already exists in cleanse section."])) {
+            if (!isset($response['err_code']) && !isset($response['error_key'])) {
+                if (isset($response['message'])
+                    && in_array($response['message'], ["product already exists","product already exists in cleanse section."])
+                ) {
                     $this->messageManager->addSuccessMessage($response['message']);
-                }elseif(@$response['bt_visibility']){
+                }elseif(isset($response['bt_visibility'])) {
                     $this->messageManager->addNoticeMessage($response['message']);
                 }
                 else{
                     $this->messageManager->addSuccessMessage(count($productIds) . 'Product(s) will reviewed first and get approved soon');
                 }
             } else {
-                if(@$response['fields'][0] && $response['fields'][0] == 'visibility')
-                {
+                if(isset($response['fields'][0]) && $response['fields'][0] == 'visibility') {
                     $this->messageManager->addNoticeMessage("Item's visibility is not visible hence can't be uploaded, please update the visibility and try again!");
                 }else{
                     $message = 'Product(s) Upload Failed.';

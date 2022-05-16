@@ -81,21 +81,22 @@ class Save extends \Magento\Backend\App\Action
 
     /**
      * Save constructor.
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Registry $registory
-     * @param \Magento\Config\Model\Config\Structure $configStructure
-     * @param \Magento\Config\Model\Config\Factory $configFactory
-     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollection
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $catalogCollection
+     *
+     * @param \Magento\Backend\App\Action\Context                                 $context
+     * @param \Magento\Framework\Registry                                         $registory
+     * @param \Magento\Config\Model\Config\Structure                              $configStructure
+     * @param \Magento\Config\Model\Config\Factory                                $configFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory     $categoryCollection
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory      $catalogCollection
      * @param \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory $configurable
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param DataObject $data
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Ced\Betterthat\Model\ProfileProductFactory $profileProduct
-     * @param \Ced\Betterthat\Model\ProfileFactory $profileFactory
-     * @param \Ced\Betterthat\Helper\Cache $BetterThatCache
-     * @param \Ced\Betterthat\Helper\Profile $profileHelper
-     * @param \Ced\Betterthat\Model\ResourceModel\ProfileFactory $resourceModel
+     * @param \Magento\Framework\View\Result\PageFactory                          $resultPageFactory
+     * @param DataObject                                                          $data
+     * @param \Psr\Log\LoggerInterface                                            $logger
+     * @param \Ced\Betterthat\Model\ProfileProductFactory                         $profileProduct
+     * @param \Ced\Betterthat\Model\ProfileFactory                                $profileFactory
+     * @param \Ced\Betterthat\Helper\Cache                                        $BetterThatCache
+     * @param \Ced\Betterthat\Helper\Profile                                      $profileHelper
+     * @param \Ced\Betterthat\Model\ResourceModel\ProfileFactory                  $resourceModel
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -113,8 +114,7 @@ class Save extends \Magento\Backend\App\Action
         \Ced\Betterthat\Helper\Cache $BetterThatCache,
         \Ced\Betterthat\Helper\Profile $profileHelper,
         \Ced\Betterthat\Model\ResourceModel\ProfileFactory $resourceModel
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->configStructure = $configStructure;
@@ -141,7 +141,7 @@ class Save extends \Magento\Backend\App\Action
         if ($this->validate()) {
             try {
                 $profileModel = $this->profileFactory->create();
-                $profile = $this->profileresource->create()->load($profileModel,$this->data->getProfileId(),'id');
+                $profile = $this->profileresource->create()->load($profileModel, $this->data->getProfileId(), 'id');
                 //$profile = $this->profileFactory->create()->load($this->data->getProfileId());
 
                 $profileModel->addData($this->data->getData());
@@ -224,8 +224,9 @@ class Save extends \Magento\Backend\App\Action
         if (isset($store_categories['magento_category'])) {
             $this->data->setData('magento_category', json_encode($store_categories['magento_category']));
         }
-        if (isset($store_categories['betterthat_category']))
+        if (isset($store_categories['betterthat_category'])) {
             $this->data->setData('betterthat_categories', json_encode($store_categories['betterthat_category']));
+        }
 
 
         if (isset($generalInformation['profile_name'])) {
@@ -242,8 +243,8 @@ class Save extends \Magento\Backend\App\Action
 
 
     /**
-     * @param $array
-     * @param $key
+     * @param  $array
+     * @param  $key
      * @return array
      */
     private function mergeAttributes($attributes, $key)

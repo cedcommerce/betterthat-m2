@@ -41,7 +41,7 @@ class Delete extends \Magento\Backend\App\Action
      *
      * @param \Magento\Backend\App\Action\Context     $context
      * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Ced\Betterthat\Model\Orders                $collection
+     * @param \Ced\Betterthat\Model\Orders            $collection
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,

@@ -21,7 +21,4 @@
     <event name="sales_order_place_after">
         <observer name="ced_betterthat_inventory_afterorderplace" instance="Ced\Betterthat\Observer\SalesModelOrderObserver"/>
     </event>
-    <event name="catalog_product_attribute_update_before">
-        <observer name="ced_betterthat_product_attribute_update_before" instance="Ced\Betterthat\Observer\UpdateAttribute"/>
-    </event>
 </config>

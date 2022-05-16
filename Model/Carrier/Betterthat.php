@@ -85,7 +85,7 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     }
 
     /**
-     * @param RateRequest $request
+     * @param  RateRequest $request
      * @return bool|\Magento\Shipping\Model\Rate\Result
      */
     public function collectRates(RateRequest $request)
@@ -112,7 +112,7 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         $handling = $this->getConfigFlag('handling');
 
         /**
- 		  * @var \Magento\Shipping\Model\Rate\Result $result
+           * @var \Magento\Shipping\Model\Rate\Result $result
           */
         $result = $this->_rateResultFactory->create();
 

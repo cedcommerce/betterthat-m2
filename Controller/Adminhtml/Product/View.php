@@ -55,8 +55,8 @@ class View extends \Magento\Backend\App\Action
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Ui\Component\MassAction\Filter          $filter
      * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Ced\Betterthat\Helper\Config                        $config
-     * @param \BetterthatSdk\ProductFactory                       $Betterthat
+     * @param \Ced\Betterthat\Helper\Config                    $config
+     * @param \BetterthatSdk\ProductFactory                    $Betterthat
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,

@@ -25,6 +25,7 @@ use Ced\Betterthat\Model\Profile;
 
 /**
  * Class BetterthatProduct
+ *
  * @package Ced\Betterthat\Ui\DataProvider\Product
  */
 class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
@@ -48,7 +49,9 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public $addFilterStrategies;
 
-    /** @var \Ced\Betterthat\Helper\Config $config */
+    /**
+     * @var \Ced\Betterthat\Helper\Config $config 
+     */
     public $config;
 
 
@@ -82,7 +85,7 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
 
         $msiSourceCode = $this->config->getMsiSourceCode();
         $useMsi = $this->config->getUseMsi();
-        if( $useMsi ) {
+        if($useMsi ) {
             $this->collection->joinField(
                 'sourceqty',
                 'inventory_source_item',
@@ -97,7 +100,7 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->addField('betterthat_profile_id');
         $this->addField('betterthat_validation_errors');
         $this->addField('betterthat_feed_errors');
-       $this->addFilter(
+        $this->addFilter(
             $this->filterBuilder->setField('betterthat_profile_id')->setConditionType('notnull')
                 ->setValue('true')
                 ->create()
@@ -134,7 +137,7 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
 
 
     /**
-     * @param \Magento\Framework\Api\Filter $filter
+     * @param  \Magento\Framework\Api\Filter $filter
      * @return void
      */
     public function addFilter(\Magento\Framework\Api\Filter $filter)

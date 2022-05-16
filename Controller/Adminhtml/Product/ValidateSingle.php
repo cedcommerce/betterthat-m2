@@ -58,8 +58,8 @@ class ValidateSingle extends  \Magento\Backend\App\Action
      * @param \Magento\Ui\Component\MassAction\Filter          $filter
      * @param \Magento\Framework\Registry                      $registry
      * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Ced\Betterthat\Helper\Config                        $config
-     * @param \Ced\Betterthat\Helper\Product                       $product
+     * @param \Ced\Betterthat\Helper\Config                    $config
+     * @param \Ced\Betterthat\Helper\Product                   $product
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,

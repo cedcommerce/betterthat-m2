@@ -34,8 +34,9 @@ class Delete extends GenericButton implements ButtonProviderInterface
 
     /**
      * Delete constructor.
-     * @param \Magento\Backend\Block\Widget\Context $context
-     * @param \Magento\Framework\Registry $registry
+     *
+     * @param \Magento\Backend\Block\Widget\Context   $context
+     * @param \Magento\Framework\Registry             $registry
      * @param \Magento\Backend\Block\Widget\Container $container
      */
 

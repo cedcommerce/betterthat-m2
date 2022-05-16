@@ -71,7 +71,7 @@ class Config
                         0
                     );
                 } else {
-                    $this->messageManager->addErrorMessage('BetterThat: '.@$response['message']);
+                    $this->messageManager->addErrorMessage(isset($response['message']) ? 'BetterThat: '.$response['message'] : '');
                     $this->scopeConfigResource->saveConfig(
                         'betterthat_config/betterthat_setting/valid',
                         '0',

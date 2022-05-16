@@ -51,11 +51,12 @@ class Delete extends Action
 
     /**
      * Delete constructor.
-     * @param Action\Context $context
-     * @param PageFactory $resultPageFactory
-     * @param \Magento\Framework\Filesystem\Io\File $fileIo
+     *
+     * @param Action\Context                          $context
+     * @param PageFactory                             $resultPageFactory
+     * @param \Magento\Framework\Filesystem\Io\File   $fileIo
      * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Ced\Betterthat\Model\Logs $logs
+     * @param \Ced\Betterthat\Model\Logs              $logs
      */
     public function __construct(
         Action\Context $context,
@@ -63,8 +64,7 @@ class Delete extends Action
         \Magento\Framework\Filesystem\Io\File $fileIo,
         \Magento\Ui\Component\MassAction\Filter $filter,
         \Ced\Betterthat\Model\Logs $logs
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->fileIo = $fileIo;

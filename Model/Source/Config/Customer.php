@@ -37,13 +37,12 @@ class Customer implements ArrayInterface
 
     /**
      * @param CustomerRepositoryInterface $customerRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param SearchCriteriaBuilder       $searchCriteriaBuilder
      * */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder
-    )
-    {
+    ) {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }

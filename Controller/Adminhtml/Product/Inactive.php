@@ -63,8 +63,8 @@ class Inactive extends \Magento\Backend\App\Action
      * @param \Magento\Framework\View\Result\PageFactory       $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter          $filter
      * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Ced\Betterthat\Helper\Product                       $product
-     * @param \Ced\Betterthat\Helper\Config                        $config
+     * @param \Ced\Betterthat\Helper\Product                   $product
+     * @param \Ced\Betterthat\Helper\Config                    $config
      * @param \Magento\Framework\Registry                      $registry
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      */

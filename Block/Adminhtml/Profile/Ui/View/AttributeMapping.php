@@ -5,8 +5,8 @@ namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\View;
 class AttributeMapping extends \Magento\Backend\Block\Template
 {
      /**
-     * @var string
-     */
+      * @var string
+      */
     public $_template = 'Ced_Betterthat::profile/attribute/attributes.phtml';
 
 
@@ -31,8 +31,7 @@ class AttributeMapping extends \Magento\Backend\Block\Template
         \Ced\Betterthat\Model\Profile $profile,
         \Ced\Betterthat\Helper\Category $category,
         array $data = []
-    )
-    {
+    ) {
         $this->_objectManager = $objectManager;
         $this->_coreRegistry = $registry;
         $this->category = $category;
@@ -103,7 +102,7 @@ class AttributeMapping extends \Magento\Backend\Block\Template
     /**
      * Retrieve magento attributes
      *
-     * @param int|null $groupId return name by customer group id
+     * @param  int|null $groupId return name by customer group id
      * @return array|string
      */
     public function getMagentoAttributes()
@@ -186,9 +185,9 @@ class AttributeMapping extends \Magento\Backend\Block\Template
         $optionalAttributes = [];
         if ($this->profile && $this->profile->getId()) {
             $requiredAttributes = json_decode($this->profile->getProfileRequiredAttributes(), true);
-            if(is_array($requiredAttributes) && count($requiredAttributes)){
+            if(is_array($requiredAttributes) && count($requiredAttributes)) {
                 foreach ($requiredAttributes as &$attribute) {
-                    $attribute['options'] = json_decode($attribute['options'],true);
+                    $attribute['options'] = json_decode($attribute['options'], true);
                     if(!in_array($attribute['name'], $reqAttrCodes)) {
                         unset($requiredAttributes[$attribute['name']]);
                     }
@@ -196,16 +195,16 @@ class AttributeMapping extends \Magento\Backend\Block\Template
             }
 
             $optionalAttributes = json_decode($this->profile->getProfileOptionalAttributes(), true);
-            if(is_array($optionalAttributes) && count($optionalAttributes)){
+            if(is_array($optionalAttributes) && count($optionalAttributes)) {
                 foreach ($optionalAttributes as &$attribute) {
-                    $attribute['options'] = json_decode($attribute['options'],true);
+                    $attribute['options'] = json_decode($attribute['options'], true);
                     if(!in_array($attribute['name'], $optAttrCodes)) {
                         unset($optionalAttributes[$attribute['name']]);
                     }
                 }
             }
-            if(is_array($requiredAttributes) && is_array($optionalAttributes)){
-            $data = $requiredAttributes + $optionalAttributes + $data;
+            if(is_array($requiredAttributes) && is_array($optionalAttributes)) {
+                $data = $requiredAttributes + $optionalAttributes + $data;
             }
         }
         return $data;
@@ -214,7 +213,7 @@ class AttributeMapping extends \Magento\Backend\Block\Template
     /**
      * Render form element as HTML
      *
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @param  \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      */
     public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
