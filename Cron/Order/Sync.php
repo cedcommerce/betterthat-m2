@@ -55,17 +55,39 @@ class Sync
             $orderSyncCron = $this->config->getOrderSyncCron();
             if ($orderSyncCron == '1') {
                 $orderCollection = $this->orders->getCollection()
-                    ->addFieldToFilter('status', array('in', array('WAITING_ACCEPTANCE', 'WAITING_DEBIT', 'WAITING_DEBIT_PAYMENT', 'SHIPPING', 'WAITING_DEBIT_PAYMEN')));
+                    ->addFieldToFilter(
+                        'status',
+                        ['in',
+                            ['WAITING_ACCEPTANCE',
+                                'WAITING_DEBIT',
+                                'WAITING_DEBIT_PAYMENT',
+                                'SHIPPING',
+                                'WAITING_DEBIT_PAYMENT'
+                            ]
+                        ]
+                    );
                 $orderIds = $orderCollection->getColumnValues('Betterthat_order_id');
                 $syncResponse = $this->order->syncOrders($orderIds);
-                $this->logger->info('Order Sync Cron Response', ['path' => __METHOD__, 'OrderIds' => implode(',', $orderIds), 'OrderShipmentReponse' => var_export($syncResponse)]);
+                $this->logger->info(
+                    'Order Sync Cron Response',
+                    ['path' => __METHOD__,
+                        'OrderIds' => implode(',', $orderIds),
+                        'OrderShipmentReponse' => var_export($syncResponse)]
+                );
                 return $syncResponse;
             } else {
-                $this->logger->info('Order Sync Cron Disabled', ['path' => __METHOD__, 'Cron Status' => 'Disable']);
+                $this->logger->info(
+                    'Order Sync Cron Disabled',
+                    ['path' => __METHOD__, 'Cron Status' => 'Disable']
+                );
             }
             return false;
-        } catch (\Exception $e){
-            $this->logger->error('Order Sync Cron', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+        } catch (\Exception $e) {
+            $this->logger->error(
+                'Order Sync Cron',
+                ['path' => __METHOD__, 'exception' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()]
+            );
         }
     }
 }

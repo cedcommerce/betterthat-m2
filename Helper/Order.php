@@ -696,7 +696,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             'btorderId'=> isset($order['_id']) ? $order['_id'] : 'N/A'
                         ];
                         $this->generateInvoice($magentoOrder);
-                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), isset($order['createdAt']) ? $order['createdAt']: null );
+                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), isset($order['createdAt']) ? $order['createdAt']: null);
 
                     } catch (\Exception $exception) {
                         $this->webapiResponse =

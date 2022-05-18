@@ -55,17 +55,34 @@ class Shipment
             $orderSyncCron = $this->config->getOrderShipmentCron();
             if ($orderSyncCron == '1') {
                 $orderCollection = $this->orders->getCollection()
-                    ->addFieldToFilter('status', array('in', array('SHIPPING')));
+                    ->addFieldToFilter('status', ['in', ['SHIPPING']]);
                 $orderIds = $orderCollection->getColumnValues('Betterthat_order_id');
                 $syncResponse = $this->order->shipOrders($orderCollection);
-                $this->logger->info('Shipment Order Cron Response', ['path' => __METHOD__, 'OrderIds' => implode(',', $orderIds), 'OrderShipmentReponse' => var_export($syncResponse)]);
+                $this->logger->info(
+                    'Shipment Order Cron Response',
+                    [
+                        'path' => __METHOD__,
+                        'OrderIds' => implode(',', $orderIds),
+                        'OrderShipmentReponse' => var_export($syncResponse)
+                    ]
+                );
                 return $syncResponse;
             } else {
-                $this->logger->info('Shipment Cron Disabled', ['path' => __METHOD__, 'Cron Status' => 'Disable']);
+                $this->logger->info(
+                    'Shipment Cron Disabled',
+                    ['path' => __METHOD__,
+                        'Cron Status' => 'Disable']
+                );
             }
             return false;
-        } catch (\Exception $e){
-            $this->logger->error('Order Shipment Cron', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+        } catch (\Exception $e) {
+            $this->logger->error(
+                'Order Shipment Cron',
+                [
+                'path' => __METHOD__,
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()]
+            );
         }
     }
 }

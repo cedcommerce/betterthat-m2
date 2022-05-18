@@ -25,10 +25,14 @@ use Magento\Framework\Setup\Patch\DataPatchInterface;
 
 class AddAttributes implements DataPatchInterface
 {
-    /** @var ModuleDataSetupInterface */
+    /**
+     * @var ModuleDataSetupInterface 
+     */
     private $moduleDataSetup;
 
-    /** @var EavSetupFactory */
+    /**
+     * @var EavSetupFactory 
+     */
     private $eavSetupFactory;
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute
@@ -36,13 +40,12 @@ class AddAttributes implements DataPatchInterface
     private $eavAttribute;
     /**
      * @param ModuleDataSetupInterface $moduleDataSetup
-     * @param EavSetupFactory $eavSetupFactory
+     * @param EavSetupFactory          $eavSetupFactory
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
         EavSetupFactory $eavSetupFactory,
         \Magento\Catalog\Model\ResourceModel\Eav\Attribute $eavAttribute
-
     ) {
         $this->moduleDataSetup = $moduleDataSetup;
         $this->eavSetupFactory = $eavSetupFactory;
@@ -214,70 +217,70 @@ class AddAttributes implements DataPatchInterface
             );
         }
 
-            if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_profile_id')) {
-                $eavSetup->addAttribute(
-                    'catalog_product',
-                    'betterthat_profile_id',
-                    [
-                        'group' => $groupName,
-                        'note' => 'Betterthat Profile Id',
-                        'input' => 'text',
-                        'type' => 'varchar',
-                        'label' => 'Betterthat Profile Id ',
-                        'backend' => '',
-                        'visible' => 1,
-                        'required' => 0,
-                        'sort_order' => 1,
-                        'user_defined' => 1,
-                        'comparable' => 0,
-                        'visible_on_front' => 0,
-                        'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
-                    ]
-                );
-            }
-            if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_product_id')) {
-                $eavSetup->addAttribute(
-                    'catalog_product',
-                    'betterthat_product_id',
-                    [
-                        'group' => $groupName,
-                        'note' => 'Betterthat Product Id',
-                        'input' => 'text',
-                        'type' => 'varchar',
-                        'label' => 'Betterthat Product Id ',
-                        'backend' => '',
-                        'visible' => 1,
-                        'required' => 0,
-                        'sort_order' => 1,
-                        'user_defined' => 1,
-                        'comparable' => 0,
-                        'visible_on_front' => 0,
-                        'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
-                    ]
-                );
-            }
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_profile_id')) {
+            $eavSetup->addAttribute(
+                'catalog_product',
+                'betterthat_profile_id',
+                [
+                    'group' => $groupName,
+                    'note' => 'Betterthat Profile Id',
+                    'input' => 'text',
+                    'type' => 'varchar',
+                    'label' => 'Betterthat Profile Id ',
+                    'backend' => '',
+                    'visible' => 1,
+                    'required' => 0,
+                    'sort_order' => 1,
+                    'user_defined' => 1,
+                    'comparable' => 0,
+                    'visible_on_front' => 0,
+                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                ]
+            );
+        }
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_product_id')) {
+            $eavSetup->addAttribute(
+                'catalog_product',
+                'betterthat_product_id',
+                [
+                    'group' => $groupName,
+                    'note' => 'Betterthat Product Id',
+                    'input' => 'text',
+                    'type' => 'varchar',
+                    'label' => 'Betterthat Product Id ',
+                    'backend' => '',
+                    'visible' => 1,
+                    'required' => 0,
+                    'sort_order' => 1,
+                    'user_defined' => 1,
+                    'comparable' => 0,
+                    'visible_on_front' => 0,
+                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                ]
+            );
+        }
 
-            if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_feed_errors')) {
-                $eavSetup->addAttribute(
-                    'catalog_product',
-                    'betterthat_feed_errors',
-                    [
-                        'group' => $groupName,
-                        'note' => 'Betterthat Feeds',
-                        'input' => 'text',
-                        'type' => 'varchar',
-                        'label' => 'Betterthat Feeds',
-                        'backend' => '',
-                        'visible' => 1,
-                        'required' => 0,
-                        'sort_order' => 1,
-                        'user_defined' => 1,
-                        'comparable' => 0,
-                        'visible_on_front' => 0,
-                        'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
-                    ]
-                );
-            }
+        if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_feed_errors')) {
+            $eavSetup->addAttribute(
+                'catalog_product',
+                'betterthat_feed_errors',
+                [
+                    'group' => $groupName,
+                    'note' => 'Betterthat Feeds',
+                    'input' => 'text',
+                    'type' => 'varchar',
+                    'label' => 'Betterthat Feeds',
+                    'backend' => '',
+                    'visible' => 1,
+                    'required' => 0,
+                    'sort_order' => 1,
+                    'user_defined' => 1,
+                    'comparable' => 0,
+                    'visible_on_front' => 0,
+                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                ]
+            );
+        }
 
 
 

@@ -49,13 +49,23 @@ class Inventory
     public function execute()
     {
         $invCron = $this->config->getInventoryPriceCron();
-        if($invCron == '1') {
+        if ($invCron == '1') {
             $productIds = $this->profileProduct->getCollection()->getColumnValues('product_id');
             $response = $this->product->updatePriceInventory($productIds);
-            $this->logger->info('Inventory Sync Cron Response', ['path' => __METHOD__, 'ProductIds' => implode(',', $productIds), 'SyncReponse' => var_export($response)]);
+            $this->logger->info(
+                'Inventory Sync Cron Response',
+                [
+                    'path' => __METHOD__,
+                    'ProductIds' => implode(',', $productIds),
+                    'SyncReponse' => var_export($response)
+                ]
+            );
             return $response;
         } else {
-            $this->logger->info('Inventory Sync Cron Disabled', ['path' => __METHOD__, 'Cron Status' => 'Disable']);
+            $this->logger->info(
+                'Inventory Sync Cron Disabled',
+                ['path' => __METHOD__, 'Cron Status' => 'Disable']
+            );
         }
         return false;
     }
