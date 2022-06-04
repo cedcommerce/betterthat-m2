@@ -26,8 +26,8 @@ class Collection extends AbstractCollection
     public function _construct()
     {
         $this->_init(
-            'Ced\Betterthat\Model\ProfileProduct',
-            'Ced\Betterthat\Model\ResourceModel\ProfileProduct'
+            \Ced\Betterthat\Model\ProfileProduct::class,
+            \Ced\Betterthat\Model\ResourceModel\ProfileProduct::class
         );
     }
 

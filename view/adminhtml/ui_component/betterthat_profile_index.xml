@@ -17,11 +17,16 @@
   * @license     https://cedcommerce.com/license-agreement.txt
   */
 -->
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index_source</item>
-            <item name="deps" xsi:type="string">betterthat_profile_index.betterthat_profile_index_data_source</item>
+            <item name="provider" xsi:type="string">
+                betterthat_profile_index.betterthat_profile_index_source
+            </item>
+            <item name="deps" xsi:type="string">
+                betterthat_profile_index.betterthat_profile_index_data_source
+            </item>
         </item>
         <item name="spinner" xsi:type="string">betterthat_profile_index_columns</item>
         <item name="buttons" xsi:type="array">
@@ -70,45 +75,48 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns</item>
+                        <item name="provider" xsi:type="string">
+                            betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns
+                        </item>
                     </item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
                 </item>
             </argument>
         </component>
-        <!-- <filterSearch name="fulltext">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index_data_source</item>
-                    <item name="chipsProvider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.listing_top.listing_filters_chips</item>
-                    <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks</item>
-                        <item name="namespace" xsi:type="string">current.search</item>
-                    </item>
-                </item>
-            </argument>
-        </filterSearch> -->
         <filters name="listing_filters">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="columnsProvider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns</item>
+                    <item name="columnsProvider" xsi:type="string">
+                        betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns
+                    </item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks
+                        </item>
                         <item name="namespace" xsi:type="string">current.filters</item>
                     </item>
                     <item name="templates" xsi:type="array">
                         <item name="filters" xsi:type="array">
                             <item name="select" xsi:type="array">
-                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
-                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                                <item name="component" xsi:type="string">
+                                    Magento_Ui/js/form/element/ui-select
+                                </item>
+                                <item name="template" xsi:type="string">
+                                    ui/grid/filters/elements/ui-select
+                                </item>
                             </item>
                         </item>
                     </item>
                     <item name="childDefaults" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.listing_top.listing_filters</item>
+                        <item name="provider" xsi:type="string">
+                            betterthat_profile_index.betterthat_profile_index.listing_top.listing_filters
+                        </item>
                         <item name="imports" xsi:type="array">
-                            <item name="visible" xsi:type="string">betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns.${ $.index }:visible</item>
+                            <item name="visible" xsi:type="string">
+                                betterthat_profile_index.betterthat_profile_index.
+                                betterthat_profile_index_columns.${ $.index }:visible
+                            </item>
                         </item>
                     </item>
                 </item>
@@ -120,7 +128,9 @@
         <massaction name="listing_massaction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="selectProvider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns.ids</item>
+                    <item name="selectProvider" xsi:type="string">
+                        betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns.ids
+                    </item>
                     <item name="indexField" xsi:type="string">id</item>
                 </item>
             </argument>
@@ -131,8 +141,12 @@
                         <item name="label" xsi:type="string" translate="true">Delete</item>
                         <item name="url" xsi:type="url" path="*/*/massDelete"/>
                         <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Delete items</item>
-                            <item name="message" xsi:type="string" translate="true">Are you sure you want to delete selected items?</item>
+                            <item name="title" xsi:type="string" translate="true">
+                                Delete items
+                            </item>
+                            <item name="message" xsi:type="string" translate="true">
+                                Are you sure you want to delete selected items?
+                            </item>
                         </item>
                     </item>
                 </argument>
@@ -160,10 +174,16 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks</item>
-                        <item name="namespace" xsi:type="string">current.paging</item>
+                        <item name="provider" xsi:type="string">
+                            betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks
+                        </item>
+                        <item name="namespace" xsi:type="string">
+                            current.paging
+                        </item>
                     </item>
-                    <item name="selectProvider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns.ids</item>
+                    <item name="selectProvider" xsi:type="string">
+                        betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns.ids
+                    </item>
                 </item>
             </argument>
         </paging>
@@ -172,12 +192,16 @@
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="storageConfig" xsi:type="array">
-                    <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks</item>
+                    <item name="provider" xsi:type="string">
+                        betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks
+                    </item>
                     <item name="namespace" xsi:type="string">current</item>
                 </item>
                 <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns.actions</item>
+                        <item name="provider" xsi:type="string">
+                            betterthat_profile_index.betterthat_profile_index.betterthat_profile_index_columns.actions
+                        </item>
                         <item name="target" xsi:type="string">applyAction</item>
                         <item name="params" xsi:type="array">
                             <item name="0" xsi:type="string">edit</item>
@@ -186,9 +210,13 @@
                     </item>
                     <item name="controlVisibility" xsi:type="boolean">true</item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            betterthat_profile_index.betterthat_profile_index.listing_top.bookmarks
+                        </item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
-                        <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
+                        <item name="namespace" xsi:type="string">
+                            current.${ $.storageConfig.root}
+                        </item>
                     </item>
                 </item>
             </item>
@@ -244,10 +272,14 @@
         </column>
         <column name="profile_status">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\Profile\Status</item>
+                <item name="options" xsi:type="object">
+                    Ced\Betterthat\Model\Source\Profile\Status
+                </item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="component" xsi:type="string">
+                        Magento_Ui/js/grid/columns/select
+                    </item>
                     <item name="editor" xsi:type="string">select</item>
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Status</item>
@@ -255,7 +287,8 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="actions" class="Ced\Betterthat\Ui\Component\Listing\Columns\Profile\DataActions">
+        <actionsColumn name="actions"
+                       class="Ced\Betterthat\Ui\Component\Listing\Columns\Profile\DataActions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="indexField" xsi:type="string">id</item>

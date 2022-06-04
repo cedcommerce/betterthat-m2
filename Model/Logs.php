@@ -29,6 +29,6 @@ class Logs extends AbstractModel
 {
     public function _construct()
     {
-        $this->_init('Ced\Betterthat\Model\ResourceModel\Logs');
+        $this->_init(\Ced\Betterthat\Model\ResourceModel\Logs::class);
     }
 }

@@ -26,21 +26,22 @@ use Magento\Framework\Setup\Patch\DataPatchInterface;
 class AddAttributes implements DataPatchInterface
 {
     /**
-     * @var ModuleDataSetupInterface 
+     * @var ModuleDataSetupInterface
      */
     private $moduleDataSetup;
 
     /**
-     * @var EavSetupFactory 
+     * @var EavSetupFactory
      */
     private $eavSetupFactory;
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute
      */
     private $eavAttribute;
+
     /**
      * @param ModuleDataSetupInterface $moduleDataSetup
-     * @param EavSetupFactory          $eavSetupFactory
+     * @param EavSetupFactory $eavSetupFactory
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
@@ -52,14 +53,12 @@ class AddAttributes implements DataPatchInterface
         $this->eavAttribute = $eavAttribute;
     }
 
-
     public function apply()
     {
         /**
          * @var EavSetup $eavSetup
          */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
-
         /**
          * Add attributes to the eav/attribute
          */
@@ -84,15 +83,13 @@ class AddAttributes implements DataPatchInterface
                     'required' => 0,
                     'sort_order' => 1,
                     'user_defined' => 1,
-                    'source' => 'Ced\Betterthat\Model\Source\State',
+                    'source' => Ced\Betterthat\Model\Source\State::class,
                     'comparable' => 0,
                     'visible_on_front' => 0,
                     'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
                 ]
             );
         }
-
-
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_brand')) {
             $eavSetup->addAttribute(
                 'catalog_product',
@@ -117,7 +114,6 @@ class AddAttributes implements DataPatchInterface
                 ]
             );
         }
-
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_product_status')) {
             $eavSetup->addAttribute(
                 'catalog_product',
@@ -126,7 +122,7 @@ class AddAttributes implements DataPatchInterface
                     'group' => 'Betterthat Marketplace',
                     'note' => 'product status on Betterthat',
                     'input' => 'select',
-                    'source' => 'Ced\Betterthat\Model\Source\Product\Status',
+                    'source' => \Ced\Betterthat\Model\Source\Product\Status::class,
                     'type' => 'varchar',
                     'label' => 'Betterthat Product Status',
                     'backend' => '',
@@ -140,8 +136,6 @@ class AddAttributes implements DataPatchInterface
                 ]
             );
         }
-
-
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_validation_errors')) {
             $eavSetup->addAttribute(
                 'catalog_product',
@@ -165,8 +159,6 @@ class AddAttributes implements DataPatchInterface
                 ]
             );
         }
-
-
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_feed_errors')) {
             $eavSetup->addAttribute(
                 'catalog_product',
@@ -190,7 +182,6 @@ class AddAttributes implements DataPatchInterface
                 ]
             );
         }
-
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_visibility')) {
             $eavSetup->addAttribute(
                 'catalog_product',
@@ -203,7 +194,7 @@ class AddAttributes implements DataPatchInterface
                     'label' => 'Betterthat Visibility',
                     'backend' => '',
                     'frontend_input' => 'boolean',
-                    'source' => 'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
+                    'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
                     'visible' => 1,
                     'required' => 0,
                     'sort_order' => 14,
@@ -216,7 +207,6 @@ class AddAttributes implements DataPatchInterface
                 ]
             );
         }
-
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_profile_id')) {
             $eavSetup->addAttribute(
                 'catalog_product',
@@ -259,7 +249,6 @@ class AddAttributes implements DataPatchInterface
                 ]
             );
         }
-
         if (!$this->eavAttribute->getIdByCode('catalog_product', 'betterthat_feed_errors')) {
             $eavSetup->addAttribute(
                 'catalog_product',
@@ -281,37 +270,32 @@ class AddAttributes implements DataPatchInterface
                 ]
             );
         }
+        $eavSetup = $this->eavSetupFactory->create();
+        $groupName = 'Betterthat Marketplace';
+        $entityTypeId = $eavSetup->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY);
+        $attributeSetId = $eavSetup->getDefaultAttributeSetId($entityTypeId);
+        $eavSetup->getAttributeGroupId($entityTypeId, $attributeSetId, $groupName);
 
-
-
-
-            $eavSetup = $this->eavSetupFactory->create();
-            $groupName = 'Betterthat Marketplace';
-            $entityTypeId = $eavSetup->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY);
-            $attributeSetId = $eavSetup->getDefaultAttributeSetId($entityTypeId);
-            $eavSetup->getAttributeGroupId($entityTypeId, $attributeSetId, $groupName);
-
-                $eavSetup->addAttribute(
-                    'catalog_product',
-                    'betterthat_exclude_from_sync',
-                    [
-                        'group' => $groupName,
-                        'note' => 'If yes then product syncing will not done for this product',
-                        'input' => 'select',
-                        'source' => 'Ced\Betterthat\Model\Source\Yesno',
-                        'type' => 'varchar',
-                        'label' => 'Exclude From Sync',
-                        'backend' => '',
-                        'visible' => 1,
-                        'required' => 0,
-                        'sort_order' => 12,
-                        'user_defined' => 1,
-                        'searchable' => 1,
-                        'visible_on_front' => 0,
-                        'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
-                    ]
-                );
-
+        $eavSetup->addAttribute(
+            'catalog_product',
+            'betterthat_exclude_from_sync',
+            [
+                'group' => $groupName,
+                'note' => 'If yes then product syncing will not done for this product',
+                'input' => 'select',
+                'source' => \Ced\Betterthat\Model\Source\Yesno::class,
+                'type' => 'varchar',
+                'label' => 'Exclude From Sync',
+                'backend' => '',
+                'visible' => 1,
+                'required' => 0,
+                'sort_order' => 12,
+                'user_defined' => 1,
+                'searchable' => 1,
+                'visible_on_front' => 0,
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+            ]
+        );
     }
     /**
      * {@inheritdoc}

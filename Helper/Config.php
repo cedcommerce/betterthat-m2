@@ -70,23 +70,19 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      * @var boolean
      */
     public $debugMode = true;
-
     /**
      * @var \BetterthatSdk\Api\ConfigFactory
      */
     public $config;
-
     public $generator;
-
-
     /**
      * Config constructor.
      *
-     * @param Context                                     $context
+     * @param Context $context
      * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
-     * @param \Magento\Framework\ObjectManagerInterface   $objectManager
-     * @param \Magento\Framework\Xml\Generator            $generator
-     * @param \BetterthatSdk\Api\ConfigFactory            $config
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Framework\Xml\Generator $generator
+     * @param \BetterthatSdk\Api\ConfigFactory $config
      */
     public function __construct(
         Context $context,
@@ -111,9 +107,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function getDefaultCustomer()
     {
         $customer = false;
-        $enabled = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_order/enable_default_customer');
+        $enabled = $this->scopeConfigManager
+            ->getValue('Betterthat_config/Betterthat_order/enable_default_customer');
         if ($enabled == 1) {
-            $customer = $this->scopeConfigManager->getValue('Betterthat_config/Betterthat_order/default_customer_email');
+            $customer = $this->scopeConfigManager
+                ->getValue('Betterthat_config/Betterthat_order/default_customer_email');
         }
         return $customer;
     }
@@ -140,28 +138,26 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
                 ->getValue("betterthat_config/betterthat_setting/client_secret");
             $this->client_domain = $this->scopeConfigManager
                 ->getValue("betterthat_config/betterthat_setting/client_domain");
-
-
             /**
              * @var \BetterthatSdk\Api\Config
              */
             $config = $this->config->create(
                 [
-                'params' => [
-                    'userId' => $this->userId,
-                    'apiKey' => $this->apiKey,
-                    'client_id' => $this->client_id,
-                    'client_secret' => $this->client_secret,
-                    'client_domain' => $this->client_domain,
-                    'apiUrl' => $this->endpoint,
-                    'debugMode' => $this->debugMode,
-                    'baseDirectory' => $this->dl->getPath('var') . DS . 'Betterthat',
-                    'generator' => $this->generator,
-                ]
+                    'params' => [
+                        'userId' => $this->userId,
+                        'apiKey' => $this->apiKey,
+                        'client_id' => $this->client_id,
+                        'client_secret' => $this->client_secret,
+                        'client_domain' => $this->client_domain,
+                        'apiUrl' => $this->endpoint,
+                        'debugMode' => $this->debugMode,
+                        'baseDirectory' => $this->dl->getPath('var') . DS . 'Betterthat',
+                        'generator' => $this->generator,
+                    ]
                 ]
             );
         } catch (\Exception $exception) {
-            $this->_logger->error('Betterthat: '.$exception->getMessage());
+            $this->_logger->error('Betterthat: ' . $exception->getMessage());
         }
 
         return $config;
@@ -169,13 +165,15 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function isEnabled()
     {
-        $enabled = $this->scopeConfigManager->getValue('betterthat_config/betterthat_setting/enable');
+        $enabled = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_setting/enable');
         return $enabled;
     }
 
     public function isValid()
     {
-        $valid = $this->scopeConfigManager->getValue('betterthat_config/betterthat_setting/valid');
+        $valid = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_setting/valid');
         return $valid;
     }
 
@@ -185,11 +183,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
             $config = $this->getApiConfig();
             $catResponse = $this->objectManager
                 ->create('\BetterthatSdk\Product', ['config' => $config])
-                ->getCatForValidation(['data'=>['name'=>'test']]);
+                ->getCatForValidation(['data' => ['name' => 'test']]);
             if (isset($catResponse['error_key'])) {
                 $catResponse['status'] = false;
                 return $catResponse;
-            }else{
+            } else {
                 $catResponse['status'] = true;
                 return $catResponse;
             }
@@ -205,89 +203,111 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getMode()
     {
-        $mode = $this->scopeConfigManager->getValue('betterthat_config/betterthat_setting/mode');
+        $mode = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_setting/mode');
         return $mode;
     }
 
     public function getOrderSyncCron()
     {
-        $orderSyncCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/order_sync_cron');
+        $orderSyncCron = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_cron/order_sync_cron');
         return $orderSyncCron;
     }
 
     public function getOrderCron()
     {
-        $orderCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/order_cron');
+        $orderCron = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_cron/order_cron');
         return $orderCron;
     }
 
     public function getOrderShipmentCron()
     {
-        $orderShipmentCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/order_shipment_cron');
+        $orderShipmentCron = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_cron/order_shipment_cron');
         return $orderShipmentCron;
     }
 
     public function getInventoryPriceCron()
     {
-        $invCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/inventory_price_cron');
+        $invCron = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_cron/inventory_price_cron');
         return $invCron;
     }
 
     public function getFeedSyncCron()
     {
-        $feedCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/feed_sync_cron');
+        $feedCron = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_cron/feed_sync_cron');
         return $feedCron;
     }
 
     public function getFullOfferSyncCron()
     {
-        $fullOfferCron = $this->scopeConfigManager->getValue('betterthat_config/betterthat_cron/full_offer_sync_cron');
+        $fullOfferCron = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_cron/full_offer_sync_cron');
         return $fullOfferCron;
     }
 
     public function getRefundOnBetterthat()
     {
-        $refundOnBetterthat = $this->scopeConfigManager->getValue('betterthat_config/betterthat_order/betterthat_refund_from_core');
+        $refundOnBetterthat = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_order/betterthat_refund_from_core');
         return $refundOnBetterthat;
     }
 
     public function getRefundReason()
     {
-        $refundReason = $this->scopeConfigManager->getValue('betterthat_config/betterthat_order/betterthat_refund_reason');
+        $refundReason = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_order/betterthat_refund_reason');
         return $refundReason;
     }
 
     public function getCreditMemoOnMagento()
     {
-        $creditOnMagento = $this->scopeConfigManager->getValue('betterthat_config/betterthat_order/betterthat_creditmemo_on_magento');
+        $creditOnMagento = $this->scopeConfigManager
+            ->getValue('betterthat_config/betterthat_order/betterthat_creditmemo_on_magento');
         return $creditOnMagento;
     }
 
     public function getFromParentAttributes()
     {
-        $fromParentAttrs = array();
-        $parentAttrs = $this->scopeConfigManager->getValue("betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_use_other_parent");
+        $fromParentAttrs = [];
+        $parentAttrs = $this->scopeConfigManager
+            ->getValue(
+                "betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_use_other_parent"
+            );
         $fromParentAttrs = explode(',', $parentAttrs);
         return $fromParentAttrs;
     }
 
     public function getMergeParentImages()
     {
-        $mergeImages = $this->scopeConfigManager->getValue("betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_merge_parent_images");
+        $mergeImages = $this->scopeConfigManager
+            ->getValue(
+                "betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_merge_parent_images"
+            );
         return $mergeImages;
     }
 
     public function getSkipValidationAttributes()
     {
-        $skipFromValidation = array();
-        $skipAttr = $this->scopeConfigManager->getValue("betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_skip_from_validation");
+        $skipFromValidation = [];
+        $skipAttr = $this->scopeConfigManager
+            ->getValue(
+                "betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_skip_from_validation"
+            );
         $skipFromValidation = explode(',', $skipAttr);
         return $skipFromValidation;
     }
 
     public function getConfigAsSimple()
     {
-        $uploadAsSimple = $this->scopeConfigManager->getValue("betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_upload_config_as_simple");
+        $uploadAsSimple = $this->scopeConfigManager
+            ->getValue(
+                "betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_upload_config_as_simple"
+            );
         return $uploadAsSimple;
     }
 
@@ -295,7 +315,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $prefix = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_order/order_id_prefix");
-        if (isset($prefix) and !empty($prefix)) {
+        if (isset($prefix) && !empty($prefix)) {
             return $prefix;
         }
         return '';
@@ -305,7 +325,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $priceType = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/price_settings/price");
-        if (isset($priceType) and !empty($priceType)) {
+        if (isset($priceType) && !empty($priceType)) {
             return $priceType;
         }
         return '0';
@@ -315,7 +335,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $fixPrice = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/price_settings/fix_price");
-        if (isset($fixPrice) and !empty($fixPrice)) {
+        if (isset($fixPrice) && !empty($fixPrice)) {
             return $fixPrice;
         }
         return '0';
@@ -325,7 +345,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $percentPrice = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/price_settings/percentage_price");
-        if (isset($percentPrice) and !empty($percentPrice)) {
+        if (isset($percentPrice) && !empty($percentPrice)) {
             return $percentPrice;
         }
         return '0';
@@ -335,7 +355,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $differPrice = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/price_settings/different_price");
-        if (isset($differPrice) and !empty($differPrice)) {
+        if (isset($differPrice) && !empty($differPrice)) {
             return $differPrice;
         }
         return '0';
@@ -345,7 +365,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $product_reference_type = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_setting/product_reference_type");
-        if (isset($product_reference_type) and !empty($product_reference_type)) {
+        if (isset($product_reference_type) && !empty($product_reference_type)) {
             return $product_reference_type;
         }
         return '0';
@@ -355,7 +375,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $product_reference_value = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_setting/product_reference_value");
-        if (isset($product_reference_value) and !empty($product_reference_value)) {
+        if (isset($product_reference_value) && !empty($product_reference_value)) {
             return $product_reference_value;
         }
         return '0';
@@ -365,7 +385,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $auto_cancel_order = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_order/auto_cancel_order");
-        if (isset($auto_cancel_order) and !empty($auto_cancel_order)) {
+        if (isset($auto_cancel_order) && !empty($auto_cancel_order)) {
             return $auto_cancel_order;
         }
         return '0';
@@ -375,7 +395,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $auto_cancel_order = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_order/auto_accept_order");
-        if (isset($auto_cancel_order) and !empty($auto_cancel_order)) {
+        if (isset($auto_cancel_order) && !empty($auto_cancel_order)) {
             return $auto_cancel_order;
         }
         return '0';
@@ -392,7 +412,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $storeId = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_setting/storeid");
-        if (isset($storeId) and !empty($storeId)) {
+        if (isset($storeId) && !empty($storeId)) {
             return $storeId;
         }
         return '0';
@@ -403,25 +423,33 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->throttle = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/throttle");
     }
+
     public function getThresholdStatus()
     {
         return $this->throttle = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/inventory_settings/advanced_threshold_status");
     }
+
     public function getThresholdLimit()
     {
         return $this->throttle = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/inventory_settings/inventory_rule_threshold");
     }
+
     public function getThresholdLimitMin()
     {
         return $this->throttle = $this->scopeConfigManager
-            ->getValue("betterthat_config/betterthat_product/inventory_settings/send_inventory_for_lesser_than_threshold");
+            ->getValue(
+                "betterthat_config/betterthat_product/inventory_settings/send_inventory_for_lesser_than_threshold"
+            );
     }
+
     public function getThresholdLimitMax()
     {
         return $this->throttle = $this->scopeConfigManager
-            ->getValue("betterthat_config/betterthat_product/inventory_settings/send_inventory_for_greater_than_threshold");
+            ->getValue(
+                "betterthat_config/betterthat_product/inventory_settings/send_inventory_for_greater_than_threshold"
+            );
     }
 
     public function getUseMsi()

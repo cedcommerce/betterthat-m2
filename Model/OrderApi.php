@@ -2,6 +2,7 @@
 namespace Ced\Betterthat\Model;
 
 use Psr\Log\LoggerInterface;
+
 class OrderApi
 {
 
@@ -28,6 +29,5 @@ class OrderApi
             $this->logger->info($e->getMessage());
         }
         return [$response];
-
     }
 }

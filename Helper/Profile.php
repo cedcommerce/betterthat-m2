@@ -28,7 +28,7 @@ use Magento\Framework\App\Helper\Context;
  */
 class Profile extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const REQUIRED_ATTRIBUTES = [
+    public const REQUIRED_ATTRIBUTES = [
         "title",
         "short-desc",
         "standard-price",
@@ -46,7 +46,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
         "long-desc",
     ];
 
-    const OPTIONAL_ATTRIBUTES = [
+    public const OPTIONAL_ATTRIBUTES = [
         "mature-content",
         "local-marketplace-flags/is-restricted",
         "local-marketplace-flags/perishable",
@@ -57,7 +57,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
         "no-warranty-available"
     ];
 
-    const CONF_REQUIRED_ATTRIBUTES = [
+    public const CONF_REQUIRED_ATTRIBUTES = [
         "title",
         "brand",
         "short-desc",
@@ -65,7 +65,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
         "model-number"
     ];
 
-    const DEFAULT_ATTRIBUTES = [
+    public const DEFAULT_ATTRIBUTES = [
         'shipping-length', //set 1.0
         'shipping-width', //set 1.0
         'shipping-height', //set 1.0
@@ -140,17 +140,13 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getProfile($productId = null, $profileId = null)
     {
-        if (empty($profileId) or !is_numeric($profileId)) {
+        if (empty($profileId) || !is_numeric($profileId)) {
             $profileId = $this->profileProduct->create()->load($productId, 'product_id')
                 ->getBetterthatProfileId();
         }
-
-        $this->profile = $this->BetterthatCache->getValue(\Ced\Betterthat\Helper\Cache::PROFILE_CACHE_KEY . $profileId);
-
-        //if (!isset($this->profile, $this->profile['id']) or empty($this->profile)) {
-            $this->setProfile($profileId);
-        //}
-
+        $this->profile = $this->BetterthatCache
+                            ->getValue(\Ced\Betterthat\Helper\Cache::PROFILE_CACHE_KEY . $profileId);
+         $this->setProfile($profileId);
         return $this;
     }
 
@@ -164,15 +160,18 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
     {
         if (isset($profileId)) {
             $this->profile  = $this->profileFactory->create()->load($profileId)->getData();
-            if (isset($this->profile) and is_array($this->profile)) {
-                if(isset($this->profile['profile_categories']) && $this->profile['profile_categories']) {
-                    $this->profile['profile_categories'] = $this->json->jsonDecode($this->profile['profile_categories']);
+            if (isset($this->profile) && is_array($this->profile)) {
+                if (isset($this->profile['profile_categories'])
+                    && $this->profile['profile_categories']) {
+                    $this->profile['profile_categories'] =
+                        $this->json->jsonDecode($this->profile['profile_categories']);
                 } else {
                     $this->profile['profile_categories'] =[];
                 }
-
-                if(isset($this->profile['profile_required_attributes']) && $this->profile['profile_required_attributes']) {
-                    $requiredAttributes = $this->json->jsonDecode($this->profile['profile_required_attributes']);
+                if (isset($this->profile['profile_required_attributes'])
+                    && $this->profile['profile_required_attributes']) {
+                    $requiredAttributes = $this->json
+                        ->jsonDecode($this->profile['profile_required_attributes']);
                 } else {
                     $requiredAttributes =[];
                 }
@@ -181,16 +180,16 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
                     try {
                            $options = $this->json->jsonDecode($attribute['option_mapping']);
                            $validOptions = $this->json->jsonDecode($attribute['options']);
-                    } catch(\Zend_Json_Exception $e) {
+                    } catch (\Zend_Json_Exception $e) {
                         $options = [];
                         $validOptions = [];
                     }
-                    if(count($options)) {
+                    if (count($options)) {
                         foreach ($options as $optionName => $optionValue) {
                             $optionsModified[$optionValue] = $optionName;
                         }
                     }
-                    if(count($validOptions) > 0) {
+                    if (count($validOptions) > 0) {
                         foreach ($validOptions as $optionName => $optionValue) {
                             $validOptionsModified[$optionName] = $optionValue;
                         }
@@ -201,32 +200,33 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->profile['profile_required_attributes'] =  $requiredAttributes;
                 //$this->json->jsonEncode($requiredAttributes);
 
-                if(isset($this->profile['profile_optional_attributes']) && $this->profile['profile_optional_attributes']) {
-                    $optionalAttributes = $this->json->jsonDecode($this->profile['profile_optional_attributes']);
+                if (isset($this->profile['profile_optional_attributes'])
+                    && $this->profile['profile_optional_attributes']) {
+                    $optionalAttributes = $this->json
+                        ->jsonDecode($this->profile['profile_optional_attributes']);
                 } else {
                     $optionalAttributes =[];
                 }
 
                 foreach ($optionalAttributes as &$attribute) {
                     $validOptionsModified = $optionsModified = [];
-                    if(isset($attribute['option_mapping']) && $attribute['option_mapping']) {
+                    if (isset($attribute['option_mapping']) && $attribute['option_mapping']) {
                         try {
                             $options = $this->json->jsonDecode($attribute['option_mapping']);
                             $validOptions = $this->json->jsonDecode($attribute['options']);
-                        } catch(\Zend_Json_Exception $e) {
+                        } catch (\Zend_Json_Exception $e) {
                             $options = [];
                             $validOptions = [];
                         }
-                    }
-                    else {
+                    } else {
                         $options =[];
                     }
-                    if(count($options)) {
+                    if (count($options)) {
                         foreach ($options as $optionName => $optionValue) {
                             $optionsModified[$optionValue] = $optionName;
                         }
                     }
-                    if(count($validOptions) > 0) {
+                    if (count($validOptions) > 0) {
                         foreach ($validOptions as $optionName => $optionValue) {
                             $validOptionsModified[$optionName] = $optionValue;
                         }
@@ -234,14 +234,12 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
                     $attribute['options'] = $validOptionsModified ;
                     $attribute['option_mapping'] = $optionsModified;
                 }
-
                 $this->profile['profile_optional_attributes'] =  $optionalAttributes;
-
                 //$attributes = array_merge($requiredAttributes, $optionalAttributes);
                 $attributes = $requiredAttributes + $optionalAttributes;
                 $this->profile['profile_attributes'] = $attributes;
-
-                $this->BetterthatCache->setValue(\Ced\Betterthat\Helper\Cache::PROFILE_CACHE_KEY . $profileId, $this->profile);
+                $this->BetterthatCache
+                    ->setValue(\Ced\Betterthat\Helper\Cache::PROFILE_CACHE_KEY . $profileId, $this->profile);
                 return true;
             }
         }
@@ -281,9 +279,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAttributes($type = null)
     {
-
         if (isset($this->profile['profile_attributes'])) {
-
             return $this->profile['profile_attributes'];
         }
         return [];
@@ -297,11 +293,10 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
     public function getRequiredAttributes($type = null)
     {
         if (isset($this->profile['profile_required_attributes'])) {
-            if (isset($type) and !empty($type)) {
+            if (isset($type) && !empty($type)) {
                 $attributes = [];
                 foreach ($this->profile['profile_required_attributes'] as $id => $attribute) {
                         $attributes[$id] = $attribute;
-
                 }
                 return $attributes;
             }
@@ -361,12 +356,16 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
         if (isset($productId)) {
             $profile = $this->getProfile(null, $productId);
             $profileId = $profile->getId();
-            if (isset($profileId) and !empty($profileId)) {
+            if (isset($profileId) && !empty($profileId)) {
                 $productIds = $this->profileProduct->create()->getCollection()
-                    ->addFieldToFilter('profile_id', ['eq' => $profileId])->getColumnValues('product_id');
+                    ->addFieldToFilter('profile_id', ['eq' => $profileId])
+                    ->getColumnValues('product_id');
             }
         } else {
-            $productIds = $this->profileProduct->create()->getCollection()->getColumnValues('product_id');
+            $productIds = $this->profileProduct
+                ->create()
+                ->getCollection()
+                ->getColumnValues('product_id');
         }
         return $productIds;
     }

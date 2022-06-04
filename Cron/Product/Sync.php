@@ -49,10 +49,18 @@ class Sync
     public function execute()
     {
         $fullOfferCron = $this->config->getFullOfferSyncCron();
-        if($fullOfferCron == '1') {
+        if ($fullOfferCron == '1') {
             $productIds = $this->product->getProductIdsFromOfferAPI();
             $response = $this->product->updatePriceInventory($productIds);
-            $this->logger->info('Full Offer Sync Cron Response', ['path' => __METHOD__, 'ProductIds' => implode(', ', $productIds), 'SyncReponse' => var_export($response)]);
+            $this->logger
+                ->info(
+                    'Full Offer Sync Cron Response',
+                    [
+                        'path' => __METHOD__,
+                        'ProductIds' => implode(', ', $productIds),
+                        'SyncReponse' => var_export($response)
+                    ]
+                );
             return $response;
         } else {
             $this->logger->info('Full Offer Sync Cron Disabled', ['path' => __METHOD__, 'Cron Status' => 'Disable']);

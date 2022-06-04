@@ -26,7 +26,7 @@ class ProfileProduct extends \Magento\Framework\Model\AbstractModel
      */
     public function _construct()
     {
-        $this->_init('Ced\Betterthat\Model\ResourceModel\ProfileProduct');
+        $this->_init(\Ced\Betterthat\Model\ResourceModel\ProfileProduct::class);
     }
 
     /**
@@ -44,7 +44,7 @@ class ProfileProduct extends \Magento\Framework\Model\AbstractModel
      */
     public function getProductsCollection()
     {
-        return $this->getResource('Ced\Betterthat\Model\ResourceModel\ProfileProduct\Collection');
+        return $this->getResource(\Ced\Betterthat\Model\ResourceModel\ProfileProduct\Collection::class);
     }
 
     /**

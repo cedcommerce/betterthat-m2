@@ -29,6 +29,6 @@ class Orders extends AbstractModel
 {
     public function _construct()
     {
-        $this->_init('Ced\Betterthat\Model\ResourceModel\Orders');
+        $this->_init(\Ced\Betterthat\Model\ResourceModel\Orders::class);
     }
 }

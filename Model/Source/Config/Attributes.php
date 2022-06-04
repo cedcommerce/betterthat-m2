@@ -44,14 +44,14 @@ class Attributes implements \Magento\Framework\Option\ArrayInterface
     {
         $attributes = $BetterthatAttributes = [];
         $attributes = $this->category->getAllAttributes();
-        if(isset($attributes) && is_array($attributes)) {
+        if (isset($attributes) && is_array($attributes)) {
             $attributes = array_column($attributes, 'label', 'code');
         }
         foreach ($attributes as $attributeCode => $attributeLabel) {
-            $BetterthatAttributes[] = array(
+            $BetterthatAttributes[] = [
                 'label' => $attributeLabel,
                 'value' => $attributeCode
-            );
+            ];
         }
         return $BetterthatAttributes;
     }

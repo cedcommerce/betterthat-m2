@@ -53,7 +53,7 @@ class Sync
             if ($invCron == '1') {
                 $this->logger->info('Feed Sync Cron Enable', ['path' => __METHOD__, 'Cron Status' => 'Enable']);
                 $feedIds = $this->feeds->getCollection()
-                    ->addFieldToFilter('status', array('neq' => 'COMPLETE'))
+                    ->addFieldToFilter('status', ['neq' => 'COMPLETE'])
                     ->setPageSize(20)
                     ->setCurPage(1)
                     ->setOrder('id', 'DESC');
@@ -65,8 +65,15 @@ class Sync
                 $this->logger->info('Feed Sync Cron Disabled', ['path' => __METHOD__, 'Cron Status' => 'Disable']);
             }
             return false;
-        } catch (\Exception $e){
-            $this->logger->error('Feed Sync Cron', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+        } catch (\Exception $e) {
+            $this->logger->error(
+                'Feed Sync Cron',
+                [
+                    'path' => __METHOD__,
+                    'exception' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            );
         }
     }
 }

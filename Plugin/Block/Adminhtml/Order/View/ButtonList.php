@@ -4,19 +4,44 @@ namespace Ced\Betterthat\Plugin\Block\Adminhtml\Order\View;
 class ButtonList
 {
 
+    /**
+     * Object Manger
+     *
+     * @var \Magento\Framework\ObjectManagerInterface $objectManager
+     */
+    public $objectManager;
+
+    public $request;
+
+    public $orderRepository;
+
+    public $btorder;
+
+    public function __construct(
+        \Magento\Framework\ObjectManagerInterface $objectManager,
+        \Magento\Framework\App\RequestInterface $request,
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        \Ced\Betterthat\Model\OrdersFactory $btorder
+    ) {
+        $this->objectManager = $objectManager;
+        $this->request = $request;
+        $this->orderRepository = $orderRepository;
+        $this->btorder = $btorder;
+    }
+
     public function afterGetButtonList(
         \Magento\Backend\Block\Widget\Context $subject,
         $buttonList
     ) {
-        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $request = $this->objectManager->get('Magento\Framework\App\Action\Context')->getRequest();
-        if($request->getFullActionName() == 'sales_order_view') {
-            $order = $this->objectManager->get('\Magento\Sales\Api\OrderRepositoryInterface')->get($request->getParam('order_id'));
-            if($order) {
-                $btorder = $this->objectManager->get('\Ced\Betterthat\Model\OrdersFactory')->create()->load($order->getIncrementId(), 'increment_id');
-                if($btorder) {
+        if ($this->request->getFullActionName() == 'sales_order_view') {
+            $order = $this->orderRepository->get($this->request->getParam('order_id'));
+            if ($order) {
+                $btorder = $this->btorder->create()->load($order->getIncrementId(), 'increment_id');
+                if ($btorder) {
                     $shipDesc = $order->getShippingDescription();
-                    if (str_contains($shipDesc, 'Express') || str_contains($shipDesc, 'Instore') || str_contains($shipDesc, 'BetterThat') ) {
+                    if (str_contains($shipDesc, 'Express')
+                        || str_contains($shipDesc, 'Instore')
+                        || str_contains($shipDesc, 'BetterThat')) {
                         $buttonList->remove('order_ship');
                     }
                 }

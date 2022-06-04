@@ -32,8 +32,6 @@ class ReferenceType extends AbstractSource
                 'value' => 'MPN',
                 'label' => __('MPN')
             ],
-
-
         ];
     }
 }

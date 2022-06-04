@@ -2,12 +2,17 @@
 namespace Ced\Betterthat\Model;
 
 use Psr\Log\LoggerInterface;
+
 class DeleteProductApi
 {
-
     protected $logger;
     public $productHelper;
 
+    /**
+     * DeleteProductApi constructor.
+     * @param LoggerInterface $logger
+     * @param \Ced\Betterthat\Helper\Product $productHelper
+     */
     public function __construct(
         LoggerInterface $logger,
         \Ced\Betterthat\Helper\Product $productHelper
@@ -28,6 +33,5 @@ class DeleteProductApi
             $this->logger->info($e->getMessage());
         }
         return [$response];
-
     }
 }

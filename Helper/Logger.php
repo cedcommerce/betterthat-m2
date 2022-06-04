@@ -24,19 +24,19 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Detailed debug information
      */
-    const DEBUG = 100;
+    public const DEBUG = 100;
 
     /**
      * Interesting events
      *
      * Examples: User logs in, SQL logs.
      */
-    const INFO = 200;
+    public const INFO = 200;
 
     /**
      * Uncommon events
      */
-    const NOTICE = 250;
+    public const NOTICE = 250;
 
     /**
      * Exceptional occurrences that are not errors
@@ -44,19 +44,19 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      * Examples: Use of deprecated APIs, poor use of an API,
      * undesirable things that are not necessarily wrong.
      */
-    const WARNING = 300;
+    public const WARNING = 300;
 
     /**
      * Runtime errors
      */
-    const ERROR = 400;
+    public const ERROR = 400;
 
     /**
      * Critical conditions
      *
      * Example: Application component unavailable, unexpected exception.
      */
-    const CRITICAL = 500;
+    public const CRITICAL = 500;
 
     /**
      * Action must be taken immediately
@@ -64,33 +64,19 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      * Example: Entire website down, database unavailable, etc.
      * This should trigger the SMS alerts and wake you up.
      */
-    const ALERT = 550;
+    public const ALERT = 550;
 
     /**
      * Urgent alert.
      */
-    const EMERGENCY = 600;
-
-    /**
-     * Logging levels from syslog protocol defined in RFC 5424
-     *
-     * @var array $levels Logging levels
-     */
-    public static $levels = [
-        100 => 'DEBUG',
-        200 => 'INFO',
-        250 => 'NOTICE',
-        300 => 'WARNING',
-        400 => 'ERROR',
-        500 => 'CRITICAL',
-        550 => 'ALERT',
-        600 => 'EMERGENCY',
-    ];
+    public const EMERGENCY = 600;
 
     /**
      * @var \DateTimeZone
      */
-    public static $timezone;
+    public $timezone;
+
+    public $levels;
 
     /**
      * @var string
@@ -119,6 +105,16 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
         parent::__construct($context);
         $this->name = $name;
         $this->handler = $logs;
+        $this->levels = [
+            100 => 'DEBUG',
+            200 => 'INFO',
+            250 => 'NOTICE',
+            300 => 'WARNING',
+            400 => 'ERROR',
+            500 => 'CRITICAL',
+            550 => 'ALERT',
+            600 => 'EMERGENCY',
+        ];
     }
 
     /**
@@ -126,9 +122,9 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * @return array Assoc array with human-readable level names => level codes.
      */
-    public static function getLevels()
+    public function getLevels()
     {
-        return array_flip(static::$levels);
+        return array_flip($this->levels);
     }
 
     /**
@@ -138,9 +134,9 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * @param \DateTimeZone $tz Timezone object
      */
-    public static function setTimezone(\DateTimeZone $tz)
+    public function setTimezone(\DateTimeZone $tz)
     {
-        self::$timezone = $tz;
+        $this->timezone = $tz;
     }
 
     /**
@@ -152,7 +148,7 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     }
 
     /**
-     * @param  string $name
+     * @param string $name
      * @return void
      */
     public function setName($name)
@@ -180,8 +176,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Adds a log record at the DEBUG level.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addDebug($message, array $context = [])
@@ -192,17 +188,17 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Adds a log record.
      *
-     * @param  integer $level   The logging level
-     * @param  string  $message The log message
-     * @param  array   $context The log context
+     * @param integer $level The logging level
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addRecord($level, $message, array $context = [])
     {
-        $levelName = static::getLevelName($level);
+        $levelName = $this->getLevelName($level);
 
-        if (!static::$timezone) {
-            static::$timezone = new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
+        if (!$this->timezone) {
+            $this->timezone = new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
         }
 
         $record = [
@@ -217,8 +213,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
                     '%.6F',
                     microtime(true)
                 ),
-                static::$timezone
-            )->setTimezone(static::$timezone),
+                $this->timezone
+            )->setTimezone($this->timezone),
             'extra' => [],
         ];
 
@@ -230,26 +226,25 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Gets the name of the logging level.
      *
-     * @param  integer $level
+     * @param integer $level
      * @return string
      */
-    public static function getLevelName($level)
+    public function getLevelName($level)
     {
-        if (!isset(static::$levels[$level])) {
+        if (!isset($this->levels[$level])) {
             throw new \Psr\Log\InvalidArgumentException(
                 'Level "' . $level . '" is not defined, use one of: ' .
-                implode(', ', array_keys(static::$levels))
+                implode(', ', array_keys($this->levels))
             );
         }
-
-        return static::$levels[$level];
+        return $this->levels[$level];
     }
 
     /**
      * Adds a log record at the INFO level.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addInfo($message, array $context = [])
@@ -260,8 +255,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Adds a log record at the NOTICE level.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addNotice($message, array $context = [])
@@ -272,8 +267,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Adds a log record at the WARNING level.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addWarning($message, array $context = [])
@@ -284,8 +279,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Adds a log record at the ERROR level.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addError($message, array $context = [])
@@ -296,8 +291,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Adds a log record at the CRITICAL level.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addCritical($message, array $context = [])
@@ -308,8 +303,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Adds a log record at the ALERT level.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addAlert($message, array $context = [])
@@ -320,8 +315,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Adds a log record at the EMERGENCY level.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function addEmergency($message, array $context = [])
@@ -334,14 +329,14 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  mixed  $level   The log level
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param mixed $level The log level
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function log($level, $message, array $context = [])
     {
-        $level = static::toMonologLevel($level);
+        $level = $this->toMonologLevel($level);
 
         return $this->addRecord($level, $message, $context);
     }
@@ -349,10 +344,10 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Converts PSR-3 levels to Monolog ones if necessary
      *
-     * @param  string|int Level number (monolog) or name (PSR-3)
+     * @param string|int Level number (monolog) or name (PSR-3)
      * @return int
      */
-    public static function toMonologLevel($level)
+    public function toMonologLevel($level)
     {
         if (is_string($level) && defined(__CLASS__ . '::' . strtoupper($level))) {
             return constant(__CLASS__ . '::' . strtoupper($level));
@@ -366,8 +361,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function debug($message, array $context = [])
@@ -380,8 +375,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function info($message, array $context = [])
@@ -394,8 +389,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function notice($message, array $context = [])
@@ -408,8 +403,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function warn($message, array $context = [])
@@ -422,8 +417,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function warning($message, array $context = [])
@@ -436,8 +431,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function err($message, array $context = [])
@@ -450,8 +445,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function error($message, array $context = [])
@@ -464,8 +459,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function crit($message, array $context = [])
@@ -478,8 +473,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function critical($message, array $context = [])
@@ -492,8 +487,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function alert($message, array $context = [])
@@ -506,8 +501,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function emerg($message, array $context = [])
@@ -520,8 +515,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param  string $message The log message
-     * @param  array  $context The log context
+     * @param string $message The log message
+     * @param array $context The log context
      * @return Boolean Whether the record has been processed
      */
     public function emergency($message, array $context = [])

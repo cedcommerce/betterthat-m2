@@ -28,15 +28,14 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
  */
 class Status extends AbstractSource
 {
-    const NOT_UPLOADED = 'NOT_UPLOADED';
-    const UPLOADED = 'UPLOADED';
-    const LIVE = 'LIVE';
-    const INVALID = 'INVALID';
-    const INACTIVE = 'INACTIVE';
-    const PARTIAL = 'PARTIAL';
-    const DELETED = 'DELETED';
-
-    const STATUS = [
+    public const NOT_UPLOADED = 'NOT_UPLOADED';
+    public const UPLOADED = 'UPLOADED';
+    public const LIVE = 'LIVE';
+    public const INVALID = 'INVALID';
+    public const INACTIVE = 'INACTIVE';
+    public const PARTIAL = 'PARTIAL';
+    public const DELETED = 'DELETED';
+    public const STATUS = [
         self::NOT_UPLOADED,
         self::INVALID,
         self::UPLOADED,
@@ -54,35 +53,35 @@ class Status extends AbstractSource
         return [
             [
                 'value' => '',
-                'label' => __('--Please Select--'),
+                'label' => '--Please Select--',
             ],
             [
                 'value' => self::NOT_UPLOADED,
-                'label' => __('Not Uploaded'),
+                'label' => 'Not Uploaded',
             ],
             [
                 'value' => self::UPLOADED,
-                'label' => __('Uploaded'),
+                'label' => 'Uploaded',
             ],
             [
                 'value' => self::INVALID,
-                'label' => __('Invalid'),
+                'label' => 'Invalid',
             ],
             [
                 'value' => self::LIVE,
-                'label' => __('Live'),
+                'label' => 'Live',
             ],
             [
                 'value' => self::INACTIVE,
-                'label' => __('Inactive'),
+                'label' => 'Inactive',
             ],
             [
                 'value' => self::PARTIAL,
-                'label' => __('Partial'),
+                'label' => 'Partial',
             ],
             [
                 'value' => self::DELETED,
-                'label' => __('Deleted'),
+                'label' => 'Deleted',
             ]
         ];
     }

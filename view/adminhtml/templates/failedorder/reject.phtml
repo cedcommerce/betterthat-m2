@@ -38,14 +38,15 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                     <div class="batches-content" data-role="content">
                         <ul id="profileRows" style="list-style: none;">
                             <li style="list-style: none;">
-                                <?php echo 'Total ' . $total . ' Batch(s) Found.'; ?>
+                                <?= $block->escapeHtml('Total ' . $total . ' Batch(s) Found.'); ?>
                             </li>
                             <li style="list-style: none;" id="updateRow">
-                                <img id="statusImage" src="<?php echo $loaderImg ?>">
-                                <span id="updateStatus" class="text"><?php echo __("Updating..."); ?></span>
+                                <img id="statusImage" src="<?= $block->escapeHtml($loaderImg) ?>">
+                                <span id="updateStatus" class="text">
+                                    <?= $block->escapeHtml("Updating..."); ?></span>
                             </li>
                             <li id="liFinished" style="display:none; list-style: none;">
-                                <?php echo __("Finished Order Rejection."); ?>
+                                <?= $block->escapeHtml("Finished Order Rejection."); ?>
                             </li>
                         </ul>
                     </div>
@@ -123,7 +124,7 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
 
             $( ".batch-container" ).accordion({ collapsible: true, active: false});
 
-            var totalRecords = parseInt("<?php  echo (int)$total; ?>");
+            var totalRecords = parseInt("<?= (int)$total; ?>");
             var countOfSuccess = 0;
             var id = 0;
             var liFinished = document.getElementById('liFinished');
@@ -149,7 +150,7 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
 
                 var request = $.ajax({
                     type: "GET",
-                    url: "<?php echo $block->getAjaxUrl();?>",
+                    url: "<?= $block->escapeUrl($block->getAjaxUrl());?>",
                     data: {batchid: id},
                     success: function (data) {
                         var json = data;
@@ -158,7 +159,9 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                         if (json.hasOwnProperty('success')) {
                             countOfSuccess++;
                             span.innerHTML =
-                                '<img src="<?php  echo $successImg ?>"><span>' +
+                                '<img src="
+                            <?= $block->escapeUrl($successImg) ?>
+                            "><span>' +
                                 json.success + '</span>';
                             span.id = 'id-' + id;
                             updateRow.parentNode.insertBefore(span, updateRow);
@@ -174,9 +177,10 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                                 errorMessage = parseErrors(json.messages);
                                 //console.log(json.hasOwnProperty('count'));
                                 var heading = '<span>' +
-                                    '<img src="<?php  echo $errorImg ?>"> Errors in order rejecting.</span>';
+                                    '<img src="<?= $block->escapeHtml($errorImg) ?>
+                                "> Errors in order rejecting.</span>';
                                 if (errorMessage.status === false && json.hasOwnProperty('count')) {
-                                    heading = '<img src="<?php  echo $successImg ?>"><span>' +
+                                    heading = '<img src="<?= $block->escapeUrl($successImg) ?>"><span>' +
                                         json.count + ' Order(s) Rejected successfully</span>';
                                 }
 
@@ -185,7 +189,6 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                                     '<div data-role="trigger">' + heading + '</div></div>' +
                                     '<div data-role="content">'+errorMessage.errors+'</div></div>';
                             }
-                            //span.innerHTML = '<img src="<?php  //echo $errorImg ?>"><span>' + errorMessage + '</span>';
                             span.innerHTML = errorTemplate;
                             span.id = 'id-' + id;
                             updateRow.parentNode.insertBefore(span, updateRow);
@@ -198,7 +201,8 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                     error: function () {
                         id++;
                         var span = document.createElement('li');
-                        span.innerHTML = '<img src="<?php  echo $errorImg ?>"><span>Something went wrong </span>';
+                        span.innerHTML = '<img src="<?= $block->escapeHtml($errorImg) ?>
+                        "><span>Something went wrong </span>';
                         span.id = 'id-'+id;
                         //span.style = 'background-color:#FDD';
                         updateRow.parentNode.insertBefore(span, updateRow);
@@ -218,10 +222,10 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                         if (id < totalRecords) {
                             sendRequest();
                         } else {
-                            statusImage.src = '<?php  echo $successImg ?>';
+                            statusImage.src = '<?=  $block->escapeUrl($successImg) ?>';
                             var span = document.createElement('li');
                             span.innerHTML =
-                                '<img src="<?php  echo $successImg ?>">' +
+                                '<img src="<?=  $block->escapeUrl($successImg) ?>">' +
                                 '<span id="updateStatus">' +
                                 totalRecords + ' order batch(s) successfully rejected.' + '</span>';
                             liFinished.parentNode.insertBefore(span, liFinished);
@@ -242,7 +246,8 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                     'errors': ''
                 };
                 if (data) {
-                    result.errors = '<table class="data-grid" style="margin-bottom:10px; margin-top:10px"><tr>' +
+                    result.errors =
+                        '<table class="data-grid" style="margin-bottom:10px; margin-top:10px"><tr>'+
                         '<th style="padding:15px">Sl. No.</th>' +
                         '<th style="padding:15px">Sku</th>' +
                         '<th style="padding:15px">Errors</th></tr>';
@@ -269,7 +274,12 @@ $loaderImg = $block->getViewFileUrl('Ced_Betterthat::images/rule-ajax-loader.gif
                             value['Field'] = value['SellerSku'];
                         }
                         //var sku = "<a href='" + value.url + "' target='_blank'>" + value.sku + "</a>";
-                        result.errors += '<tr><td>' + (value['Field']) + '</td><td>'  + (value['SellerSku']) + '</td><td>' + (value['Message']) +
+                        result.errors += '<tr><td>'
+                            + (value['Field'])
+                            + '</td><td>'
+                            + (value['SellerSku'])
+                            + '</td><td>'
+                            + (value['Message']) +
                             '</td></tr>';
                     });
                     result.errors += '</table>';

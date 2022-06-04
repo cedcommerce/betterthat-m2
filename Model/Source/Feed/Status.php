@@ -28,11 +28,11 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
  */
 class Status extends AbstractSource
 {
-    const SUCCESS = 'success';
-    const FAILURE = 'failure';
-    const SUBMITTED = 'Submitted';
-    const COMPLETE = 'COMPLETE';
-    const SENT = 'SENT';
+    public const SUCCESS = 'success';
+    public const FAILURE = 'failure';
+    public const SUBMITTED = 'Submitted';
+    public const COMPLETE = 'COMPLETE';
+    public const SENT = 'SENT';
 
     /**
      * @return array
@@ -42,23 +42,23 @@ class Status extends AbstractSource
         return [
             [
                 'value' => self::FAILURE,
-                'label' => __(self::FAILURE),
+                'label' => self::FAILURE,
             ],
             [
                 'value' => self::SUBMITTED,
-                'label' => __(self::SUBMITTED),
+                'label' => self::SUBMITTED,
             ],
             [
                 'value' => self::SUCCESS,
-                'label' => __(self::SUCCESS),
+                'label' => self::SUCCESS,
             ],
             [
                 'value' => self::SENT,
-                'label' => __(self::SENT),
+                'label' => self::SENT,
             ],
             [
                 'value' => self::COMPLETE,
-                'label' => __(self::COMPLETE),
+                'label' => self::COMPLETE,
             ]
         ];
     }

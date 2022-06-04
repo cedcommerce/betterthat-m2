@@ -72,8 +72,6 @@ class Categories implements OptionSourceInterface
         }
         return $options;
     }
-
-
     /**
      * @return array
      */
@@ -85,5 +83,4 @@ class Categories implements OptionSourceInterface
         }
         return $options;
     }
-
 }

@@ -36,31 +36,31 @@ class Type extends AbstractSource
         return [
             [
                 'value' => \BetterthatSdk\Core\Request::FEED_CODE_INVENTORY_UPDATE,
-                'label' => __(\BetterthatSdk\Core\Request::FEED_CODE_INVENTORY_UPDATE),
+                'label' => \BetterthatSdk\Core\Request::FEED_CODE_INVENTORY_UPDATE,
             ],
             [
                 'value' => \BetterthatSdk\Core\Request::FEED_CODE_ITEM_UPDATE,
-                'label' => __(\BetterthatSdk\Core\Request::FEED_CODE_ITEM_UPDATE),
+                'label' => \BetterthatSdk\Core\Request::FEED_CODE_ITEM_UPDATE,
             ],
             [
                 'value' => \BetterthatSdk\Core\Request::FEED_CODE_ITEM_DELETE,
-                'label' => __(\BetterthatSdk\Core\Request::FEED_CODE_ITEM_DELETE),
+                'label' => \BetterthatSdk\Core\Request::FEED_CODE_ITEM_DELETE,
             ],
             [
                 'value' => \BetterthatSdk\Core\Request::FEED_CODE_ORDER_SHIPMENT,
-                'label' => __(\BetterthatSdk\Core\Request::FEED_CODE_ORDER_SHIPMENT),
+                'label' => \BetterthatSdk\Core\Request::FEED_CODE_ORDER_SHIPMENT,
             ],
             [
                 'value' => \BetterthatSdk\Core\Request::FEED_CODE_PRICE_UPDATE,
-                'label' => __(\BetterthatSdk\Core\Request::FEED_CODE_PRICE_UPDATE),
+                'label' => \BetterthatSdk\Core\Request::FEED_CODE_PRICE_UPDATE,
             ],
             [
                 'value' => \BetterthatSdk\Core\Request::FEED_CANCEL_ORDER_ITEM,
-                'label' => __(\BetterthatSdk\Core\Request::FEED_CANCEL_ORDER_ITEM),
+                'label' => \BetterthatSdk\Core\Request::FEED_CANCEL_ORDER_ITEM,
             ],
             [
                 'value' => \BetterthatSdk\Core\Request::FEED_CODE_ORDER_CREATE,
-                'label' => __(\BetterthatSdk\Core\Request::FEED_CODE_ORDER_CREATE),
+                'label' => \BetterthatSdk\Core\Request::FEED_CODE_ORDER_CREATE,
             ]
         ];
     }

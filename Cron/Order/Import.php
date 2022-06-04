@@ -49,14 +49,27 @@ class Import
             if ($orderCron == '1') {
                 $this->logger->info('Order Fetch Cron Enable', ['path' => __METHOD__, 'Cron Status' => 'Enable']);
                 $order = $this->order->importOrders();
-                $this->logger->info('Order Fetch Cron Response', ['path' => __METHOD__, 'OrderFetchReponse' => var_export($order)]);
+                $this->logger->info(
+                    'Order Fetch Cron Response',
+                    ['path' => __METHOD__, 'OrderFetchReponse' => var_export($order)
+                    ]
+                );
                 return $order;
             } else {
-                $this->logger->info('Order Fetch Cron Disabled', ['path' => __METHOD__, 'Cron Status' => 'Disable']);
+                $this->logger->info(
+                    'Order Fetch Cron Disabled',
+                    ['path' => __METHOD__, 'Cron Status' => 'Disable']
+                );
             }
             return false;
-        } catch (\Exception $e){
-            $this->logger->error('Order Import Cron', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+        } catch (\Exception $e) {
+            $this->logger->error(
+                'Order Import Cron',
+                ['path' => __METHOD__,
+                    'exception' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            );
         }
     }
 }

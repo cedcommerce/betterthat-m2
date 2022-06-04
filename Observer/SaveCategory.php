@@ -23,25 +23,29 @@ class SaveCategory implements \Magento\Framework\Event\ObserverInterface
         $this->storeManager = $storeManager;
         $this->profileCollection = $collectionFactory;
     }
+
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $this->logger->info('category_save', ['path' => __METHOD__, 'category_data' => 'Category Observer Working']);
         $productIds = $observer->getEvent()->getProductIds();
         $categoryId = $observer->getEvent()->getCategory()->getId();
         $profileId = '';
-        if($productIds) {
+        if ($productIds) {
             $storeIds = array_keys($this->storeManager->getStores());
-            $data = $this->profileCollection->create()->addFieldToFilter("magento_category", ["like"=>"%".$categoryId."%"]);
-            foreach($data as $item){
+            $data = $this->profileCollection
+                ->create()
+                ->addFieldToFilter("magento_category", ["like" => "%" . $categoryId . "%"]);
+            foreach ($data as $item) {
                 $magento_cat = json_decode($item->getMagentoCategory());
-                if(in_array($categoryId, $magento_cat)) {
+                if (in_array($categoryId, $magento_cat)) {
                     $profileId = $item->getId();
                 }
             }
 
-            if($profileId) {
-                foreach($storeIds as $storeId) {
-                    $this->productAction->updateAttributes($productIds, ['betterthat_profile_id'=>$profileId], $storeId);
+            if ($profileId) {
+                foreach ($storeIds as $storeId) {
+                    $this->productAction
+                        ->updateAttributes($productIds, ['betterthat_profile_id' => $profileId], $storeId);
                 }
             }
         }

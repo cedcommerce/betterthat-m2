@@ -5,10 +5,15 @@
  * See COPYING.txt for license details.
  */
 -->
-<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" component="Magento_Catalog/js/components/new-attribute-form">
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation=
+          "urn:magento:module:Magento_Ui:etc/ui_configuration.xsd"
+      component="Magento_Catalog/js/components/new-attribute-form">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">Betterthat_profile_add.Betterthat_profile_add_data_source</item>
+            <item name="provider" xsi:type="string">
+                Betterthat_profile_add.Betterthat_profile_add_data_source
+            </item>
         </item>
         <item name="label" xsi:type="string" translate="true">New Attribute</item>
         <!--<item name="template" xsi:type="string">templates/form/collapsible</item>-->
@@ -18,21 +23,28 @@
         </item>
         <item name="childrenFromMeta" xsi:type="boolean">true</item>
         <item name="config" xsi:type="array">
-            <item name="newSetPromptMessage" translate="true" xsi:type="string">Enter Name for New Attribute Set</item>
+            <item name="newSetPromptMessage" translate="true" xsi:type="string">
+                Enter Name for New Attribute Set
+            </item>
         </item>
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Magento\Catalog\Block\Adminhtml\Product\Attribute\Button\Save"/>
-            <button name="saveInNewSet" class="Magento\Catalog\Block\Adminhtml\Product\Attribute\Button\SaveInNewAttributeSet"/>
-            <button name="cancel" class="Magento\Catalog\Block\Adminhtml\Product\Attribute\Button\Cancel"/>
+            <button name="save"
+                    class="Magento\Catalog\Block\Adminhtml\Product\Attribute\Button\Save"/>
+            <button name="saveInNewSet"
+                    class="Magento\Catalog\Block\Adminhtml\Product\Attribute\Button\SaveInNewAttributeSet"/>
+            <button name="cancel"
+                    class="Magento\Catalog\Block\Adminhtml\Product\Attribute\Button\Cancel"/>
         </buttons>
         <namespace>Betterthat_profile_add</namespace>
         <ajaxSave>true</ajaxSave>
         <ajaxSaveType>simple</ajaxSaveType>
         <dataScope>data</dataScope>
         <deps>
-            <dep>Betterthat_profile_add.Betterthat_profile_add_data_source</dep>
+            <dep>
+                Betterthat_profile_add.Betterthat_profile_add_data_source
+            </dep>
         </deps>
     </settings>
     <dataSource name="Betterthat_profile_add_data_source">
@@ -45,7 +57,9 @@
             <validateUrl path="catalog/product_attribute/validate"/>
             <submitUrl path="catalog/product_attribute/save"/>
         </settings>
-        <dataProvider class="Magento\Catalog\Model\Product\Attribute\DataProvider" name="Betterthat_profile_add_data_source">
+        <dataProvider
+            class="Magento\Catalog\Model\Product\Attribute\DataProvider"
+            name="Betterthat_profile_add_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>attribute_id</primaryFieldName>
@@ -86,12 +100,15 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Magento\Catalog\Model\Product\Attribute\Source\Inputtype"/>
+                        <options
+                            class="Magento\Catalog\Model\Product\Attribute\Source\Inputtype"/>
                     </settings>
                 </select>
             </formElements>
         </field>
-        <field name="is_required" component="Magento_Catalog/js/components/visible-on-option/yesno" sortOrder="30" formElement="checkbox">
+        <field name="is_required"
+               component="Magento_Catalog/js/components/visible-on-option/yesno"
+               sortOrder="30" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">product_attribute</item>
@@ -125,7 +142,9 @@
             </formElements>
         </field>
     </fieldset>
-    <fieldset name="attribute_options_select_container" component="Magento_Catalog/js/components/visible-on-option/fieldset" sortOrder="15">
+    <fieldset name="attribute_options_select_container"
+              component="Magento_Catalog/js/components/visible-on-option/fieldset"
+              sortOrder="15">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="valuesForOptions" xsi:type="array">
@@ -151,17 +170,25 @@
                         <item name="isTemplate" xsi:type="boolean">true</item>
                         <item name="is_collection" xsi:type="boolean">true</item>
                         <item name="componentType" xsi:type="string">container</item>
-                        <item name="positionProvider" xsi:type="string">attribute_options.position</item>
+                        <item name="positionProvider" xsi:type="string">
+                            attribute_options.position
+                        </item>
                     </item>
                 </argument>
-                <field name="is_default" component="Magento_Catalog/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
+                <field name="is_default"
+                       component="Magento_Catalog/js/form/element/checkbox"
+                       sortOrder="0" formElement="checkbox">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixElementName" xsi:type="string">option_</item>
                             <item name="inputCheckBoxName" xsi:type="string">default.</item>
-                            <item name="columnsHeaderClasses" xsi:type="string">control-table-options-th</item>
+                            <item name="columnsHeaderClasses" xsi:type="string">
+                                control-table-options-th
+                            </item>
                             <item name="modules" xsi:type="array">
-                                <item name="rows" xsi:type="string">ns = ${ $.ns }, index = attribute_options_select</item>
+                                <item name="rows"
+                                      xsi:type="string">ns = ${ $.ns }, index = attribute_options_select
+                                </item>
                             </item>
                         </item>
                     </argument>
@@ -180,7 +207,9 @@
                         </checkbox>
                     </formElements>
                 </field>
-                <field name="position" component="Magento_Catalog/js/form/element/input" formElement="input">
+                <field name="position"
+                       component="Magento_Catalog/js/form/element/input"
+                       formElement="input">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixName" xsi:type="string">option.order</item>
@@ -199,7 +228,9 @@
             </container>
         </dynamicRows>
     </fieldset>
-    <fieldset name="attribute_options_multiselect_container" component="Magento_Catalog/js/components/visible-on-option/fieldset" sortOrder="15">
+    <fieldset name="attribute_options_multiselect_container"
+              component="Magento_Catalog/js/components/visible-on-option/fieldset"
+              sortOrder="15">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="valuesForOptions" xsi:type="array">
@@ -225,19 +256,26 @@
                         <item name="isTemplate" xsi:type="boolean">true</item>
                         <item name="is_collection" xsi:type="boolean">true</item>
                         <item name="componentType" xsi:type="string">container</item>
-                        <item name="positionProvider" xsi:type="string">attribute_options.position</item>
+                        <item name="positionProvider" xsi:type="string">
+                            attribute_options.position
+                        </item>
                     </item>
                 </argument>
-                <field name="is_default" component="Magento_Catalog/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
+                <field name="is_default"
+                       component="Magento_Catalog/js/form/element/checkbox"
+                       sortOrder="0" formElement="checkbox">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixElementName" xsi:type="string">option_</item>
                             <item name="inputCheckBoxName" xsi:type="string">default</item>
                             <item name="isMultiple" xsi:type="boolean">true</item>
                             <item name="value" xsi:type="string">1</item>
-                            <item name="columnsHeaderClasses" xsi:type="string">control-table-options-th</item>
+                            <item name="columnsHeaderClasses" xsi:type="string">
+                                control-table-options-th</item>
                             <item name="modules" xsi:type="array">
-                                <item name="rows" xsi:type="string">ns = ${ $.ns }, index = attribute_options_multiselect</item>
+                                <item name="rows" xsi:type="string">
+                                    ns = ${ $.ns }, index = attribute_options_multiselect
+                                </item>
                             </item>
                         </item>
                     </argument>
@@ -249,7 +287,9 @@
                         <label translate="true">Is Default</label>
                     </settings>
                 </field>
-                <field name="position" component="Magento_Catalog/js/form/element/input" formElement="input">
+                <field name="position"
+                       component="Magento_Catalog/js/form/element/input"
+                       formElement="input">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixName" xsi:type="string">option.order</item>
@@ -283,7 +323,9 @@
                 <dataScope>attribute_code</dataScope>
             </settings>
         </field>
-        <field name="is_global" component="Magento_Catalog/js/components/visible-on-option/select" sortOrder="20" formElement="select">
+        <field name="is_global"
+               component="Magento_Catalog/js/components/visible-on-option/select"
+               sortOrder="20" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -311,7 +353,9 @@
                 </select>
             </formElements>
         </field>
-        <field name="default_value_text" component="Magento_Catalog/js/components/visible-on-option/input" sortOrder="30" formElement="input">
+        <field name="default_value_text"
+               component="Magento_Catalog/js/components/visible-on-option/input"
+               sortOrder="30" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -325,7 +369,9 @@
                 <dataScope>default_value_text</dataScope>
             </settings>
         </field>
-        <field name="default_value_textarea" component="Magento_Catalog/js/components/visible-on-option/textarea" sortOrder="30" formElement="textarea">
+        <field name="default_value_textarea"
+               component="Magento_Catalog/js/components/visible-on-option/textarea"
+               sortOrder="30" formElement="textarea">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -339,7 +385,9 @@
                 <dataScope>default_value_textarea</dataScope>
             </settings>
         </field>
-        <field name="default_value_yesno" component="Magento_Catalog/js/components/visible-on-option/yesno" sortOrder="30" formElement="checkbox">
+        <field name="default_value_yesno"
+               component="Magento_Catalog/js/components/visible-on-option/yesno"
+               sortOrder="30" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="default" xsi:type="number">0</item>
@@ -365,7 +413,9 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="default_value_date" component="Magento_Catalog/js/components/visible-on-option/date" sortOrder="30" formElement="date">
+        <field name="default_value_date"
+               component="Magento_Catalog/js/components/visible-on-option/date"
+               sortOrder="30" formElement="date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -379,7 +429,9 @@
                 <dataScope>default_value_date</dataScope>
             </settings>
         </field>
-        <field name="is_unique" component="Magento_Catalog/js/components/visible-on-option/yesno" sortOrder="40" formElement="checkbox">
+        <field name="is_unique"
+               component="Magento_Catalog/js/components/visible-on-option/yesno"
+               sortOrder="40" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -407,7 +459,9 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="frontend_class" component="Magento_Catalog/js/components/disable-hide-select" sortOrder="50" formElement="select">
+        <field name="frontend_class"
+               component="Magento_Catalog/js/components/disable-hide-select"
+               sortOrder="50" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -432,7 +486,8 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Magento\Eav\Model\Adminhtml\Attribute\Validation\Rules\Options"/>
+                        <options
+                            class="Magento\Eav\Model\Adminhtml\Attribute\Validation\Rules\Options"/>
                     </settings>
                 </select>
             </formElements>
@@ -444,7 +499,9 @@
                 </item>
             </argument>
             <settings>
-                <notice translate="true">Add this attribute to the list of column options in the product grid.</notice>
+                <notice translate="true">
+                    Add this attribute to the list of column options in the product grid.
+                </notice>
                 <dataType>boolean</dataType>
                 <label translate="true">Add to Column Options</label>
                 <dataScope>is_used_in_grid</dataScope>
@@ -474,7 +531,9 @@
                 </item>
             </argument>
             <settings>
-                <notice translate="true">Add this attribute to the list of filter options in the product grid.</notice>
+                <notice translate="true">
+                    Add this attribute to the list of filter options in the product grid.
+                </notice>
                 <dataType>boolean</dataType>
                 <label translate="true">Use in Filter Options</label>
                 <dataScope>is_filterable_in_grid</dataScope>
@@ -498,7 +557,9 @@
             <label translate="true">Manage Titles (Size, Color, etc.)</label>
         </settings>
     </fieldset>
-    <fieldset name="front_fieldset" component="Magento_Catalog/js/components/visible-on-option/fieldset" sortOrder="30">
+    <fieldset name="front_fieldset"
+              component="Magento_Catalog/js/components/visible-on-option/fieldset"
+              sortOrder="30">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="valuesForOptions" xsi:type="array">
@@ -535,7 +596,8 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="is_visible_in_advanced_search" sortOrder="20" formElement="checkbox">
+        <field name="is_visible_in_advanced_search"
+               sortOrder="20" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="default" xsi:type="number">0</item>
@@ -608,7 +670,9 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="is_html_allowed_on_front" component="Magento_Catalog/js/components/visible-on-option/yesno" sortOrder="80" formElement="checkbox">
+        <field name="is_html_allowed_on_front"
+               component="Magento_Catalog/js/components/visible-on-option/yesno"
+               sortOrder="80" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -636,7 +700,9 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="is_wysiwyg_enabled" component="Magento_Catalog/js/components/visible-on-option/yesno" sortOrder="90" formElement="checkbox">
+        <field name="is_wysiwyg_enabled"
+               component="Magento_Catalog/js/components/visible-on-option/yesno"
+               sortOrder="90" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">

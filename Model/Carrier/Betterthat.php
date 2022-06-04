@@ -23,9 +23,9 @@ use Magento\Quote\Model\Quote\Address\RateRequest;
 class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     \Magento\Shipping\Model\Carrier\CarrierInterface
 {
-    const REGISTRY_INDEX_SHIPPING_TOTAL = 'betterthat_shipping_total';
+    public const REGISTRY_INDEX_SHIPPING_TOTAL = 'betterthat_shipping_total';
 
-    const REGISTRY_INDEX_SHIPPING_TAX_PERCENTAGE = 'betterthat_shipping_tax_percentage';
+    public const REGISTRY_INDEX_SHIPPING_TAX_PERCENTAGE = 'betterthat_shipping_tax_percentage';
 
     /**
      * @var string
@@ -59,12 +59,12 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     /**
      * ShipbyBetterthat constructor.
      *
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface          $scopeConfig
-     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory  $rateErrorFactory
-     * @param \Psr\Log\LoggerInterface                                    $logger
-     * @param \Magento\Shipping\Model\Rate\ResultFactory                  $rateResultFactory
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
      * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
-     * @param array                                                       $data
+     * @param array $data
      */
     public function __construct(
         \Magento\Framework\App\State $appState,
@@ -85,7 +85,7 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     }
 
     /**
-     * @param  RateRequest $request
+     * @param RateRequest $request
      * @return bool|\Magento\Shipping\Model\Rate\Result
      */
     public function collectRates(RateRequest $request)
@@ -99,9 +99,11 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         }
 
         $price = $this->registry->registry(self::REGISTRY_INDEX_SHIPPING_TOTAL);
-        if($price > 0) {
-            $vatRate = ($this->registry->registry(self::REGISTRY_INDEX_SHIPPING_TAX_PERCENTAGE)) ? $this->registry->registry(self::REGISTRY_INDEX_SHIPPING_TAX_PERCENTAGE) : 0;
-            //$vatRate = 20;
+        if ($price > 0) {
+            $vatRate = ($this->registry
+                ->registry(self::REGISTRY_INDEX_SHIPPING_TAX_PERCENTAGE))
+                ? $this->registry->registry(self::REGISTRY_INDEX_SHIPPING_TAX_PERCENTAGE)
+                : 0;
             $taxAmount = $vatPrice = ($price * (float)$vatRate) / (100 + $vatRate);
             $price -= $taxAmount;
         }
@@ -112,8 +114,8 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         $handling = $this->getConfigFlag('handling');
 
         /**
-           * @var \Magento\Shipping\Model\Rate\Result $result
-          */
+         * @var \Magento\Shipping\Model\Rate\Result $result
+         */
         $result = $this->_rateResultFactory->create();
 
         /**

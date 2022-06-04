@@ -85,7 +85,7 @@ class Mail
             $transport->sendMessage();
             $this->inlineTranslation->resume();
         } catch (\Exception $e) {
-            //            $this->inlineTranslation->resume();
+            $e->getMessage();
         }
     }
 }

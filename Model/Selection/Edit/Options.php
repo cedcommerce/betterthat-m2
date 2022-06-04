@@ -8,7 +8,6 @@
 
 namespace Ced\Betterthat\Model\Selection\Edit;
 
-
 use Magento\Framework\Option\ArrayInterface;
 
 class Options implements ArrayInterface

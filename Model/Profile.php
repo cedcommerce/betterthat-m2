@@ -20,7 +20,6 @@
 
 namespace Ced\Betterthat\Model;
 
-
 class Profile extends \Magento\Framework\Model\AbstractModel
 {
     /**
@@ -42,7 +41,7 @@ class Profile extends \Magento\Framework\Model\AbstractModel
      */
     public function _construct()
     {
-        $this->_init('Ced\Betterthat\Model\ResourceModel\Profile');
+        $this->_init(\Ced\Betterthat\Model\ResourceModel\Profile::class);
     }
 
     //TODO: remove as not needed.
@@ -59,13 +58,15 @@ class Profile extends \Magento\Framework\Model\AbstractModel
         }
 
         if (!isset($this->product)) {
-            $this->product = $this->objectManager->create('\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+            $this->product = $this->objectManager
+                ->create(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class);
         }
 
         $id = $this->getId();
-        $ids = $this->product->create()->addAttributeToFilter('Betterthat_profile_id', ['eq' => $id])
+        $ids = $this->product->create()
+            ->addAttributeToFilter('Betterthat_profile_id', ['eq' => $id])
             ->addAttributeToSelect('entity_id')->getAllIds();
-        if (is_array($ids) and !empty($ids)) {
+        if (is_array($ids) && !empty($ids)) {
             $this->productIds = array_flip($ids);
         }
 
@@ -74,7 +75,7 @@ class Profile extends \Magento\Framework\Model\AbstractModel
 
     public function removeProducts($values)
     {
-        if($values) {
+        if ($values) {
             $values = json_decode($values, true);
         }
         if (!isset($this->objectManager)) {
@@ -82,7 +83,8 @@ class Profile extends \Magento\Framework\Model\AbstractModel
         }
 
         if (!isset($this->product)) {
-            $this->product = $this->objectManager->create('\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+            $this->product = $this->objectManager
+                ->create(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class);
         }
 
         $id = $this->getId();
@@ -91,7 +93,7 @@ class Profile extends \Magento\Framework\Model\AbstractModel
             ->addAttributeToFilter('Betterthat_profile_id', ['eq' => $id])
             ->addAttributeToSelect('Betterthat_profile_id');
         $products->addCategoriesFilter(['nin' => $values]);
-        $products->addAttributeToFilter('type_id', ['in' => ['simple','configurable']]);
+        $products->addAttributeToFilter('type_id', ['in' => ['simple', 'configurable']]);
         // Removing profile id from already added products
         foreach ($products as $product) {
             $product->setBetterthatProfileId('');
@@ -102,7 +104,7 @@ class Profile extends \Magento\Framework\Model\AbstractModel
 
     public function addProducts($values)
     {
-        if($values) {
+        if ($values) {
             $values = json_decode($values, true);
         }
         if (!isset($this->objectManager)) {
@@ -110,7 +112,8 @@ class Profile extends \Magento\Framework\Model\AbstractModel
         }
 
         if (!isset($this->product)) {
-            $this->product = $this->objectManager->create('\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+            $this->product = $this->objectManager
+                ->create(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class);
         }
 
         $id = $this->getId();
@@ -118,7 +121,7 @@ class Profile extends \Magento\Framework\Model\AbstractModel
         $products = $this->product->create()
             ->addAttributeToSelect('betterthat_profile_id');
         $products->addCategoriesFilter(['in' => $values]);
-        $products->addAttributeToFilter('type_id', ['in' => ['simple','configurable']]);
+        $products->addAttributeToFilter('type_id', ['in' => ['simple', 'configurable']]);
         foreach ($products as $product) {
             $product->setBetterthatProfileId($id);
             $product->getResource()
@@ -129,9 +132,9 @@ class Profile extends \Magento\Framework\Model\AbstractModel
     /**
      * Load entity by attribute
      *
-     * @param  string|array field
-     * @param  null|string|array  $value
-     * @param  string             $additionalAttributes
+     * @param string|array field
+     * @param null|string|array $value
+     * @param string $additionalAttributes
      * @return mixed
      */
     public function loadByField($field, $value, $additionalAttributes = '*')

@@ -101,19 +101,6 @@
                     </item>
                 </argument>
             </action>
-            <!--<action name="mark_shipped">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">mark_shipped</item>
-                        <item name="label" xsi:type="string" translate="true">Mark As Shipped</item>
-                        <item name="url" xsi:type="url" path="betterthat/order/massShip"/>
-                        <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Ship Complete Orders</item>
-                            <item name="message" xsi:type="string" translate="true">This would mark selected betterthat orders as shipped if they are complete in Magento?</item>
-                        </item>
-                    </item>
-                </argument>
-            </action>-->
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
@@ -121,12 +108,16 @@
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="storageConfig" xsi:type="array">
-                    <item name="provider" xsi:type="string">betterthat_order_grid.betterthat_order_grid.listing_top.bookmarks</item>
+                    <item name="provider" xsi:type="string">
+                        betterthat_order_grid.betterthat_order_grid.listing_top.bookmarks
+                    </item>
                     <item name="namespace" xsi:type="string">current</item>
                 </item>
                 <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_order_grid.betterthat_order_grid.betterthat_order_grid_columns.actions</item>
+                        <item name="provider" xsi:type="string">
+                            betterthat_order_grid.betterthat_order_grid.betterthat_order_grid_columns.actions
+                        </item>
                         <item name="target" xsi:type="string">applyAction</item>
                         <item name="params" xsi:type="array">
                             <item name="0" xsi:type="string">edit</item>
@@ -134,7 +125,9 @@
                         </item>
                     </item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">betterthat_order_grid.betterthat_order_grid.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            betterthat_order_grid.betterthat_order_grid.listing_top.bookmarks
+                        </item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
                         <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
                     </item>

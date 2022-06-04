@@ -53,8 +53,6 @@ class Profiles implements OptionSourceInterface
         }
         return $options;
     }
-
-
     /**
      * @return array
      */
@@ -63,8 +61,6 @@ class Profiles implements OptionSourceInterface
         foreach ($this->toOptionArray() as $option) {
             $options[$option['value']] = (string)$option['label'];
         }
-
         return $options;
     }
-
 }

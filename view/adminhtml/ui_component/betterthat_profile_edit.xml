@@ -212,7 +212,9 @@
         </settings>
         <field name="magento_category">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Magento\Catalog\Ui\Component\Product\Form\Categories\Options</item>
+                <item name="options" xsi:type="object">
+                    Magento\Catalog\Ui\Component\Product\Form\Categories\Options
+                </item>
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Store Categories</item>
                     <item name="componentType" xsi:type="string">field</item>
@@ -238,7 +240,9 @@
         </field>
         <field name="betterthat_categories">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Ced\Betterthat\Ui\Component\Profile\Form\Categories\Options</item>
+                <item name="options" xsi:type="object">
+                    Ced\Betterthat\Ui\Component\Profile\Form\Categories\Options
+                </item>
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Betterthat Categories</item>
                     <item name="componentType" xsi:type="string">field</item>
@@ -264,7 +268,8 @@
         </field>
         <container name="betterthat_category_container" sortOrder="170">
             <htmlContent name="html_content">
-                <block name="betterthat_category_mapping" class="Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\BetterthatCategory"/>
+                <block name="betterthat_category_mapping"
+                       class="Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\BetterthatCategory"/>
             </htmlContent>
         </container>
     </fieldset>

@@ -2,6 +2,7 @@
 namespace Ced\Betterthat\Model;
 
 use Psr\Log\LoggerInterface;
+
 class SubmitShipment
 {
 
@@ -28,6 +29,5 @@ class SubmitShipment
             $this->logger->info($e->getMessage());
         }
         return [$response];
-
     }
 }

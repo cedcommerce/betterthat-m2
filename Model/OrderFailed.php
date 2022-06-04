@@ -29,6 +29,6 @@ class OrderFailed extends AbstractModel
 {
     public function _construct()
     {
-        $this->_init('Ced\Betterthat\Model\ResourceModel\OrderFailed');
+        $this->_init(\Ced\Betterthat\Model\ResourceModel\OrderFailed::class);
     }
 }

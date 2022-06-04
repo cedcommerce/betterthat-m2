@@ -28,7 +28,7 @@ use Ced\Betterthat\Controller\Adminhtml\Order\Sync;
 class Order extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
-    const DEFAULT_EMAIL = 'customer@Betterthat.com';
+    public const DEFAULT_EMAIL = 'customer@Betterthat.com';
 
     /**
      * @var \Magento\Framework\objectManagerInterface
@@ -196,33 +196,34 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public $changeQuoteControl;
 
     public $shipmentFactory;
+
     /**
      * Order constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context                             $context
-     * @param \Magento\Framework\objectManagerInterface                         $objectManager
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime                       $dateTime
-     * @param \Magento\Store\Model\StoreManagerInterface                        $storeManager
-     * @param \Magento\Customer\Model\CustomerFactory                           $customerFactory
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface                 $customerRepository
-     * @param \Magento\Catalog\Model\ProductRepository                          $productRepository
-     * @param \Magento\Catalog\Model\ProductFactory                             $product
-     * @param \Magento\Framework\Json\Helper\Data                               $json
-     * @param \Magento\Framework\Registry                                       $registry
-     * @param \Magento\Sales\Model\Service\OrderService                         $orderService
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\objectManagerInterface $objectManager
+     * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Catalog\Model\ProductRepository $productRepository
+     * @param \Magento\Catalog\Model\ProductFactory $product
+     * @param \Magento\Framework\Json\Helper\Data $json
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Sales\Model\Service\OrderService $orderService
      * @param \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoaderFactory $creditmemoLoaderFactory
-     * @param \Magento\Quote\Api\CartRepositoryInterface                        $cartRepositoryInterface
-     * @param \Magento\Quote\Api\CartManagementInterface                        $cartManagementInterface
-     * @param \Magento\Framework\App\Cache\TypeListInterface                    $cache
-     * @param \Magento\AdminNotification\Model\Inbox                            $inbox
-     * @param \Magento\Framework\Message\ManagerInterface                       $manager
-     * @param \Magento\CatalogInventory\Api\StockRegistryInterface              $stockRegistry
-     * @param \Ced\Betterthat\Model\OrdersFactory                               $orders
-     * @param \Ced\Betterthat\Model\FeedsFactory                                $feedsFactory
-     * @param \Ced\Betterthat\Model\OrderFailedFactory                          $orderFailed
-     * @param Config                                                            $config
-     * @param Logger                                                            $logger
-     * @param \BetterthatSdk\OrderFactory                                       $Betterthat
+     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepositoryInterface
+     * @param \Magento\Quote\Api\CartManagementInterface $cartManagementInterface
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cache
+     * @param \Magento\AdminNotification\Model\Inbox $inbox
+     * @param \Magento\Framework\Message\ManagerInterface $manager
+     * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
+     * @param \Ced\Betterthat\Model\OrdersFactory $orders
+     * @param \Ced\Betterthat\Model\FeedsFactory $feedsFactory
+     * @param \Ced\Betterthat\Model\OrderFailedFactory $orderFailed
+     * @param Config $config
+     * @param Logger $logger
+     * @param \BetterthatSdk\OrderFactory $Betterthat
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -282,11 +283,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->Betterthat = $Betterthat;
         $this->logger = $logger;
         $this->config = $config;
-        $this->repositoryAddress= $repositoryAddress;
+        $this->repositoryAddress = $repositoryAddress;
         $this->salesOrder = $salesOrderApi;
         $this->taxHelper = $taxHelper;
         $this->failedCount = 0;
-        $this->rateFactory= $rateFactory;
+        $this->rateFactory = $rateFactory;
         $this->mailFactory = $mailFactory;
         $this->dataFactory = $dataFactory;
         $this->changeQuoteControl = $quoteControl;
@@ -309,7 +310,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     'config' => $this->config->getApiConfig(),
                 ]
             );
-            if($data) {
+            if ($data) {
                 $response['data'] = $data;
             } else {
                 $response = $orderList->getOrders();
@@ -331,27 +332,27 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         } else {
                             continue;
                         }
-                    }else{
+                    } else {
                         $this->webapiResponse =
                             [
                                 'success' => true,
                                 'message' => 'Magento order already created',
-                                'orderId'=> isset($magentoOrderId[0]) ? $magentoOrderId[0] : 'N/A',
-                                'btorderId'=>isset($BetterthatOrderId) ? $BetterthatOrderId : 'N/A'
+                                'orderId' => isset($magentoOrderId[0]) ? $magentoOrderId[0] : 'N/A',
+                                'btorderId' => isset($BetterthatOrderId) ? $BetterthatOrderId : 'N/A'
                             ];
                     }
                 }
             }
 
-            if($data) {
+            if ($data) {
                 return $this->webapiResponse;
             }
 
             if ($count > 0) {
                 $this->notificationSuccess($count);
-                $this->messageManager->addSuccessMessage($count. ' BT Orders successfully imported');
+                $this->messageManager->addSuccessMessage($count . ' BT Orders successfully imported');
                 return true;
-            }elseif($this->failedCount > 0) {
+            } elseif ($this->failedCount > 0) {
                 $this->messageManager->addComplexErrorMessage(
                     'failedOrders',
                     [
@@ -359,13 +360,20 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     ]
                 );
                 return false;
-            }else{
+            } else {
                 $this->messageManager->addErrorMessage("No New Orders found!");
             }
 
             return false;
         } catch (\Exception $e) {
-            $this->logger->error('Import Order', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error(
+                'Import Order',
+                [
+                    'path' => __METHOD__,
+                    'exception' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            );
             return false;
         }
     }
@@ -384,7 +392,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $customerId = $this->config->getDefaultCustomer();
         if ($customerId === false && isset($order['customer']['customer_id']) && $order['customer']['customer_id']) {
-            $customerCustomEmail = $order['customer']['customer_id'].'@Betterthat.com.au';
+            $customerCustomEmail = $order['customer']['customer_id'] . '@Betterthat.com.au';
             return $customerCustomEmail;
         } else {
             return $customerId;
@@ -399,14 +407,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public function getCustomer($order, $websiteId)
     {
         try {
-            $customer_data  = $order['Customer_data'][0];
+            $customer_data = $order['Customer_data'][0];
             // Case 2.1 Get Customer if already exists.
 
             $customer = $this->customerFactory->create()
                 ->setWebsiteId($websiteId)
                 ->loadByEmail($customer_data['email']);
 
-            if (!isset($customer) or empty($customer) or empty($customer->getData())) {
+            if (!isset($customer) || empty($customer) || empty($customer->getData())) {
                 // Case 2.1 : Create customer if does not exists.
                 try {
                     $customer = $this->customerFactory->create();
@@ -416,17 +424,15 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     $customer->setWebsiteId($websiteId);
                     $customer->setEmail($customer_data['email']);
                     $customer->setFirstname(
-                        (isset($customer_data['firstname']) and !empty($customer_data['firstname']))
+                        (isset($customer_data['firstname']) && !empty($customer_data['firstname']))
                             ? $customer_data['firstname'] : '.'
                     );
                     $customer->setLastname(
-                        (isset($customer_data['lastname']) and !empty($customer_data['lastname'])) ?
+                        (isset($customer_data['lastname']) && !empty($customer_data['lastname'])) ?
                             $customer_data['lastname'] : '.'
                     );
                     $customer->setPassword('password@btcustomer');
                     $customer->save();
-
-
                 } catch (\Exception $e) {
                     $reason = 'Customer create failed. Order Id: #' .
                         $order['_id'] . ' Message:' . $e->getMessage();
@@ -437,31 +443,35 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     );
                     return false;
                 }
-            }else{
+            } else {
                 $customer->setFirstname(
-                    (isset($customer_data['firstname']) and !empty($customer_data['firstname']))
+                    (isset($customer_data['firstname']) && !empty($customer_data['firstname']))
                         ? $customer_data['firstname'] : '.'
                 );
                 $customer->setLastname(
-                    (isset($customer_data['lastname']) and !empty($customer_data['lastname'])) ?
+                    (isset($customer_data['lastname']) && !empty($customer_data['lastname'])) ?
                         $customer_data['lastname'] : '.'
                 );
                 $customer->save();
             }
-
             return $customer;
         } catch (\Exception $e) {
             $this->rejectOrder($order, $order['Product_data'], [$e->getMessage()]);
-            $this->logger->error('Create Customer', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error(
+                'Create Customer',
+                ['path' => __METHOD__,
+                    'exception' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            );
             return false;
         }
     }
-
     /**
-     * @param  string  $store
+     * @param string $store
      * @param  $customer
-     * @param  array   $order
-     * @param  integer $count
+     * @param array $order
+     * @param integer $count
      * @return mixed
      */
     public function generateQuote(
@@ -470,7 +480,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $order = null,
         $count = 0
     ) {
-
         $shippingcost = 0;
         $cart_id = $this->cartManagementInterface->createEmptyCart();
         $quote = $this->cartRepositoryInterface->get($cart_id);
@@ -488,10 +497,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $reason = [];
             $qtyArray = [];
             //**grab qty
-            foreach ($order['Order_product'] as $prod_data){
+            foreach ($order['Order_product'] as $prod_data) {
                 $qtyArray[$prod_data['product_id']] = $prod_data['quantity'];
             }
-            $priceArr =[];
+            $priceArr = [];
             $orderSubtotal = 0;
             if (isset($order['Product_data'][0])) {
                 $failedOrder = false;
@@ -504,12 +513,19 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                         // override only for demo purpose..
                                         $item['product_id'] = @$sku[$item['product_id']];*/
                     if (isset($item['product_id'])) {
-                        $qty = isset($qtyArray[isset($item['_id'])?$item['_id']: 0]) ? $qtyArray[isset($item['_id'])?$item['_id']: 1] : [];
-                        $product = $this->product->create()->load(isset($item['product_id']) ? $item['product_id']: null);
-                        if (isset($product) and !empty($product) and $product->getId()) {
+                        $qty = isset($qtyArray[isset($item['_id']) ?
+                                $item['_id'] : 0])
+                            ? $qtyArray[isset($item['_id'])
+                                ? $item['_id'] : 1] : [];
+                        $product = $this->product->create()
+                            ->load(
+                                isset($item['product_id']) ? $item['product_id']
+                                : null
+                            );
+                        if (isset($product) && !empty($product) && $product->getId()) {
                             if ($product->getStatus() == '1') {
                                 $stockStatus = $this->checkStockQtyStatus($product, $qty);
-                                if($stockStatus) {
+                                if ($stockStatus) {
                                     $itemAccepted++;
                                     $price = $item['rrp'];
                                     $orderSubtotal = $orderSubtotal + $price;
@@ -546,50 +562,66 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
                     }
                 }
-
                 if ($failedOrder) {
                     $this->webapiResponse =
                         [
                             'success' => false,
                             'message' => isset($reason[0]) ? $reason[0] : 'N/A',
-                            'orderId'=> 'N/A',
-                            'btorderId'=>isset($order['_id']) ? $order['_id'] : 'N/A'
+                            'orderId' => 'N/A',
+                            'btorderId' => isset($order['_id']) ? $order['_id'] : 'N/A'
                         ];
                     $this->rejectOrder($order, $order['Product_data'], $reason);
-                } else if(!$failedOrder) {
+                } elseif (!$failedOrder) {
                     $shippingData = $order['Shipping_data'];
                     $countryCode = isset($order['Country_Name']['id'])
-                        ? ($order['Country_Name']['id'] == 13 && $order['Country_Name']['name'] == 'Australia' ? 'AU' : 'AU') : 'AU';
+                        ? ($order['Country_Name']['id'] == 13
+                        && $order['Country_Name']['name'] == 'Australia'
+                            ? 'AU' : 'AU') : 'AU';
 
-                    $stateName = isset($order['State_Name']['name']) ? $order['State_Name']['name'] : (isset($shippingData['state']) ? $shippingData['state'] : '');
-
-                    $stateModel = $this->objectManager->create('Magento\Directory\Model\RegionFactory')->create()
-                        ->getCollection()->addFieldToFilter('country_id', $countryCode)->addFieldToFilter('name', ['like' => '%'.$stateName.'%'])
+                    $stateName = isset($order['State_Name']['name'])
+                        ? $order['State_Name']['name'] :
+                        (isset($shippingData['state'])
+                            ? $shippingData['state'] : ''
+                        );
+                    $stateModel = $this->objectManager
+                        ->create(\Magento\Directory\Model\RegionFactory::class)
+                        ->create()
+                        ->getCollection()
+                        ->addFieldToFilter('country_id', $countryCode)
+                        ->addFieldToFilter('name', ['like' => '%' . $stateName . '%'])
                         ->getFirstItem();
-                    if($stateModel && $stateModel->getCode()) {
+                    if ($stateModel && $stateModel->getCode()) {
                         $stateCode = $stateModel->getCode();
                     }
-
-
                     try {
                         $shipAddress = [
-                            'firstname' => isset($shippingData['first_name']) ? $shippingData['first_name'] : $order['Customer_data'][0]['firstname']  ,
-                            'lastname' => isset($shippingData['last_name']) ? $shippingData['last_name'] : $order['Customer_data'][0]['lastname'],
-                            'street' => (isset($shippingData['address']) ? $shippingData['address'] : '') .', '. (isset($shippingData['address_1']) ? $shippingData['address_1'] : ''),
-                            'city' => isset($shippingData['Suburb']) ? $shippingData['Suburb'] : ' ',
-                            'country' =>  $countryCode,
+                            'firstname' => isset($shippingData['first_name'])
+                                ? $shippingData['first_name'] :
+                                $order['Customer_data'][0]['firstname'],
+                            'lastname' => isset($shippingData['last_name'])
+                                ? $shippingData['last_name'] :
+                                $order['Customer_data'][0]['lastname'],
+                            'street' => (isset($shippingData['address'])
+                                    ? $shippingData['address'] : '') . ', ' .
+                                (isset($shippingData['address_1'])
+                                    ? $shippingData['address_1'] : ''),
+                            'city' => isset($shippingData['Suburb'])
+                                ? $shippingData['Suburb'] : ' ',
+                            'country' => $countryCode,
                             'country_id' => $countryCode,
                             'region' => isset($stateCode) ? $stateCode : '',
-                            'postcode' => isset($shippingData['postcode']) ? $shippingData['postcode'] : '',
-                            'telephone' => isset($shippingData['phonenumber']) ? $shippingData['phonenumber'] : 'N/A',
+                            'postcode' => isset($shippingData['postcode'])
+                                ? $shippingData['postcode'] : '',
+                            'telephone' => isset($shippingData['phonenumber'])
+                                ? $shippingData['phonenumber'] : 'N/A',
                             'fax' => '',
                             'company' => '',
                             'save_in_address_book' => 1
                         ];
-
-
                         $this->registerShippingAmount($order['shipping_price']);
-                        $this->registerShippingTaxPercentage($this->taxHelper->getShippingTaxRate($store));
+                        $this->registerShippingTaxPercentage(
+                            $this->taxHelper->getShippingTaxRate($store)
+                        );
                         $quote->getBillingAddress()->addData($shipAddress);
                         $shippingAddress = $quote->getShippingAddress()->addData($shipAddress);
                         $shippingMethod = 'shipbyBetterthat_shipbyBetterthat';
@@ -600,10 +632,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         if (!$rate instanceof \Magento\Quote\Model\Quote\Address\Rate) {
                             $rate = $this->rateFactory->create();
                         }
-                        $titles  = [
+                        $titles = [
                             'Standard' => 'Standard Delivery - Retailer Managed',
                             'Instore' => 'Instore (BT managed)',
-                            'International'=> 'International Delivery - Retailer Managed',
+                            'International' => 'International Delivery - Retailer Managed',
                             'InternationalDelivery' => 'International Delivery(BT managed)',
                             'StandardDeliverySendle' => 'Standard Delivery - Sendle(BT managed)',
                             'ExpressDelivery' => 'Express Delivery(BT managed)'
@@ -617,7 +649,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             ->setPrice($shippingcost)
                             ->setAddress($shippingAddress);
                         $shippingAddress->addShippingRate($rate);
-
                         $quote->setPaymentMethod('paybyBetterthat');
                         $quote->setInventoryProcessed(false);
                         $quote->save();
@@ -676,7 +707,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             $item->setOriginalPrice($price)->save();
                         }
 
-
                         // after save order
                         $orderData = [
                             'Betterthat_order_id' => isset($order['_id']) ? $order['_id'] : 'N/A',
@@ -692,19 +722,19 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         $this->webapiResponse = [
                             'success' => true,
                             'message' => 'Magento order created successfully',
-                            'orderId'=> $magentoOrder->getIncrementId(),
-                            'btorderId'=> isset($order['_id']) ? $order['_id'] : 'N/A'
+                            'orderId' => $magentoOrder->getIncrementId(),
+                            'btorderId' => isset($order['_id']) ? $order['_id'] : 'N/A'
                         ];
                         $this->generateInvoice($magentoOrder);
-                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), isset($order['createdAt']) ? $order['createdAt']: null);
+                        $this->sendMail($order['_id'], $magentoOrder->getIncrementId(), isset($order['createdAt']) ? $order['createdAt'] : null);
 
                     } catch (\Exception $exception) {
                         $this->webapiResponse =
                             [
                                 'success' => false,
                                 'message' => $exception->getMessage(),
-                                'orderId'=> 'N/A',
-                                'btorderId'=>isset($order['_id']) ? $order['_id'] : 'N/A'
+                                'orderId' => 'N/A',
+                                'btorderId' => isset($order['_id']) ? $order['_id'] : 'N/A'
                             ];
                         $reason[] = $exception->getMessage();
                         $orderFailed = $this->orderFailed->create()->load($order['_id'], 'Betterthat_order_id');
@@ -722,15 +752,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     }
                 }
             }
-
             return $count;
         } catch (\Exception $e) {
             $this->webapiResponse =
                 [
                     'success' => false,
                     'message' => $e->getMessage(),
-                    'orderId'=> 'N/A',
-                    'btorderId'=>isset($order['_id']) ? $order['_id'] : ''
+                    'orderId' => 'N/A',
+                    'btorderId' => isset($order['_id']) ? $order['_id'] : ''
                 ];
             $this->logger->error('Generate Quote', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
@@ -739,9 +768,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
 
     /**
-     * @param  array $order
-     * @param  array $items
-     * @param  array $reason
+     * @param array $order
+     * @param array $items
+     * @param array $reason
      * @return bool
      */
     public function rejectOrder(array $order, array $items = [], array $reason = [])
@@ -802,6 +831,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $response;
     }
+
     public function getShipmentProviders()
     {
         $providers = [];
@@ -844,21 +874,21 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             if ($to_email) {
 
                 /**
- * @var \Magento\Framework\DataObject $data
-*/
+                 * @var \Magento\Framework\DataObject $data
+                 */
                 $data = $this->dataFactory->create();
                 $data->addData(
                     [
-                    'to' => $to_email,
-                    'marketplace_name' => 'Betterthat',
-                    'po_id' => $betterthatOrderId,
-                    'order_id' => $mageOrderId,
-                    'order_date' => $placeDate,
+                        'to' => $to_email,
+                        'marketplace_name' => 'Betterthat',
+                        'po_id' => $betterthatOrderId,
+                        'order_id' => $mageOrderId,
+                        'order_date' => $placeDate,
                     ]
                 );
                 /**
- * @var \Ced\Betterthat\Model\Mail $mail
-*/
+                 * @var \Ced\Betterthat\Model\Mail $mail
+                 */
                 $mail = $this->mailFactory->create();
                 $mail->send($data);
 
@@ -895,18 +925,18 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public function submitMagentoShipment(array $data = [])
     {
         $orderId = isset($data[0]['order_id']) ? $data[0]['order_id'] : 'N/A';
-        $title = isset($data[0]['tracking_info']['shipping_company']) ? $data[0]['tracking_info']['shipping_company']  : 'N/A';
+        $title = isset($data[0]['tracking_info']['shipping_company']) ? $data[0]['tracking_info']['shipping_company'] : 'N/A';
         $trackingNumber = isset($data[0]['tracking_info']['tracking_number']) ? $data[0]['tracking_info']['tracking_number'] : 'N/A';
         $this->webApiResponse = $this->createShipment($orderId, $trackingNumber, $title);
         return $this->webApiResponse;
     }
 
     /**
-     * @param  int    $orderId
-     * @param  string $trackingNumber
+     * @param int $orderId
+     * @param string $trackingNumber
      * @return \Magento\Sales\Model\Shipment $shipment
      */
-    protected function createShipment($orderId, $trackingNumber,$title)
+    protected function createShipment($orderId, $trackingNumber, $title)
     {
         try {
             $order = $this->objectManager->create('Magento\Sales\Model\Order')
@@ -922,7 +952,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 if ($shipment) {
                     $order->setIsInProcess(true);
                     $order->addStatusHistoryComment('Automatically SHIPPED', false);
-                    $transactionSave =  $this->objectManager->create('Magento\Framework\DB\TransactionFactory')->create()->addObject($shipment)->addObject($shipment->getOrder());
+                    $transactionSave = $this->objectManager->create('Magento\Framework\DB\TransactionFactory')->create()->addObject($shipment)->addObject($shipment->getOrder());
                     $transactionSave->save();
                     $this->webApiResponse = [
                         "magento_orderId" => $orderId,
@@ -937,7 +967,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     "success" => false
                 ];
 
-            }else{
+            } else {
                 return $this->webApiResponse = [
                     "magento_orderId" => $orderId,
                     "message" => "Shipment already generated!",
@@ -956,7 +986,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Ship Betterthat Order
      *
-     * @param  array $data
+     * @param array $data
      * @return array
      */
     public function shipOrder(array $data = [])
@@ -976,7 +1006,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $arraytoship = [
                 "order_id" => $data['BetterthatOrderID'],
                 "tracking_info" => [
-                    "shipping_company"=> $data['ShippingProvider'],
+                    "shipping_company" => $data['ShippingProvider'],
                     "shipping_date" => $data['OrderShipDate'],
                     "tracking_number" => $data['TrackingNumber'],
                     "tracking_url" => "",
@@ -1006,7 +1036,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Cancel Betterthat Order
      *
-     * @param  array $data
+     * @param array $data
      * @return array
      */
     public function cancelOrder(array $data = [])
@@ -1023,10 +1053,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 ->create('\Magento\Sales\Model\Order')->load($data['order_id']);
             $cancel = [];
 
-            if (isset($data['OrderItemIds']) and !empty($data['OrderItemIds'])) {
+            if (isset($data['OrderItemIds']) && !empty($data['OrderItemIds'])) {
                 foreach ($data['OrderItemIds'] as $orderItemId) {
                     // Preparing cancel qty for magento credit memo
-                    if (isset($orderItemId['QuantityCancelled']) and !empty($orderItemId['QuantityCancelled'])) {
+                    if (isset($orderItemId['QuantityCancelled']) && !empty($orderItemId['QuantityCancelled'])) {
                         $cancelQty = [];
                         foreach ($magentoOrder->getAllItems() as $orderItem) {
                             if ($orderItem->getSku() == $orderItemId['SKU']) {
@@ -1038,13 +1068,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     }
 
                     // Preparing to cancel from Betterthat
-                    if (isset($orderItemId['OrderItemId']) and !empty($orderItemId['OrderItemId'])) {
+                    if (isset($orderItemId['OrderItemId']) && !empty($orderItemId['OrderItemId'])) {
                         $cancel['OrderItemId'] = $orderItemId['OrderItemId'];
                     } else {
                         throw new \Exception('OrderItemId are missing.');
                     }
 
-                    if (isset($orderItemId['Reason']) and !empty($orderItemId['Reason'])) {
+                    if (isset($orderItemId['Reason']) && !empty($orderItemId['Reason'])) {
                         $cancel['Reason'] = $orderItemId['Reason'];
                     } else {
                         throw new \Exception('Reasons are missing.');
@@ -1053,7 +1083,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     $status = $order->cancelOrderItem($cancel);
                     if ($status->getStatus() !== \BetterthatSdk\Api\Response::REQUEST_STATUS_FAILURE) {
                         $this->generateCreditMemo($magentoOrder, $cancelQty);
-                        $response['message'][] = $orderItemId['SKU'].' Cancelled successfully. ';
+                        $response['message'][] = $orderItemId['SKU'] . ' Cancelled successfully. ';
                         $response['success'] = true;
                         // Saving fulfillment data.
                         $BetterthatOrder = $this->orders->create()->load($data['order_id'], 'magento_order_id');
@@ -1071,7 +1101,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         $BetterthatOrder->setData('status', \Ced\Betterthat\Model\Source\Order\Status::SHIPPED);
                         $BetterthatOrder->save();
                     } else {
-                        $response['message'][] = $orderItemId['SKU']." ". $status->getError();
+                        $response['message'][] = $orderItemId['SKU'] . " " . $status->getError();
                     }
                 }
             } else {
@@ -1148,7 +1178,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $items = [];
 
-        foreach($order->getAllItems() as $item) {
+        foreach ($order->getAllItems() as $item) {
             $items[$item->getItemId()] = $item->getQtyOrdered();
         }
         return $items;
@@ -1220,7 +1250,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
         $BetterthatOrderItemsData = json_decode($order->getOrderItems(), true); // update
 
-        if(isset($BetterthatOrderItemsData['order_line'])) {
+        if (isset($BetterthatOrderItemsData['order_line'])) {
             $items = $BetterthatOrderItemsData['order_line'];
         }
 
@@ -1230,7 +1260,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Save Response to db
      *
-     * @param  array $response
+     * @param array $response
      * @return boolean
      */
     public function saveResponse($response = [])
@@ -1272,7 +1302,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $country_id = substr($iso3_code, 0, 2);
         $country = $this->objectManager->create('\Magento\Directory\Model\Country')->loadByCode($iso3_code);
-        if($country_id = $country->getData('country_id')) {
+        if ($country_id = $country->getData('country_id')) {
             $country_id = $country->getData('country_id');
         }
         if (empty($country_id)) {
@@ -1450,7 +1480,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
 
-
     /**
      * @return bool
      */
@@ -1606,7 +1635,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Ship Betterthat Order
      *
-     * @param  array $data
+     * @param array $data
      * @return array
      */
     public function shipOrders($BetterthatOrders)
@@ -1635,7 +1664,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Shipment
      *
-     * @param  \Magento\Framework\Event\Observer $observer
+     * @param \Magento\Framework\Event\Observer $observer
      * @return \Magento\Framework\Event\Observer
      */
     public function prepareShipmentData($order = null, $BetterthatOrder = null)
@@ -1692,7 +1721,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             }
         }*/
         $response = $order->downloadDocument($BetterthatOrderId);
-        if($response) {
+        if ($response) {
             return true;
         } else {
             return false;
@@ -1703,11 +1732,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $stockStatus = false;
         $useMSI = $this->config->getUseMsi();
-        if($useMSI) {
+        if ($useMSI) {
             $msiSourceCode = $this->config->getMsiSourceCode();
             $msiSourceDataModel = $this->objectManager->create('\Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku');
             $invSourceData = $msiSourceDataModel->execute($product->getSku());
-            if($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
+            if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
                 $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
                 $quantity = isset($invSourceData[$msiSourceCode]) ? $invSourceData[$msiSourceCode] : 0;
                 $stockStatus = ($quantity > 0) ? ($quantity >= $qty ? true : false) : false;
@@ -1715,7 +1744,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         } else {
             $stock = $this->stockRegistry
                 ->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
-            if($stock->getTypeId() == "configurable" && $stock->getIsInStock() == '1') {
+            if ($stock->getTypeId() == "configurable" && $stock->getIsInStock() == '1') {
                 return true; // temp check configurable case
             }
             $stockStatus = ($stock->getQty() > 0) ? ($stock->getIsInStock() == '1' ?
@@ -1738,7 +1767,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $payment->setLastTransId($paymentData['id']);
             $payment->setTransactionId($paymentData['id']);
             $payment->setAdditionalInformation(
-                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array) $paymentData]
+                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array)$paymentData]
             );
             $formatedPrice = $order->getBaseCurrency()->formatTxt(
                 $order->getGrandTotal()
@@ -1752,7 +1781,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setOrder($order)
                 ->setTransactionId($paymentData['id'])
                 ->setAdditionalInformation(
-                    [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array) $paymentData]
+                    [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array)$paymentData]
                 )
                 ->setFailSafe(true)
                 //build method creates the transaction and returns the object

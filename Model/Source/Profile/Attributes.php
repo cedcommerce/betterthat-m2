@@ -15,15 +15,14 @@
  * @copyright Copyright CedCommerce (https://cedcommerce.com/)
  * @license   https://cedcommerce.com/license-agreement.txt
  */
+
 namespace Ced\Betterthat\Model\Source\Profile;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
 class Attributes implements OptionSourceInterface
 {
-
     public $magentoAttributes;
-
     public $json;
 
     /**
@@ -31,7 +30,6 @@ class Attributes implements OptionSourceInterface
      *
      * @return array
      */
-
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory $magentoAttributes,
         \Magento\Framework\Json\Helper\Data $json
@@ -53,15 +51,12 @@ class Attributes implements OptionSourceInterface
         $attributes = $this->magentoAttributes
             ->create()
             ->getItems();
-
         $magentoAttributes = [];
-
         $magentoAttributes[''] = [
             'label' => "[ Please select a option ]",
             'value' => "",
             'option_values' => '{}'
         ];
-
         $magentoAttributes['default_value'] = [
             'label' => "[ Set default value ]",
             'value' => "default_value",
@@ -71,23 +66,30 @@ class Attributes implements OptionSourceInterface
             $type = "";
             $optionValues = "{}";
             $attributeOptions = $attribute->getSource()->getAllOptions(false);
-            if (!empty($attributeOptions) and is_array($attributeOptions)) {
+            if (!empty($attributeOptions) && is_array($attributeOptions)) {
                 $type = " [ select ]";
                 foreach ($attributeOptions as &$option) {
-                    if (isset($option['label']) and is_object($option['label'])) {
+                    if (isset($option['label']) && is_object($option['label'])) {
                         $option['label'] = $option['label']->getText();
                     }
                 }
-                $attributeOptions = str_replace('\'', '&#39;', $this->json->jsonEncode($attributeOptions));
-                $optionValues = addslashes($attributeOptions);
+                $attributeOptions = str_replace(
+                    '\'',
+                    '&#39;',
+                    $this->json
+                        ->jsonEncode($attributeOptions)
+                );
+                $optionValues = $attributeOptions;
             }
-            $magentoAttributes[$attribute->getAttributecode()]['value'] = $attribute->getAttributecode();
-            $magentoAttributes[$attribute->getAttributecode()]['label'] = is_object($attribute->getFrontendLabel()) ?
-                addslashes($attribute->getFrontendLabel()->getText() . $type):
-                addslashes($attribute->getFrontendLabel() . $type);
-            $magentoAttributes[$attribute->getAttributecode()]['option_values'] = $optionValues;
+            $magentoAttributes[$attribute->getAttributecode()]['value'] =
+                $attribute->getAttributecode();
+            $magentoAttributes[$attribute->getAttributecode()]['label'] =
+                is_object($attribute->getFrontendLabel()) ?
+                $attribute->getFrontendLabel()->getText() . $type :
+                $attribute->getFrontendLabel() . $type;
+            $magentoAttributes[$attribute->getAttributecode()]['option_values'] =
+                $optionValues;
         }
-
         return $magentoAttributes;
     }
 
@@ -104,5 +106,4 @@ class Attributes implements OptionSourceInterface
         }
         return $options;
     }
-
 }

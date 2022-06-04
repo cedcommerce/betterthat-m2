@@ -28,14 +28,14 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
  */
 class Time extends AbstractSource
 {
-    const CRON_5MINUTES = '*/5 * * * *';
-    const CRON_15MINUTES = '*/15 * * * *';
-    const CRON_30MINUTES = '*/30 * * * *';
-    const CRON_HOURLY = '0 * * * *';
-    const CRON_2HOURLY = '0 */2 * * *';
-    const CRON_6HOURLY = '0 */2 * * *';
-    const CRON_12HOURLY = '0 0,12 * * *';
-    const CRON_DAILY = '0 0 * * *';
+    public const CRON_5MINUTES = '*/5 * * * *';
+    public const CRON_15MINUTES = '*/15 * * * *';
+    public const CRON_30MINUTES = '*/30 * * * *';
+    public const CRON_HOURLY = '0 * * * *';
+    public const CRON_2HOURLY = '0 */2 * * *';
+    public const CRON_6HOURLY = '0 */2 * * *';
+    public const CRON_12HOURLY = '0 0,12 * * *';
+    public const CRON_DAILY = '0 0 * * *';
 
     /**
      * @return array

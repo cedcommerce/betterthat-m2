@@ -24,10 +24,10 @@ class Cache extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Cache key identifier
      */
-    const CACHE_KEY_IDENTIFIER = 'ced_Betterthat_';
-    const PROFILE_CACHE_KEY = 'profile_';
-    const PROFILE_PRODUCT_CACHE_KEY = 'profile_product_';
-    const CRON_STATUS_KEY = 'cron_status';
+    public const CACHE_KEY_IDENTIFIER = 'ced_Betterthat_';
+    public const PROFILE_CACHE_KEY = 'profile_';
+    public const PROFILE_PRODUCT_CACHE_KEY = 'profile_product_';
+    public const CRON_STATUS_KEY = 'cron_status';
 
     /**
      * @var \Magento\Framework\App\Cache

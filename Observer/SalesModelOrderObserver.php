@@ -16,6 +16,7 @@
  * @copyright Copyright CEDCOMMERCE(https://cedcommerce.com/)
  * @license   https://cedcommerce.com/license-agreement.txt
  */
+
 namespace Ced\Betterthat\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
@@ -24,7 +25,7 @@ class SalesModelOrderObserver implements ObserverInterface
 {
 
     /**
-     * @var \Ced\Betterthat\Helper\Logger  
+     * @var \Ced\Betterthat\Helper\Logger
      */
     public $logger;
 
@@ -39,7 +40,7 @@ class SalesModelOrderObserver implements ObserverInterface
      * ProductSaveAfter constructor.
      *
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Framework\App\RequestInterface   $request
+     * @param \Magento\Framework\App\RequestInterface $request
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -57,22 +58,24 @@ class SalesModelOrderObserver implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         try {
-            $this->product = $this->objectManager->create('Magento\Catalog\Model\ProductFactory');
-            $this->productHelper = $this->objectManager->create('\Ced\Betterthat\Helper\Product');
+            $this->product = $this->objectManager->create(\Magento\Catalog\Model\ProductFactory::class);
+            $this->productHelper = $this->objectManager->create(\Ced\Betterthat\Helper\Product::class);
 
-            $this->logger->addError('Sales Order Observer: success', ['path' => __METHOD__, 'Response' => 'enter']);
+            $this->logger
+                ->addError('Sales Order Observer: success', ['path' => __METHOD__, 'Response' => 'enter']);
             $event = $observer->getEvent();
             $order = $event->getOrder();
             foreach ($order->getAllItems() as $item) {
                 $productId = $item->getProductId();
                 $product = $this->product->create()->load($productId);
-                if($product->getBetterthatProfileId()) {
+                if ($product->getBetterthatProfileId()) {
                     $this->productHelper->updatePriceInventory([$productId]);
                 }
             }
             $this->logger->addError('Sales Order Observer: success', ['path' => __METHOD__, 'Response' => 'exit']);
         } catch (\Exception $e) {
-            $this->logger->addError('Sales Order Observer: success', ['path' => __METHOD__, 'exception' => $e->getMessage()]);
+            $this->logger
+                ->addError('Sales Order Observer: success', ['path' => __METHOD__, 'exception' => $e->getMessage()]);
             return $observer;
         }
         return $observer;

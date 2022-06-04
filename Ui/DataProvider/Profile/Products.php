@@ -93,7 +93,7 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
         $bookmarks = $this->bookmark->create()
             ->getCollection()
             ->addFieldToFilter('namespace', ['eq' => 'sears_products_index']);
-        if (isset($profileId) and !empty($profileId)) {
+        if (isset($profileId) && !empty($profileId)) {
             foreach ($bookmarks as $bookmark) {
                 if ($bookmark->getIdentifier() == 'current') {
                     $configValue = $bookmark->getConfig();

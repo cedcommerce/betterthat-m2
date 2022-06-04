@@ -46,8 +46,6 @@ class Customer implements ArrayInterface
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
-
-
     /*
      * Option getter
      * @return array
@@ -56,14 +54,12 @@ class Customer implements ArrayInterface
     {
         $arr = $this->toArray();
         $ret = [];
-
         foreach ($arr as $key => $value) {
             $ret[] = [
                 'value' => $key,
                 'label' => $value
             ];
         }
-
         return $ret;
     }
 
@@ -73,16 +69,12 @@ class Customer implements ArrayInterface
      */
     public function toArray()
     {
-
         $searchCriteria = $this->searchCriteriaBuilder->create();
         $customers = $this->customerRepository->getList($searchCriteria)->getItems();
-
-        $customersList = array();
+        $customersList = [];
         foreach ($customers as $customer) {
             $customersList[$customer->getId()] = __($customer->getFirstname() . ' ' . $customer->getLastname());
         }
-
         return $customersList;
     }
-
 }

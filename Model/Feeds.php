@@ -29,6 +29,6 @@ class Feeds extends AbstractModel
 {
     public function _construct()
     {
-        $this->_init('Ced\Betterthat\Model\ResourceModel\Feeds');
+        $this->_init(\Ced\Betterthat\Model\ResourceModel\Feeds::class);
     }
 }

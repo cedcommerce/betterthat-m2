@@ -20,13 +20,11 @@
 
 namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\Button;
 
-
 use Magento\Backend\Block\Widget\Container;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 class Back extends Container implements ButtonProviderInterface
 {
-
     /**
      * Retrieve button-specified settings
      *

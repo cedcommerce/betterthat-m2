@@ -58,7 +58,7 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
     public function deleteProducts($productIds)
     {
 
-        if (empty($productIds) or !is_array($productIds) or count($productIds) == 0) {
+        if (empty($productIds) || !is_array($productIds) || count($productIds) == 0) {
             return $this;
         }
 
@@ -73,7 +73,7 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
     public function addProducts($productIds, $profileId)
     {
 
-        if (empty($productIds) or !is_array($productIds) or count($productIds) == 0 or empty($profileId)) {
+        if (empty($productIds) || !is_array($productIds) || count($productIds) == 0 || empty($profileId)) {
             return $this;
         }
 
@@ -96,7 +96,7 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
         if ($productId > 0) {
             $profileTable = $this->getTable('Betterthat_profile_products');
             $productProfile = \Magento\Framework\App\ObjectManager::getInstance()
-                ->get('Ced\Betterthat\Model\ProfileProduct')->loadByField('profile_id', $profileId);
+                ->get(\Ced\Betterthat\Model\ProfileProduct::class)->loadByField('profile_id', $profileId);
             if ($productProfile && $productProfile->getId()) {
                 $dbh = $this->getConnection();
                 $select = $dbh->select()->from($profileTable)

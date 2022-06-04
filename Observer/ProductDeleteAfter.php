@@ -48,8 +48,11 @@ class ProductDeleteAfter implements ObserverInterface
     {
         $_product = $observer->getProduct();
         $deletedIds = $this->Betterthat->deleteProducts([$_product->getId()]);
-        if(count($deletedIds)>0) {
-            $this->messageManager->addSuccessMessage(json_encode($deletedIds) . ' item(s) deleted successfully from BetterThat');
+        if (count($deletedIds)>0) {
+            $this->messageManager
+                ->addSuccessMessage(
+                    json_encode($deletedIds) . ' item(s) deleted successfully from BetterThat'
+                );
         } else {
             $this->messageManager->addErrorMessage('Something went wrong');
         }

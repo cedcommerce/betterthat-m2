@@ -6,7 +6,7 @@ $categories = $block->getCategories();
         "jquery",
     ], function ($) {
 
-        var categories = <?php echo json_encode($categories); ?>;
+        var categories = <?= $block->escapeHtmlAttr(json_encode($categories)); ?>;
 
         $('#show_category').on('click', function () {
             var id = $('#category_id').val();
@@ -117,12 +117,12 @@ $categories = $block->getCategories();
 <div style="text-align: center; margin-bottom: 20px">
     <select id="category_id" class="admin__control-select">
         <option value="">Please select a category</option>
-        <?php 
-            foreach ($categories as $category) {
-                echo "<option value='{$category['code']}'>{$category['code']} [{$category['code']}]</option>";
-            }
+        <?php
+        foreach ($categories as $category) {
+                $data = "<option value='{$category['code']}'>{$category['code']} [{$category['code']}]</option>";
+                echo $block->escapeHtmlAttr($data);
+        }
         ?>
-
     </select>
     <button class="primary" id="show_category">Show</button>
 </div>

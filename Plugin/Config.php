@@ -58,7 +58,7 @@ class Config
         \Magento\Config\Model\Config $subject
     ) {
         $configPost = $subject->getData();
-        if (isset($configPost['section']) and $configPost['section'] == 'betterthat_config') {
+        if (isset($configPost['section']) && $configPost['section'] == 'betterthat_config') {
             $enabled = $this->config->isEnabled();
             if ($enabled) {
                 $response = $this->config->validate();
@@ -71,7 +71,11 @@ class Config
                         0
                     );
                 } else {
-                    $this->messageManager->addErrorMessage(isset($response['message']) ? 'BetterThat: '.$response['message'] : '');
+                    $this->messageManager
+                        ->addErrorMessage(
+                            isset($response['message'])
+                            ? 'BetterThat: '.$response['message'] : ''
+                        );
                     $this->scopeConfigResource->saveConfig(
                         'betterthat_config/betterthat_setting/valid',
                         '0',

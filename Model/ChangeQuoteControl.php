@@ -13,7 +13,6 @@ use Magento\Quote\Api\Data\CartInterface;
 
 class ChangeQuoteControl extends \Magento\Quote\Model\ChangeQuoteControl
 {
-
     protected $forceIsAllowed = false;
 
     public function forceIsAllowed($forceIsAllowed)
@@ -24,7 +23,7 @@ class ChangeQuoteControl extends \Magento\Quote\Model\ChangeQuoteControl
 
     public function isAllowed(CartInterface $quote): bool
     {
-        if($this->forceIsAllowed) {
+        if ($this->forceIsAllowed) {
             return true;
         } else {
             return parent::isAllowed($quote);

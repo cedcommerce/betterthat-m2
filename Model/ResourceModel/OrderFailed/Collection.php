@@ -32,7 +32,7 @@ class Collection extends AbstractCollection
      */
     public function _construct()
     {
-        $this->_init('Ced\Betterthat\Model\OrderFailed', 'Ced\Betterthat\Model\ResourceModel\OrderFailed');
+        $this->_init(\Ced\Betterthat\Model\OrderFailed::class, \Ced\Betterthat\Model\ResourceModel\OrderFailed::class);
         $this->_setIdFieldName($this->getResource()->getIdFieldName());
     }
 }

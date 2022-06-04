@@ -22,17 +22,17 @@ namespace Ced\Betterthat\Helper;
 class Tax
 {
     /**
-     * @var \Magento\Tax\Model\Config $taxConfig 
+     * @var \Magento\Tax\Model\Config $taxConfig
      */
     public $taxConfig;
 
     /**
-     * @var \Magento\Tax\Api\TaxCalculationInterface $taxCalculationAPIInterface 
+     * @var \Magento\Tax\Api\TaxCalculationInterface $taxCalculationAPIInterface
      */
     public $taxCalculationAPIInterface;
 
     /**
-     * @var \Magento\Tax\Model\Calculation $taxCalculation 
+     * @var \Magento\Tax\Model\Calculation $taxCalculation
      */
     public $taxCalculation;
 

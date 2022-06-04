@@ -16,6 +16,9 @@
  * @license   https://cedcommerce.com/license-agreement.txt
  */
 ?>
+<?php
+$m_url="https://docs.cedcommerce.com/magento-2/better-that-integration-for-magento-user-manual";
+?>
 <div class="accordion">
     <div class="entry-edit form-inline">
         <div class="section-config">
@@ -31,12 +34,12 @@
                       style="display: none;border:0 ">
                 <ul>
                     <a target="_blank"
-                       href="https://docs.cedcommerce.com/magento-2/better-that-integration-for-magento-user-manual">Betterthat
-                        Integration Knowledge base
+                       href="<?= $block->escapeUrl($m_url) ?>">
+                        Betterthat Integration Knowledge base
                     </a>
                 </ul>
             </fieldset>
-            <script type="text/javascript">//&lt;![CDATA[
+            <script>//&lt;![CDATA[
                 require(['prototype'], function(){Fieldset.applyCollapse('ced-support');});
                 //]]&gt;</script>
         </div>
@@ -52,11 +55,12 @@
                       style="display: none;border:0px">
                 <ul>
                     <a target="_blank"
-                       href="https://docs.cedcommerce.com/magento-2/better-that-integration-for-magento-user-manual">Betterthat
-                        Integration Extension User Guide By CedCommerce</a>
+                       href="<?= $block->escapeUrl($m_url) ?>">
+                        Betterthat Integration
+                        Extension User Guide By CedCommerce</a>
                 </ul>
             </fieldset>
-            <script type="text/javascript">//&lt;![CDATA[
+            <script>//&lt;![CDATA[
                 require(['prototype'], function(){Fieldset.applyCollapse('documentation');});
                 //]]&gt;
             </script>
@@ -74,11 +78,21 @@
 
                         <!--Contact us via phone -->
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <a title="Click Here to Submit a Support Ticket" href="skype:live:support_35785?call" target="_blank">
+                            <a title=
+                               "Click Here to Submit a Support Ticket"
+                               href="skype:live:support_35785?call"
+                               target="_blank">
                                 <div class="ticket">
                                     <div class="icon-box">
                                         <div class="image">
-                                            <img src="<?php echo $this->getViewFileUrl('Ced_Betterthat::images/girl-on-phone.png'); ?>">
+                                            <img src="
+                                            <?=
+                                            $block->escapeUrl(
+                                                $block->getViewFileUrl(
+                                                    'Ced_Betterthat::images/girl-on-phone.png'
+                                                )
+                                            );
+                                            ?>">
                                             <span class="contact-24">Contact Us 24*7 via Skype Call</span>
                                         </div>
                                     </div>
@@ -89,11 +103,16 @@
 
                         <!--ticket code-->
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <a title="Click Here to Submit a Support Ticket" href="http://support.cedcommerce.com/" target="_blank">
+                            <a title="Click Here to Submit a Support Ticket"
+                               href="http://support.cedcommerce.com/"
+                               target="_blank">
                                 <div class="ticket">
                                     <div class="icon-box">
                                         <div class="image">
-                                            <img src="<?php echo $this->getViewFileUrl('Ced_Betterthat::images/ticket.png'); ?>">
+                                            <img src="
+                                            <?= $block->escapeUrl(
+                                                $block->getViewFileUrl('Ced_Betterthat::images/ticket.png')
+                                            ); ?>">
                                             <span class="mail">Submit issue via Ticket</span>
                                         </div>
                                     </div>
@@ -103,11 +122,21 @@
                         </div>
                         <!--Send Mail codes-->
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <a title="Click Here to Contact us through Mail" href="mailto:jonsnow@cedcommerce.com&cc=davetaylor@cedcommerce.com&cc=tomcook@cedcommerce.com" target="_blank">
+                            <a
+                                title="Click Here to Contact us through Mail"
+                                href=
+                                "mailto:jonsnow@cedcommerce.com&cc=tomcook@cedcommerce.com"
+                                target="_blank">
                                 <div class="mail">
                                     <div class="icon-box">
                                         <div class="image">
-                                            <img src="<?php echo $this->getViewFileUrl('Ced_Betterthat::images/mail.png'); ?>">
+                                            <img src="<?=
+                                            $block->escapeUrl(
+                                                $block->getViewFileUrl(
+                                                    'Ced_Betterthat::images/mail.png'
+                                                )
+                                            );
+                                            ?>">
                                             <span class="mail">Send us an E-mail</span>
                                         </div>
                                     </div>
@@ -117,11 +146,23 @@
                         </div>
                         <!--Make Skype Group Codes-->
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <a title="Click to connect with us over skype " href="skype:rajneeshgupta.cedcoss;deepakgupta.cedcoss;live:jonsnow_92;?chat&topic=<?= $this->getBaseUrl()?>" target="_blank">
+                            <a
+                                title="Click to connect with us over skype "
+                                href=
+                                "skype:rajneeshgupta.cedcoss;live:jonsnow_92;?chat&topic=
+                                <?= $block->escapeUrl($block->getBaseUrl()) ?>"
+                                target="_blank">
                                 <div class="skype">
                                     <div class="icon-box">
                                         <div class="image">
-                                            <img src="<?php echo $this->getViewFileUrl('Ced_Betterthat::images/skype.png'); ?>">
+                                            <img src="
+                                            <?=
+                                            $block->escapeUrl(
+                                                $block->getViewFileUrl(
+                                                    'Ced_Betterthat::images/skype.png'
+                                                )
+                                            );
+                                            ?>">
                                             <span>Connect via Skype Chat</span>
                                         </div>
                                     </div>
@@ -131,14 +172,18 @@
                         </div>
 
                         <!--end of codes for contact us-->
-                        <span class="more-contact">For More Informations Please Contact Us: <mark>7234976892 (FOR INDIA), Toll-Free Number: 888-882-0953 (FOR USA)</mark></span>
+                        <span class="more-contact">
+                            For More Informations Please Contact Us:
+                            <mark>7234976892 (FOR INDIA), Toll-Free Number: 888-882-0953 (FOR USA)
+                            </mark>
+                        </span>
                     </div>
             </footer>
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <style>
     .icon-box{
         background-color: #ffffff;

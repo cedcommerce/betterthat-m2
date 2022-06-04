@@ -28,12 +28,12 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
  */
 class Status extends AbstractSource
 {
-    const PENDING = 'pending';
-    const INPROGRESS = 'inprogress';
-    const COMPLETE = 'complete';
-    const SHIPPED = 'Shipped';
-    const DELIVERED = 'Delivered';
-    const CANCELLED = 'cancelled';
+    public const PENDING = 'pending';
+    public const INPROGRESS = 'inprogress';
+    public const COMPLETE = 'complete';
+    public const SHIPPED = 'Shipped';
+    public const DELIVERED = 'Delivered';
+    public const CANCELLED = 'cancelled';
 
     /**
      * @return array

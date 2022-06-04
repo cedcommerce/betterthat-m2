@@ -27,7 +27,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 
     public function _construct()
     {
-        $this->_init('Ced\Betterthat\Model\Profile', 'Ced\Betterthat\Model\ResourceModel\Profile');
+        $this->_init(\Ced\Betterthat\Model\Profile::class, \Ced\Betterthat\Model\ResourceModel\Profile::class);
         $this->_setIdFieldName($this->getResource()->getIdFieldName());
     }
 }

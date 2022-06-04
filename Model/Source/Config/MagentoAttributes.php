@@ -45,10 +45,10 @@ class MagentoAttributes implements \Magento\Framework\Option\ArrayInterface
         $catchAttributes = [];
         $attributes = $this->attributeCollection;
         foreach ($attributes as $attribute) {
-            $catchAttributes[] = array(
+            $catchAttributes[] = [
                 'label' => $attribute->getFrontendLabel(),
                 'value' => $attribute->getAttributeCode()
-            );
+            ];
         }
         return $catchAttributes;
     }

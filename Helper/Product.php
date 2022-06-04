@@ -33,9 +33,9 @@ if (!defined('DS')) {
  */
 class Product extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const ATTRIBUTE_TYPE_SKU = 'sku';
+    public const ATTRIBUTE_TYPE_SKU = 'sku';
 
-    const ATTRIBUTE_TYPE_NORMAL = 'normal';
+    public const ATTRIBUTE_TYPE_NORMAL = 'normal';
 
     /**
      * Object Manager
@@ -297,7 +297,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         if ($type == 'xml') {
-            $xmltoarray = $this->objectManager->create('Magento\Framework\Convert\ConvertArray');
+            $xmltoarray = $this->objectManager
+                ->create(\Magento\Framework\Convert\ConvertArray::class);
             $data = $xmltoarray->assocToXml($data);
         } elseif ($type == 'json') {
             $data = $this->json->jsonEncode($data);
@@ -311,7 +312,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             $this->fileIo->write($filePath . "/" . $fileName, $data);
         } catch (\Exception $e) {
-            $this->logger->error('Create File', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error(
+                'Create File',
+                ['path' => __METHOD__,
+                    'exception' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            );
             return false;
         }
 
@@ -343,7 +350,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function _sendBetterthatVisibility($data)
     {
-        return $this->Betterthat->create(['config' => $this->config->getApiConfig()])->_sendBetterthatVisibility($data);
+        return $this->Betterthat
+            ->create(['config' => $this->config->getApiConfig()])
+            ->_sendBetterthatVisibility($data);
     }
 
     /**
@@ -362,10 +371,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $product->setData("betterthat_feed_errors", '');
                 $product->save();
                 return [['success'=>"true", "message"=>"Item deleted successfully","data"=>$data]];
-            }else{
+            } else {
                 return [['success'=>"false", "message"=>"Item Id not found","data"=>$data]];
             }
-        }else{
+        } else {
             return [['success'=>"false", "message"=>"Please enter all required fields [product_id,delete_status]","data"=>$data]];
         }
         return [['success'=>"true", "message"=>"Item deleted successfully","data"=>$data]];
@@ -383,7 +392,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             $response = false;
             $ids = $this->validateAllProducts($ids);
-            if (!empty($ids['simple']) or !empty($ids['configurable'])) {
+            if (!empty($ids['simple']) || !empty($ids['configurable'])) {
                 $this->ids = [];
                 $this->key = 0;
                 $this->data = [];
@@ -1828,7 +1837,15 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error('Sync Feeds', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger
+                ->error(
+                    'Sync Feeds',
+                    [
+                        'path' => __METHOD__,
+                        'exception' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]
+                );
             return false;
         }
     }
@@ -1847,7 +1864,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             if(isset($ids['bt_visibility'])) {
                 return $ids;
             }
-            if (!empty($ids['simple']) or !empty($ids['configurable'])) {
+            if (!empty($ids['simple']) || !empty($ids['configurable'])) {
                 $this->ids = [];
                 $this->key = 0;
                 $this->data = [];

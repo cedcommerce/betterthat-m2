@@ -4,11 +4,11 @@ namespace Ced\Betterthat\Observer;
 
 class Save implements \Magento\Framework\Event\ObserverInterface
 {
-	protected $objectManager;
-	protected $productHelper;
-	protected $logger;
+    protected $objectManager;
+    protected $productHelper;
+    protected $logger;
 
-	public function __construct(
+    public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Ced\Betterthat\Helper\Logger $logger,
         \Ced\Betterthat\Helper\Product $productHelper,
@@ -23,40 +23,39 @@ class Save implements \Magento\Framework\Event\ObserverInterface
         $this->profileModel = $profileFactory;
         $this->messageManager = $messageManager;
     }
-	public function execute(\Magento\Framework\Event\Observer $observer)
-	{
-		if($product = $observer->getEvent()->getProduct()) {
-			try{
+
+    public function execute(\Magento\Framework\Event\Observer $observer)
+    {
+        if ($product = $observer->getEvent()->getProduct()) {
+            try {
                 if ($product->dataHasChangedFor('betterthat_profile_id')) {
-                    if($product->getbetterthat_profile_id()){
+                    if ($product->getbetterthat_profile_id()) {
                         $profileModel = $this->profileModel->create();
-                        $this->profileResource->load($profileModel,$product->getbetterthat_profile_id(),'id',);
-                        if($profileModel->getId() == null)
-                        {
-                            $message = __('Betterthat profile id is invalid, please fill correct id and previous id has been reset.');
+                        $this->profileResource->load($profileModel, $product->getbetterthat_profile_id(), 'id');
+                        if ($profileModel->getId() == null) {
+                            $message = __('Betterthat profile id is invalid,
+                             please fill correct id and previous id has been reset.');
                             $this->messageManager->addWarningMessage($message);
                             $product->setbetterthat_profile_id($product->getOrigData('betterthat_profile_id'));
                         }
                     }
                 }
 
-                if($product->dataHasChangedFor('betterthat_visibility')){
-                    $response = $this->productHelper->_sendBetterthatVisibility(["product_id"=>$product->getId(),"visible_status"=>$product->getBetterthatVisibility() ? "true" : "false"]);
-                    if(isset($response['status']) && $response['status']){
+                if ($product->dataHasChangedFor('betterthat_visibility')) {
+                    $response = $this->productHelper
+                        ->_sendBetterthatVisibility(
+                            ["product_id" => $product->getId(),
+                                "visible_status" => $product->getBetterthatVisibility() ? "true" : "false"
+                            ]
+                        );
+                    if (isset($response['status']) && $response['status']) {
                         $this->messageManager->addSuccessMessage($response["message"]);
                     }
                 }
 
-                /*if($product->dataHasChangedFor('price')){ // need price and inv seperately since this observer unable to track inventory due to bottle neck firing of stock save
-                    $response = $this->productHelper->updatePriceInventory([$product->getId()]);
-                    if(@$response['status'] && $response['status'] == "OK"){
-                        $this->messageManager->addSuccessMessage("Price/Inventory updated on BetterThat");
-                    }
-                }*/
-
-            } catch (\Exception $e){
-
-			}
-		}
-	}
+            } catch (\Exception $e) {
+                $e->getMessage();
+            }
+        }
+    }
 }
