@@ -29,11 +29,11 @@ class Actions extends Column
     /**
  * Url path
 */
-    const URL_PATH_EDIT = 'sales/order/view';
-    const URL_PATH_VIEW = 'betterthat/order/view';
-    const URL_PATH_SYNC = 'betterthat/order/sync';
-    const URL_PATH_DELETE = 'betterthat/order/delete';
-    const URL_PATH_DOWNLOAD = 'betterthat/order/download';
+    public const URL_PATH_EDIT = 'sales/order/view';
+    public const URL_PATH_VIEW = 'betterthat/order/view';
+    public const URL_PATH_SYNC = 'betterthat/order/sync';
+    public const URL_PATH_DELETE = 'betterthat/order/delete';
+    public const URL_PATH_DOWNLOAD = 'betterthat/order/download';
 
     /**
      * @var UrlBuilder
@@ -73,7 +73,6 @@ class Actions extends Column
      */
     public function prepareDataSource(array $dataSource)
     {
-
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
                 $name = $this->getData('name');
@@ -89,12 +88,14 @@ class Actions extends Column
                         'class' => 'cedcommerce actions edit'
                     ];
                     $item[$name]['sync'] = [
-                        'href' => $this->urlBuilder->getUrl(self::URL_PATH_SYNC, ['id' => $item['id']]),
+                        'href' => $this->urlBuilder
+                            ->getUrl(self::URL_PATH_SYNC, ['id' => $item['id']]),
                         'label' => __('Sync'),
                         'class' => 'cedcommerce actions sync'
                     ];
                     $item[$name]['delete'] = [
-                        'href' => $this->urlBuilder->getUrl(self::URL_PATH_DELETE, ['id' => $item['id']]),
+                        'href' => $this->urlBuilder
+                            ->getUrl(self::URL_PATH_DELETE, ['id' => $item['id']]),
                         'label' => __('Delete'),
                         'class' => 'cedcommerce actions delete'
                     ];

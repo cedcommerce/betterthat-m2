@@ -22,17 +22,14 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
     public function getAttributeTabBlock()
     {
-        return 'Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Info';
+        return \Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Info::class;
     }
-
     /**
      * @return void
      */
     protected function _construct()
     {
-
         parent::_construct();
-
         $this->setId('profile_tabs');
         $this->setDestElementId('edit_form');
         $this->setTitle(__('Profile Information'));
@@ -49,33 +46,31 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                 'label' => __('Profile info'),
                 'title' => __('Profile Info'),
                 'content' => $this->getLayout()
-                    ->createBlock('Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Info')->toHtml(),
+                    ->createBlock(\Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Info::class)
+                    ->toHtml(),
                 'active' => true
             ]
         );
-
         $this->addTab(
             'mapping',
             [
                 'label' => __('Category & Attribute'),
                 'title' => __('Category $ Attribute'),
                 'content' => $this->getLayout()
-                    ->createBlock('Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Mapping', 'mapping')
+                    ->createBlock(\Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Mapping::class, 'mapping')
                     ->toHtml(),
             ]
         );
-
         $this->addTab(
             '_magento_category',
             [
                 'label' => __('Magento Category Mapping'),
                 'title' => __('Magento Category Mapping'),
                 'content' => $this->getLayout()
-                    ->createBlock('Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\MagentoCategory')
+                    ->createBlock(\Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\MagentoCategory::class)
                     ->toHtml(),
             ]
         );
-
         return parent::_beforeToHtml();
     }
 }

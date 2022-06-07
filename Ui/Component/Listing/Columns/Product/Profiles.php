@@ -67,7 +67,7 @@ class Profiles extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
                 $name = $this->getData('name');
-                if (isset($item['betterthat_profile_id']) and !empty($item['betterthat_profile_id'])) {
+                if (isset($item['betterthat_profile_id']) && !empty($item['betterthat_profile_id'])) {
                     $item[$name] = $item['betterthat_profile_id'];
                 } else {
                     $item[$name] = '';

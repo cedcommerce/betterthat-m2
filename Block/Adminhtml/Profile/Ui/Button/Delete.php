@@ -8,13 +8,11 @@
 
 namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\Button;
 
-
 use Magento\Customer\Block\Adminhtml\Edit\GenericButton;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 class Delete extends GenericButton implements ButtonProviderInterface
 {
-
     /**
      * @var \Magento\Backend\Block\Widget\Container
      */
@@ -58,7 +56,8 @@ class Delete extends GenericButton implements ButtonProviderInterface
             $data = [
                 'class' => 'action-secondary scalable delete',
                 'label' => __('Delete'),
-                'on_click' => "deleteConfirm('Are you sure you want to do this image?','".$this->getDeleteUrl($id)."')",
+                'on_click' => "deleteConfirm('Are you sure you want to do this image?','"
+                    .$this->getDeleteUrl($id)."')",
                 'sort_order' => 20,
                 'data_attribute' => [
                     'url' => $this->getDeleteUrl($id)

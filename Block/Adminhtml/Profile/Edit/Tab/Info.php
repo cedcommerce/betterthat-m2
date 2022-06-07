@@ -35,7 +35,6 @@ class Info extends \Magento\Backend\Block\Widget\Form\Generic
 
     protected function _prepareForm()
     {
-
         $form = $this->_formFactory->create();
         $profile = $this->_coreRegistry->registry('current_profile');
 
@@ -73,14 +72,15 @@ class Info extends \Magento\Backend\Block\Widget\Form\Generic
                 'name' => "profile_status",
                 'label' => __('Profile Status'),
                 'value' => $profile->getData('profile_status'),
-                'values' => $this->_objectManager->get('Ced\Betterthat\Model\Source\Profile\Status')->getOptionArray(),
+                'values' => $this->_objectManager
+                    ->get(\Ced\Betterthat\Model\Source\Profile\Status::class)
+                    ->getOptionArray(),
             ]
         );
 
         if ($profile->getId()) {
             $form->getElement('profile_code')->setDisabled(1);
         }
-
         $this->setForm($form);
         return parent::_prepareForm();
     }

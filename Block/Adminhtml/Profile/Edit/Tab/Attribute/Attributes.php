@@ -18,19 +18,19 @@
 
 namespace Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Attribute;
 
+use \Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
+
 /**
  * Rolesedit Tab Display Block.
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Framework\Data\Form\Element\Renderer\RendererInterface
+class Attributes extends \Magento\Backend\Block\Widget implements RendererInterface
 {
-
     /**
      * @var string
      */
     public $_template = 'Ced_Betterthat::profile/attribute/attributes.phtml';
-
 
     public $_objectManager;
 
@@ -41,7 +41,6 @@ class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Frame
     public $category;
 
     public $_BetterthatAttribute;
-
 
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -54,7 +53,6 @@ class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Frame
         $this->_coreRegistry = $registry;
         $this->category = $category;
         $this->profile = $this->_coreRegistry->registry('current_profile');
-
         parent::__construct($context, $data);
     }
 
@@ -72,36 +70,29 @@ class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Frame
     {
         // For AJAX
         $this->_BetterthatAttribute = $this->getAttributes();
-        if (isset($this->_BetterthatAttribute) and !empty($this->_BetterthatAttribute)) {
+        if (isset($this->_BetterthatAttribute) && !empty($this->_BetterthatAttribute)) {
             return $this->_BetterthatAttribute;
         }
-
         // For Profile Saved
         $categoryIds = json_decode($this->profile->getProfileCategories(), true);
-
         $params = [
             'category_ids' => $categoryIds,
             'isMandatory' => 1
         ];
         $requiredAttributes = $this->category->getAttributes($params);
-
         $params = [
             'category_ids' => $categoryIds,
             'isMandatory' => 0
         ];
         $optionalAttributes = $this->category->getAttributes($params);
-
         $this->_BetterthatAttribute[] = [
             'label' => __('Required Attributes'),
             'value' => $requiredAttributes
         ];
-
-
         $this->_BetterthatAttribute[] = [
             'label' => __('Optional Attributes'),
             'value' => $optionalAttributes
         ];
-
         return $this->_BetterthatAttribute;
     }
 
@@ -113,18 +104,15 @@ class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Frame
      */
     public function getMagentoAttributes()
     {
-
         $attributes = $this->_objectManager->create(
-            'Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection'
-        )
-            ->getItems();
-
+            \Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection::class
+        )->getItems();
         $mattributecode = '--please select--';
         $magentoattributeCodeArray[''] = $mattributecode;
         foreach ($attributes as $attribute) {
-            $magentoattributeCodeArray[$attribute->getAttributecode()] = $attribute->getFrontendLabel();
+            $magentoattributeCodeArray[$attribute->getAttributecode()]
+                = $attribute->getFrontendLabel();
         }
-
         return $magentoattributeCodeArray;
     }
 
@@ -132,11 +120,13 @@ class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Frame
     {
         $data = $this->_BetterthatAttribute[0]['value'];
         if ($this->profile && $this->profile->getId() > 0) {
-            $requiredAttributes = json_decode($this->profile->getProfileRequiredAttributes(), true);
+            $requiredAttributes =
+                json_decode($this->profile->getProfileRequiredAttributes(), true);
             foreach ($requiredAttributes as &$attribute) {
                 $attribute['options'] = json_decode($attribute['options'], true);
             }
-            $optionalAttributes = json_decode($this->profile->getProfileOptionalAttributes(), true);
+            $optionalAttributes =
+                json_decode($this->profile->getProfileOptionalAttributes(), true);
             foreach ($optionalAttributes as &$attribute) {
                 $attribute['options'] = json_decode($attribute['options'], true);
             }
@@ -166,7 +156,7 @@ class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Frame
     public function _prepareLayout()
     {
         $button = $this->getLayout()->createBlock(
-            'Magento\Backend\Block\Widget\Button'
+            \Magento\Backend\Block\Widget\Button::class
         )->setData(
             [
                 'label' => __('Add Attribute'),
@@ -174,11 +164,8 @@ class Attributes extends \Magento\Backend\Block\Widget implements \Magento\Frame
                 'class' => 'add'
             ]
         );
-
         $button->setName('add_required_item_button');
-
         $this->setChild('add_button', $button);
-
         return parent::_prepareLayout();
     }
 }

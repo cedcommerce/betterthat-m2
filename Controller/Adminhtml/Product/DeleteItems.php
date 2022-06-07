@@ -26,7 +26,7 @@ namespace Ced\Betterthat\Controller\Adminhtml\Product;
  */
 class DeleteItems extends \Magento\Backend\App\Action
 {
-    const CHUNK_SIZE = 1;
+    public const CHUNK_SIZE = 1;
 
     /**
      * @var \Magento\Ui\Component\MassAction\Filter
@@ -76,7 +76,8 @@ class DeleteItems extends \Magento\Backend\App\Action
         \Ced\Betterthat\Helper\Product $product,
         \Ced\Betterthat\Helper\Config $config,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        \Magento\Backend\Model\View\Result\Redirect $redirect
     ) {
         parent::__construct($context);
         $this->filter               = $filter;
@@ -87,6 +88,7 @@ class DeleteItems extends \Magento\Backend\App\Action
         $this->Betterthat              = $product;
         $this->resultPageFactory    = $resultPageFactory;
         $this->session              =  $context->getSession();
+        $this->resultRedirect = $redirect;
     }
 
     /**
@@ -95,11 +97,13 @@ class DeleteItems extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $collectionFactory = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory')->create();
+        $collectionFactory = $this->_objectManager
+            ->create(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class)
+            ->create();
         $collection = $this->filter->getCollection($collectionFactory);
         $deletedIds = $this->Betterthat->deleteProducts($collection->getAllIds());
-        foreach ($collection as $product){
-            if(in_array($product->getId(), $deletedIds)) {
+        foreach ($collection as $product) {
+            if (in_array($product->getId(), $deletedIds)) {
                 $product->setbetterthat_product_status('DELETED');
                 $product->setbetterthat_visibility('no');
                 $product->setbetterthat_product_id('');
@@ -109,12 +113,13 @@ class DeleteItems extends \Magento\Backend\App\Action
                 $product->getResource()->saveAttribute($product, 'betterthat_product_status');
             }
         }
-        if(count($deletedIds)>0) {
-             $this->messageManager->addSuccessMessage(json_encode($deletedIds) . ' item(s) deleted successfully');
+        if (count($deletedIds)>0) {
+             $this->messageManager
+                 ->addSuccessMessage(json_encode($deletedIds) . ' item(s) deleted successfully');
         } else {
-            $this->messageManager->addErrorMessage('Something went wrong');
+            $this->messageManager
+                ->addErrorMessage('Something went wrong');
         }
-
-        return $this->_redirect('*/product/index');
+        return $this->resultRedirect->setPath('*/product/index');
     }
 }

@@ -25,8 +25,8 @@ use Magento\Framework\UrlInterface;
 
 class DataActions extends Column
 {
-    const URL_PATH_EDIT = 'betterthat/profile/edit';
-    const URL_PATH_UPLOAD = 'betterthat/products/index';
+    public const URL_PATH_EDIT = 'betterthat/profile/edit';
+    public const URL_PATH_UPLOAD = 'betterthat/products/index';
 
     /**
      * URL builder

@@ -8,10 +8,8 @@
 
 namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\Grid;
 
-
 class Category extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer
 {
-
     protected $categoryFactory;
     protected $productFactory;
 
@@ -28,15 +26,14 @@ class Category extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstra
         $product = $this->productFactory->create()->load($row->getEntityId());
         $cats = $product->getCategoryIds();
         $allCats = '';
-        foreach($cats as $key => $cat)
-        {
-            $_category = $this->categoryFactory->create()->load($cat);
+        foreach ($cats as $key => $cat) {
+            $_category = $this->categoryFactory->create()
+                ->load($cat);
             $allCats.= $_category->getName();
-            if($key < count($cats)-1) {
+            if ($key < count($cats)-1) {
                 $allCats.= ',<br />';
             }
         }
         return $allCats;
     }
-
 }

@@ -47,9 +47,14 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      */
     public function getHeaderText()
     {
-
-        if ($this->_coreRegistry->registry('profile_data') && $this->_coreRegistry->registry('profile_data')->getId()) {
-            return __('Edit Profile "%s" ', $this->escapeHtml($this->_coreRegistry->registry('profile_data')->getName()));
+        if ($this->_coreRegistry->registry('profile_data')
+            && $this->_coreRegistry->registry('profile_data')->getId()) {
+            return __(
+                'Edit Profile "%s" ',
+                $this->escapeHtml($this->_coreRegistry
+                    ->registry('profile_data')
+                    ->getName())
+            );
         } else {
             return __('Add Profile');
         }
@@ -74,12 +79,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         $this->_objectId = 'profile_id';
         $this->_blockGroup = 'ced_Betterthat';
         $this->_controller = 'adminhtml_profile';
-
         parent::_construct();
-
         $this->updateButton('save', 'label', __('Save'));
-
-
         $this->addButton(
             'delete',
             [
@@ -98,7 +99,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             [
                 'label' => __('Save and Continue Edit'),
                 'class' => 'save',
-                'onclick' => 'saveAndContinueEdit(\'' . $this->getSaveAndContinueUrl('edit') . '\')',
+                'onclick' => 'saveAndContinueEdit(\'' .
+                    $this->getSaveAndContinueUrl('edit') . '\')',
             ]
         );
 
@@ -139,16 +141,15 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             ['back' => null, 'pcode' => $this->getRequest()->getParam('pcode')]
         );
     }
-
     /**
      * @param  $back
      * @return string
      */
     public function getSaveAndContinueUrl($back)
     {
-
         return $this->getUrl(
-            '*/*/save', [
+            '*/*/save',
+            [
             '_current' => true,
             'back' => $back,
             'active_tab' => null,

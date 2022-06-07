@@ -23,8 +23,7 @@ use Magento\Framework\App\Action\Action;
 
 class Validate extends Action
 {
-
-    const CHUNK_SIZE = 10;
+    public const CHUNK_SIZE = 10;
 
     /**
      *
@@ -81,9 +80,9 @@ class Validate extends Action
         \Magento\Backend\App\Action\Context $context,
         \Magento\Ui\Component\MassAction\Filter $filter,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     ) {
-
         parent::__construct($context);
         $this->filter = $filter;
         $this->catalogCollection = $collection;
@@ -92,6 +91,8 @@ class Validate extends Action
         $this->registry = $registry;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultPageFactory = $resultPageFactory;
+        $this->resultRedirect = $redirect;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -108,27 +109,30 @@ class Validate extends Action
             if (isset($productIds[$batchId]) && $response) {
                 return $resultJson->setData(
                     [
-                    'success' => count($productIds[$batchId]) . " Product(s) Validation Process Executed successfully.",
+                    'success' => count($productIds[$batchId])
+                        . " Product(s) Validation Process Executed successfully.",
                     'messages' => $response
                     ]
                 );
             }
             return $resultJson->setData(
                 [
-                'error' => count($productIds[$batchId]) . " Product(s) Validation Process Execution Failed.",
+                'error' => count($productIds[$batchId]) .
+                    " Product(s) Validation Process Execution Failed.",
                 'messages' => $this->registry->registry('Betterthat_product_errors'),
                 ]
             );
         }
 
         // case 3 normal uploading and chunk creating
-        $collection = $this->filter->getCollection($this->catalogCollection->getCollection());
+        $collection = $this->filter
+            ->getCollection($this->catalogCollection->getCollection());
         $productIds = $collection->getAllIds();
 
         if (count($productIds) == 0) {
             $this->messageManager->addErrorMessage('No Product selected to validate.');
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
@@ -136,7 +140,9 @@ class Validate extends Action
         if (count($productIds) == self::CHUNK_SIZE) {
             $response = $this->Betterthat->validateAllProducts($productIds);
             if ($response) {
-                $this->messageManager->addSuccessMessage(count($productIds) . ' Product(s) Validation Process Executed successfully.');
+                $this->messageManager
+                    ->addSuccessMessage(count($productIds) .
+                        ' Product(s) Validation Process Executed successfully.');
             } else {
                 $message = 'Product(s) Validate Failed.';
                 $errors = $this->registry->registry('Betterthat_product_errors');
@@ -145,9 +151,8 @@ class Validate extends Action
                 }
                 $this->messageManager->addError($message);
             }
-
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 

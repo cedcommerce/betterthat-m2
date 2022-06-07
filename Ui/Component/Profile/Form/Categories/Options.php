@@ -2,7 +2,6 @@
 
 namespace Ced\Betterthat\Ui\Component\Profile\Form\Categories;
 
-
 use Magento\Framework\Data\OptionSourceInterface;
 
 class Options implements OptionSourceInterface

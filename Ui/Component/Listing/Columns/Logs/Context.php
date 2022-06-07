@@ -28,20 +28,8 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class Context extends Column
 {
-
-    public function __construct(
-        ContextInterface $context,
-        UiComponentFactory $uiComponentFactory,
-        $components = [],
-        $data = []
-    ) {
-        parent::__construct($context, $uiComponentFactory, $components, $data);
-    }
-
-
     public function prepareDataSource(array $dataSource)
     {
-
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
                 $name = $this->getData('name');
@@ -62,7 +50,6 @@ class Context extends Column
                 }
             }
         }
-
         return $dataSource;
     }
 }

@@ -90,8 +90,6 @@ class Mapping extends \Magento\Backend\Block\Widget\Form\Generic
                 'values' => []
             ]
         );
-
-
         $fieldset->addField(
             'profile_category_3',
             'select',
@@ -160,7 +158,8 @@ class Mapping extends \Magento\Backend\Block\Widget\Form\Generic
 
         $locations = $form->getElement('category_js');
         $locations->setRenderer(
-            $this->getLayout()->createBlock('Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Attribute\CategoryJs')
+            $this->getLayout()
+                ->createBlock(\Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Attribute\CategoryJs::class)
         );
 
         $fieldset = $form->addFieldset(
@@ -179,15 +178,13 @@ class Mapping extends \Magento\Backend\Block\Widget\Form\Generic
                 'name' => 'required_attribute'
             ]
         );
-
         $locations = $form->getElement('attributes');
         $locations->setRenderer(
             $this->getLayout()->createBlock(
-                'Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Attribute\Attributes',
+                \Ced\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Attribute\Attributes::class,
                 'Betterthat_attributes'
             )
         );
-
         $this->setForm($form);
         return parent::_prepareForm();
     }

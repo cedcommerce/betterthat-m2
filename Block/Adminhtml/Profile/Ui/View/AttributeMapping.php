@@ -9,7 +9,6 @@ class AttributeMapping extends \Magento\Backend\Block\Template
       */
     public $_template = 'Ced_Betterthat::profile/attribute/attributes.phtml';
 
-
     public $_objectManager;
 
     public $_coreRegistry;
@@ -21,7 +20,6 @@ class AttributeMapping extends \Magento\Backend\Block\Template
     public $_BetterthatAttribute;
 
     public $request;
-
 
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -49,7 +47,7 @@ class AttributeMapping extends \Magento\Backend\Block\Template
     public function getAddButtonHtml()
     {
         $button = $this->getLayout()->createBlock(
-            'Magento\Backend\Block\Widget\Button'
+            \Magento\Backend\Block\Widget\Button::class
         )->setData(
             [
                 'label' => __('Add Attribute'),
@@ -67,10 +65,9 @@ class AttributeMapping extends \Magento\Backend\Block\Template
         // For AJAX
         $this->_BetterthatAttribute = $this->getAttributes();
 
-        if (isset($this->_BetterthatAttribute) and !empty($this->_BetterthatAttribute)) {
+        if (isset($this->_BetterthatAttribute) && !empty($this->_BetterthatAttribute)) {
             return $this->_BetterthatAttribute;
         }
-
         // For Profile Saved
         $categoryId = $this->profile->getProfileCategory();
         $params = [
@@ -83,21 +80,16 @@ class AttributeMapping extends \Magento\Backend\Block\Template
             'isMandatory' => 0
         ];
         $optionalAttributes = $this->category->getAttributes($params);
-
-
-        $this->_BetterthatAttribute[] = array(
+        $this->_BetterthatAttribute[] = [
             'label' => 'Required Attributes',
             'value' => $requiredAttributes
-        );
-
-
-        $this->_BetterthatAttribute[] = array(
+        ];
+        $this->_BetterthatAttribute[] = [
             'label' => 'Optional Attributes',
             'value' => $optionalAttributes
-        );
+        ];
         return $this->_BetterthatAttribute;
     }
-
 
     /**
      * Retrieve magento attributes
@@ -107,11 +99,9 @@ class AttributeMapping extends \Magento\Backend\Block\Template
      */
     public function getMagentoAttributes()
     {
-
         $attributes = $this->_objectManager->create(
-            'Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection'
-        )
-            ->getItems();
+            \Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection::class
+        )->getItems();
 
         $mattributecode = '--Please Select--';
         /*$magentoattributeCodeArray[''] = $mattributecode;
@@ -141,18 +131,21 @@ class AttributeMapping extends \Magento\Backend\Block\Template
             $type = "";
             $optionValues = "";
             $attributeOptions = $attribute->getSource()->getAllOptions(false);
-            if (!empty($attributeOptions) and is_array($attributeOptions)) {
+            if (!empty($attributeOptions) && is_array($attributeOptions)) {
                 $type = " [ select ]";
                 foreach ($attributeOptions as &$option) {
-                    if (isset($option['label']) and is_object($option['label'])) {
+                    if (isset($option['label']) && is_object($option['label'])) {
                         $option['label'] = $option['label']->getText();
                     }
                 }
-                $attributeOptions = str_replace('\'', '&#39;', json_encode($attributeOptions));
-                $optionValues = addslashes($attributeOptions);
+                $attributeOptions = str_replace(
+                    '\'',
+                    '&#39;',
+                    json_encode($attributeOptions)
+                );
+                $optionValues = $attributeOptions;
             }
-
-            if($attribute->getFrontendInput() =='select') {
+            if ($attribute->getFrontendInput() =='select') {
                 $magentoattributeCodeArray[$attribute->getAttributecode()] =
                     [
                         'attribute_code' => $attribute->getFrontendLabel() . $type,
@@ -169,9 +162,7 @@ class AttributeMapping extends \Magento\Backend\Block\Template
                         'option_values' => $optionValues,
                     ];
             }
-            //$magentoattributeCodeArray[$attribute->getAttributecode()] = $attribute->getFrontendLabel();
         }
-
         return $magentoattributeCodeArray;
     }
 
@@ -185,25 +176,26 @@ class AttributeMapping extends \Magento\Backend\Block\Template
         $optionalAttributes = [];
         if ($this->profile && $this->profile->getId()) {
             $requiredAttributes = json_decode($this->profile->getProfileRequiredAttributes(), true);
-            if(is_array($requiredAttributes) && count($requiredAttributes)) {
+            if (is_array($requiredAttributes) && count($requiredAttributes)) {
                 foreach ($requiredAttributes as &$attribute) {
                     $attribute['options'] = json_decode($attribute['options'], true);
-                    if(!in_array($attribute['name'], $reqAttrCodes)) {
+                    if (!in_array($attribute['name'], $reqAttrCodes)) {
                         unset($requiredAttributes[$attribute['name']]);
                     }
                 }
             }
 
-            $optionalAttributes = json_decode($this->profile->getProfileOptionalAttributes(), true);
-            if(is_array($optionalAttributes) && count($optionalAttributes)) {
+            $optionalAttributes =
+                json_decode($this->profile->getProfileOptionalAttributes(), true);
+            if (is_array($optionalAttributes) && count($optionalAttributes)) {
                 foreach ($optionalAttributes as &$attribute) {
                     $attribute['options'] = json_decode($attribute['options'], true);
-                    if(!in_array($attribute['name'], $optAttrCodes)) {
+                    if (!in_array($attribute['name'], $optAttrCodes)) {
                         unset($optionalAttributes[$attribute['name']]);
                     }
                 }
             }
-            if(is_array($requiredAttributes) && is_array($optionalAttributes)) {
+            if (is_array($requiredAttributes) && is_array($optionalAttributes)) {
                 $data = $requiredAttributes + $optionalAttributes + $data;
             }
         }

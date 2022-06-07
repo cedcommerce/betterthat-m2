@@ -91,13 +91,12 @@ class DataProvider extends AbstractDataProvider
             $this->getCollection()->load();
         }
         $items = $this->getCollection()->getData();
-
         $data = [];
-
         foreach ($items as $item) {
             $products = [
                 'magento_category' => json_decode($item['magento_category'], true),
-                'betterthat_category' => isset($item['betterthat_categories']) ? json_decode($item['betterthat_categories'], true) : '',
+                'betterthat_category' => isset($item['betterthat_categories'])
+                    ? json_decode($item['betterthat_categories'], true) : '',
             ];
 
             $info = [
@@ -114,8 +113,6 @@ class DataProvider extends AbstractDataProvider
                 'betterthat_category' => $products
             ];
         }
-
         return $data;
     }
-
 }

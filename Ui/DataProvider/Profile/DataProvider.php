@@ -25,8 +25,6 @@ use Magento\Ui\DataProvider\AbstractDataProvider;
  */
 class DataProvider extends AbstractDataProvider
 {
-
-
     /**
      * @var \Magento\Ui\DataProvider\AddFieldToCollectionInterface[]
      */
@@ -81,7 +79,6 @@ class DataProvider extends AbstractDataProvider
         $this->addFieldStrategies   = $addFieldStrategies;
         $this->addFilterStrategies  = $addFilterStrategies;
     }
-
     /**
      * Get Profile Data
      *
@@ -101,5 +98,4 @@ class DataProvider extends AbstractDataProvider
             'items' => array_values($items),
         ];
     }
-
 }

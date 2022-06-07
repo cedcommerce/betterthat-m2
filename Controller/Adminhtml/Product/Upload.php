@@ -27,7 +27,7 @@ namespace Ced\Betterthat\Controller\Adminhtml\Product;
 class Upload extends \Magento\Backend\App\Action
 {
 
-    const CHUNK_SIZE = 1;
+    public const CHUNK_SIZE = 1;
 
     /**
      * @var \Magento\Ui\Component\MassAction\Filter
@@ -59,13 +59,13 @@ class Upload extends \Magento\Backend\App\Action
     /**
      * Upload constructor.
      *
-     * @param \Magento\Backend\App\Action\Context              $context
-     * @param \Magento\Framework\View\Result\PageFactory       $resultPageFactory
-     * @param \Magento\Ui\Component\MassAction\Filter          $filter
-     * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Ced\Betterthat\Helper\Product                   $product
-     * @param \Ced\Betterthat\Helper\Config                    $config
-     * @param \Magento\Framework\Registry                      $registry
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Magento\Catalog\Model\Product $collection
+     * @param \Ced\Betterthat\Helper\Product $product
+     * @param \Ced\Betterthat\Helper\Config $config
+     * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      */
     public function __construct(
@@ -82,7 +82,7 @@ class Upload extends \Magento\Backend\App\Action
         $this->filter = $filter;
         $this->catalogCollection = $collection;
         $this->Betterthat = $product;
-        $this->session =  $context->getSession();
+        $this->session = $context->getSession();
         $this->registry = $registry;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultPageFactory = $resultPageFactory;
@@ -101,43 +101,49 @@ class Upload extends \Magento\Backend\App\Action
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
             $response = $this->Betterthat->createProducts($productIds[$batchId]);
-            if(isset($response['err_code']) && $response['err_code'] == 'validation_err') {
+            if (isset($response['err_code']) && $response['err_code'] == 'validation_err') {
                 return $resultJson->setData(
                     [
-                        'errors' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) . " Upload Failed. Reason: ".$response['message'],
+                        'errors' => count($productIds[$batchId])
+                            . ' Product Ids: ' . json_encode($productIds[$batchId])
+                            . " Upload Failed. Reason: " . $response['message'],
                         'messages' => $response['message'],
                     ]
                 );
-            }elseif (isset($productIds[$batchId]) && $response) {
+            } elseif (isset($productIds[$batchId]) && $response) {
                 if (isset($response['message'])
-                    && in_array($response['message'], ["product already exists","product already exists in cleanse section."])
+                    && in_array($response['message'],
+                        [
+                            "product already exists",
+                            "product already exists in cleanse section."
+                        ])
                 ) {
                     return $resultJson->setData(
                         [
-                            'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]).' '.$response['message']  ,
+                            'success' => count($productIds[$batchId]) . ' Product Ids: ' . json_encode($productIds[$batchId]) . ' ' . $response['message'],
                             'messages' => $response['message']
                         ]
                     );
-                }elseif(isset($response['bt_visibility'])) {
+                } elseif (isset($response['bt_visibility'])) {
                     return $resultJson->setData(
                         [
-                            'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]).' '.$response['message']  ,
+                            'success' => count($productIds[$batchId]) . ' Product Ids: ' . json_encode($productIds[$batchId]) . ' ' . $response['message'],
                             'messages' => $response['message']
                         ]
                     );
-                }else{
+                } else {
                     return $resultJson->setData(
                         [
-                            'success' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) .' Product will be reviewed first and get approved soon'  ,
+                            'success' => count($productIds[$batchId]) . ' Product Ids: ' . json_encode($productIds[$batchId]) . ' Product will be reviewed first and get approved soon',
                             'messages' => $response['message']
                         ]
                     );
                 }
 
-            }else{
+            } else {
                 return $resultJson->setData(
                     [
-                        'errors' => count($productIds[$batchId]) .' Product Ids: '. json_encode($productIds[$batchId]) . " Upload Failed. Reason: Invalid item ",
+                        'errors' => count($productIds[$batchId]) . ' Product Ids: ' . json_encode($productIds[$batchId]) . " Upload Failed. Reason: Invalid item ",
                         'messages' => isset($response['message']) ? $response['message'] : '',
                     ]
                 );
@@ -160,19 +166,18 @@ class Upload extends \Magento\Backend\App\Action
             $response = $this->Betterthat->createProducts($productIds);
             if (!isset($response['err_code']) && !isset($response['error_key'])) {
                 if (isset($response['message'])
-                    && in_array($response['message'], ["product already exists","product already exists in cleanse section."])
+                    && in_array($response['message'], ["product already exists", "product already exists in cleanse section."])
                 ) {
                     $this->messageManager->addSuccessMessage($response['message']);
-                }elseif(isset($response['bt_visibility'])) {
+                } elseif (isset($response['bt_visibility'])) {
                     $this->messageManager->addNoticeMessage($response['message']);
-                }
-                else{
+                } else {
                     $this->messageManager->addSuccessMessage(count($productIds) . 'Product(s) will reviewed first and get approved soon');
                 }
             } else {
-                if(isset($response['fields'][0]) && $response['fields'][0] == 'visibility') {
+                if (isset($response['fields'][0]) && $response['fields'][0] == 'visibility') {
                     $this->messageManager->addNoticeMessage("Item's visibility is not visible hence can't be uploaded, please update the visibility and try again!");
-                }else{
+                } else {
                     $message = 'Product(s) Upload Failed.';
                     $errors = $this->registry->registry('Betterthat_product_errors');
                     if (isset($errors)) {

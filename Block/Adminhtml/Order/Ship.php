@@ -100,7 +100,7 @@ class Ship extends AbstractOrder implements TabInterface
     public function getModel()
     {
         $orderId = $this->getOrder()->getId();
-        $BetterthatOrder = $this->getObjectManager()->get('Ced\Betterthat\Model\Orders')
+        $BetterthatOrder = $this->getObjectManager()->get(\Ced\Betterthat\Model\Orders::class)
             ->getCollection()->addFieldToFilter('magento_order_id', $orderId)
             ->getFirstItem();
         return $BetterthatOrder;

@@ -20,13 +20,10 @@ namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\View;
 
 class Configurations extends \Magento\Config\Block\System\Config\Form
 {
-    const SCOPE_DEFAULT = 'default';
-
-    const SCOPE_WEBSITES = 'websites';
-
-    const SCOPE_STORES = 'stores';
-
-    const SCOPE_VENDOR = 'vendor';
+    public const SCOPE_DEFAULT = 'default';
+    public const SCOPE_WEBSITES = 'websites';
+    public const SCOPE_STORES = 'stores';
+    public const SCOPE_VENDOR = 'vendor';
 
     /**
      * Config data array
@@ -125,13 +122,20 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
         \Magento\Config\Block\System\Config\Form\Field\Factory $fieldFactory,
         array $data = []
     ) {
-
-        parent::__construct($context, $registry, $formFactory, $configFactory, $configStructure, $fieldsetFactory, $fieldFactory, $data);
+        parent::__construct(
+            $context,
+            $registry,
+            $formFactory,
+            $configFactory,
+            $configStructure,
+            $fieldsetFactory,
+            $fieldFactory,
+            $data
+        );
         $this->_configFactory = $configFactory;
         $this->_configStructure = $configStructure;
         $this->_fieldsetFactory = $fieldsetFactory;
         $this->_fieldFactory = $fieldFactory;
-
         $this->_scopeLabels = [
             self::SCOPE_DEFAULT => __('[GLOBAL]'),
             self::SCOPE_WEBSITES => __('[WEBSITE]'),
@@ -149,15 +153,9 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     public function canUseDefaultValues($fieldValue, $path)
     {
         $pcode = $this->getRequest()->getParam('pcode');
-
         if (strlen($pcode) > 0) {
-            $data = $this->_scopeConfig->getValue($pcode . '/' . $path, $this->getScope(), $this->getScopeCode());
-            /*  if ($this->getScope() == self::SCOPE_STORES && $fieldValue) {
-                 return true;
-             }
-             if ($this->getScope() == self::SCOPE_WEBSITES && $fieldValue) {
-                 return true;
-             } */
+            $data = $this->_scopeConfig
+                ->getValue($pcode . '/' . $path, $this->getScope(), $this->getScopeCode());
             if ($data != '') {
                 return false;
             } else {
@@ -166,7 +164,6 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
         } else {
             return true;
         }
-
     }
 
     /**
@@ -185,7 +182,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
 
     public function isVisible()
     {
-        if (isset($this->_data['if_module_enabled']) 
+        if (isset($this->_data['if_module_enabled'])
             && !$this->moduleManager->isOutputEnabled($this->_data['if_module_enabled'])
         ) {
             return false;
@@ -238,11 +235,11 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
         $this->_initObjects();
 
         /**
- * @var \Magento\Framework\Data\Form $form 
+ * @var \Magento\Framework\Data\Form $form
 */
         $form = $this->_formFactory->create();
         /**
- * @var $section \Magento\Config\Model\Config\Structure\Element\Section 
+ * @var $section \Magento\Config\Model\Config\Structure\Element\Section
 */
         $section = $this->_configStructure->getElement($this->getSectionCode());
 
@@ -411,7 +408,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     {
         foreach ($dependencies as $dependentField) {
             /**
- * @var $dependentField \Magento\Config\Model\Config\Structure\Element\Dependency\Field 
+ * @var $dependentField \Magento\Config\Model\Config\Structure\Element\Dependency\Field
 */
             $fieldNameFrom = $this->_generateElementName($dependentField->getId(), null, '_');
             $this->_getDependence()->addFieldMap(
@@ -436,7 +433,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     protected function _getDependence()
     {
         if (!$this->getChildBlock('element_dependence')) {
-            $this->addChild('element_dependence', 'Magento\Backend\Block\Widget\Form\Element\Dependence');
+            $this->addChild('element_dependence', \Magento\Backend\Block\Widget\Form\Element\Dependence::class);
         }
         return $this->getChildBlock('element_dependence');
     }
@@ -468,7 +465,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
         $extraConfigGroups = [];
 
         /**
- * @var $element \Magento\Config\Model\Config\Structure\Element\Field 
+ * @var $element \Magento\Config\Model\Config\Structure\Element\Field
 */
         foreach ($group->getChildren() as $element) {
             if ($element instanceof \Magento\Config\Model\Config\Structure\Element\Group) {
@@ -575,8 +572,8 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
                 'scope' => $this->getScope(),
                 'scope_id' => $this->getScopeId(),
                 'scope_label' => $this->getScopeLabel($field),
-                'can_use_default_value' => true,//$this->canUseDefaultValues($field->showInDefault(),$path), //$this->canUseDefaultValue($field->showInDefault()),//true,//$this->canUseDefaultValues($field->showInDefault(),$path),
-                'can_use_website_value' => false,//$this->canUseWebsiteValue($field->showInWebsite()),
+                'can_use_default_value' => true,
+                'can_use_website_value' => false,
                 'data-form-part' => "Betterthat_profile_edit", // added for for form save to send values
             ]
         );
@@ -604,13 +601,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     {
         $pcode = $this->getRequest()->getParam('pcode');
         if (strlen($pcode) > 0) {
-            /* print_r($this->_scopeConfig->getValue($gcode.'/'.$path, $this->getScope(), $this->getScopeCode()));
-            die; */
             return $this->_scopeConfig->getValue($pcode . '/' . $path, $this->getScope(), $this->getScopeCode());
-        } else {
-            /* print_r($this->_scopeConfig->getValue($path, $this->getScope(), $this->getScopeCode()));
-            return $this->_scopeConfig->getValue($path, $this->getScope(), $this->getScopeCode());
-            */
         }
     }
 
@@ -632,7 +623,6 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
             }
             $this->setScope($scope);
         }
-
         return $scope;
     }
 
@@ -713,9 +703,7 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
             }
         }
         return true;
-
     }
-
     /**
      * Get current scope code
      *
@@ -779,23 +767,9 @@ class Configurations extends \Magento\Config\Block\System\Config\Form
     protected function _getAdditionalElementTypes()
     {
         return [
-            'allowspecific' => 'Magento\Config\Block\System\Config\Form\Field\Select\Allowspecific',
-            'image' => 'Magento\Config\Block\System\Config\Form\Field\Image',
-            'file' => 'Magento\Config\Block\System\Config\Form\Field\File'
+            'allowspecific' => \Magento\Config\Block\System\Config\Form\Field\Select\Allowspecific::class,
+            'image' => \Magento\Config\Block\System\Config\Form\Field\Image::class,
+            'file' => \Magento\Config\Block\System\Config\Form\Field\File::class
         ];
     }
-
-    /* protected function _toHtml() {
-        if($this->getRequest()->isAjax()) {
-            return parent::_toHtml();
-        }
-        $switcher = $this->getLayout()->createBlock('Magento\Backend\Block\Template')->setStoreSelectOptions($this->getStoreSelectOptions())->setTemplate('csgroup/system/config/switcher.phtml')->toHtml();
-        $switcher .= '<style>.switcher p{ display: none; }</style>';
-        $parent = '<div id="vendor_group_configurations_section">'.parent::_toHtml().'</div>';
-        if(strlen($parent) <= 50) {
-            $parent .= '<div id="messages"><ul class="messages"><li class="error-msg"><ul><li><span>'.__('No Configurations are Available for Current Configuration Scope. Please Up the Configuration Scope by One Level.').'</span></li></ul></li></ul></div>';
-            return $parent;
-        }
-        return $parent;
-    } */
 }

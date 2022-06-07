@@ -8,7 +8,6 @@
 
 namespace Ced\Betterthat\Block\Adminhtml\Profile\Ui\Button;
 
-
 use Magento\Customer\Block\Adminhtml\Edit\GenericButton;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 

@@ -71,7 +71,7 @@ class FailedDataProvider extends AbstractDataProvider
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->collection = $collectionFactory->getCollection();
-        $this->size = sizeof($this->collection->getData());
+        $this->size = count($this->collection->getData());
     }
 
     /**

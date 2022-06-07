@@ -125,11 +125,11 @@ class Conditions extends Generic implements TabInterface
      */
     protected function _prepareForm()
     {
-        $model = $this->_coreRegistry->registry('current_promo_catalog_rule');
-
+        $model = $this->_coreRegistry
+            ->registry('current_promo_catalog_rule');
         /**
- * @var \Magento\Framework\Data\Form $form 
-*/
+        * @var \Magento\Framework\Data\Form $form
+        */
         $form = $this->addTabToForm($model);
         $this->setForm($form);
 
@@ -146,7 +146,7 @@ class Conditions extends Generic implements TabInterface
     protected function addTabToForm($model, $fieldsetId = 'conditions_fieldset', $formName = 'catalog_rule_form')
     {
         /**
- * @var \Magento\Framework\Data\Form $form 
+ * @var \Magento\Framework\Data\Form $form
 */
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('rule_');

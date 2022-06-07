@@ -67,7 +67,7 @@ class Status extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
                 $name = $this->getData('name');
-                if (isset($item['betterthat_product_status']) and !empty($item['betterthat_product_status'])) {
+                if (isset($item['betterthat_product_status']) && !empty($item['betterthat_product_status'])) {
                     $item[$name] = $item['betterthat_product_status'];
                 } else {
                     $item[$name] = \Ced\Betterthat\Model\Source\Product\Status::NOT_UPLOADED;

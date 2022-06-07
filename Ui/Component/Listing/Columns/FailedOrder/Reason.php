@@ -28,27 +28,8 @@ use Magento\Ui\Component\Listing\Columns\Column;
 class Reason extends Column
 {
 
-    /**
-     * Reason constructor.
-     *
-     * @param ContextInterface   $context
-     * @param UiComponentFactory $uiComponentFactory
-     * @param array              $components
-     * @param array              $data
-     */
-    public function __construct(
-        ContextInterface $context,
-        UiComponentFactory $uiComponentFactory,
-        $components = [],
-        $data = []
-    ) {
-        parent::__construct($context, $uiComponentFactory, $components, $data);
-    }
-
-
     public function prepareDataSource(array $dataSource)
     {
-
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
                 $name = $this->getData('name');
@@ -65,7 +46,6 @@ class Reason extends Column
                 }
             }
         }
-
         return $dataSource;
     }
 }

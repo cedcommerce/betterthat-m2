@@ -18,6 +18,7 @@
  */
 
 namespace Ced\Betterthat\Controller\Adminhtml\Product;
+
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
@@ -27,7 +28,6 @@ use Magento\Framework\App\Filesystem\DirectoryList;
  */
 class Export extends \Magento\Backend\App\Action
 {
-
     /**
      * @var \Magento\Ui\Component\MassAction\Filter
      */
@@ -95,8 +95,8 @@ class Export extends \Magento\Backend\App\Action
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
         $this->productFactory = $product;
         $this->fileFactory = $fileFactory;
-
     }
+
     /**
      * @return $this|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -109,11 +109,12 @@ class Export extends \Magento\Backend\App\Action
         $this->directory->create('export');
         $stream = $this->directory->openFile($filepath, 'w+');
         $stream->lock();
-
         $header = ['Id', 'Name','Sku','Error'];
         $stream->writeCsv($header);
-
-        $collection = $this->productFactory->create()->addAttributeToSelect(['name','betterthat_validation_errors'])->addFieldToFilter('entity_id', ['in'=>$productIds]);
+        $collection = $this->productFactory
+            ->create()
+            ->addAttributeToSelect(['name','betterthat_validation_errors'])
+            ->addFieldToFilter('entity_id', ['in'=>$productIds]);
         foreach ($collection as $product) {
             $data = [];
             $data[] = $product->getId();
@@ -135,10 +136,7 @@ class Export extends \Magento\Backend\App\Action
             ],
             \Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR
         );
-
-        //return $this->_redirect('betterthat/product/index');
     }
-
 
     /**
      * @param  $errorJson
@@ -147,20 +145,18 @@ class Export extends \Magento\Backend\App\Action
     public function fetchErrors($errorJson)
     {
         $errors = json_decode($errorJson, 1);
-
-        if(isset($errors[0]) && $errors[0] == 'valid') {
+        if (isset($errors[0]) && $errors[0] == 'valid') {
             return $errors[0];
         }
-        if(!$errors) {
+        if (!$errors) {
             return $errors;
         }
-        foreach($errors as $error){
-            if(isset($error['errors'][0])) {
+        foreach ($errors as $error) {
+            if (isset($error['errors'][0])) {
                 return implode(':', $error['errors'][0]);
             } else {
                 return json_encode(isset($error['errors'][0]) ? $error['errors'][0] : []);
             }
-
         }
     }
 }

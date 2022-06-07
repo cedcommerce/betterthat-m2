@@ -29,11 +29,13 @@ class BetterthatCategory extends \Magento\Backend\Block\Template
     }
     public function getBetterthatCategoryUrl()
     {
-        return $this->_objectManager->get('\Magento\Backend\Model\UrlInterface')->getUrl('Betterthat/category/fetch');
+        return $this->_objectManager->get(\Magento\Backend\Model\UrlInterface::class)
+            ->getUrl('Betterthat/category/fetch');
     }
     public function getCategoryAttributeUrl()
     {
-        return $this->_objectManager->get('\Magento\Backend\Model\UrlInterface')->getUrl('Betterthat/profile/updateCategoryAttributes');
+        return $this->_objectManager->get(\Magento\Backend\Model\UrlInterface::class)
+            ->getUrl('Betterthat/profile/updateCategoryAttributes');
     }
 
     /**
@@ -49,6 +51,9 @@ class BetterthatCategory extends \Magento\Backend\Block\Template
     }
     protected function _prepareLayout()
     {
-        $this->addChild('Betterthat_attributes', 'Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\AttributeMapping');
+        $this->addChild(
+            'Betterthat_attributes',
+            \Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\AttributeMapping::class
+        );
     }
 }

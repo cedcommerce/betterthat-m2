@@ -27,38 +27,6 @@ use Magento\Backend\Block\Widget\Container;
  */
 class Button extends Container
 {
-
-    /**
-     * Button constructor.
-     *
-     * @param \Magento\Backend\Block\Widget\Context $context
-     * @param array                                 $data
-     */
-    public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
-        array $data = []
-    ) {
-        parent::__construct($context, $data);
-    }
-
-    /**
-     * @return $this
-     */
-    public function _prepareLayout()
-    {
-        /*$addButtonProps = [
-            'id' => 'select_profile',
-            'label' => __('Select Profile '),
-            'class' => 'add',
-            'button_class' => '',
-            'class_name' => 'Magento\Backend\Block\Widget\Button\SplitButton',
-            'options' => $this->_getAddProductButtonOptions(),
-        ];
-        $this->buttonList->add('add_new', $addButtonProps);*/
-
-        return parent::_prepareLayout();
-    }
-
     /**
      * Retrieve options for 'Add Product' split button
      *

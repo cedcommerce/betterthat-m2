@@ -208,15 +208,12 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
                 'type' => 'options',
                 'options' => $this->categories->getOptionArray(),
                 'index' => 'category_ids',
-                'renderer' => 'Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\Grid\Category',
-                'filter_condition_callback' => array($this, 'filterCallback'),
+                'renderer' => \Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\Grid\Category::class,
+                'filter_condition_callback' => [$this, 'filterCallback'],
             ]
         );
-
         $this->addColumn('name', ['header' => __('Name'), 'index' => 'name']);
-
         $this->addColumn('sku', ['header' => __('SKU'), 'index' => 'sku']);
-
         $this->addColumn(
             'price',
             [
@@ -237,10 +234,9 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     public function filterCallback($collection, $column)
     {
         $value = $column->getFilter()->getValue();
-        $_category = $this->_objectManager->create('\Magento\Catalog\Model\Category')->load($value);
+        $_category = $this->_objectManager->create(\Magento\Catalog\Model\Category::class)
+            ->load($value);
         $collection->addCategoryFilter($_category);
         return $collection;
     }
-
-
 }

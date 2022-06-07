@@ -48,7 +48,6 @@ class ProfileProducts extends \Magento\Backend\Block\Template
         $this->jsonEncoder = $jsonEncoder;
         parent::__construct($context, $data);
     }
-
     /**
      * Retrieve instance of grid block
      *
@@ -65,7 +64,6 @@ class ProfileProducts extends \Magento\Backend\Block\Template
         }
         return $this->blockGrid;
     }
-
     /**
      * Return HTML of grid block
      *
@@ -75,7 +73,6 @@ class ProfileProducts extends \Magento\Backend\Block\Template
     {
         return $this->getBlockGrid()->toHtml();
     }
-
     /**
      * @return string
      */
@@ -95,14 +92,11 @@ class ProfileProducts extends \Magento\Backend\Block\Template
     {
         $filters = '';
         $profileProductFilter = $this->getProfile()->getProfileProductsFilters();
-        if (isset($profileProductFilter) and !empty($profileProductFilter)) {
+        if (isset($profileProductFilter) && !empty($profileProductFilter)) {
             $filters = $profileProductFilter;
         }
         return $filters;
     }
-
-
-
     /**
      * @return $profile
      */

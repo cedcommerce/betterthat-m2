@@ -50,10 +50,9 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
     public $addFilterStrategies;
 
     /**
-     * @var \Ced\Betterthat\Helper\Config $config 
+     * @var \Ced\Betterthat\Helper\Config $config
      */
     public $config;
-
 
     public function __construct(
         CollectionFactory $collectionFactory,
@@ -69,11 +68,9 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-
         $this->filterBuilder    = $filterBuilder;
         $this->collection       = $collectionFactory->create();
         $this->config = $config;
-
         $this->collection->joinField(
             'qty',
             'cataloginventory_stock_item',
@@ -85,7 +82,7 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
 
         $msiSourceCode = $this->config->getMsiSourceCode();
         $useMsi = $this->config->getUseMsi();
-        if($useMsi ) {
+        if ($useMsi) {
             $this->collection->joinField(
                 'sourceqty',
                 'inventory_source_item',
@@ -101,17 +98,20 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->addField('betterthat_validation_errors');
         $this->addField('betterthat_feed_errors');
         $this->addFilter(
-            $this->filterBuilder->setField('betterthat_profile_id')->setConditionType('notnull')
+            $this->filterBuilder->setField('betterthat_profile_id')
+                ->setConditionType('notnull')
                 ->setValue('true')
                 ->create()
         );
         $this->addFilter(
-            $this->filterBuilder->setField('type_id')->setConditionType('in')
+            $this->filterBuilder->setField('type_id')
+                ->setConditionType('in')
                 ->setValue(['simple','configurable'])
                 ->create()
         );
         $this->addFilter(
-            $this->filterBuilder->setField('visibility')->setConditionType('nin')
+            $this->filterBuilder->setField('visibility')
+                ->setConditionType('nin')
                 ->setValue([1])
                 ->create()
         );
@@ -134,8 +134,6 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
             'items' => array_values($items),
         ];
     }
-
-
     /**
      * @param  \Magento\Framework\Api\Filter $filter
      * @return void
@@ -150,15 +148,18 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
                     [$filter->getConditionType() => $filter->getValue()]
                 );
         } else {
-            if($filter->getField() == 'Betterthat_product_status' && $filter->getValue() == 'NOT_UPLOADED') {
-                $filterData = array(
-                    array(
+            if ($filter->getField() == 'Betterthat_product_status'
+                && $filter->getValue() == 'NOT_UPLOADED') {
+                $filterData = [
+                    [
                         'attribute' => $filter->getField(),
-                        'null' => true),
-                    array(
+                        'null' => true
+                    ],
+                    [
                         'attribute' => $filter->getField(),
-                        'eq' => $filter->getValue())
-                );
+                        'eq' => $filter->getValue()
+                    ]
+                ];
                 $this->getCollection()->addAttributeToFilter($filterData);
             } else {
                 parent::addFilter($filter);

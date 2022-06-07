@@ -15,7 +15,6 @@ class BetterthatCategoryMapping extends \Magento\Backend\Block\Template
 
     public $request;
 
-
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -35,9 +34,10 @@ class BetterthatCategoryMapping extends \Magento\Backend\Block\Template
     }
     public function getBetterthatCategoryUrl()
     {
-        return $this->_objectManager->get('\Magento\Backend\Model\UrlInterface')->getUrl('betterthat/category/fetch');
+        return $this->_objectManager
+            ->get(\Magento\Backend\Model\UrlInterface::class)
+            ->getUrl('betterthat/category/fetch');
     }
-
     /**
      * Render form element as HTML
      *

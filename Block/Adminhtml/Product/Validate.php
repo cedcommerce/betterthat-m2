@@ -40,8 +40,6 @@ class Validate extends \Magento\Backend\Block\Widget\Container
      * @var \Magento\Framework\ObjectManagerInterface $objectManager
      */
     public $objectManager;
-
-
     /**
      * BatchUpload constructor.
      *
@@ -78,9 +76,7 @@ class Validate extends \Magento\Backend\Block\Widget\Container
             'onclick' => "setLocation('" . $this->_getExportUrl() . "')"
         ];
         $this->buttonList->add('export', $buttonOptions);
-
     }
-
     public function _getCreateUrl()
     {
         return $this->getUrl(
