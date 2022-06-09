@@ -82,21 +82,21 @@ class Save extends \Magento\Backend\App\Action
     /**
      * Save constructor.
      *
-     * @param \Magento\Backend\App\Action\Context                                 $context
-     * @param \Magento\Framework\Registry                                         $registory
-     * @param \Magento\Config\Model\Config\Structure                              $configStructure
-     * @param \Magento\Config\Model\Config\Factory                                $configFactory
-     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory     $categoryCollection
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory      $catalogCollection
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Registry $registory
+     * @param \Magento\Config\Model\Config\Structure $configStructure
+     * @param \Magento\Config\Model\Config\Factory $configFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollection
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $catalogCollection
      * @param \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory $configurable
-     * @param \Magento\Framework\View\Result\PageFactory                          $resultPageFactory
-     * @param DataObject                                                          $data
-     * @param \Psr\Log\LoggerInterface                                            $logger
-     * @param \Ced\Betterthat\Model\ProfileProductFactory                         $profileProduct
-     * @param \Ced\Betterthat\Model\ProfileFactory                                $profileFactory
-     * @param \Ced\Betterthat\Helper\Cache                                        $BetterThatCache
-     * @param \Ced\Betterthat\Helper\Profile                                      $profileHelper
-     * @param \Ced\Betterthat\Model\ResourceModel\ProfileFactory                  $resourceModel
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param DataObject $data
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Ced\Betterthat\Model\ProfileProductFactory $profileProduct
+     * @param \Ced\Betterthat\Model\ProfileFactory $profileFactory
+     * @param \Ced\Betterthat\Helper\Cache $BetterThatCache
+     * @param \Ced\Betterthat\Helper\Profile $profileHelper
+     * @param \Ced\Betterthat\Model\ResourceModel\ProfileFactory $resourceModel
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -151,19 +151,17 @@ class Save extends \Magento\Backend\App\Action
                 $profileModel->removeProducts($profileModel->getMagentoCategory());
                 $profileModel->addProducts($profileModel->getMagentoCategory());
                 $profileId = $profileModel->getId();
-                if($profileId) {
+                if ($profileId) {
                     $this->BetterThatCache->removeValue(\Ced\BetterThat\Helper\Cache::PROFILE_CACHE_KEY . $profileId);
                 }
                 $this->messageManager->addSuccessMessage(__('Profile save successfully.'));
             } catch (\Magento\Framework\Exception\AlreadyExistsException $e) {
-                $this->messageManager->addErrorMessage(__('Profile code already exists. '.$e->getMessage()));
-            }
-            catch (\Exception $e) {
+                $this->messageManager->addErrorMessage(__('Profile code already exists. ' . $e->getMessage()));
+            } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage(__($e->getMessage()));
             }
 
         }
-
 
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($returnToEdit) {
@@ -198,11 +196,12 @@ class Save extends \Magento\Backend\App\Action
             $requiredAttributes = $optionalAttributes = [];
 
             foreach ($BetterThatAttributes as $BetterThatAttribute_key => $BetterThatAttribute_value) {
-                if (isset($BetterThatAttribute_value['delete']) and $BetterThatAttribute_value['delete']) {
-                     continue;
+                if (isset($BetterThatAttribute_value['delete']) && $BetterThatAttribute_value['delete']) {
+                    continue;
                 }
 
-                if (isset($BetterThatAttribute_value['isMandatory']) and $BetterThatAttribute_value['isMandatory'] == 1) {
+                if (isset($BetterThatAttribute_value['isMandatory'])
+                    && $BetterThatAttribute_value['isMandatory'] == 1) {
                     $requiredAttributes[$BetterThatAttribute_key] = $BetterThatAttribute_value;
                 } else {
                     $optionalAttributes[$BetterThatAttribute_key] = $BetterThatAttribute_value;
@@ -220,7 +219,6 @@ class Save extends \Magento\Backend\App\Action
             $this->data->setData('profile_category', end($BetterThat));
         }
 
-
         if (isset($store_categories['magento_category'])) {
             $this->data->setData('magento_category', json_encode($store_categories['magento_category']));
         }
@@ -228,19 +226,15 @@ class Save extends \Magento\Backend\App\Action
             $this->data->setData('betterthat_categories', json_encode($store_categories['betterthat_category']));
         }
 
-
         if (isset($generalInformation['profile_name'])) {
             $this->data->addData($generalInformation);
         }
 
-
-        if (!$this->data->getProfileCode() or !$this->data->getProfileName()) {
+        if (!$this->data->getProfileCode() || !$this->data->getProfileName()) {
             return false;
         }
         return true;
-
     }
-
 
     /**
      * @param  $array
@@ -252,10 +246,9 @@ class Save extends \Magento\Backend\App\Action
         $tempArray = [];
         $i = 0;
         $keyArray = [];
-
-        if (!empty($attributes) and is_array($attributes)) {
+        if (!empty($attributes) && is_array($attributes)) {
             foreach ($attributes as $val) {
-                if (isset($val['delete']) and $val['delete']  == 1) {
+                if (isset($val['delete']) && $val['delete'] == 1) {
                     continue;
                 }
                 if (!in_array($val[$key], $keyArray)) {
@@ -265,8 +258,6 @@ class Save extends \Magento\Backend\App\Action
                 $i++;
             }
         }
-
         return $tempArray;
     }
-
 }

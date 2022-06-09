@@ -20,13 +20,13 @@ namespace Ced\Betterthat\Controller\Adminhtml\FailedOrder;
 
 class SyncStatus extends \Magento\Backend\App\Action
 {
-    const CHUNK_SIZE = 20;
+    public const CHUNK_SIZE = 20;
     /**
      * Authorization level of a basic admin session
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
+    public const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
     /**
      * @var \Magento\Framework\Controller\Result\RedirectFactory
      */
@@ -67,7 +67,8 @@ class SyncStatus extends \Magento\Backend\App\Action
         \Ced\Betterthat\Model\OrderFailed $collection,
         \Ced\Betterthat\Helper\Product $product,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     ) {
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->orderHelper = $orderHelper;
@@ -78,6 +79,7 @@ class SyncStatus extends \Magento\Backend\App\Action
         $this->session =  $context->getSession();
         $this->registry = $registry;
         $this->resultPageFactory = $resultPageFactory;
+        $this->redirect = $redirect;
         parent::__construct($context);
     }
 
@@ -88,10 +90,11 @@ class SyncStatus extends \Magento\Backend\App\Action
     {
         if (!$this->Betterthat->checkForConfiguration()) {
             $this->messageManager->addErrorMessage(
-                __('Products Upload Failed. Betterthat API not enabled or Invalid. Please check Betterthat Configuration.')
+                __('Products Upload Failed.
+                Betterthat API not enabled or Invalid. Please check Betterthat Configuration.')
             );
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
@@ -100,12 +103,13 @@ class SyncStatus extends \Magento\Backend\App\Action
         if (isset($batchId)) {
             $resultJson = $this->resultJsonFactory->create();
             $orderIds = $this->session->getBetterthatOrders();
-            $response = $this->orderHelper->syncOrdersStatus($orderIds[$batchId]);
+            $response = $this->orderHelper
+                ->syncOrdersStatus($orderIds[$batchId]);
             if (isset($orderIds[$batchId]) && $response) {
                 return $resultJson->setData(
                     [
                         'success' => count($orderIds[$batchId]) . "Order Sync Successfully",
-                        'messages' => $response//$this->registry->registry('Betterthat_product_errors')
+                        'messages' => $response
                     ]
                 );
             }
@@ -124,7 +128,7 @@ class SyncStatus extends \Magento\Backend\App\Action
         if (count($orderIds) == 0) {
             $this->messageManager->addErrorMessage('No Order selected to sync.');
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
@@ -132,7 +136,8 @@ class SyncStatus extends \Magento\Backend\App\Action
         if (count($orderIds) < self::CHUNK_SIZE) {
             $response = $this->orderHelper->syncOrdersStatus($orderIds);
             if ($response) {
-                $this->messageManager->addSuccessMessage(count($orderIds) . ' Order(s) Synced Successfully');
+                $this->messageManager->addSuccessMessage(count($orderIds)
+                    . ' Order(s) Synced Successfully');
             } else {
                 $message = 'Order(s) Syncing Failed.';
                 $errors = $this->registry->registry('Betterthat_order_errors');
@@ -143,7 +148,7 @@ class SyncStatus extends \Magento\Backend\App\Action
             }
 
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
         // case 3.2 normal uploading if current ids are more than chunk size.

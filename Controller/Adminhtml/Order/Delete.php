@@ -64,14 +64,15 @@ class Delete extends \Magento\Backend\App\Action
             $collection = $this->filter->getCollection($this->orders->getCollection());
         } else {
             $id = $this->getRequest()->getParam('id');
-            if (isset($id) and !empty($id)) {
-                $collection = $this->orders->getCollection()->addFieldToFilter('id', ['eq' => $id]);
+            if (isset($id) && !empty($id)) {
+                $collection = $this->orders->getCollection()
+                    ->addFieldToFilter('id', ['eq' => $id]);
             }
         }
 
         $response = false;
         $message = 'Order(s) deleted successfully.';
-        if (isset($collection) and $collection->getSize() > 0) {
+        if (isset($collection) && $collection->getSize() > 0) {
             $response = $collection->walk('delete');
         }
 
@@ -80,7 +81,9 @@ class Delete extends \Magento\Backend\App\Action
         } else {
             $this->messageManager->addErrorMessage('Order(s) delete failed.');
         }
-
-        return $this->_redirect('betterthat/order/index');
+        $resultRedirect = $this->resultFactory->create('redirect');
+        return $resultRedirect->setPath(
+            'betterthat/order/index'
+        );
     }
 }

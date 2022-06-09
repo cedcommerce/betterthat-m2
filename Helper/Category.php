@@ -536,44 +536,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
             if ($array[$i]['parent_id'] != '') {
                 $id_level1 = $array[$i]['parent_id'];
                 if ($id_level1 != '') {
-                    $length = count($array);
-
-                    for ($j = 0; $j < $length; $j++) {
-                        if ($array[$j]['_id'] == $id_level1) {
-                            $array[$i]['hierarchy'] = $array[$j]['Name'] . " > " . $array[$i]['Name'];
-                            $id_level2 = $array[$j]['parent_id'];
-
-                            if ($id_level2 != '') {
-                                $length = count($array);
-                                for ($k = 0; $k < $length; $k++) {
-                                    if ($array[$k]['_id'] == $id_level2) {
-                                        $array[$i]['hierarchy'] = $array[$k]['Name']
-                                            . " > "
-                                            . $array[$j]['Name']
-                                            . " > "
-                                            . $array[$i]['Name'];
-
-                                        $id_level3 = $array[$k]['parent_id'];
-                                        if ($id_level3 != '') {
-                                            $length = count($array);
-                                            for ($l = 0; $l < $length; $l++) {
-                                                if ($array[$l]['_id'] == $id_level3) {
-                                                    if ($array[$l]['parent_id'] == ''
-                                                        && $array[$k]['parent_id'] != '') {
-                                                        $array[$i]['hierarchy'] =
-                                                            $array[$l]['Name'] . " > "
-                                                            . $array[$k]['Name'] . " > "
-                                                            . $array[$j]['Name'] . " > "
-                                                            . $array[$i]['Name'];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    $array = $this->innerHeirarchy($array, $id_level1, $i);
                 }
             } else {
                 $array[$i]['hierarchy'] = $array[$i]['Name'];
@@ -583,6 +546,66 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @param $array
+     * @param $id_level1
+     * @param $i
+     * @return mixed
+     */
+    public function innerHeirarchy($array, $id_level1, $i)
+    {
+        $length = count($array);
+        for ($j = 0; $j < $length; $j++) {
+            if ($array[$j]['_id'] == $id_level1) {
+                $array[$i]['hierarchy'] = $array[$j]['Name'] . " > " . $array[$i]['Name'];
+                $id_level2 = $array[$j]['parent_id'];
+                if ($id_level2 != '') {
+                    $length = count($array);
+                    // refactor //
+                    $this->innerHeirarchyone($array, $id_level2, $j, $i);
+                }
+            }
+        }
+        return $array;
+    }
+
+    public function innerHeirarchyone($array, $id_level2, $j, $i)
+    {
+        $length = count($array);
+        for ($k = 0; $k < $length; $k++) {
+            if ($array[$k]['_id'] == $id_level2) {
+                $array[$i]['hierarchy'] = $array[$k]['Name']
+                    . " > "
+                    . $array[$j]['Name']
+                    . " > "
+                    . $array[$i]['Name'];
+
+                $array = $this->innerHeirarchytwo($array, $k, $j, $i);
+            }
+        }
+        return $array;
+    }
+
+    public function innerHeirarchytwo($array, $k, $j, $i)
+    {
+        $id_level3 = $array[$k]['parent_id'];
+        if ($id_level3 != '') {
+            $length = count($array);
+            for ($l = 0; $l < $length; $l++) {
+                if ($array[$l]['_id'] == $id_level3) {
+                    if ($array[$l]['parent_id'] == ''
+                        && $array[$k]['parent_id'] != '') {
+                        $array[$i]['hierarchy'] =
+                            $array[$l]['Name'] . " > "
+                            . $array[$k]['Name'] . " > "
+                            . $array[$j]['Name'] . " > "
+                            . $array[$i]['Name'];
+                    }
+                }
+            }
+        }
+        return $array;
+    }
+    /**
      * @param  $jsonString
      * @return array
      */
@@ -590,7 +613,6 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $categoriesTree = [];
         $categories = $this->getHierarchy($jsonString);
-        //$categories = json_decode($categories_json);
         $isActive = true;
         $item = [];
         $length = count($categories);
@@ -610,26 +632,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                         $new_val['label'] = $categories[$j]['Name'];
                         $new_val['optgroup'] = [];
                         $length = count($categories);
-                        for ($k = 0; $k < $length; $k++) {
-                            if ($categories[$j]['_id'] == $categories[$k]['parent_id']) {
-                                $new_val1 = [];
-                                $new_val1['value'] = $categories[$k]['_id'];
-                                $new_val1['is_active'] = $isActive;
-                                $new_val1['label'] = $categories[$k]['Name'];
-                                $new_val1['optgroup'] = [];
-                                $length = count($categories);
-                                for ($l = 0; $l < $length; $l++) {
-                                    if ($categories[$k]['_id'] == $categories[$l]['parent_id']) {
-                                        $new_val2 = [];
-                                        $new_val2['value'] = $categories[$l]['_id'];
-                                        $new_val2['is_active'] = $isActive;
-                                        $new_val2['label'] = $categories[$l]['Name'];
-                                        array_push($new_val1['optgroup'], $new_val2);
-                                    }
-                                }
-                                array_push($new_val['optgroup'], $new_val1);
-                            }
-                        }
+                        $new_val = $this->innergetCategoryTreeNodeone($new_val, $length, $categories, $j, $isActive);
                         array_push($val['optgroup'], $new_val);
                     }
                 }
@@ -637,6 +640,37 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
             }
         }
         return $item;
+    }
+    public function innergetCategoryTreeNodeone($new_val, $length, $categories, $j, $isActive)
+    {
+        for ($k = 0; $k < $length; $k++) {
+            if ($categories[$j]['_id'] == $categories[$k]['parent_id']) {
+                $new_val1 = [];
+                $new_val1['value'] = $categories[$k]['_id'];
+                $new_val1['is_active'] = $isActive;
+                $new_val1['label'] = $categories[$k]['Name'];
+                $new_val1['optgroup'] = [];
+                $length = count($categories);
+                //refactor
+                $new_val1 =
+                    $this->innergetCatrgoryTreeNodes($new_val1, $length, $categories, $k, $isActive);
+                array_push($new_val['optgroup'], $new_val1);
+            }
+        }
+        return $new_val;
+    }
+    public function innergetCatrgoryTreeNodes($new_val1, $length, $categories, $k, $isActive)
+    {
+        for ($l = 0; $l < $length; $l++) {
+            if ($categories[$k]['_id'] == $categories[$l]['parent_id']) {
+                $new_val2 = [];
+                $new_val2['value'] = $categories[$l]['_id'];
+                $new_val2['is_active'] = $isActive;
+                $new_val2['label'] = $categories[$l]['Name'];
+                array_push($new_val1['optgroup'], $new_val2);
+            }
+        }
+        return $new_val1;
     }
 
     /**

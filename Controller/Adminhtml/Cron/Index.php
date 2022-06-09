@@ -70,5 +70,4 @@ class Index extends Action
         $resultPage->getConfig()->getTitle()->prepend(__('Betterthat Crons'));
         return $resultPage;
     }
-
 }

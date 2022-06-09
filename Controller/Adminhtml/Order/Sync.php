@@ -20,13 +20,13 @@ namespace Ced\Betterthat\Controller\Adminhtml\Order;
 
 class Sync extends \Magento\Backend\App\Action
 {
-    const CHUNK_SIZE = 1;
+    public const CHUNK_SIZE = 1;
     /**
      * Authorization level of a basic admin session
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
+    public const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
     /**
      * @var \Magento\Framework\Controller\Result\RedirectFactory
      */
@@ -105,13 +105,11 @@ class Sync extends \Magento\Backend\App\Action
     public function execute()
     {
         $id = $this->getRequest()->getParam('id');
-        if(!$id) {
+        if (!$id) {
             $collection = $this->filter->getCollection($this->orderModel->getCollection());
             $ids = $collection->getAllIds();
             $id = isset($ids[0]) ? $ids[0] : null;
         }
-
-
         $this->orders->load($this->orderModel, $id, 'id');
         $betterthatOrderId = $this->orderModel->getData('Betterthat_order_id');
         $orderList = $this->Betterthat->create(
@@ -119,11 +117,13 @@ class Sync extends \Magento\Backend\App\Action
                 'config' => $this->config->getApiConfig(),
             ]
         );
-
-        $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($this->orderModel->getData('increment_id'), 'increment_id');
+        $order = $this->_objectManager
+            ->create(\Magento\Sales\Model\Order::class)
+            ->load($this->orderModel->getData('increment_id'), 'increment_id');
         $response = $orderList->getOrders('orders-list', $betterthatOrderId);
-
-        $trackingNumber = isset($response['data'][0]['shipment_response'][0]['items'][0]['tracking_details']['article_id']) ? $response['data'][0]['shipment_response'][0]['items'][0]['tracking_details']['article_id'] : null;
+        $trackingNumber =
+            isset($response['data'][0]['shipment_response'][0]['items'][0]['tracking_details']['article_id'])
+            ? $response['data'][0]['shipment_response'][0]['items'][0]['tracking_details']['article_id'] : null;
         if ($trackingNumber) {
             $titles = [
                 'Instore' => 'Instore',
@@ -131,42 +131,57 @@ class Sync extends \Magento\Backend\App\Action
                 'StandardDeliverySendle' => 'Standard Delivery - Sendle',
                 'ExpressDelivery' => 'Australia Post'
             ];
-            $title = isset($titles[$response['data'][0]['shipping_type']]) ? $titles[$response['data'][0]['shipping_type']] : '';
+            $title = isset($titles[$response['data'][0]['shipping_type']])
+                ? $titles[$response['data'][0]['shipping_type']] : '';
             $tracking = [[
                 'carrier_code' => 'ups',
                 'title' => 'United Parcel Service',//$title,
                 'number' => $trackingNumber,
             ]];
 
-            $orderStatus = isset($response['data'][0]['order_status']) ? $response['data'][0]['order_status'] : '';
-            if($orderStatus) {
+            $orderStatus = isset($response['data'][0]['order_status'])
+                ? $response['data'][0]['order_status'] : '';
+            if ($orderStatus) {
                 $this->orderModel->setData('status', $orderStatus);
                 $this->orders->save($this->orderModel);
             }
-        }else{
-            $orderStatus = isset($response['data'][0]['order_status']) ? $response['data'][0]['order_status'] : '';
-            if($orderStatus) {
+        } else {
+            $orderStatus = isset($response['data'][0]['order_status'])
+                ? $response['data'][0]['order_status'] : '';
+            if ($orderStatus) {
                 $this->orderModel->setData('status', $orderStatus);
                 $this->orders->save($this->orderModel);
             }
-            $this->messageManager->addSuccessMessage("Ordered status & shipment synced successfully !!");
-            return $this->_redirect('betterthat/order/index');
+            $this->messageManager
+                ->addSuccessMessage("Ordered status & shipment synced successfully !!");
+            $resultRedirect = $this->resultFactory->create('redirect');
+            return $resultRedirect->setPath('betterthat/order/index');
         }
         $shipment = $this->createShipment($order, $trackingNumber, $title);
-
         if ($shipment) {
-            $orderStatus = isset($response['data'][0]['order_status']) ? $response['data'][0]['order_status'] : null;
-            if($orderStatus) {
+            $orderStatus = isset($response['data'][0]['order_status'])
+                ? $response['data'][0]['order_status'] : null;
+            if ($orderStatus) {
                 $this->orderModel->setData('status', $orderStatus);
                 $this->orders->save($this->orderModel);
             }
-            $this->messageManager->addSuccessMessage("Order Id : ".$order->getIncrementId()." Synced Successfully. Shipment generated!!");
-            return $this->_redirect('betterthat/order/index');
-        }else{
-            $this->messageManager->addErrorMessage("Order Id : ".$order->getIncrementId()." Shipment Already generated!!");
-            return $this->_redirect('betterthat/order/index');
+            $this->messageManager->addSuccessMessage(
+                "Order Id : "
+                .$order->getIncrementId()
+                . " Synced Successfully. Shipment generated!!"
+            );
+            $resultRedirect = $this->resultFactory->create('redirect');
+            return $resultRedirect->setPath('betterthat/order/index');
+        } else {
+            $this->messageManager
+                ->addErrorMessage(
+                    "Order Id : "
+                    . $order->getIncrementId()
+                    . " Shipment Already generated!!"
+                );
+            $resultRedirect = $this->resultFactory->create('redirect');
+            return $resultRedirect->setPath('betterthat/order/index');
         }
-
         // case 3.2 normal uploading if current ids are more than chunk size.
         $orderIds = array_chunk($orderIds, self::CHUNK_SIZE);
         $this->registry->register('orderids', count($orderIds));
@@ -175,32 +190,33 @@ class Sync extends \Magento\Backend\App\Action
         $resultPage->setActiveMenu('Ced_Betterthat::Betterthat');
         $resultPage->getConfig()->getTitle()->prepend(__('Sync Orders'));
         return $resultPage;
-
     }
     /**
      * @param  int    $orderId
      * @param  string $trackingNumber
      * @return \Magento\Sales\Model\Shipment $shipment
      */
-    protected function createShipment($order, $trackingNumber,$title)
+    protected function createShipment($order, $trackingNumber, $title)
     {
         try {
             if ($order) {
-                $data = array(array(
+                $data = [[
                     'carrier_code' => $order->getShippingMethod(),
                     'title' => $title,
                     'number' => $trackingNumber,
-                ));
+                ]];
                 $shipment = $this->prepareShipment($order, $data);
                 if ($shipment) {
                     $order->setIsInProcess(true);
                     $order->addStatusHistoryComment('Automatically SHIPPED', false);
-                    $transactionSave =  $this->_objectManager->create('Magento\Framework\DB\TransactionFactory')->create()->addObject($shipment)->addObject($shipment->getOrder());
+                    $transactionSave =  $this->_objectManager
+                        ->create(\Magento\Framework\DB\TransactionFactory::class)
+                        ->create()
+                        ->addObject($shipment)->addObject($shipment->getOrder());
                     $transactionSave->save();
                     return true;
                 }
                 return false;
-
             }
         } catch (\Exception $e) {
             throw new \Magento\Framework\Exception\LocalizedException(
@@ -231,11 +247,9 @@ class Sync extends \Magento\Backend\App\Action
     protected function prepareShipmentItems($order)
     {
         $items = [];
-
-        foreach($order->getAllItems() as $item) {
+        foreach ($order->getAllItems() as $item) {
             $items[$item->getItemId()] = $item->getQtyOrdered();
         }
         return $items;
     }
-
 }

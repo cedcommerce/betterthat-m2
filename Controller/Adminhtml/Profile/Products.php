@@ -58,7 +58,7 @@ class Products extends \Magento\Backend\App\Action
     {
         $id = $this->getRequest()->getParam('id');
         //print_r(base64_decode($this->getRequest()->getParam('filter')));die;
-        if (isset($id) and !empty($id)) {
+        if (isset($id) && !empty($id)) {
             $this->profile->load($id);
         }
         $this->_coreRegistry->register('Betterthat_profile', $this->profile);

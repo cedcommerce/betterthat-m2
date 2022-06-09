@@ -17,10 +17,11 @@
  * @license   https://cedcommerce.com/license-agreement.txt
  */
  -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="admin">
         <route id="betterthat" frontName="betterthat">
-            <module name="Ced_Betterthat" />
+            <module name="Ced_Betterthat"/>
         </route>
     </router>
 </config>

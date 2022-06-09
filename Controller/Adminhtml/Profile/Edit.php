@@ -80,12 +80,13 @@ class Edit extends Action
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Ced_Betterthat::Betterthat_profile');
         $id = $this->getRequest()->getParam('id');
-        if (isset($id) and !empty($id)) {
+        if (isset($id) && !empty($id)) {
             $this->profile->load($id);
-            if($this->profile && $this->profile->getData('profile_name')) {
+            if ($this->profile && $this->profile->getData('profile_name')) {
                 $this->_coreRegistry->register('Betterthat_profile', $this->profile);
-                $resultPage->getConfig()->getTitle()->prepend(__('Edit Profile '.$this->profile->getData('profile_name')));
-            }else {
+                $resultPage->getConfig()->getTitle()
+                    ->prepend(__('Edit Profile '.$this->profile->getData('profile_name')));
+            } else {
                 $resultPage->getConfig()->getTitle()->prepend(__('Add New Profile'));
             }
         } else {

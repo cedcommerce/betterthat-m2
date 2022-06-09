@@ -26,7 +26,7 @@ namespace Ced\Betterthat\Controller\Adminhtml\Product;
  */
 class InventoryPrice extends \Magento\Backend\App\Action
 {
-    const CHUNK_SIZE = 1;
+    public const CHUNK_SIZE = 1;
 
     /**
      * @var \Magento\Ui\Component\MassAction\Filter
@@ -76,7 +76,8 @@ class InventoryPrice extends \Magento\Backend\App\Action
         \Ced\Betterthat\Helper\Product $product,
         \Ced\Betterthat\Helper\Config $config,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     ) {
         parent::__construct($context);
         $this->filter               = $filter;
@@ -87,6 +88,7 @@ class InventoryPrice extends \Magento\Backend\App\Action
         $this->Betterthat              = $product;
         $this->resultPageFactory    = $resultPageFactory;
         $this->session              =  $context->getSession();
+        $this->redirect = $redirect;
     }
 
     /**
@@ -95,39 +97,41 @@ class InventoryPrice extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-
         if (!$this->Betterthat->checkForConfiguration()) {
             $this->messageManager->addErrorMessage(
-                __('Products Upload Failed. Betterthat API not enabled or Invalid. Please check Betterthat Configuration.')
+                __('Products Upload Failed. Betterthat API not
+                enabled or Invalid. Please check Betterthat Configuration.')
             );
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
         $batch_id = $this->getRequest()->getParam('batchid');
 
         if (isset($batch_id)) {
-
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
             $response = $this->Betterthat->updatePriceInventory($productIds[$batch_id]);
             if (!isset($response[0]['isError'])) {
                 return $resultJson->setData(
                     [
-                        'success' => count($productIds[$batch_id]) . " Product(s) Inventory/Price Updated successfully. Product Id: ". json_encode($productIds[$batch_id]),
+                        'success' => count($productIds[$batch_id])
+                            . " Product(s) Inventory/Price Updated successfully. Product Id: "
+                            . json_encode($productIds[$batch_id]),
                         'messages' => $response
                     ]
                 );
             }
             return $resultJson->setData(
                 [
-                    'errors' => isset($response[0]['message']) ? "Product Id:".json_encode($productIds[$batch_id])." Failed to update.Reason:".$response[0]['message'] : '',
+                    'errors' => isset($response[0]['message'])
+                        ? "Product Id:".json_encode($productIds[$batch_id])
+                        ." Failed to update.Reason:".$response[0]['message'] : '',
                     'messages' => $this->registry->registry('Betterthat_product_errors'),
                 ]
             );
         }
-
         // case 3 normal uploading and chunk creating
         $collection = $this->filter->getCollection($this->catalogCollection->getCollection());
         $productIds = $collection->getAllIds();
@@ -135,27 +139,30 @@ class InventoryPrice extends \Magento\Backend\App\Action
         if (count($productIds) == 0) {
             $this->messageManager->addErrorMessage('No Product selected to update.');
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
-
         // case 3.1 normal uploading if current ids are equal to chunk size.
         if (count($productIds) == self::CHUNK_SIZE) {
             $batch_id = isset($batch_id) ? $batch_id : 0;
             $response = $this->Betterthat->updatePriceInventory($productIds);
             if (!isset($response[0]['isError'])) {
-                $this->messageManager->addSuccessMessage(count($productIds) . " Product(s) Inventory/Price Updated successfully. Product Id: ".json_encode($productIds[$batch_id]));
+                $this->messageManager
+                    ->addSuccessMessage(count($productIds)
+                        . " Product(s) Inventory/Price Updated successfully. Product Id: ".
+                        json_encode($productIds[$batch_id]));
             } else {
                 $message = isset($response[0]['message']) ? $response[0]['message'] : '';
                 $errors = $this->registry->registry('Betterthat_product_errors');
                 if (isset($errors)) {
-                    $message = "Product(s) Update Failed. \nErrors: " . (string)json_encode($errors);
+                    $message = "Product(s) Update Failed. \nErrors: "
+                        . (string)json_encode($errors);
                 }
                 $this->messageManager->addError($message);
             }
-
-            $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect = $this->resultFactory
+                                ->create('redirect');
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 

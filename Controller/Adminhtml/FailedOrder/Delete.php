@@ -68,25 +68,29 @@ class Delete extends Action
     {
         $isFilter = $this->getRequest()->getParam('filters');
         if (isset($isFilter)) {
-            $collection = $this->filter->getCollection($this->orderFailed->getCollection());
+            $collection = $this->filter
+                ->getCollection($this->orderFailed->getCollection());
         } else {
             $id = $this->getRequest()->getParam('id');
-            if (isset($id) and !empty($id)) {
-                $collection = $this->orderFailed->getCollection()->addFieldToFilter('id', ['eq' => $id]);
+            if (isset($id) && !empty($id)) {
+                $collection = $this->orderFailed
+                    ->getCollection()->addFieldToFilter('id', ['eq' => $id]);
             }
         }
-
         $feedStatus = false;
-        if (isset($collection) and $collection->getSize() > 0) {
+        if (isset($collection) && $collection->getSize() > 0) {
             $feedStatus = true;
             $collection->walk('delete');
         }
 
         if ($feedStatus) {
-            $this->messageManager->addSuccessMessage('Failed orders deleted successfully.');
+            $this->messageManager
+                ->addSuccessMessage('Failed orders deleted successfully.');
         } else {
-            $this->messageManager->addErrorMessage('Failed orders delete failed.');
+            $this->messageManager
+                ->addErrorMessage('Failed orders delete failed.');
         }
-        $this->_redirect('betterthat/failedorder');
+        $resultRedirect = $this->resultFactory->create('redirect');
+        $resultRedirect->setUrl('*/betterthat/failedorder');
     }
 }

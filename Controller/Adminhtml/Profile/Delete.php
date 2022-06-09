@@ -31,21 +31,25 @@ class Delete extends \Magento\Customer\Controller\Adminhtml\Group
     {
         $id = $this->getRequest()->getParam('id');
         if ($id) {
-            $model = $this->_objectManager->create('Ced\Betterthat\Model\Profile')->load($id);
-            $productIds = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory')->create()
+            $model = $this->_objectManager->create(\Ced\Betterthat\Model\Profile::class)->load($id);
+            $productIds = $this->_objectManager
+                ->create(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class)
+                ->create()
                 ->addAttributeToFilter('betterthat_profile_id', ['eq' => $id])
                 ->addAttributeToSelect('betterthat_profile_id')->getAllIds();
 
-            $storeId = $this->_objectManager->create('\Ced\Betterthat\Helper\Config')->getStore();
-            $this->_objectManager->get('\Magento\Catalog\Model\ResourceModel\Product\Action')
+            $storeId = $this->_objectManager
+                ->create(\Ced\Betterthat\Helper\Config::class)->getStore();
+            $this->_objectManager
+                ->get(\Magento\Catalog\Model\ResourceModel\Product\Action::class)
                 ->updateAttributes($productIds, ['betterthat_profile_id'=> null], $storeId);
-
             // entity type check
             try {
                 $model->delete();
                 $this->messageManager->addSuccessMessage(__('You deleted the profile.'));
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
+                $resultRedirect = $this->resultFactory->create('redirect');
                 return $resultRedirect->setPath(
                     'betterthat/profile/edit',
                     ['pcode' => $this->getRequest()->getParam('pcode')]
@@ -53,6 +57,9 @@ class Delete extends \Magento\Customer\Controller\Adminhtml\Group
                 //End
             }
         }
-        return $this->_redirect('betterthat/profile/index');
+        $resultRedirect = $this->resultFactory->create('redirect');
+        return $resultRedirect->setPath(
+            'betterthat/profile/edit'
+        );
     }
 }

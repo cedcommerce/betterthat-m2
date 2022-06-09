@@ -88,19 +88,24 @@ class MassDelete extends Action
         if ($collection) {
             try {
                 foreach ($collection as $item) {
-                    $productIds = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory')->create()
+                    $productIds = $this->_objectManager
+                        ->create(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class)
+                        ->create()
                         ->addAttributeToFilter('betterthat_profile_id', ['eq' => $item->getId()])
                         ->addAttributeToSelect('betterthat_profile_id')->getAllIds();
                     $storeId = $this->config->getStore();
                     $this->_prodAction->updateAttributes($productIds, ['betterthat_profile_id'=> null], $storeId);
                     $item->delete();
                 }
-                $this->messageManager->addSuccessMessage(__('Total of %1 record(s) have been deleted.', $collection->count()));
+                $this->messageManager
+                    ->addSuccessMessage(__('Total of %1 record(s) have been deleted.', $collection->count()));
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
         }
-
-        return $this->_redirect('*/*/index');
+        $resultRedirect = $this->resultFactory->create('redirect');
+        return $resultRedirect->setPath(
+            '*/*/index'
+        );
     }
 }

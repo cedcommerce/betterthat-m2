@@ -20,13 +20,13 @@ namespace Ced\Betterthat\Controller\Adminhtml\FailedOrder;
 
 class Reject extends \Magento\Backend\App\Action
 {
-    const CHUNK_SIZE = 10;
+    public const CHUNK_SIZE = 10;
     /**
      * Authorization level of a basic admin session
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
+    public const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
     /**
      * @var \Magento\Framework\Controller\Result\RedirectFactory
      */
@@ -67,7 +67,8 @@ class Reject extends \Magento\Backend\App\Action
         \Ced\Betterthat\Model\OrderFailed $collection,
         \Ced\Betterthat\Helper\Product $product,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     ) {
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->orderHelper = $orderHelper;
@@ -78,6 +79,7 @@ class Reject extends \Magento\Backend\App\Action
         $this->session =  $context->getSession();
         $this->registry = $registry;
         $this->resultPageFactory = $resultPageFactory;
+        $this->redirect = $redirect;
         parent::__construct($context);
     }
 
@@ -88,10 +90,11 @@ class Reject extends \Magento\Backend\App\Action
     {
         if (!$this->Betterthat->checkForConfiguration()) {
             $this->messageManager->addErrorMessage(
-                __('Products Upload Failed. Betterthat API not enabled or Invalid. Please check Betterthat Configuration.')
+                __('Products Upload Failed. Betterthat API not
+                enabled or Invalid. Please check Betterthat Configuration.')
             );
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
@@ -124,7 +127,7 @@ class Reject extends \Magento\Backend\App\Action
         if (count($orderIds) == 0) {
             $this->messageManager->addErrorMessage('No Order selected to rejected.');
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
@@ -141,9 +144,8 @@ class Reject extends \Magento\Backend\App\Action
                 }
                 $this->messageManager->addError($message);
             }
-
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
         // case 3.2 normal uploading if current ids are more than chunk size.

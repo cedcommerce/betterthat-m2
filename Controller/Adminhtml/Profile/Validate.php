@@ -35,7 +35,6 @@ class Validate extends \Magento\Backend\App\Action
      */
     public $catalogCollection;
 
-
     public $categoryCollection;
 
     /**
@@ -116,5 +115,4 @@ class Validate extends \Magento\Backend\App\Action
         $resultJson->setData($response);
         return $resultJson;
     }
-
 }

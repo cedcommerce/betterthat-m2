@@ -26,7 +26,7 @@ namespace Ced\Betterthat\Controller\Adminhtml\Product;
  */
 class Inactive extends \Magento\Backend\App\Action
 {
-    const CHUNK_SIZE = 5;
+    public const CHUNK_SIZE = 5;
 
     /**
      * @var \Magento\Ui\Component\MassAction\Filter
@@ -77,7 +77,8 @@ class Inactive extends \Magento\Backend\App\Action
         \Ced\Betterthat\Helper\Config $config,
         \Magento\Framework\Registry $registry,
         \Magento\Catalog\Model\ResourceModel\Product\Action $productAction,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     ) {
         parent::__construct($context);
         $this->filter               = $filter;
@@ -89,21 +90,21 @@ class Inactive extends \Magento\Backend\App\Action
         $this->resultPageFactory    = $resultPageFactory;
         $this->_prodAction = $productAction;
         $this->session              =  $context->getSession();
+        $this->redirect = $redirect;
     }
-
     /**
      * @return $this|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute()
     {
-
         if (!$this->Betterthat->checkForConfiguration()) {
             $this->messageManager->addErrorMessage(
-                __('Products Upload Failed. Betterthat API not enabled or Invalid. Please check Betterthat Configuration.')
+                __('Products Upload Failed. Betterthat API not
+                enabled or Invalid. Please check Betterthat Configuration.')
             );
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
@@ -111,9 +112,10 @@ class Inactive extends \Magento\Backend\App\Action
         if (isset($batch_id)) {
             $resultJson = $this->resultJsonFactory->create();
             $productIds = $this->session->getBetterthatProducts();
-            $response = $this->Betterthat->updatePriceInventory($productIds[$batch_id], false, true);
+            $response = $this->Betterthat
+                ->updatePriceInventory($productIds[$batch_id], false, true);
             if (isset($productIds[$batch_id]) && $response) {
-                $attrData = array( 'Betterthat_exclude_from_sync' => '1' );
+                $attrData = ['Betterthat_exclude_from_sync' => '1' ];
                 $storeId = 0;
                 $this->_prodAction->updateAttributes($productIds[$batch_id], $attrData, $storeId);
                 return $resultJson->setData(
@@ -138,18 +140,20 @@ class Inactive extends \Magento\Backend\App\Action
         if (count($productIds) == 0) {
             $this->messageManager->addErrorMessage('No Product selected to update.');
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
         // case 3.1 normal uploading if current ids are equal to chunk size.
         if (count($productIds) == self::CHUNK_SIZE) {
-            $response = $this->Betterthat->updatePriceInventory($productIds, false, true);
+            $response = $this->Betterthat
+                ->updatePriceInventory($productIds, false, true);
             if ($response) {
-                $attrData = array( 'Betterthat_exclude_from_sync' => '1' );
+                $attrData =  ['Betterthat_exclude_from_sync' => '1' ];
                 $storeId = 0;
                 $this->_prodAction->updateAttributes($productIds, $attrData, $storeId);
-                $this->messageManager->addSuccessMessage(count($productIds) . ' Product(s) Updated Successfully');
+                $this->messageManager
+                    ->addSuccessMessage(count($productIds) . ' Product(s) Updated Successfully');
             } else {
                 $message = 'Product(s) Update Failed.';
                 $errors = $this->registry->registry('Betterthat_product_errors');
@@ -158,9 +162,8 @@ class Inactive extends \Magento\Backend\App\Action
                 }
                 $this->messageManager->addError($message);
             }
-
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 

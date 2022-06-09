@@ -504,64 +504,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $orderSubtotal = 0;
             if (isset($order['Product_data'][0])) {
                 $failedOrder = false;
-                foreach ($order['Product_data'] as $item) {
-                    $item['product_id'] = isset($item['product_id'][0]) ? $item['product_id'][0] : '';
-                    /*                    $sku = [
-                                            '8517' => '30',
-                                            '8516' => '60'
-                                        ];
-                                        // override only for demo purpose..
-                                        $item['product_id'] = @$sku[$item['product_id']];*/
-                    if (isset($item['product_id'])) {
-                        $qty = isset($qtyArray[isset($item['_id']) ?
-                                $item['_id'] : 0])
-                            ? $qtyArray[isset($item['_id'])
-                                ? $item['_id'] : 1] : [];
-                        $product = $this->product->create()
-                            ->load(
-                                isset($item['product_id']) ? $item['product_id']
-                                : null
-                            );
-                        if (isset($product) && !empty($product) && $product->getId()) {
-                            if ($product->getStatus() == '1') {
-                                $stockStatus = $this->checkStockQtyStatus($product, $qty);
-                                if ($stockStatus) {
-                                    $itemAccepted++;
-                                    $price = $item['rrp'];
-                                    $orderSubtotal = $orderSubtotal + $price;
-                                    $baseprice = $qty * $price;
-                                    $priceArr[$item['product_id']] = $price;
-                                    $product->setPrice($price)
-                                        ->setBasePrice($baseprice)
-                                        ->setSpecialPrice($baseprice)
-                                        ->setOriginalCustomPrice($price)
-                                        ->setRowTotal($baseprice)
-                                        ->setBaseRowTotal($baseprice);
-                                    $product->unsSkipCheckRequiredOption();
-                                    $product->setSkipSaleableCheck(true);
-                                    $product->setData('is_salable', true);
-                                    $quote->setIsSuperMode(true);
-                                    $quote->addProduct($product, (int)$qty);
-                                } else {
-                                    $reason[] = $item['product_id'] . " Product is out of stock";
-                                    $failedOrder = true;
-
-                                }
-                            } else {
-                                $reason[] = $item['product_id'] . " Product id is not enabled on store";
-                                $failedOrder = true;
-                            }
-                        } else {
-                            $reason[] = $item['product_id'] . " product id does not exist on store";
-                            $failedOrder = true;
-
-                        }
-                    } else {
-                        $reason[] = "product id not exist in order item";
-                        $failedOrder = true;
-
-                    }
-                }
+                $addedItems = $this->addProductsToQuote($order, $quote);
+                $quote = $addedItems['quote'];
+                $failedOrder = $addedItems['failedOrder'];
+                $reason = $addedItems['reason'];
                 if ($failedOrder) {
                     $this->webapiResponse =
                         [
@@ -787,6 +733,77 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
     }
+
+    /**
+     * @param $order
+     * @param $quote
+     * @return array
+     */
+    public function addProductsToQuote($order, $quote)
+    {
+        foreach ($order['Product_data'] as $item) {
+            $item['product_id'] = isset($item['product_id'][0]) ? $item['product_id'][0] : '';
+            /*                    $sku = [
+                                    '8517' => '30',
+                                    '8516' => '60'
+                                ];
+                                // override only for demo purpose..
+                                $item['product_id'] = @$sku[$item['product_id']];*/
+            if (isset($item['product_id'])) {
+                $qty = isset($qtyArray[isset($item['_id']) ?
+                        $item['_id'] : 0])
+                    ? $qtyArray[isset($item['_id'])
+                        ? $item['_id'] : 1] : [];
+                $product = $this->product->create()
+                    ->load(
+                        isset($item['product_id']) ? $item['product_id']
+                            : null
+                    );
+                if (isset($product) && !empty($product) && $product->getId()) {
+                    if ($product->getStatus() == '1') {
+                        $stockStatus = $this->checkStockQtyStatus($product, $qty);
+                        if ($stockStatus) {
+                            $itemAccepted++;
+                            $price = $item['rrp'];
+                            $orderSubtotal = $orderSubtotal + $price;
+                            $baseprice = $qty * $price;
+                            $priceArr[$item['product_id']] = $price;
+                            $product->setPrice($price)
+                                ->setBasePrice($baseprice)
+                                ->setSpecialPrice($baseprice)
+                                ->setOriginalCustomPrice($price)
+                                ->setRowTotal($baseprice)
+                                ->setBaseRowTotal($baseprice);
+                            $product->unsSkipCheckRequiredOption();
+                            $product->setSkipSaleableCheck(true);
+                            $product->setData('is_salable', true);
+                            $quote->setIsSuperMode(true);
+                            $quote->addProduct($product, (int)$qty);
+                        } else {
+                            $reason[] = $item['product_id'] . " Product is out of stock";
+                            $failedOrder = true;
+
+                        }
+                    } else {
+                        $reason[] = $item['product_id'] . " Product id is not enabled on store";
+                        $failedOrder = true;
+                    }
+                } else {
+                    $reason[] = $item['product_id'] . " product id does not exist on store";
+                    $failedOrder = true;
+
+                }
+            } else {
+                $reason[] = "product id not exist in order item";
+                $failedOrder = true;
+            }
+        }
+        return [
+            'quote' => $quote,
+            'failerOrder' => $failedOrder,
+            'reason' => $reason
+        ];
+    }
     /**
      * @param array $order
      * @param array $items
@@ -1010,17 +1027,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 ]];
                 $shipment = $this->prepareShipment($order, $data);
                 if ($shipment) {
-                    $order->setIsInProcess(true);
-                    $order->addStatusHistoryComment('Automatically SHIPPED', false);
-                    $transactionSave = $this->objectManager
-                        ->create(\Magento\Framework\DB\TransactionFactory::class)
-                        ->create()->addObject($shipment)->addObject($shipment->getOrder());
-                    $transactionSave->save();
-                    $this->webApiResponse = [
-                        "magento_orderId" => $orderId,
-                        "message" => "Shipment Generated Successfully",
-                        "success" => true
-                    ];
+                    $this->saveShipment($order, $shipment, $orderId);
                     return $this->webApiResponse;
                 }
                 return $this->webApiResponse = [
@@ -1040,6 +1047,22 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 __($e->getMessage())
             );
         }
+    }
+
+    public function saveShipment($order, $shipment, $orderId)
+    {
+        $order->setIsInProcess(true);
+        $order->addStatusHistoryComment('Automatically SHIPPED', false);
+        $transactionSave = $this->objectManager
+            ->create(\Magento\Framework\DB\TransactionFactory::class)
+            ->create()->addObject($shipment)->addObject($shipment->getOrder());
+        $transactionSave->save();
+        $this->webApiResponse = [
+            "magento_orderId" => $orderId,
+            "message" => "Shipment Generated Successfully",
+            "success" => true
+        ];
+        return $this->webApiResponse;
     }
 
     /**
@@ -1104,91 +1127,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $response;
     }
-    /**
-     * Cancel Betterthat Order
-     *
-     * @param array $data
-     * @return array
-     */
-    public function cancelOrder(array $data = [])
-    {
-        $response = [
-            'success' => false,
-            'message' => []
-        ];
 
-        try {
-            $order = $this->objectManager
-                ->create('\BetterthatSdk\Order', ['config' => $this->config->getApiConfig()]);
-            $magentoOrder = $this->objectManager
-                ->create(\Magento\Sales\Model\Order::class)->load($data['order_id']);
-            $cancel = [];
-
-            if (isset($data['OrderItemIds']) && !empty($data['OrderItemIds'])) {
-                foreach ($data['OrderItemIds'] as $orderItemId) {
-                    // Preparing cancel qty for magento credit memo
-                    if (isset($orderItemId['QuantityCancelled']) && !empty($orderItemId['QuantityCancelled'])) {
-                        $cancelQty = [];
-                        foreach ($magentoOrder->getAllItems() as $orderItem) {
-                            if ($orderItem->getSku() == $orderItemId['SKU']) {
-                                $cancelQty[$orderItem->getId()] = $orderItemId['QuantityCancelled'];
-                            }
-                        }
-                    } else {
-                        return false;
-                    }
-                    // Preparing to cancel from Betterthat
-                    if (isset($orderItemId['OrderItemId']) && !empty($orderItemId['OrderItemId'])) {
-                        $cancel['OrderItemId'] = $orderItemId['OrderItemId'];
-                    } else {
-                        return false;
-                    }
-
-                    if (isset($orderItemId['Reason']) && !empty($orderItemId['Reason'])) {
-                        $cancel['Reason'] = $orderItemId['Reason'];
-                    } else {
-                        return false;
-                    }
-                    $status = $order->cancelOrderItem($cancel);
-                    if ($status->getStatus() !== \BetterthatSdk\Api\Response::REQUEST_STATUS_FAILURE) {
-                        $this->generateCreditMemo($magentoOrder, $cancelQty);
-                        $response['message'][] = $orderItemId['SKU'] . ' Cancelled successfully. ';
-                        $response['success'] = true;
-                        // Saving fulfillment data.
-                        $BetterthatOrder = $this->orders->create()
-                            ->load($data['order_id'], 'magento_order_id');
-                        $data['Status'] = $status->getStatus();
-                        $data['Response'] = $response['message'];
-                        $cancellations = [];
-                        if (!empty($BetterthatOrder->getData('cancellations'))) {
-                            $cancellations = $this->json
-                                ->jsonDecode($BetterthatOrder->getData('cancellations'));
-                        }
-                        $cancellations[] = $data;
-                        $BetterthatOrder->setData('cancellations', $this->json->jsonEncode($cancellations));
-                        $BetterthatOrder
-                            ->setData('status', \Ced\Betterthat\Model\Source\Order\Status::SHIPPED);
-                        $BetterthatOrder->save();
-                    } else {
-                        $response['message'][] = $orderItemId['SKU'] . " " . $status->getError();
-                    }
-                }
-            } else {
-                return false;
-            }
-        } catch (\Exception $exception) {
-            $response['message'] = $exception->getMessage();
-            $this->logger->error(
-                'Cancel Order',
-                [
-                    'path' => __METHOD__,
-                    'exception' => $exception->getMessage(),
-                    'trace' => $exception->getTraceAsString()
-                ]
-            );
-        }
-        return $response;
-    }
     /**
      * @param  $count
      * @throws \Exception

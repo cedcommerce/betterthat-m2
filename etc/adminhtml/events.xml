@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="sales_order_shipment_track_save_after">
         <observer name="Betterthat_shipment_tracking_info" instance="Ced\Betterthat\Observer\Shipment" />
     </event>
@@ -13,6 +14,7 @@
         <observer name="betterthat_item_delete_after" instance="Ced\Betterthat\Observer\ProductDeleteAfter" />
     </event>
     <event name="cataloginventory_stock_item_save_after">
-        <observer name="ced_betterthat_inventory_save_after" instance="Ced\Betterthat\Observer\InventoryChangeObserver"/>
+        <observer name="ced_betterthat_inventory_save_after"
+                  instance="Ced\Betterthat\Observer\InventoryChangeObserver"/>
     </event>
 </config>

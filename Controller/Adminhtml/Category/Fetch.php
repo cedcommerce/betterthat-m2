@@ -68,20 +68,17 @@ class Fetch extends Action
      */
     public function execute()
     {
-
         $id = $this->getRequest()->getPost('id');
         $current_profile_id = $this->getRequest()->getPost('current_profile_id');
         $level = $this->getRequest()->getPost('level');
-        $loadCatObj = $this->_objectManager->create('Ced\Betterthat\Model\Profile')->load($current_profile_id);
-        $check =array();
-
+        $loadCatObj = $this->_objectManager
+            ->create(\Ced\Betterthat\Model\Profile::class)->load($current_profile_id);
+        $check = [];
         if (!empty($loadCatObj) && $loadCatObj->getId()) {
             $check = json_decode($loadCatObj->getData('profile_categories'), true);
         }
-
-        $args = array('max_level'=> $level);
-
-        if(!empty($id)) {
+        $args = ['max_level'=> $level];
+        if (!empty($id)) {
             $this->session->setCategoryM($id);
             $args['level'] = $level;
             $args['category_id'] = $id;
@@ -90,14 +87,12 @@ class Fetch extends Action
             $args['category_id'] = $id;
         }
         $response = $this->category->getCategories($args);
-
         if (count($response) > 0) {
             $categoryHtml = '<option></option>';
             foreach ($response as $value) {
                         $categoryHtml .= '<option value="'.$value["_id"].'">'.$value["Name"].'</option>';
-
             }
-            if($categoryHtml=='<option></option>') {
+            if ($categoryHtml=='<option></option>') {
                 $this->getResponse()->setBody("Unable to fetch category");
             } else {
                 $this->getResponse()->setBody($categoryHtml);
@@ -106,5 +101,4 @@ class Fetch extends Action
             $this->getResponse()->setBody("Unable to fetch category");
         }
     }
-
 }

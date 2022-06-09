@@ -76,7 +76,8 @@ class Upload extends \Magento\Backend\App\Action
         \Ced\Betterthat\Helper\Product $product,
         \Ced\Betterthat\Helper\Config $config,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     ) {
         parent::__construct($context);
         $this->filter = $filter;
@@ -86,6 +87,7 @@ class Upload extends \Magento\Backend\App\Action
         $this->registry = $registry;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultPageFactory = $resultPageFactory;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -112,38 +114,52 @@ class Upload extends \Magento\Backend\App\Action
                 );
             } elseif (isset($productIds[$batchId]) && $response) {
                 if (isset($response['message'])
-                    && in_array($response['message'],
+                    && in_array(
+                        $response['message'],
                         [
                             "product already exists",
                             "product already exists in cleanse section."
-                        ])
+                        ]
+                    )
                 ) {
                     return $resultJson->setData(
                         [
-                            'success' => count($productIds[$batchId]) . ' Product Ids: ' . json_encode($productIds[$batchId]) . ' ' . $response['message'],
+                            'success' => count($productIds[$batchId])
+                                . ' Product Ids: '
+                                . json_encode($productIds[$batchId])
+                                . ' ' . $response['message'],
                             'messages' => $response['message']
                         ]
                     );
                 } elseif (isset($response['bt_visibility'])) {
                     return $resultJson->setData(
                         [
-                            'success' => count($productIds[$batchId]) . ' Product Ids: ' . json_encode($productIds[$batchId]) . ' ' . $response['message'],
+                            'success' => count($productIds[$batchId])
+                                . ' Product Ids: '
+                                . json_encode($productIds[$batchId])
+                                . ' '
+                                . $response['message'],
                             'messages' => $response['message']
                         ]
                     );
                 } else {
                     return $resultJson->setData(
                         [
-                            'success' => count($productIds[$batchId]) . ' Product Ids: ' . json_encode($productIds[$batchId]) . ' Product will be reviewed first and get approved soon',
+                            'success' => count($productIds[$batchId])
+                                . ' Product Ids: '
+                                . json_encode($productIds[$batchId])
+                                . ' Product will be reviewed first and get approved soon',
                             'messages' => $response['message']
                         ]
                     );
                 }
-
             } else {
                 return $resultJson->setData(
                     [
-                        'errors' => count($productIds[$batchId]) . ' Product Ids: ' . json_encode($productIds[$batchId]) . " Upload Failed. Reason: Invalid item ",
+                        'errors' => count($productIds[$batchId])
+                            . ' Product Ids: '
+                            . json_encode($productIds[$batchId])
+                            . " Upload Failed. Reason: Invalid item ",
                         'messages' => isset($response['message']) ? $response['message'] : '',
                     ]
                 );
@@ -151,13 +167,15 @@ class Upload extends \Magento\Backend\App\Action
         }
 
         // case 3 normal uploading and chunk creating
-        $collection = $this->filter->getCollection($this->catalogCollection->getCollection());
+        $collection = $this->filter
+            ->getCollection($this->catalogCollection->getCollection());
         $productIds = $collection->getAllIds();
 
         if (count($productIds) == 0) {
-            $this->messageManager->addErrorMessage('No Product selected to upload.');
+            $this->messageManager
+                ->addErrorMessage('No Product selected to upload.');
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
 
@@ -166,30 +184,40 @@ class Upload extends \Magento\Backend\App\Action
             $response = $this->Betterthat->createProducts($productIds);
             if (!isset($response['err_code']) && !isset($response['error_key'])) {
                 if (isset($response['message'])
-                    && in_array($response['message'], ["product already exists", "product already exists in cleanse section."])
+                    &&
+                    in_array(
+                        $response['message'],
+                        ["product already exists", "product already exists in cleanse section."]
+                    )
                 ) {
                     $this->messageManager->addSuccessMessage($response['message']);
                 } elseif (isset($response['bt_visibility'])) {
                     $this->messageManager->addNoticeMessage($response['message']);
                 } else {
-                    $this->messageManager->addSuccessMessage(count($productIds) . 'Product(s) will reviewed first and get approved soon');
+                    $this->messageManager->addSuccessMessage(
+                        count($productIds)
+                        . 'Product(s) will reviewed first and get approved soon'
+                    );
                 }
             } else {
                 if (isset($response['fields'][0]) && $response['fields'][0] == 'visibility') {
-                    $this->messageManager->addNoticeMessage("Item's visibility is not visible hence can't be uploaded, please update the visibility and try again!");
+                    $this->messageManager
+                        ->addNoticeMessage(
+                            "Item's visibility is not visible hence can't be uploaded,
+                            please update the visibility and try again!"
+                        );
                 } else {
                     $message = 'Product(s) Upload Failed.';
                     $errors = $this->registry->registry('Betterthat_product_errors');
                     if (isset($errors)) {
-                        $message = "Product(s) Upload Failed. \nErrors: " . (string)json_encode($errors);
+                        $message = "Product(s) Upload Failed. \nErrors: "
+                            . (string)json_encode($errors);
                     }
                     $this->messageManager->addError($message);
                 }
-
             }
-
             $resultRedirect = $this->resultFactory->create('redirect');
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl($this->redirect->getRefererUrl());
             return $resultRedirect;
         }
         // case 3.2 normal uploading if current ids are more than chunk size.
@@ -198,7 +226,9 @@ class Upload extends \Magento\Backend\App\Action
         $this->session->setBetterthatProducts($productIds);
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Ced_Betterthat::Betterthat');
-        $resultPage->getConfig()->getTitle()->prepend(__('Upload Products'));
+        $resultPage->getConfig()
+            ->getTitle()
+            ->prepend(__('Upload Products'));
         return $resultPage;
     }
 }

@@ -28,20 +28,20 @@ use Ced\Betterthat\Helper\Logger;
  */
 class AssignProducts extends \Magento\Backend\App\Action
 {
-    const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat';
+    public const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat';
 
     /**
-     * @var \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $profileCollection 
+     * @var \Ced\Betterthat\Model\ResourceModel\Profile\CollectionFactory $profileCollection
      */
     public $profileCollection;
 
     /**
-     * @var \Ced\Betterthat\Helper\Profile  
+     * @var \Ced\Betterthat\Helper\Profile
      */
     protected $profileHelper;
 
     /**
-     * @var Logger \Ced\Betterthat\Helper\Logger 
+     * @var Logger \Ced\Betterthat\Helper\Logger
      */
     public $logger;
 
@@ -69,23 +69,35 @@ class AssignProducts extends \Magento\Backend\App\Action
         if (isset($id) && !empty($id)) {
             $profileIds[] = $id;
         } elseif (isset($isFilter)) {
-            $collection = $this->filter->getCollection($this->profileCollection->create());
+            $collection = $this->filter
+                ->getCollection($this->profileCollection->create());
             $profileIds = $collection->getAllIds();
         }
-        if(!empty($profileIds)) {
+        if (!empty($profileIds)) {
             try {
                 $updatedProfile = [];
-                $profileColl = $this->profileCollection->create()->addFieldToFilter('id', ['in' => $profileIds]);
+                $profileColl = $this->profileCollection
+                    ->create()->addFieldToFilter('id', ['in' => $profileIds]);
                 foreach ($profileColl as $profile) {
                     $profile->addProducts($profile->getMagentoCategory());
                     $updatedProfile[] = $profile->getId();
                 }
-                $this->messageManager->addSuccessMessage(__('Total of %1 profile(s) have been updated.', count($updatedProfile)));
+                $this->messageManager
+                    ->addSuccessMessage(
+                        __('Total of %1 profile(s) have been updated.', count($updatedProfile))
+                    );
             } catch (\Exception $e) {
-                $this->logger->addError('In Mass Assign Products Profile: '.$e->getMessage(), ['path' => __METHOD__]);
+                $this->logger->addError(
+                    'In Mass Assign Products Profile: '
+                    .$e->getMessage(),
+                    ['path' => __METHOD__]
+                );
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
         }
-        $this->_redirect('*/*/index');
+        $resultRedirect = $this->resultFactory->create('redirect');
+        return $resultRedirect->setPath(
+            '*/*/index'
+        );
     }
 }

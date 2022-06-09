@@ -24,7 +24,7 @@ namespace Ced\Betterthat\Controller\Adminhtml\Product;
  *
  * @package Ced\Betterthat\Controller\Adminhtml\Product
  */
-class ValidateSingle extends  \Magento\Backend\App\Action
+class ValidateSingle extends \Magento\Backend\App\Action
 {
     public $registry;
 
@@ -68,7 +68,8 @@ class ValidateSingle extends  \Magento\Backend\App\Action
         \Magento\Framework\Registry $registry,
         \Magento\Catalog\Model\Product $collection,
         \Ced\Betterthat\Helper\Config $config,
-        \Ced\Betterthat\Helper\Product $product
+        \Ced\Betterthat\Helper\Product $product,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     ) {
         parent::__construct($context);
         $this->registry = $registry;
@@ -76,6 +77,7 @@ class ValidateSingle extends  \Magento\Backend\App\Action
         $this->filter = $filter;
         $this->catalogCollection = $collection;
         $this->Betterthat = $product;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -86,7 +88,8 @@ class ValidateSingle extends  \Magento\Backend\App\Action
         $id = $this->getRequest()->getParam('id');
         $response = $this->Betterthat->validateAllProducts([$id]);
         if ($response) {
-            $this->messageManager->addSuccessMessage(' Product(s) Validation Process Executed successfully.');
+            $this->messageManager
+                ->addSuccessMessage(' Product(s) Validation Process Executed successfully.');
         } else {
             $message = 'Product Validate Failed.';
             $errors = $this->registry->registry('Betterthat_product_errors');
@@ -97,7 +100,7 @@ class ValidateSingle extends  \Magento\Backend\App\Action
         }
 
         $resultRedirect = $this->resultFactory->create('redirect');
-        $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+        $resultRedirect->setUrl($this->redirect->getRefererUrl());
         return $resultRedirect;
     }
 }

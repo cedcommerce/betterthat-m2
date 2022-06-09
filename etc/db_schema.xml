@@ -1,61 +1,73 @@
 <?xml version="1.0"?>
-<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-  <table name="betterthat_profile" resource="default" engine="innodb" comment="Profile Table">
-    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
-    <column xsi:type="varchar" name="profile_code" nullable="false" length="50" comment="Profile Code"/>
-    <column xsi:type="int" name="profile_status" padding="10" unsigned="true" nullable="true" identity="false" default="1" comment="Profile Status"/>
-    <column xsi:type="varchar" name="profile_name" nullable="false" length="255" comment="Profile Name"/>
-    <column xsi:type="varchar" name="betterthat_categories" nullable="true" length="255" comment="Betterthat Category"/>
-    <column xsi:type="mediumtext" name="profile_required_attributes" nullable="true" comment="Profile Required Attributes"/>
-    <column xsi:type="mediumtext" name="profile_optional_attributes" nullable="true" comment="Profile Optional Attributes"/>
-    <column xsi:type="varchar" name="magento_category" nullable="true" length="200" comment="Magento Category"/>
-    <column xsi:type="mediumtext" name="profile_products_filters" nullable="true" comment="Profile_products_filters"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="id"/>
-    </constraint>
-    <constraint xsi:type="unique" referenceId="BETTERTHAT_PROFILE_PROFILE_CODE">
-      <column name="profile_code"/>
-    </constraint>
-  </table>
-  <table name="betterthat_orders" resource="default" engine="innodb" comment="Betterthat Orders">
-    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
-    <column xsi:type="varchar" name="betterthat_order_id" nullable="false" length="50" default="" comment="Betterthat Order Id"/>
-    <column xsi:type="varchar" name="magento_order_id" nullable="false" length="50" default="" comment="Magento Order Id"/>
-    <column xsi:type="varchar" name="increment_id" nullable="false" length="255" default="" comment="Magento Increament Id"/>
-    <column xsi:type="date" name="order_place_date" comment="Order Place Date"/>
-    <column xsi:type="varchar" name="status" nullable="true" length="30" default="" comment="Betterthat Order Status"/>
-    <column xsi:type="text" name="order_data" nullable="true" comment="Order Data"/>
-    <column xsi:type="text" name="order_items" nullable="true" comment="Order Data"/>
-    <column xsi:type="text" name="shipments" nullable="true" comment="Order Shipment Data"/>
-    <column xsi:type="text" name="cancellations" nullable="true" comment="Order Cancellation Data"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="id"/>
-    </constraint>
-  </table>
-  <table name="betterthat_failed_orders" resource="default" engine="innodb" comment="Betterthat Failed Orders">
-    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
-    <column xsi:type="varchar" name="betterthat_order_id" nullable="false" length="50" default="" comment="Betterthat Order Id"/>
-    <column xsi:type="text" name="reason" nullable="true" comment="Failed Reason"/>
-    <column xsi:type="date" name="order_date" comment="Order Place Date"/>
-    <column xsi:type="text" name="order_data" nullable="false" comment="Order Data"/>
-    <column xsi:type="text" name="order_items" nullable="false" comment="Order Items"/>
-    <column xsi:type="text" name="cancellations" nullable="false" comment="Cancellations"/>
-    <column xsi:type="text" name="shipments" nullable="false" comment="Shipments"/>
-    <column xsi:type="varchar" name="status" nullable="true" length="20" default="" comment="Betterthat Order Status"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="id"/>
-    </constraint>
-  </table>
-  <table name="betterthat_logs" resource="default" engine="innodb" comment="Betterthat Logs">
-    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
-    <column xsi:type="text" name="message" nullable="true" comment="Message"/>
-    <column xsi:type="mediumtext" name="context" nullable="true" comment="Context"/>
-    <column xsi:type="text" name="level" nullable="true" comment="Level"/>
-    <column xsi:type="text" name="level_name" nullable="true" comment="Level Name"/>
-    <column xsi:type="text" name="channel" nullable="true" comment="Channel"/>
-    <column xsi:type="datetime" name="datetime" on_update="false" nullable="true" comment="Date"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="id"/>
-    </constraint>
-  </table>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="betterthat_profile" resource="default" engine="innodb" comment="Profile Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="varchar" name="profile_code" nullable="false" length="50" comment="Profile Code"/>
+        <column xsi:type="int" name="profile_status" padding="10" unsigned="true" nullable="true" identity="false"
+                default="1" comment="Profile Status"/>
+        <column xsi:type="varchar" name="profile_name" nullable="false" length="255" comment="Profile Name"/>
+        <column xsi:type="varchar" name="betterthat_categories" nullable="true" length="255"
+                comment="Betterthat Category"/>
+        <column xsi:type="mediumtext" name="profile_required_attributes" nullable="true"
+                comment="Profile Required Attributes"/>
+        <column xsi:type="mediumtext" name="profile_optional_attributes" nullable="true"
+                comment="Profile Optional Attributes"/>
+        <column xsi:type="varchar" name="magento_category" nullable="true" length="200" comment="Magento Category"/>
+        <column xsi:type="mediumtext" name="profile_products_filters" nullable="true"
+                comment="Profile_products_filters"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="BETTERTHAT_PROFILE_PROFILE_CODE">
+            <column name="profile_code"/>
+        </constraint>
+    </table>
+    <table name="betterthat_orders" resource="default" engine="innodb" comment="Betterthat Orders">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="varchar" name="betterthat_order_id" nullable="false" length="50" default=""
+                comment="Betterthat Order Id"/>
+        <column xsi:type="varchar" name="magento_order_id" nullable="false" length="50" default=""
+                comment="Magento Order Id"/>
+        <column xsi:type="varchar" name="increment_id" nullable="false" length="255" default=""
+                comment="Magento Increament Id"/>
+        <column xsi:type="date" name="order_place_date" comment="Order Place Date"/>
+        <column xsi:type="varchar" name="status" nullable="true" length="30" default=""
+                comment="Betterthat Order Status"/>
+        <column xsi:type="text" name="order_data" nullable="true" comment="Order Data"/>
+        <column xsi:type="text" name="order_items" nullable="true" comment="Order Data"/>
+        <column xsi:type="text" name="shipments" nullable="true" comment="Order Shipment Data"/>
+        <column xsi:type="text" name="cancellations" nullable="true" comment="Order Cancellation Data"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="betterthat_failed_orders" resource="default" engine="innodb" comment="Betterthat Failed Orders">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="varchar" name="betterthat_order_id" nullable="false" length="50" default=""
+                comment="Betterthat Order Id"/>
+        <column xsi:type="text" name="reason" nullable="true" comment="Failed Reason"/>
+        <column xsi:type="date" name="order_date" comment="Order Place Date"/>
+        <column xsi:type="text" name="order_data" nullable="false" comment="Order Data"/>
+        <column xsi:type="text" name="order_items" nullable="false" comment="Order Items"/>
+        <column xsi:type="text" name="cancellations" nullable="false" comment="Cancellations"/>
+        <column xsi:type="text" name="shipments" nullable="false" comment="Shipments"/>
+        <column xsi:type="varchar" name="status" nullable="true" length="20" default=""
+                comment="Betterthat Order Status"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="betterthat_logs" resource="default" engine="innodb" comment="Betterthat Logs">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="text" name="message" nullable="true" comment="Message"/>
+        <column xsi:type="mediumtext" name="context" nullable="true" comment="Context"/>
+        <column xsi:type="text" name="level" nullable="true" comment="Level"/>
+        <column xsi:type="text" name="level_name" nullable="true" comment="Level Name"/>
+        <column xsi:type="text" name="channel" nullable="true" comment="Channel"/>
+        <column xsi:type="datetime" name="datetime" on_update="false" nullable="true" comment="Date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
 </schema>

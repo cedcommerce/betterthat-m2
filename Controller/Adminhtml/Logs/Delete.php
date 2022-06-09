@@ -79,13 +79,13 @@ class Delete extends Action
             $collection = $this->filter->getCollection($this->logs->getCollection());
         } else {
             $id = $this->getRequest()->getParam('id');
-            if (isset($id) and !empty($id)) {
+            if (isset($id) && !empty($id)) {
                 $collection = $this->logs->getCollection()->addFieldToFilter('id', ['eq' => $id]);
             }
         }
 
         $logsStatus = true;
-        if (isset($collection) and $collection->getSize() > 0) {
+        if (isset($collection) && $collection->getSize() > 0) {
             $logsStatus = true;
             $collection->walk('delete');
         }
@@ -95,6 +95,7 @@ class Delete extends Action
         } else {
             $this->messageManager->addErrorMessage('Logs delete failed.');
         }
-        $this->_redirect('betterthat/logs');
+        $resultRedirect = $this->resultFactory->create('redirect');
+        $resultRedirect->setUrl('*/betterthat/logs');
     }
 }

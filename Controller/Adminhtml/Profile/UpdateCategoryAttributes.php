@@ -89,7 +89,7 @@ class UpdateCategoryAttributes extends Action
 
         $result = $this->resultPageFactory->create(true)
             ->getLayout()->createBlock(
-                'Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\AttributeMapping',
+                \Ced\Betterthat\Block\Adminhtml\Profile\Ui\View\AttributeMapping::class,
                 'Betterthat_attributes'
             )
             ->setAttributes($attributes)

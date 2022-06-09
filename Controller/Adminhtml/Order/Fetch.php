@@ -25,7 +25,7 @@ class Fetch extends \Magento\Backend\App\Action
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
+    public const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
     /**
      * @var \Magento\Framework\Controller\Result\RedirectFactory
      */

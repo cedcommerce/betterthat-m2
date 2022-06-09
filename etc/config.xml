@@ -17,40 +17,41 @@
  * @license   https://cedcommerce.com/license-agreement.txt
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
-	<default>
-		<Betterthat_config>
-			<Betterthat_setting>
-				<version>1.0</version>
-			</Betterthat_setting>
-			<Betterthat_product>
-				<inventory_settings>
-					<fullfillment_latency>0</fullfillment_latency>
-					<advanced_threshold_status>0</advanced_threshold_status>
-				</inventory_settings>
-			</Betterthat_product>
-			<Betterthat_order>
-				<order_id_prefix>BT-</order_id_prefix>
-			</Betterthat_order>
-		</Betterthat_config>
-		<carriers>
-			<shipbyBetterthat>
-				<active>1</active>
-				<sallowspecific>0</sallowspecific>
-				<name>Betterthat Shipping Method(Default)</name>
-				<title>Betterthat Shipping Method</title>
-				<model>Ced\Betterthat\Model\Carrier\Betterthat</model>
-			</shipbyBetterthat>
-		</carriers>
-		<payment>
-			<paybyBetterthat>
-				<active>1</active>
-				<model>Ced\Betterthat\Model\Payment\Betterthat</model>
-				<order_status>Processing</order_status>
-				<title>Betterthat Payment Method(Default)</title>
-				<payment_action>sale</payment_action>
-				<allowspecific>0</allowspecific>
-			</paybyBetterthat>
-    </payment>
-  </default>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <Betterthat_config>
+            <Betterthat_setting>
+                <version>1.0</version>
+            </Betterthat_setting>
+            <Betterthat_product>
+                <inventory_settings>
+                    <fullfillment_latency>0</fullfillment_latency>
+                    <advanced_threshold_status>0</advanced_threshold_status>
+                </inventory_settings>
+            </Betterthat_product>
+            <Betterthat_order>
+                <order_id_prefix>BT-</order_id_prefix>
+            </Betterthat_order>
+        </Betterthat_config>
+        <carriers>
+            <shipbyBetterthat>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <name>Betterthat Shipping Method(Default)</name>
+                <title>Betterthat Shipping Method</title>
+                <model>Ced\Betterthat\Model\Carrier\Betterthat</model>
+            </shipbyBetterthat>
+        </carriers>
+        <payment>
+            <paybyBetterthat>
+                <active>1</active>
+                <model>Ced\Betterthat\Model\Payment\Betterthat</model>
+                <order_status>Processing</order_status>
+                <title>Betterthat Payment Method(Default)</title>
+                <payment_action>sale</payment_action>
+                <allowspecific>0</allowspecific>
+            </paybyBetterthat>
+        </payment>
+    </default>
 </config>

@@ -56,12 +56,14 @@ class Truncate extends Action
         Action\Context $context,
         PageFactory $resultPageFactory,
         \Magento\Framework\Filesystem\Io\File $fileIo,
-        \Ced\Betterthat\Model\Logs $BetterthatLogs
+        \Ced\Betterthat\Model\Logs $BetterthatLogs,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->fileIo = $fileIo;
         $this->feeds = $BetterthatLogs;
+        $this->redirect = $redirect;
     }
 
     public function execute()
@@ -85,6 +87,7 @@ class Truncate extends Action
         // Delete feeds from db
         $collection->walk('delete');
         $this->messageManager->addSuccessMessage('Logs deleted successfully.');
-        $this->_redirect('betterthat/logs');
+        $resultRedirect = $this->resultFactory->create('redirect');
+        $resultRedirect->setUrl($this->redirect->getRefererUrl());
     }
 }

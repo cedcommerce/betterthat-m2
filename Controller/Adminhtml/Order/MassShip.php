@@ -35,7 +35,7 @@ class MassShip extends \Magento\Backend\App\Action
      * @var Constant
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
+    public const ADMIN_RESOURCE = 'Ced_Betterthat::Betterthat_orders';
 
     public $filter;
 
@@ -81,18 +81,21 @@ class MassShip extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $collection = $this->filter->getCollection($this->BetterthatOrders->getCollection());
+        $collection = $this->filter
+            ->getCollection($this->BetterthatOrders->getCollection());
         $BetterthatOrders = $collection;
 
         if (count($BetterthatOrders) == 0) {
             $this->messageManager->addErrorMessage('No Orders To Ship.');
-            $this->_redirect('betterthat/order/index');
+            $resultRedirect = $this->resultFactory->create('redirect');
+            $resultRedirect->setPath('betterthat/order/index');
             return;
         } else {
             $counter = 0;
             foreach ($BetterthatOrders as $BetterthatOrder) {
                 $magentoOrderId = $BetterthatOrder->getIncrementId();
-                $this->order = $this->_objectManager->create('\Magento\Sales\Api\Data\OrderInterface');
+                $this->order = $this->_objectManager
+                    ->create(\Magento\Sales\Api\Data\OrderInterface::class);
                 $order = $this->order->loadByIncrementId($magentoOrderId);
                 if ($order->getStatus() == 'complete' || $order->getStatus() == 'Complete') {
                     $return = $this->shipment($order, $BetterthatOrder);
@@ -102,14 +105,15 @@ class MassShip extends \Magento\Backend\App\Action
                 }
             }
             if ($counter) {
-                $this->messageManager->addSuccessMessage($counter . ' Orders Shipment Successfull to Betterthat.com');
+                $this->messageManager
+                    ->addSuccessMessage($counter . ' Orders Shipment Successfull to Betterthat.com');
             } else {
-                $this->messageManager->addErrorMessage('Orders Shipment Unsuccessfull.');
+                $this->messageManager
+                    ->addErrorMessage('Orders Shipment Unsuccessfull.');
             }
-            return $this->_redirect('betterthat/order/index');
-
+            $resultRedirect = $this->resultFactory->create('redirect');
+            return $resultRedirect->setPath('betterthat/order/index');
         }
-
     }
 
     /**
@@ -132,24 +136,29 @@ class MassShip extends \Magento\Backend\App\Action
                 }
             }
         }
-
         try {
             $purchaseOrderId = $BetterthatOrder->getBetterthatOrderId();
             if (empty($purchaseOrderId)) {
                 return false;
             }
-
             if ($tracking_number && $BetterthatOrder->getBetterthatOrderId()) {
                 $shippingProvider = $this->orderHelper->getShipmentProviders();
                 $providerCode = array_column($shippingProvider, 'code');
-                $carrier_code = (in_array(strtoupper($carrier_code), $providerCode)) ? strtoupper($carrier_code) : '';
-                $args = ['TrackingNumber' => $tracking_number, 'ShippingProvider' => strtoupper($carrier_code), 'order_id' => $BetterthatOrder->getMagentoOrderId(), 'BetterthatOrderID' => $BetterthatOrder->getBetterthatOrderId(), 'ShippingProviderName' => strtolower($carrier_name)];
+                $carrier_code = (in_array(strtoupper($carrier_code), $providerCode))
+                    ? strtoupper($carrier_code) : '';
+                $args = [
+                    'TrackingNumber' => $tracking_number,
+                    'ShippingProvider' => strtoupper($carrier_code),
+                    'order_id' => $BetterthatOrder->getMagentoOrderId(),
+                    'BetterthatOrderID' => $BetterthatOrder->getBetterthatOrderId(),
+                    'ShippingProviderName' => strtolower($carrier_name)
+                ];
                 $response = $this->orderHelper->shipOrder($args);
                 $this->logger->log('ERROR', json_encode($response));
                 return $response;
             }
             return false;
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $this->logger->log('ERROR', json_encode($e->getMessage()));
             return false;
         }

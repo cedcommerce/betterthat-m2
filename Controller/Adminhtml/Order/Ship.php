@@ -27,7 +27,6 @@ class Ship extends \Magento\Backend\App\Action
 
     public $json;
 
-
     public $order;
 
     public function __construct(
@@ -64,8 +63,7 @@ class Ship extends \Magento\Backend\App\Action
             unset($data['isAjax']);
         }
 
-
-        if (isset($data['shipments']) and is_array($data['shipments'])) {
+        if (isset($data['shipments']) && is_array($data['shipments'])) {
             foreach ($data['shipments'] as $item) {
                 $shipment = $this->order->shipOrder($item);
                 if ($shipment['success'] === true) {

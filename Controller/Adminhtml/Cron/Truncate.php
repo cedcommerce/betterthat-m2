@@ -62,6 +62,9 @@ class Truncate extends Action
         $collection = $this->cron->addFieldToFilter(['job_code'], [[ 'like' => "%ced_%"]]);
         $collection->walk('delete');
         $this->messageManager->addSuccessMessage('Crons deleted successfully.');
-        $this->_redirect('*/*');
+        $resultRedirect = $this->resultFactory->create('redirect');
+        return $resultRedirect->setPath(
+            '*/*'
+        );
     }
 }
