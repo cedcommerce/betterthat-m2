@@ -59,7 +59,7 @@ class Delete extends \Magento\Customer\Controller\Adminhtml\Group
         }
         $resultRedirect = $this->resultFactory->create('redirect');
         return $resultRedirect->setPath(
-            'betterthat/profile/edit'
+            'betterthat/profile/index'
         );
     }
 }

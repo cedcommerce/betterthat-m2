@@ -96,9 +96,7 @@
                        showInProfile="1"
                 >
                     <label>Select Store</label>
-                    <source_model>
-                        Magento\Config\Model\Config\Source\Store
-                    </source_model>
+                    <source_model>Magento\Config\Model\Config\Source\Store</source_model>
                     <depends>
                         <field id="enable">1</field>
                     </depends>
@@ -108,8 +106,7 @@
                        sortOrder="100" showInDefault="1"
                        showInWebsite="0"
                        showInStore="0"
-                       showInProfile="1"
-                >
+                       showInProfile="1">
                     <label>Debug Mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -224,9 +221,7 @@
                            sortOrder="60" showInDefault="1"
                            showInWebsite="0" showInStore="0">
                         <label>Use Salable Quantity</label>
-                        <source_model>
-                            Magento\Config\Model\Config\Source\Yesno
-                        </source_model>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <depends>
                             <field id="use_msi">1</field>
                         </depends>
@@ -256,9 +251,7 @@
                        sortOrder="10" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Betterthat Order Id Prefix</label>
-                    <source_model>
-                        Magento\Config\Model\Config\Source\Enabledisable
-                    </source_model>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Prefix for Betterthat Increment ID</comment>
                 </field>
                 <field id="order_notify_email" translate="label comment" type="text"

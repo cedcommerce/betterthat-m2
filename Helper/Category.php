@@ -22,6 +22,7 @@ namespace Ced\Betterthat\Helper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\ObjectManagerInterface;
 use PHPUnit\Exception;
+use Magento\Framework\Filesystem\DriverPool;
 
 class Category extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -59,13 +60,13 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         \Ced\Betterthat\Helper\Config $config,
         \BetterthatSdk\ProductFactory $product,
         \Magento\Framework\Filesystem\DirectoryList $directoryList,
-        \Magento\Framework\Filesystem\DriverInterface $filedriver
+        \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory
     ) {
         $this->objectManager = $objectManager;
         $this->product = $product;
         $this->config = $config;
         $this->dl = $directoryList;
-        $this->filedriver = $filedriver;
+        $this->filedriver = $readFactory;
         parent::__construct($context);
     }
 
@@ -517,7 +518,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     public function getCategoriesTree()
     {
         $this->categoriesTree = [];
-        $categoryJson = $this->filedriver->fileGetContents(__DIR__ . '/allcategories.json');
+        $categoryJson = $this->filedriver->create(__DIR__, DriverPool::FILE)
+            ->readFile('allcategories.json');
         $categoryArray = json_decode($categoryJson, 1);
         $this->categoriesTree = $this->getCategoriesTreeNode($categoryArray);
         return $this->categoriesTree;
