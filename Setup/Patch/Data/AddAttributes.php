@@ -22,6 +22,7 @@ use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 
 class AddAttributes implements DataPatchInterface
 {
@@ -83,7 +84,7 @@ class AddAttributes implements DataPatchInterface
                     'required' => 0,
                     'sort_order' => 1,
                     'user_defined' => 1,
-                    'source' => Ced\Betterthat\Model\Source\State::class,
+                    'source' => \Ced\Betterthat\Model\Source\State::class,
                     'comparable' => 0,
                     'visible_on_front' => 0,
                     'global' => ScopedAttributeInterface::SCOPE_GLOBAL,

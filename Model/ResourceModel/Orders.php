@@ -27,6 +27,6 @@ class Orders extends AbstractDb
     public function _construct()
     {
         //Betterthat_orders is table and id is primary key of this table
-        $this->_init('Betterthat_orders', 'id');
+        $this->_init('betterthat_orders', 'id');
     }
 }

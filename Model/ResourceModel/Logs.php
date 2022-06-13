@@ -32,6 +32,6 @@ class Logs extends AbstractDb
     public function _construct()
     {
         //Betterthat_orders is table and id is primary key of this table
-        $this->_init('Betterthat_logs', 'id');
+        $this->_init('betterthat_logs', 'id');
     }
 }

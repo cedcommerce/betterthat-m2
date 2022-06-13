@@ -27,6 +27,6 @@ class Profile extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     public function _construct()
     {
 
-        $this->_init('Betterthat_profile', 'id');
+        $this->_init('betterthat_profile', 'id');
     }
 }

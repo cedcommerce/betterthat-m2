@@ -26,7 +26,7 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
      */
     public function _construct()
     {
-        $this->_init('Betterthat_profile_products', 'id');
+        $this->_init('betterthat_profile_products', 'id');
     }
 
     /**
