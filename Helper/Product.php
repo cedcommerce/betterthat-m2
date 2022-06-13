@@ -19,6 +19,7 @@
 
 namespace Ced\Betterthat\Helper;
 
+
 /**
  * Directory separator shorthand
  */
@@ -180,7 +181,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\Xml\Generator $generator,
         \Magento\Framework\Filesystem\DirectoryList $directoryList,
         \Magento\Framework\Filesystem\Io\File $fileIo,
-        \Magento\Framework\Filesystem\DriverInterface $fileopen,
         \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\UrlInterface $url,
@@ -224,7 +224,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $this->session = $session;
         $this->selectedStore = $config->getStore();
         $this->debugMode = $BetterthatConfig->getDebugMode();
-        $this->fileDriver = $fileopen;
     }
 
     public function _sendBetterthatVisibility($data)
@@ -1200,7 +1199,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         break;
                     }
                     if ($image && $image->getUrl()) {
-                        if ($handle = $this->fileDriver->fileOpen($image->getUrl(), 'r')) {
                             //list($prodWidth, $prodHeight) = getimagesize($image->getUrl());
                             //if ($prodWidth > 450 && $prodHeight > 367) {
                             $this->images[] =
@@ -1214,7 +1212,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 ];
                             $image_index++;
                             //}
-                        }
+
                     }
                 }
             }
@@ -1250,7 +1248,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         break;
                     }
                     if ($image && $image->getUrl()) {
-                        if ($handle = $this->fileDriver->fileOpen($image->getUrl(), 'r')) {
                             $images[] =
                                 [
                                     "id" => $product->getId(),
@@ -1261,7 +1258,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     "variant_ids" => [(int)$product->getId()]
                                 ];
                             $image_index++;
-                        }
                     }
                 }
             }
