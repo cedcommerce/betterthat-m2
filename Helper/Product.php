@@ -19,7 +19,6 @@
 
 namespace Ced\Betterthat\Helper;
 
-
 /**
  * Directory separator shorthand
  */
