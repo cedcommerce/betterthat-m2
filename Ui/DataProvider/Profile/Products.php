@@ -124,22 +124,6 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
-     * Add field to select
-     *
-     * @param  string|array $field
-     * @param  string|null  $alias
-     * @return void
-     */
-    public function addField($field, $alias = null)
-    {
-        if (isset($this->addFieldStrategies[$field])) {
-            $this->addFieldStrategies[$field]->addField($this->getCollection(), $field, $alias);
-        } else {
-            parent::addField($field, $alias);
-        }
-    }
-
-    /**
      * @param  \Magento\Framework\Api\Filter $filter
      * @return void
      */
@@ -154,6 +138,25 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
                 );
         } else {
             parent::addFilter($filter);
+        }
+    }
+
+    /**
+     * @param $field
+     * @param $alias
+     * @return void
+     */
+    public function addField($field, $alias = null)
+    {
+        if (isset($this->addFieldStrategies[$field])) {
+            $this->addFieldStrategies[$field]
+                ->addField(
+                    $this->getCollection(),
+                    $field,
+                    $alias
+                );
+        } else {
+            parent::addField($field, $alias);
         }
     }
 
