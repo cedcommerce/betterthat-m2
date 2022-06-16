@@ -703,7 +703,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             }
             $profileId = $profile->getId();
             $sku = $product->getSku();
-            $productArray = $product->toArray();
+
             $errors = [];
             //Case 1: Profile is Available
             if (isset($profileId) && $profileId != false) {
@@ -776,14 +776,22 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function innerValidateItems($profile, $product, $category)
     {
+        $errors = [];
+        $productArray = $product->toArray();
         $requiredAttributes = $profile->getRequiredAttributes();
         foreach ($requiredAttributes as $BetterthatAttributeId => $BetterthatAttribute) {
             $skippedAttribute = ['short_description'];
+            if (isset($BetterthatAttribute['default'])
+                && !empty($BetterthatAttribute['default'])
+            ) {
+                if ($BetterthatAttribute['default'])
+                    continue;
+            }
             if (in_array($BetterthatAttributeId, $skippedAttribute)) {
                 // Validation case 1 skip some attributes that are not to be validated.
                 continue;
-            } elseif (!isset($productArray[$BetterthatAttribute['magento_attribute_code']])
-                || empty($productArray[$BetterthatAttribute['magento_attribute_code']])
+            } elseif ((!isset($productArray[$BetterthatAttribute['magento_attribute_code']])
+                || empty($productArray[$BetterthatAttribute['magento_attribute_code']]) )
                 && empty($BetterthatAttribute['default'])
             ) {
                 // Validation case 2 Empty or blank value check
@@ -791,8 +799,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "Required attribute empty or not mapped. [
                             {$BetterthatAttribute['magento_attribute_code']}]";
             } elseif (isset($BetterthatAttribute['options'])
-                && !empty($BetterthatAttribute['options'])
-            ) {
+                && !empty($BetterthatAttribute['options'] || !empty($BetterthatAttribute['default'] )
+            )) {
                 $valueId = $product
                     ->getData($BetterthatAttribute['magento_attribute_code']);
                 $value = "";
@@ -802,6 +810,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     && !empty($BetterthatAttribute['default'])
                 ) {
                     $defaultValue = $BetterthatAttribute['default'];
+                    if ($defaultValue)
+                        continue;
                 }
                 // Case 3: magento attribute option value
                 $attr = $product->getResource()
@@ -826,7 +836,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         "] has invalid option value: <b> " . json_encode($value) . "/" . json_encode($valueId) .
                         "</b> or default value: " . json_encode($defaultValue);
                 }
-
             }
         }
         $image = $product->getImage();
@@ -859,7 +868,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $product->getId(),
                     $product->getStore()->getWebsiteId()
                 );
-                $images = $this->prepareImages($product);
+                $images = $this->prepareImages($product, false);
                 $product_array = [
                     "id" => isset($id['id']) ? isset($id['id']) : '',
                     "title" => isset($attributes['title']) ? $attributes['title'] : '',
@@ -1234,7 +1243,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Object $product
      * @return string|array
      */
-    private function prepareImages($product)
+    private function prepareImages($product, $config = false)
     {
         try {
             $productImages = $product->getMediaGalleryImages();
@@ -1247,6 +1256,17 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         break;
                     }
                     if ($image && $image->getUrl()) {
+                        if ($config) {
+                            $this->images[] =
+                                [
+                                    "id" => $product->getId(),
+                                    "product_id" => $product->getId(),
+                                    "position" => $image_index,
+                                    "alt" => null,
+                                    "src" => $image->getUrl(),
+                                    "variant_ids" => []
+                                ];
+                        } else {
                             $images[] =
                                 [
                                     "id" => $product->getId(),
@@ -1256,6 +1276,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     "src" => $image->getUrl(),
                                     "variant_ids" => [(int)$product->getId()]
                                 ];
+                        }
                             $image_index++;
                     }
                 }
@@ -1300,6 +1321,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 /*$price = $this->getPrice($product);
                 $data['price'] = $price['price'];*/
                 $parentId = (string)$parentId;
+                $this->prepareImages($product, true);
                 $collectVariant = $this
                     ->prepareVariants($ids[$parentId], $profile, $variantAttributes, $parentId);
                 $this->data = [
@@ -1539,7 +1561,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $price = $this->getPrice($product);
                             $product_id = $product->getId();
                             $quantity = $this->getFinalQuantityToUpload($product);
-                            $betterThatId = explode(':', $product->getBetterthatProductId());
                             $stock[] =
                                 [
                                     "variant_id" => $product_id,
@@ -1574,7 +1595,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $this->ids[] = $product->getId();
                         $price = $this->getPrice($product);
                         $quantity = $this->getFinalQuantityToUpload($product);
-                        $betterThatId = explode(':', $product->getBetterthatProductId());
                         //override product_id
                         $product_id = $product->getId();
                         $invupdate = [
