@@ -703,8 +703,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             }
             $profileId = $profile->getId();
             $sku = $product->getSku();
-
-            $errors = [];
             //Case 1: Profile is Available
             if (isset($profileId) && $profileId != false) {
                 unset($validatedProduct);
@@ -736,8 +734,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $validatedProduct['category'] = $category;
                 }
             } else {
-                //primebanking@hdfcbank.com
-                //customerservices.cards@hdfcbank.com
                 //Case 2: Profile is not available, not needed case
                 $errors = [
                     "sku" => "$sku",
@@ -1528,24 +1524,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public function updatePriceInventory($ids = [], $withProducts = false, $makeInactive = false)
     {
         try {
-            $fromParentAttrs = $this->config->getFromParentAttributes();
             $index = 0;
             $response = false;
             if (!empty($ids)) {
                 $this->ids = [];
-                $this->data = [
-                    0 => [
-                        'offer' => []
-                    ]
-                ];
                 $threshold_status = $this->config->getThresholdStatus();
                 $threshold_limit = $this->config->getThresholdLimit();
                 $threshold_min = $this->config->getThresholdLimitMin();
                 $threshold_max = $this->config->getThresholdLimitMax();
                 foreach ($ids as $origIndex => $id) {
                     $product = $this->product->create()->load($id);
-                    $profile = $this->profileHelper->getProfile($product->getId());
-
                     // configurable Product
                     if ($product->getTypeId() == 'configurable'
                         && $product->getVisibility() != 1
