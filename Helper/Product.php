@@ -780,8 +780,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             if (isset($BetterthatAttribute['default'])
                 && !empty($BetterthatAttribute['default'])
             ) {
-                if ($BetterthatAttribute['default'])
+                if ($BetterthatAttribute['default']) {
                     continue;
+                }
             }
             if (in_array($BetterthatAttributeId, $skippedAttribute)) {
                 // Validation case 1 skip some attributes that are not to be validated.
@@ -795,8 +796,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "Required attribute empty or not mapped. [
                             {$BetterthatAttribute['magento_attribute_code']}]";
             } elseif (isset($BetterthatAttribute['options'])
-                && !empty($BetterthatAttribute['options'] || !empty($BetterthatAttribute['default'] )
-            )) {
+                && !empty($BetterthatAttribute['options'] || !empty($BetterthatAttribute['default']))
+            ) {
                 $valueId = $product
                     ->getData($BetterthatAttribute['magento_attribute_code']);
                 $value = "";
@@ -806,8 +807,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     && !empty($BetterthatAttribute['default'])
                 ) {
                     $defaultValue = $BetterthatAttribute['default'];
-                    if ($defaultValue)
+                    if ($defaultValue) {
                         continue;
+                    }
                 }
                 // Case 3: magento attribute option value
                 $attr = $product->getResource()

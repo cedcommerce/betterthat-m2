@@ -278,9 +278,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
             ->getValue(
                 "betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_use_other_parent"
             );
-        if($parentAttrs)
-             $fromParentAttrs = explode(',', $parentAttrs);
-
+        if ($parentAttrs) {
+            $fromParentAttrs = explode(',', $parentAttrs);
+        }
         return $fromParentAttrs;
     }
 
