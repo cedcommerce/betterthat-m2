@@ -19,7 +19,6 @@ class InventoryChangeObserver implements \Magento\Framework\Event\ObserverInterf
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $this->logger->log('INFO', 'InventorySaveAfter Observer Working');
         try {
             $event = $observer->getEvent();
             if ($event->hasData('item')) {
@@ -31,22 +30,13 @@ class InventoryChangeObserver implements \Magento\Framework\Event\ObserverInterf
                         ->create(\Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable::class)
                         ->getParentIdsByChild($productId);
                     if (isset($product[0])) {
-                        //this is parent product id..
-                        $this->logger->log('INFO', 'inv test Observer Working');
+                        //this is parent product id.
                         $productId = $product[0];
                     }
                 }
-
-                $response = $this->product->updatePriceInventory([$productId]);
-                $this->logger->log('INFO', 'inv test Observer Working');
-                $this->logger->log('INFO', $productId);
-                $this->logger->log('INFO', $item->getData('qty'));
-                $this->logger->log('INFO', $item->getOrigData('qty'));
-                $this->logger->log('INFO', json_encode($response));
-
+                $this->product->updatePriceInventory([$productId]);
             }
         } catch (\Exception $e) {
-
             $this->logger->error(
                 'InventorySaveAfter Observer',
                 ['path' => __METHOD__,

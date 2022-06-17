@@ -88,7 +88,7 @@
                 </argument>
             </action>
 
-             <action name="upload">
+            <action name="upload">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="confirm" xsi:type="array">
@@ -326,20 +326,20 @@
                 </item>
             </argument>
         </column>
-       <!-- <column name="betterthat_exclude_from_sync">
-            <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\Yesno</item>
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">select</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
-                    <item name="add_field" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">select</item>
-                    <item name="controlVisibility" xsi:type="boolean">false</item>
-                    <item name="label" xsi:type="string" translate="true">Excluded from Sync</item>
-                    <item name="sortOrder" xsi:type="number">140</item>
-                </item>
-            </argument>
-        </column>-->
+        <!-- <column name="betterthat_exclude_from_sync">
+             <argument name="data" xsi:type="array">
+                 <item name="options" xsi:type="object">Ced\Betterthat\Model\Source\Yesno</item>
+                 <item name="config" xsi:type="array">
+                     <item name="filter" xsi:type="string">select</item>
+                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                     <item name="add_field" xsi:type="boolean">true</item>
+                     <item name="dataType" xsi:type="string">select</item>
+                     <item name="controlVisibility" xsi:type="boolean">false</item>
+                     <item name="label" xsi:type="string" translate="true">Excluded from Sync</item>
+                     <item name="sortOrder" xsi:type="number">140</item>
+                 </item>
+             </argument>
+         </column>-->
         <actionsColumn name="actions" class="Ced\Betterthat\Ui\Component\Listing\Columns\Product\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

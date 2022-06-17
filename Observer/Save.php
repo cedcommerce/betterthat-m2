@@ -6,11 +6,9 @@ class Save implements \Magento\Framework\Event\ObserverInterface
 {
     protected $objectManager;
     protected $productHelper;
-    protected $logger;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Ced\Betterthat\Helper\Logger $logger,
         \Ced\Betterthat\Helper\Product $productHelper,
         \Ced\Betterthat\Model\ResourceModel\Profile $profileResource,
         \Ced\Betterthat\Model\ProfileFactory $profileFactory,
@@ -18,7 +16,6 @@ class Save implements \Magento\Framework\Event\ObserverInterface
     ) {
         $this->objectManager = $objectManager;
         $this->productHelper = $productHelper;
-        $this->logger = $logger;
         $this->profileResource = $profileResource;
         $this->profileModel = $profileFactory;
         $this->messageManager = $messageManager;

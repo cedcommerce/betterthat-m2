@@ -112,7 +112,7 @@ define(
                     str += ar[ix];
                     inComment = false;
                 } else
-                if(/^<\w/.exec(ar[ix-1]) && /^<\/\w/.exec(ar[ix]) 
+                if(/^<\w/.exec(ar[ix-1]) && /^<\/\w/.exec(ar[ix])
                     && /^<[\w:\-\.\,]+/.exec(ar[ix-1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/','')
                 ) {
                     str += ar[ix];
@@ -342,8 +342,7 @@ define(
         vkbeautify.prototype.cssmin = function (text, preserveComments) {
 
             var str = preserveComments ? text
-            : text.replace(/\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])
-            ))*\*+\//g,"") ;
+            : text.replace((/]\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g,""));
 
             return str.replace(/\s{1,}/g,' ')
                 .replace(/\{\s{1,}/g,"{")

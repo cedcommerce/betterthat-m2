@@ -32,10 +32,12 @@ class ProductDeleteAfter implements ObserverInterface
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Magento\Framework\Message\ManagerInterface $messageManager
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        \Ced\Betterthat\Helper\Product $betterthat
     ) {
         $this->_objectManager = $objectManager;
         $this->messageManager = $messageManager;
+        $this->betterthat = $betterthat;
     }
 
     /**
@@ -47,7 +49,8 @@ class ProductDeleteAfter implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $_product = $observer->getProduct();
-        $deletedIds = $this->Betterthat->deleteProducts([$_product->getId()]);
+        $deletedIds = $this->betterthat->deleteProducts([$_product->getId()]);
+        $this->betterthat->deleteProduct(['product_id'=>$_product->getId(),'delete_status'=>true]);
         if (count($deletedIds)>0) {
             $this->messageManager
                 ->addSuccessMessage(
