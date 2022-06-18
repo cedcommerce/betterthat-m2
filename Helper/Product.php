@@ -975,7 +975,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     ]
                 ],
                 */
-
                 $this->data = $product_array;
                 return;
             }
