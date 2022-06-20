@@ -87,13 +87,14 @@ class ValidateSingle extends \Magento\Backend\App\Action
     {
         $id = $this->getRequest()->getParam('id');
         $response = $this->Betterthat->validateAllProducts([$id]);
-        if ($response && !@$response['bt_visibility']) {
+        if ($response && !isset($response['bt_visibility'])) {
             $this->messageManager
                 ->addSuccessMessage(' Product(s) Validation Process Executed successfully.');
         } else {
             $message = 'Product Validate Failed.';
-            if(@$response['bt_visibility'])
+            if (isset($response['bt_visibility'])) {
                 $message = $response['bt_visibility'];
+            }
             $errors = $this->registry->registry('Betterthat_product_errors');
             if (isset($errors)) {
                 $message = "Product Validate Failed. \nErrors: " . (string)json_encode($errors);
