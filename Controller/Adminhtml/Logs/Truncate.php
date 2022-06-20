@@ -69,25 +69,12 @@ class Truncate extends Action
     public function execute()
     {
         $collection = $this->feeds->getCollection();
-        // Remove files
-        if ($collection->getSize() > 0) {
-            foreach ($collection as $feed) {
-                $feedFile = $feed->getFeedFile();
-                if ($this->fileIo->fileExists($feedFile)) {
-                    $this->fileIo->rm($feedFile);
-                }
-
-                $responseFile = $feed->getResponseFile();
-                if ($this->fileIo->fileExists($responseFile)) {
-                    $this->fileIo->rm($responseFile);
-                }
-            }
-        }
-
         // Delete feeds from db
         $collection->walk('delete');
         $this->messageManager->addSuccessMessage('Logs deleted successfully.');
         $resultRedirect = $this->resultFactory->create('redirect');
-        $resultRedirect->setUrl($this->redirect->getRefererUrl());
+        return $resultRedirect->setPath(
+            '*/*'
+        );
     }
 }
