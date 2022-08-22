@@ -1,0 +1,580 @@
+<?php
+$element = $block->getElement();
+$_htmlId = 'betterthatAttributes' ?>
+<?php $_htmlClass = 'betterthatAttributesClass' ?>
+<?php $_htmlName = 'betterthat_attributes' ?>
+<?php $_readonly = false ?>
+<div class="field" id="attribute-<?= $block->escapeHtml($_htmlId) ?>-container"
+     data-attribute-code="<?= $block->escapeHtml($_htmlId) ?>"
+>
+    <div class="control">
+        <table class="admin__control-table tiers_table" id="tiers_table">
+            <thead>
+            <div><strong>Please map all Betterthat attributes with Magento attributes.</strong></div>
+            <tr>
+                <th class="col-customer-group"><?= $block->escapeHtml('Betterthat Attribute') ?></th>
+                <th class="col-qty required"><?= $block->escapeHtml('Magento Catalog Attribute') ?></th>
+                <th class="col-qty required"><?= $block->escapeHtml('Default Value') ?></th>
+                <th class="col-delete"><?= $block->escapeHtml('Actions') ?></th>
+            </tr>
+            </thead>
+            <tbody id="<?= $block->escapeHtml($_htmlId) ?>_container"></tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" class="col-actions-add"><?= $block->getAddButtonHtml() ?></td>
+            </tr>
+            </tfoot>
+            <script>
+                require([
+                    'Magento_Ui/js/modal/modal',
+                    'mage/template',
+                    "prototype",
+                    "mage/adminhtml/form"
+                ], function (modal, mageTemplate) {
+                    var requiredAttributeRowTemplate = '<tr>'
+                        + '<input data-form-part="betterthat_profile_edit" type="hidden" value="0" ' +
+                        'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][isMandatory]"' +
+                        'id="betterthat_attribute_row_<%- data.index %>_betterthat_required"" />'
+                        + '<input data-form-part="betterthat_profile_edit" type="hidden" ' +
+                        'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][name]"'
+                        +'id="betterthat_attribute_row_<%- data.index %>_betterthat_attribute_hidden"" />'
+                        + '<input data-form-part="betterthat_profile_edit" type="hidden" ' +
+                        'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][attributeType]"'
+                        +'id="betterthat_attribute_row_<%- data.index %>_attributeType"" />'
+                        + '<input data-form-part="betterthat_profile_edit" type="hidden" ' +
+                        'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][isMandatory]"'+
+                        'id="betterthat_attribute_row_<%- data.index %>_isMandatory"" />'
+                        + '<input data-form-part="betterthat_profile_edit" type="hidden" ' +
+                        'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][inputType]"'
+                        +'id="betterthat_attribute_row_<%- data.index %>_inputType"" />'
+                        + '<input data-form-part="betterthat_profile_edit" type="hidden" ' +
+                        'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][options]"'
+                        + 'id="betterthat_attribute_row_<%- data.index %>_options"" />'
+                        + '<td><select data-form-part="betterthat_profile_edit" ' +
+                        'style="margin-left: 10px;" ' +
+                        'onchange="return betterthatAttributeControl.setbetterthatValues(this, <%- data.index %>);"'+
+                        'class="<?= $block->escapeHtml($_htmlClass) ?> custgroup"' +
+                        'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][name]"'
+                        +'id="betterthat_attribute_row_<%- data.index %>_betterthat_attribute">'
+
+                        <?php foreach ($block->getBetterthatAttributes() as $optGroup) {
+                            $disable = '';
+                            if ($optGroup['label'] == 'Required Attributes') {
+                                $disable = 'disabled="disabled"';
+                            }
+                            ?>
+                        + '<optgroup <?= $block->escapeHtml($disable) ?> label="<?= $block
+                            ->escapeHtml($optGroup['label']) ?> ">'
+                            <?php
+                            foreach ($optGroup['value'] as $attribute):
+                                ?>
+                        + '<option value="<?=  $block->escapeHtml($attribute['code'])  ?>"'
+                        + '"isMandatory="<?= $block->escapeHtml($attribute['required']) ?>" '
+                        + 'attributeType="<?= $block->escapeHtml($attribute['type']) ?>" '
+                        + 'enum_val=\'<?= $block->escapeHtml(json_encode(isset($attribute['option_values'])
+                            ? $attribute['option_values'] : '')) ?>\' options=\'<?= $block
+                            ->escapeHtml(json_encode($attribute['option_values'])) ?>\' inputType="<?= $block
+                            ->escapeHtml($attribute['type']) ?>"><?= $block
+                            ->escapeHtml(__($attribute['label'])) ?></option>'
+                        <?php endforeach
+                            ?>
+                        + '</optgroup>'
+                        <?php  }
+                        ?>
+                        + '</select></td>'
+                        + '<td> <select '
+                        + 'onChange="return betterthatAttributeControl.showDefaultField(this, <%- data.index %>);"'
+                        + ' data-form-part="betterthat_profile_edit" '
+                        + 'class="<?= $block->escapeHtml($_htmlClass) ?> required_magento_attr required-entry" '
+                        + 'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][magento_attribute_code]" '
+                        + 'id="betterthat_attribute_row_<%- data.index %>_magento_attr">'
+                        <?php
+                        foreach ($block->getMagentoAttributes() as $_groupId => $_groupName): ?>
+                        + "<option value='<?= $block->escapeHtml($_groupId) ?>'  options=\'<?= $block
+                            ->escapeHtml($_groupName['option_values']) ?>\' ><?= $block
+                            ->escapeHtml($_groupName['attribute_code']) ?></option>"
+                        <?php endforeach ?>
+                        + '</select>'
+                        + ' </td>'
+                        + '<td><input style="display:none;" type="text" data-form-part="betterthat_profile_edit" '
+                        + ' name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][default]" value="" '
+                        + 'id="betterthat_attribute_row_<%- data.index %>_default_text" />'
+                        + '<select  style="display:none;" class="<?= $block
+                            ->escapeHtml($_htmlClass) ?> required_magento_attr" '
+                        + 'data-form-part="betterthat_profile_edit"'
+                        + ' name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][default]" '
+                        + 'id="betterthat_attribute_row_<%- data.index %>_default_select">'
+                        + '</select></td>'
+                        + '<td class="col-delete">'
+                        + '<input type="hidden" data-form-part="betterthat_profile_edit" '
+                        + 'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][option_mapping]" '
+                        + 'id="betterthat_attribute_row_<%- data.index %>_option_mapping"" value="{}" />'
+                        + '<button title="<?= $block->escapeHtml(__('Map Options')); ?>" type="button" '
+                        + 'class="action- scalable map icon-btn map-attribute-option" '
+                        + 'id="betterthat_attribute_row_<%- data.index %>_map_option_button" '
+                        + ' row_id="<%- data.index %>" id_prefix="betterthat_attribute_row_" '
+                        + ' onclick="return betterthatAttributeControl.mapOption(this);" disabled>'
+                        + '<span><?= $block->escapeHtml("Map Options") ?></span></button>'
+                        + '<input type="hidden" data-form-part="betterthat_profile_edit" '
+                        + 'name="<?= $block->escapeHtml($_htmlName) ?>[<%- data.index %>][delete]" '
+                        + 'class="delete" value="" id="betterthat_attribute_row_<%- data.index %>_delete" />'
+                        + '<button title="<?= $block->escapeHtml(__('Delete Tier')); ?>" '
+                        + 'type="button" class="action- scalable delete icon-btn delete-product-option" '
+                        + 'id="betterthat_attribute_row_<%- data.index %>_delete_button" '
+                        + 'onclick="return betterthatAttributeControl.deleteItem(event);">'
+                        + '<span><?= $block->escapeHtml("Delete") ?></span></button></td>'
+                        + '</tr>';
+                    var betterthatAttributeControl = {
+                        template: mageTemplate(requiredAttributeRowTemplate),
+                        itemsCount: 0,
+                        addItem: function () {
+                            <?php if ($_readonly): ?>
+                            if (arguments.length < 4) {
+                                return;
+                            }
+                            <?php endif; ?>
+                            var data = {
+                                betterthat_attribute: '',
+                                magento_attr: '',
+                                isMandatory: '',
+                                attributeType: '',
+                                inputType: '',
+                                options: '',
+                                default: '',
+                                option_mapping: '',
+                                index: this.itemsCount++
+                            };
+
+                            if (arguments.length >= 4) {
+                                data.betterthat_attribute = arguments[0];
+                                data.magento_attr = arguments[1];
+                                data.attributeType = arguments[2];
+                                data.isMandatory = arguments[3];
+                                data.inputType = arguments[4];
+                                data.options = arguments[5];
+                                data.default = arguments[6];
+                                data.option_mapping = arguments[7];
+                            }
+                            Element.insert($('<?= $block->escapeHtml($_htmlId) ?>_container'), {
+                                bottom: this.template({
+                                    data: data
+                                })
+                            });
+                            var betterthatAttribute = $('betterthat_attribute_row_'
+                                + data.index + '_betterthat_attribute');
+                            $('betterthat_attribute_row_' + data.index + '_betterthat_attribute').value
+                                = data.betterthat_attribute;
+                            if (betterthatAttribute.options[betterthatAttribute.selectedIndex] != undefined) {
+                                $('betterthat_attribute_row_' + data.index + '_magento_attr').value = data.magento_attr;
+                                $('betterthat_attribute_row_' + data.index + '_attributeType').value
+                                    = data.attributeType;
+                                $('betterthat_attribute_row_' + data.index + '_isMandatory').value = data.isMandatory;
+                                $('betterthat_attribute_row_' + data.index + '_inputType').value = data.inputType;
+                                $('betterthat_attribute_row_' + data.index + '_options').value = data.options;
+                                $('betterthat_attribute_row_' + data.index + '_option_mapping').value
+                                    = data.option_mapping;
+                                if (data.isMandatory == "1") {
+                                    $('betterthat_attribute_row_' + data.index + '_delete_button').remove();
+                                    $('betterthat_attribute_row_' + data.index + '_betterthat_attribute').disabled
+                                        = true;
+                                    $('betterthat_attribute_row_' + data.index + '_betterthat_attribute_hidden').value =
+                                        data.betterthat_attribute;
+                                    $('betterthat_attribute_row_'
+                                        + data.index + '_betterthat_attribute').removeClassName('required-entry');
+                                    $('betterthat_attribute_row_'
+                                        + data.index + '_betterthat_required').value = data.isMandatory;
+                                }
+
+                                if (data.readOnly == '1') {
+                                    ['website', 'cust_group', 'qty', 'price', 'delete'].each(function (idx) {
+                                        $('betterthat_attribute_row_' + data.index + '_' + idx).disabled = true;
+                                    });
+                                    $('betterthat_attribute_row_' + data.index + '_delete_button').hide();
+                                }
+
+                                if (data.default != '') {
+                                    var betterthatAttribute = $('betterthat_attribute_row_'
+                                        + data.index + '_magento_attr');
+                                    var text = $('betterthat_attribute_row_' + data.index + '_default_text');
+                                    var select = $('betterthat_attribute_row_' + data.index + '_default_select');
+                                    betterthatAttributeControl.showDefaultField(betterthatAttribute, data.index);
+                                    select.value = data.default;
+                                    text.value = data.default;
+                                }
+                                var betterthatAttribute =
+                                    $('betterthat_attribute_row_' + data.index + '_betterthat_attribute');
+                                betterthatAttributeControl.setbetterthatValues(betterthatAttribute, data.index);
+
+                                <?php if ($_readonly): ?>
+                                $('<?= $block->escapeHtml($_htmlId) ?>_container').select('input', 'select')
+                                    .each(this.disableElement);
+                                $('<?= $block->escapeHtml($_htmlId) ?>_container').up('table').select('button')
+                                    .each(this.disableElement);
+                                <?php else: ?>
+                                $('<?= $block->escapeHtml($_htmlId) ?>_container').select('input', 'select')
+                                    .each(function (el) {
+                                    Event.observe(el, 'change', el.setHasChanges.bind(el));
+                                });
+                                <?php endif; ?>
+                            }
+                        },
+                        disableElement: function (el) {
+                            el.disabled = true;
+                            el.addClassName('disabled');
+                        },
+                        deleteItem: function (event) {
+                            var tr = Event.findElement(event, 'tr');
+                            if (tr) {
+                                Element.select(tr, '.delete').each(function (elem) {
+                                    elem.value = '1'
+                                });
+                                Element.select(tr, ['input', 'select']).each(function (elem) {
+                                    elem.hide()
+                                });
+                                Element.hide(tr);
+                                Element.addClassName(tr, 'no-display template');
+                            }
+                            return false;
+                        },
+                        setbetterthatValues: function (e, index) {
+                            if (e.options[e.selectedIndex]) {
+                                var attribute = e.options[e.selectedIndex];
+                                var attributeType = attribute.hasOwnProperty('attributeType')
+                                    ? attribute.getAttribute('attributeType') : '[]';
+                                var isMandatory = attribute.hasOwnProperty('isMandatory')
+                                    ? attribute.getAttribute('isMandatory') : '[]';
+                                var inputType = attribute.getAttribute('inputType');
+                                var options = attribute.getAttribute('options');
+                                if (inputType == 'LIST') {
+                                    $('betterthat_attribute_row_' + index + '_map_option_button').enable();
+                                }
+
+                                var betterthatAttr = $('betterthat_attribute_row_' + index + '_betterthat_attribute');
+                                var betterthatAttrOptions =
+                                    JSON.parse(betterthatAttr.options[betterthatAttr.selectedIndex]
+                                        .getAttribute('options'));
+                                var magentoAttr = $('betterthat_attribute_row_' + index + '_magento_attr');
+                                var magentoAttrOptions = magentoAttr.options[magentoAttr.selectedIndex]
+                                    .getAttribute('options');
+
+                                if (betterthatAttrOptions != '' && magentoAttrOptions != '') {
+                                    magentoAttrOptions = JSON.parse(magentoAttrOptions);
+                                    if (magentoAttrOptions.length > 0) {
+                                        $('betterthat_attribute_row_' + index + '_map_option_button').enable();
+                                    } else {
+                                        $('betterthat_attribute_row_' + index + '_map_option_button').disable();
+                                    }
+                                } else {
+                                    $('betterthat_attribute_row_' + index + '_map_option_button').disable();
+                                }
+                                $('betterthat_attribute_row_' + index + '_options').value = options;
+                            }
+                        },
+                        showDefaultField: function (e, index) {
+                            var checkdefault = e.options[e.selectedIndex].getAttribute('value');
+                            var text = $('betterthat_attribute_row_' + index + '_default_text');
+                            var select = $('betterthat_attribute_row_' + index + '_default_select');
+
+                            var betterthatAttr = $('betterthat_attribute_row_' + index + '_betterthat_attribute');
+                            var betterthatAttrOptions = JSON.parse(betterthatAttr.options[betterthatAttr.selectedIndex]
+                                .getAttribute('options'));
+                            var magentoAttr = $('betterthat_attribute_row_' + index + '_magento_attr');
+                            var magentoAttrOptions = magentoAttr.options[magentoAttr.selectedIndex]
+                                .getAttribute('options');
+
+                            if (betterthatAttrOptions != '' && magentoAttrOptions != '') {
+                                magentoAttrOptions = JSON.parse(magentoAttrOptions);
+                                if (magentoAttrOptions.length > 0) {
+                                    $('betterthat_attribute_row_' + index + '_map_option_button').enable();
+                                } else {
+                                    $('betterthat_attribute_row_' + index + '_map_option_button').disable();
+                                }
+                            } else {
+                                $('betterthat_attribute_row_' + index + '_map_option_button').disable();
+                            }
+
+                            if (checkdefault == 'default') {
+                                var betterthatAttribute = $('betterthat_attribute_row_'
+                                    + index + '_betterthat_attribute');
+                                var enumVal = null;
+                                if (betterthatAttribute.options[betterthatAttribute.selectedIndex] != undefined) {
+                                    enumVal = betterthatAttribute.options[betterthatAttribute.selectedIndex]
+                                        .getAttribute('enum_val');
+                                }
+                                var values = [];
+                                try {
+                                    values = JSON.parse(enumVal);
+                                } catch (err) {
+
+                                }
+                                if (values != undefined && values.length != 0) {
+                                    if (text != null) {
+                                        select.setAttribute("data-form-part", "betterthat_profile_edit");
+                                        text.removeAttribute('data-form-part');
+                                    }
+                                    values = JSON.parse(enumVal);
+                                    while (select.options.length > 0) {
+                                        select.remove(0);
+                                    }
+                                    console.log(values.length);
+
+                                    for (var k in values) {
+                                        console.log(k);
+                                        console.log(values[k]);
+                                        select.insert(new Element('option', {"value": k}).update(values[k]));
+                                    }
+                                    select.enable();
+                                    select.show();
+                                } else {
+                                    if (select != null) {
+                                        text.setAttribute("data-form-part", "betterthat_profile_edit");
+                                        select.removeAttribute('data-form-part');
+                                        //select.remove();
+                                    }
+                                    text.enable();
+                                    text.show();
+                                }
+
+                            } else {
+                                if (text != null) {
+                                    text.hide();
+                                    text.disable();
+                                }
+                                if (select != null) {
+                                    select.hide();
+                                    select.disable();
+                                }
+                            }
+                        },
+                        saveMapping: function (id, idPrefix) {
+                            if (id !== null) {
+
+                                var rows = $$('.attribute_option_row');
+                                var mapping = {};
+                                if (rows) {
+                                    rows.forEach(
+                                        function (element) {
+                                            var rowId = element.getAttribute('row_id');
+                                            if (rowId !== null) {
+                                                var betterthatAttributeOption =
+                                                    $('option_' + rowId + '_betterthat_attr_option').value;
+                                                var magentoAttributeOption =
+                                                    $('option_' + rowId + '_mage_attr_option')
+                                                        .getAttribute('option_id');
+                                                if (betterthatAttributeOption !== "") {
+                                                    mapping[magentoAttributeOption] =
+                                                        betterthatAttributeOption === undefined
+                                                            ? "" : betterthatAttributeOption;
+                                                }
+                                            }
+                                        }
+                                    );
+                                }
+
+                                var mappedOption = $(idPrefix + id + '_option_mapping');
+
+                                if (mappedOption) {
+                                    mappedOption.setAttribute('value', JSON.stringify(mapping));
+                                }
+                            }
+                        },
+                        mapOption: function (self) {
+                            $('attributeOption_container').update('');
+
+                            var id = self.getAttribute("row_id");
+                            var idPrefix = self.getAttribute("id_prefix");
+
+                            var loadOptionsMapping = $(idPrefix + id + '_option_mapping').value;
+                            try {
+                                loadOptionsMapping = JSON.parse(loadOptionsMapping);
+                            } catch (e) {
+                            }
+                            var magentoOptions = '[]';
+                            var betterthatOptions = '[]';
+                            if ($(idPrefix + id + "_magento_attr").selectedIndex >= 0 &&
+                                $(idPrefix + id + "_betterthat_attribute").selectedIndex >= 0) {
+                                magentoOptions = JSON.parse($(idPrefix + id + "_betterthat_attribute")
+                                    .options[$(idPrefix + id + "_betterthat_attribute").selectedIndex]
+                                    .getAttribute('options'));
+                                betterthatOptions = $(idPrefix + id + "_magento_attr")
+                                    .options[$(idPrefix + id + "_magento_attr").selectedIndex]
+                                    .getAttribute('options');
+                            }
+                            setbetterthatOptions(betterthatOptions);
+                            //populate magento attribute
+                            for (var option in magentoOptions) {
+                                if (magentoOptions.hasOwnProperty(option)) {
+                                    optionMappingControl.initialize();
+                                    optionMappingControl.addItem(
+                                        option,
+                                        loadOptionsMapping[option]
+                                    );
+                                }
+                            }
+
+                            var options = {
+                                type: 'popup',
+                                responsive: true,
+                                innerScroll: true,
+                                title: '<?= $block->escapeHtml("Map Magento Attribute Options") ?>',
+                                buttons: [{
+                                    text: jQuery.mage.__('Save'),
+                                    class: '',
+                                    click: function () {
+                                        betterthatAttributeControl.saveMapping(id, idPrefix);
+                                        this.closeModal();
+                                    }
+                                }]
+                            };
+                            var popup = modal(options, jQuery('#popup-modal-custom'));
+                            popup.openModal();
+                        }
+                    };
+
+                    <?php
+                    if ($block->getMappedAttribute() && (count($block->getMappedAttribute()) > 0)):
+                        foreach ($block->getMappedAttribute() as $attribute):
+                            ?>
+
+                    betterthatAttributeControl.addItem(
+                        '<?= $block->escapeHtml(isset($attribute['name'])
+                            ? $attribute['name'] : $attribute['code']) ?>',
+                        '<?= $block->escapeHtml(isset($attribute['magento_attribute_code'])
+                            ? $attribute['magento_attribute_code'] : "")?>',
+                        '<?= $block->escapeHtml(isset($attribute['attributeType'])
+                            ? $attribute['attributeType'] : $attribute['type']) ?>',
+                        '<?= $block->escapeHtml(isset($attribute['isMandatory'])
+                            ? $attribute['isMandatory'] : $attribute['required']) ?>',
+                        '<?= $block->escapeHtml(isset($attribute['inputType'])
+                            ? $attribute['inputType'] : $attribute['type']) ?>',
+                        '<?= $block->escapeHtml(json_encode(isset($attribute['values'])
+                            ? $attribute['values'] : $attribute['options'])) ?>',
+                        '<?= $block->escapeHtml(isset($attribute['default'])
+                            ? $attribute['default'] : '') ?>',
+                        '<?= $block->escapeHtml(isset($attribute['option_mapping']))
+                            ? $block->escapeHtml($attribute['option_mapping']) : ''?>'
+                    );
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                    <?php if ($_readonly): ?>
+                    $('<?= $block->escapeHtml($_htmlId) ?>_container').up('table').select('button')
+                        .each(betterthatAttributeControl.disableElement);
+                    <?php endif; ?>
+                    window.betterthatAttributeControl = betterthatAttributeControl;
+                });
+            </script>
+        </table>
+    </div>
+</div>
+<?php $_htmlId = 'attributeOption';
+$_htmlNameOption = "optionMapping";
+?>
+<div id="popup-modal-custom" style="display: none;">
+    <div class="field admin__scope-old"
+         id="attribute-<?= $block->escapeHtml($_htmlId) ?>-container"
+         data-attribute-code="<?= $block->escapeHtml($_htmlId) ?>"
+    >
+        <div class="control">
+            <table class="admin__control-table tiers_table" id="tiers_table">
+                <thead>
+                <tr>
+                    <th class="col-customer-group"><?= $block->escapeHtml('betterthat Attribute Option') ?></th>
+                    <th class="col-qty required"><?= $block->escapeHtml('Magento Attribute Option') ?></th>
+                    <th class="col-delete"><?= $block->escapeHtml('Action') ?></th>
+                </tr>
+                </thead>
+                <tbody id="<?= $block->escapeHtml($_htmlId) ?>_container"></tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+
+    var optionMappingTemplate = '';
+
+    function setbetterthatOptions(betterthatOptions) {
+
+        var betterthatOptions = JSON.parse(betterthatOptions);
+        var optionsHtml = '';
+        if (betterthatOptions.length > 0) {
+            for (var i = 0; i < (betterthatOptions).length; i++) {
+                optionsHtml += '<option value=' + betterthatOptions[i]['value']
+                    + '>' + betterthatOptions[i]['label'] + '</option>';
+            }
+        }
+
+        optionMappingTemplate = '<tr class="attribute_option_row" row_id="<%- data.index %>">'
+            + '<td>'
+            + '<input option_id="" type="text" readonly="readonly" class="<?= $block->escapeHtml($_htmlClass) ?> '
+            + 'required-entry validate-code input-text admin__control-text required-entry _required" '
+            + 'name="<?= $block->escapeHtml($_htmlNameOption) ?>[<%- data.index %>][mage_attr_option]" '
+            + 'id="option_<%- data.index %>_mage_attr_option">'
+            + '</td>'
+            + '<td> <select class="<?= $block->escapeHtml($_htmlClass) ?> required_betterthat_attr required-entry" '
+            + 'name="<?= $block->escapeHtml($_htmlNameOption) ?>[<%- data.index %>][betterthat_attr_option]" '
+            + 'id="option_<%- data.index %>_betterthat_attr_option">'
+            + optionsHtml
+            + '</select>'
+            + ' </td>'
+
+            + '<td class="col-delete"><input type="hidden" '
+            + 'name="<?= $block->escapeHtml($_htmlNameOption) ?>[<%- data.index %>][delete]" class="delete" '
+            + 'value="" id="option_<%- data.index %>_delete" />'
+            + '<button title="<?= $block->escapeHtml(__('Delete Tier')); ?>" type="button" '
+            + 'class="action- scalable delete icon-btn delete-product-option" '
+            + 'id="option_<%- data.index %>_delete_button" onclick="return optionMappingControl.deleteItem(event);">'
+            + '<span><?= $block->escapeHtml("Delete") ?></span></button></td>'
+            + '</tr>';
+    }
+    require([
+        'mage/template',
+        "prototype",
+        "mage/adminhtml/form"
+    ], function (mageTemplate) {
+
+//<![CDATA[
+        optionMappingControl = {
+            itemsCount: 0,
+            templateRow: '',
+            initialize: function () {
+                this.templateRow = optionMappingTemplate;
+            },
+            addItem: function () {
+                this.template = mageTemplate(this.templateRow);
+                var data = {
+                    mage_attr_option: '',
+                    betterthat_attr_option: '',
+                    index: this.itemsCount++
+                };
+
+                if (arguments.length >= 2) {
+                    data.mage_attr_option = arguments[0];
+                    data.betterthat_attr_option = arguments[1];
+                }
+
+                Element.insert($('<?= $block->escapeHtml($_htmlId) ?>_container'), {
+                    bottom: this.template({
+                        data: data
+                    })
+                });
+
+                $('option_' + data.index + '_mage_attr_option').value = data.mage_attr_option;
+                $('option_' + data.index + '_betterthat_attr_option').value = data.betterthat_attr_option;
+                $('option_' + data.index + '_mage_attr_option').setAttribute('option_id', data.mage_attr_option);
+            },
+            disableElement: function (el) {
+                el.disabled = true;
+                el.addClassName('disabled');
+            },
+            deleteItem: function (event) {
+                var tr = Event.findElement(event, 'tr');
+                if (tr) {
+                    Element.remove(tr);
+                }
+                return false;
+            }
+        };
+    });
+</script>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Betterthat_Betterthat::highlight/styles/default.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Betterthat\Betterthat\Block\Adminhtml\Category\Index"
+                   name="ced_betterthat_category" template="category/index.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

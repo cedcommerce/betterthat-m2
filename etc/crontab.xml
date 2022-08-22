@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Betterthat
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement(EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://betterthat.com/license-agreement.txt
+ *
+ * @category  Betterthat
+ * @package   Betterthat_Betterthat
+ * @author    Betterthat Core Team <connect@betterthat.com>
+ * @copyright Copyright BETTERTHAT(https://betterthat.com/)
+ * @license   https://betterthat.com/license-agreement.txt
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="ced_betterthat_order_import" instance="Betterthat\Betterthat\Cron\Order\Import" method="execute">
+            <config_path>betterthat_config/betterthat_cron/order_cron_schedule</config_path>
+        </job>
+        <job name="ced_betterthat_order_sync" instance="Betterthat\Betterthat\Cron\Order\Sync" method="execute">
+            <config_path>betterthat_config/betterthat_cron/order_sync_cron_schedule</config_path>
+        </job>
+        <job name="ced_betterthat_product_inventory_sync" instance="Betterthat\Betterthat\Cron\Product\Inventory"
+             method="execute">
+            <config_path>betterthat_config/betterthat_cron/inv_sync_cron_schedule</config_path>
+        </job>
+        <job name="ced_betterthat_shipment_cron" instance="Betterthat\Betterthat\Cron\Order\Shipment" method="execute">
+            <config_path>betterthat_config/betterthat_cron/order_shipment_cron_schedule</config_path>
+        </job>
+    </group>
+</config>
