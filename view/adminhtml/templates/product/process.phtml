@@ -185,6 +185,9 @@ $loaderImg = $block->getViewFileUrl('Betterthat_Betterthat::images/rule-ajax-loa
                             if (json.hasOwnProperty('errors')) {
                                 errorMessage = json.errors;
                             }
+                            if (json.hasOwnProperty('error')) {
+                                errorMessage  = json.error
+                            }
                             span.innerHTML = '<img src="<?= $block->escapeUrl($errorImg) ?>">'
                                 +'<span>' + errorMessage + '</span>';
                             //span.innerHTML = errorTemplate;
