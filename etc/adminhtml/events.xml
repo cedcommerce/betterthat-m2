@@ -17,4 +17,8 @@
         <observer name="ced_betterthat_inventory_save_after"
                   instance="Betterthat\Betterthat\Observer\InventoryChangeObserver"/>
     </event>
+    <event name="sales_order_place_after">
+        <observer name="ced_betterthat_inventory_afterorderplace"
+                  instance="Betterthat\Betterthat\Observer\SalesModelOrderObserver"/>
+    </event>
 </config>
