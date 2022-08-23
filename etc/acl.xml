@@ -32,19 +32,12 @@
                         <resource id="Betterthat_Betterthat::Betterthat_failed_order" title="Failed Orders"/>
                     </resource>
                     <resource id="Betterthat_Betterthat::developer" title="Developer">
-                        <resource id="Betterthat_Betterthat::Betterthat_feeds" title="Feeds"/>
                         <resource id="Betterthat_Betterthat::Betterthat_cron" title="Cron Logs"/>
                         <resource id="Betterthat_Betterthat::Betterthat_logs" title="Betterthat Logs"/>
-                        <resource id="Betterthat_Betterthat::Betterthat_category" title="Categories"/>
-                        <resource id="Betterthat_Betterthat::Betterthat_attribute" title="Attributes"/>
                     </resource>
 
                     <resource id="Betterthat_Betterthat::configuration" title="Configuration">
                         <resource id="Betterthat_Betterthat::Betterthat_configuration" title="Configuration"/>
-                    </resource>
-
-                    <resource id="Betterthat_Betterthat::extras" title="Extras">
-                        <resource id="Betterthat_Betterthat::Betterthat_support" title="Support"/>
                     </resource>
                 </resource>
 
