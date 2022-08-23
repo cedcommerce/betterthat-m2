@@ -7,7 +7,7 @@
     ],
     "version": "0.1.8",
     "require": {
-        "betterthat/betterthat-sdk":"*"
+        "ced/betterthat-sdk":"*"
     },
     "autoload": {
         "files": [ "registration.php" ],
