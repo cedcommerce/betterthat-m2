@@ -304,7 +304,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
             ->getValue(
                 "betterthat_config/betterthat_product/betterthat_other_prod_setting/betterthat_skip_from_validation"
             );
-        $skipFromValidation = explode(',', $skipAttr);
+        if ($skipAttr) {
+            $skipFromValidation = explode(',', $skipAttr);
+        }
         return $skipFromValidation;
     }
 
