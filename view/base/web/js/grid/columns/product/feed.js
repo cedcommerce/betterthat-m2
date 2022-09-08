@@ -43,12 +43,16 @@ define(
                         if (data && Object.keys(data).length > 0) {
                             var result = this.CreateTableView(data);
                         }
+                        if(!result)
+                            result = '';
                         var result = '<pre><div style="max-height: 300px; overflow: auto;">'+result+'</div></pre>';
                         var productStatus = this.getChildStatus(row);
                         var data = this.tryParseJSON(productStatus);
                         if (data && Object.keys(data).length > 0) {
                             var childresult = this.CreateTableView(data);
                         }
+                        if(!childresult)
+                            childresult = '';
                         result += '<pre><div style="max-height: 300px; overflow: auto;">'+childresult+'</div></pre>';
                         //var result = "<pre>"+feedErrors+"</pre>";
 
