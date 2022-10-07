@@ -40,23 +40,6 @@ class MagentoCategory extends Generic
     {
 
         $form = $this->_formFactory->create();
-        $profile = $this->_coreRegistry->registry('current_profile');
-
-        $fieldset = $form->addFieldset('advanced_info', ['legend' => __('Magento Category Mapping')]);
-
-        /* $fieldset->addField(
-            'magento_category',
-            'select',
-            [
-                'name' => "magento_category",
-                'label' => __('Select Category'),
-                'values' => $this->objectManager->get('Betterthat\Betterthat\Model\Source\Profile\MagentoCategoryMapping')
-                    ->toOptionArray(),
-                'style' => 'width: 100%',
-                'required' => true,
-                'value' => $profile->getData('magento_category'),
-            ]
-        );*/
         $this->setForm($form);
         return parent::_prepareForm();
     }

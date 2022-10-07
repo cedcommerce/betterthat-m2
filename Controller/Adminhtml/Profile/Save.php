@@ -152,7 +152,8 @@ class Save extends \Magento\Backend\App\Action
                 $profileModel->addProducts($profileModel->getMagentoCategory());
                 $profileId = $profileModel->getId();
                 if ($profileId) {
-                    $this->BetterThatCache->removeValue(\Betterthat\BetterThat\Helper\Cache::PROFILE_CACHE_KEY . $profileId);
+                    $this->BetterThatCache
+                        ->removeValue(\Betterthat\BetterThat\Helper\Cache::PROFILE_CACHE_KEY . $profileId);
                 }
                 $this->messageManager->addSuccessMessage(__('Profile save successfully.'));
             } catch (\Magento\Framework\Exception\AlreadyExistsException $e) {

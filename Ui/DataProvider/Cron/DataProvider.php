@@ -65,7 +65,8 @@ class DataProvider extends AbstractDataProvider
         $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->collection = $collectionFactory->addFieldToFilter(['job_code'], [[ 'like' => "%Betterthat_Betterthat%"]]);
+        $this->collection = $collectionFactory
+            ->addFieldToFilter(['job_code'], [[ 'like' => "%Betterthat_Betterthat%"]]);
         $this->addFieldStrategies = $addFieldStrategies;
         $this->addFilterStrategies = $addFilterStrategies;
     }

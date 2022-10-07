@@ -37,7 +37,8 @@ class SchemaLocator extends \Magento\Config\Model\Config\SchemaLocator
         $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         if ($this->_objectManager->get(\Magento\Framework\Module\Manager::class)
                 ->isEnabled('Betterthat_Betterthat')) {
-            $etcDir = $moduleReader->getModuleDir(\Magento\Framework\Module\Dir::MODULE_ETC_DIR, 'Betterthat_Betterthat');
+            $etcDir = $moduleReader
+                ->getModuleDir(\Magento\Framework\Module\Dir::MODULE_ETC_DIR, 'Betterthat_Betterthat');
             $this->_schema = $etcDir . '/system.xsd';
             $this->_perFileSchema = $etcDir . '/system_file.xsd';
         } else {
