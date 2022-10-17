@@ -30,7 +30,7 @@ class Acknowledge extends \Magento\Backend\Block\Widget\Container
     public $objectManager;
 
     /**
-     * Registry
+     * Registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -64,6 +64,11 @@ class Acknowledge extends \Magento\Backend\Block\Widget\Container
         $this->ids = $this->registry->registry('orderids');
     }
 
+    /**
+     * GetAddButtonOptions
+     *
+     * @return void
+     */
     public function _getAddButtonOptions()
     {
         $splitButtonOptions = [
@@ -74,6 +79,11 @@ class Acknowledge extends \Magento\Backend\Block\Widget\Container
         $this->buttonList->add('add', $splitButtonOptions);
     }
 
+    /**
+     * GetCreateUrl
+     *
+     * @return string
+     */
     public function _getCreateUrl()
     {
         return $this->getUrl(
@@ -81,6 +91,11 @@ class Acknowledge extends \Magento\Backend\Block\Widget\Container
         );
     }
 
+    /**
+     * GetAjaxUrl
+     *
+     * @return string
+     */
     public function getAjaxUrl()
     {
         return $this->getUrl('Betterthat/order/acknowledge');

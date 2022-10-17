@@ -40,6 +40,11 @@ class Back extends Container implements ButtonProviderInterface
         ];
     }
 
+    /**
+     * GetBackUrl
+     *
+     * @return string
+     */
     public function getBackUrl()
     {
         return $this->getUrl('*/*/index');

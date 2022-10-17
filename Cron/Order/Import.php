@@ -21,13 +21,15 @@ namespace Betterthat\Betterthat\Cron\Order;
 
 class Import
 {
+    /**
+     * @var \Betterthat\Betterthat\Helper\Logger
+     */
     public $logger;
 
     /**
-     * Import constructor.
-     *
-     * @param \Betterthat\Betterthat\Helper\Order  $order
+     * @param \Betterthat\Betterthat\Helper\Order $order
      * @param \Betterthat\Betterthat\Helper\Logger $logger
+     * @param \Betterthat\Betterthat\Helper\Config $config
      */
     public function __construct(
         \Betterthat\Betterthat\Helper\Order $order,
@@ -40,6 +42,8 @@ class Import
     }
 
     /**
+     * Execute
+     *
      * @return bool
      */
     public function execute()

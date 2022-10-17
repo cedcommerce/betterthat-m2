@@ -21,8 +21,16 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Category;
 
 class Index extends \Magento\Backend\Block\Template
 {
+    /**
+     * @var \Betterthat\Betterthat\Helper\Category
+     */
     public $category;
 
+    /**
+     * @param \Magento\Backend\Block\Template\Context $context
+     * @param \Betterthat\Betterthat\Helper\Category $category
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Betterthat\Betterthat\Helper\Category $category,
@@ -32,6 +40,11 @@ class Index extends \Magento\Backend\Block\Template
         parent::__construct($context, $data);
     }
 
+    /**
+     * GetCategories
+     *
+     * @return array
+     */
     public function getCategories()
     {
         return $this->category->getCategories(['level'=> 0]);

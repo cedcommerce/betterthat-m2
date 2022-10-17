@@ -23,11 +23,6 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\Api\FilterBuilder;
 use Betterthat\Betterthat\Model\Profile;
 
-/**
- * Class BetterthatProduct
- *
- * @package Betterthat\Betterthat\Ui\DataProvider\Product
- */
 class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
     /**
@@ -54,6 +49,20 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public $config;
 
+    /**
+     * @param CollectionFactory $collectionFactory
+     * @param FilterBuilder $filterBuilder
+     * @param ProfileProduct $profileProduct
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
+     * @param array $meta
+     * @param array $data
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function __construct(
         CollectionFactory $collectionFactory,
         FilterBuilder $filterBuilder,
@@ -120,6 +129,8 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
+     * GetData
+     *
      * @return array
      */
     public function getData()
@@ -135,6 +146,8 @@ class BetterthatProduct extends \Magento\Ui\DataProvider\AbstractDataProvider
         ];
     }
     /**
+     * AddFilter
+     *
      * @param  \Magento\Framework\Api\Filter $filter
      * @return void
      */

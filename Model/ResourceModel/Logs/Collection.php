@@ -20,15 +20,13 @@ namespace Betterthat\Betterthat\Model\ResourceModel\Logs;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
-/**
- * Class Collection
- *
- * @package Betterthat\Betterthat\Model\ResourceModel\Feeds
- */
 class Collection extends AbstractCollection
 {
     /**
+     * Construct
+     *
      * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function _construct()
     {

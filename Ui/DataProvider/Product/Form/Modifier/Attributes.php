@@ -6,18 +6,36 @@ use Magento\Framework\Stdlib\ArrayManager;
 
 class Attributes extends AbstractModifier
 {
+    /**
+     * @var ArrayManager
+     */
     private $arrayManager;
 
+    /**
+     * @param ArrayManager $arrayManager
+     */
     public function __construct(ArrayManager $arrayManager)
     {
         $this->arrayManager = $arrayManager;
     }
 
+    /**
+     * ModifyData
+     *
+     * @param array $data
+     * @return array
+     */
     public function modifyData(array $data)
     {
         return $data;
     }
 
+    /**
+     * ModifyMeta
+     *
+     * @param array $meta
+     * @return array
+     */
     public function modifyMeta(array $meta)
     {
         $attribute = 'betterthat_validation_errors'; // Your attribute code goes here

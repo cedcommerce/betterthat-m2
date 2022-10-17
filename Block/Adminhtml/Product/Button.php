@@ -20,11 +20,6 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Product;
 
 use Magento\Backend\Block\Widget\Container;
 
-/**
- * Class Button
- *
- * @package Betterthat\Betterthat\Block\Adminhtml\Product
- */
 class Button extends Container
 {
     /**

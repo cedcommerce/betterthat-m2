@@ -22,9 +22,10 @@ namespace Betterthat\Betterthat\Model\ResourceModel\Profile;
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
     /**
+     * Construct
+     *
      * @return void
      */
-
     public function _construct()
     {
         $this->_init(

@@ -24,9 +24,6 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\Api\FilterBuilder;
 use Betterthat\Betterthat\Model\Profile;
 
-/**
- * Class Products
- */
 class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
     /**
@@ -53,21 +50,23 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
      * @var \Magento\Ui\Model\Bookmark
      */
     public $bookmark;
-
+    /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
     public $request;
 
     /**
-     * JetProduct constructor.
-     *
-     * @param string            $name
-     * @param string            $primaryFieldName
-     * @param string            $requestFieldName
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
+     * @param \Magento\Backend\App\Action\Context $context
      * @param CollectionFactory $collectionFactory
-     * @param FilterBuilder     $filterBuilder
-     * @param array             $addFieldStrategies
-     * @param array             $addFilterStrategies
-     * @param array             $meta
-     * @param array             $data
+     * @param FilterBuilder $filterBuilder
+     * @param \Magento\Ui\Model\BookmarkFactory $bookmark
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
+     * @param array $meta
+     * @param array $data
      */
     public function __construct(
         $name,
@@ -114,8 +113,6 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
                 }
             }
         }
-
-        //        $this->addField('Betterthat_profile_id');
         $this->addField('Betterthat_product_status');
         $this->addField('Betterthat_validation_errors');
         $this->addField('Betterthat_feed_errors');
@@ -124,6 +121,8 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
+     * AddFilter
+     *
      * @param  \Magento\Framework\Api\Filter $filter
      * @return void
      */
@@ -142,8 +141,10 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
-     * @param $field
-     * @param $alias
+     * AddField
+     *
+     * @param string $field
+     * @param string $alias
      * @return void
      */
     public function addField($field, $alias = null)
@@ -161,6 +162,8 @@ class Products extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
+     * GetData
+     *
      * @return array
      */
     public function getData()

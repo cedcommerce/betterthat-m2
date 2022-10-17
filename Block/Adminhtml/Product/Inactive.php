@@ -11,7 +11,7 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Product;
 class Inactive extends \Magento\Backend\Block\Widget\Container
 {
     /**
-     * Registry
+     * Registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -23,6 +23,7 @@ class Inactive extends \Magento\Backend\Block\Widget\Container
      * @var $productids
      */
     public $ids;
+
     /**
      * Object Manger
      *
@@ -51,6 +52,11 @@ class Inactive extends \Magento\Backend\Block\Widget\Container
         $this->_getAddButtonOptions();
     }
 
+    /**
+     * GetAddButtonOptions
+     *
+     * @return void
+     */
     public function _getAddButtonOptions()
     {
         $backButtonOptions = [
@@ -61,6 +67,11 @@ class Inactive extends \Magento\Backend\Block\Widget\Container
         $this->buttonList->add('add', $backButtonOptions);
     }
 
+    /**
+     * GetCreateUrl
+     *
+     * @return string
+     */
     public function _getCreateUrl()
     {
         return $this->getUrl(
@@ -68,6 +79,11 @@ class Inactive extends \Magento\Backend\Block\Widget\Container
         );
     }
 
+    /**
+     * GetAjaxUrl
+     *
+     * @return string
+     */
     public function getAjaxUrl()
     {
         return $this->getUrl('betterthat/product/inactive');

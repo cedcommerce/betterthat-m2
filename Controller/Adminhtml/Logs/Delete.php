@@ -22,11 +22,6 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\Logs;
 use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Delete
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Feeds
- */
 class Delete extends Action
 {
     /**
@@ -50,13 +45,11 @@ class Delete extends Action
     public $filter;
 
     /**
-     * Delete constructor.
-     *
-     * @param Action\Context                          $context
-     * @param PageFactory                             $resultPageFactory
-     * @param \Magento\Framework\Filesystem\Io\File   $fileIo
+     * @param Action\Context $context
+     * @param PageFactory $resultPageFactory
+     * @param \Magento\Framework\Filesystem\Io\File $fileIo
      * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Betterthat\Betterthat\Model\Logs              $logs
+     * @param \Betterthat\Betterthat\Model\Logs $logs
      */
     public function __construct(
         Action\Context $context,
@@ -72,6 +65,12 @@ class Delete extends Action
         $this->logs = $logs;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function execute()
     {
         $isFilter = $this->getRequest()->getParam('filters');

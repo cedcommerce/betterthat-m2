@@ -20,11 +20,6 @@ namespace Betterthat\Betterthat\Ui\DataProvider\Cron;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Magento\Cron\Model\ResourceModel\Schedule\Collection;
 
-/**
- * Class DataProvider
- *
- * @package Betterthat\Betterthat\Ui\DataProvider\Cron
- */
 class DataProvider extends AbstractDataProvider
 {
     /**
@@ -72,6 +67,8 @@ class DataProvider extends AbstractDataProvider
     }
 
     /**
+     * GetData
+     *
      * @return \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
      */
     public function getData()

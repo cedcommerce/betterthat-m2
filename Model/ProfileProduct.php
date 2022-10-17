@@ -22,6 +22,8 @@ namespace Betterthat\Betterthat\Model;
 class ProfileProduct extends \Magento\Framework\Model\AbstractModel
 {
     /**
+     * Construct
+     *
      * @return void
      */
     public function _construct()
@@ -30,9 +32,10 @@ class ProfileProduct extends \Magento\Framework\Model\AbstractModel
     }
 
     /**
+     * Update
+     *
      * @return $this
      */
-
     public function update()
     {
         $this->getResource()->update($this);
@@ -40,7 +43,9 @@ class ProfileProduct extends \Magento\Framework\Model\AbstractModel
     }
 
     /**
-     * @return mixed
+     * GetProductsCollection
+     *
+     * @return \Magento\Framework\Model\ResourceModel\AbstractResource|\Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function getProductsCollection()
     {
@@ -48,31 +53,64 @@ class ProfileProduct extends \Magento\Framework\Model\AbstractModel
     }
 
     /**
-     * getting group vendors
+     * GetProfileProducts
+     *
+     * @param int $profileId
+     * @return mixed
      */
     public function getProfileProducts($profileId)
     {
         return $this->getResource()->getProfileProducts($profileId);
     }
 
+    /**
+     * DeleteFromProfile
+     *
+     * @param int $productId
+     * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function deleteFromProfile($productId)
     {
         $this->_getResource()->deleteFromProfile($productId);
         return $this;
     }
 
+    /**
+     * DeleteProducts
+     *
+     * @param array $productIds
+     * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function deleteProducts($productIds)
     {
         $this->_getResource()->deleteProducts($productIds);
         return $this;
     }
 
+    /**
+     * AddProducts
+     *
+     * @param array $productIds
+     * @param string $profileId
+     * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function addProducts($productIds, $profileId)
     {
         $this->_getResource()->addProducts($productIds, $profileId);
         return $this;
     }
 
+    /**
+     * ProfileProductExists
+     *
+     * @param int $productId
+     * @param int $profileId
+     * @return bool
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function profileProductExists($productId, $profileId)
     {
         $result = $this->_getResource()->profileProductExists($productId, $profileId);
@@ -80,12 +118,13 @@ class ProfileProduct extends \Magento\Framework\Model\AbstractModel
     }
 
     /**
-     * Load entity by attribute
+     * LoadByField
      *
-     * @param  string|array field
-     * @param  null|string|array  $value
-     * @param  string             $additionalAttributes
-     * @return bool|\Betterthat\Betterthat\Model\ProfileProduct
+     * @param string $field
+     * @param string $value
+     * @param array $additionalAttributes
+     * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function loadByField($field, $value, $additionalAttributes = '*')
     {

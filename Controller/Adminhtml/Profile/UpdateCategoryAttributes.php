@@ -23,28 +23,25 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
 use Betterthat\Betterthat\Model\Profile;
 
-/**
- * Class UpdateCategoryAttributes
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Profile
- */
 class UpdateCategoryAttributes extends Action
 {
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
     public $resultPageFactory;
-
+    /**
+     * @var Profile
+     */
     public $profile;
-
+    /**
+     * @var \Betterthat\Betterthat\Helper\Category
+     */
     public $category;
 
     /**
-     * UpdateCategoryAttributes constructor.
-     *
-     * @param Context                         $context
-     * @param PageFactory                     $resultPageFactory
-     * @param Profile                         $profile
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     * @param Profile $profile
      * @param \Betterthat\Betterthat\Helper\Category $category
      */
     public function __construct(
@@ -60,6 +57,8 @@ class UpdateCategoryAttributes extends Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Backend\Model\View\Result\Page
      */
     public function execute()

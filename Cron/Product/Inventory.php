@@ -21,13 +21,29 @@ namespace Betterthat\Betterthat\Cron\Product;
 
 class Inventory
 {
+    /**
+     * @var \Betterthat\Betterthat\Helper\Logger
+     */
     public $logger;
+    /**
+     * @var \Betterthat\Betterthat\Model\ProfileProduct
+     */
     public $profileProduct;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Product
+     */
     public $product;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     public $systemLogger;
 
     /**
+     * @param \Betterthat\Betterthat\Model\ProfileProduct $profileProduct
      * @param \Betterthat\Betterthat\Helper\Logger $logger
+     * @param \Betterthat\Betterthat\Helper\Product $product
+     * @param \Psr\Log\LoggerInterface $systemLogger
+     * @param \Betterthat\Betterthat\Helper\Config $config
      */
     public function __construct(
         \Betterthat\Betterthat\Model\ProfileProduct $profileProduct,
@@ -44,6 +60,8 @@ class Inventory
     }
 
     /**
+     * Execute
+     *
      * @return bool
      */
     public function execute()

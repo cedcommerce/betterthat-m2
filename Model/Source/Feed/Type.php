@@ -21,14 +21,11 @@ namespace Betterthat\Betterthat\Model\Source\Feed;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
-/**
- * Class Type
- *
- * @package Betterthat\Betterthat\Model\Source
- */
 class Type extends AbstractSource
 {
     /**
+     * GetAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

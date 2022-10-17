@@ -23,7 +23,7 @@ use Magento\Framework\Data\Argument\Interpreter\Constant;
 class MassShip extends \Magento\Backend\App\Action
 {
     /**
-     * ResultPageFactory
+     * ResultPageFactoriee
      *
      * @var \Magento\Framework\View\Result\PageFactory
      */
@@ -36,23 +36,36 @@ class MassShip extends \Magento\Backend\App\Action
      * @see _isAllowed()
      */
     public const ADMIN_RESOURCE = 'Betterthat_Betterthat::Betterthat_orders';
-
+    /**
+     * @var \Magento\Ui\Component\MassAction\Filter
+     */
     public $filter;
-
+    /**
+     * @var \Magento\Sales\Api\OrderManagementInterface
+     */
     public $orderManagement;
-
+    /**
+     * @var \Magento\Sales\Api\Data\OrderInterface
+     */
     public $order;
-
+    /**
+     * @var \Betterthat\Betterthat\Model\Orders
+     */
     public $BetterthatOrders;
-
+    /**
+     * @var \Betterthat\Betterthat\Helper\Order
+     */
     public $orderHelper;
 
     /**
-     * MassCancel constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context        $context
+     * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Magento\Ui\Component\MassAction\Filter    $filter
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Magento\Sales\Api\OrderManagementInterface $orderManagement
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @param \Betterthat\Betterthat\Model\Orders $collection
+     * @param \Betterthat\Betterthat\Helper\Order $orderHelper
+     * @param \Betterthat\Betterthat\Helper\Logger $logger
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -119,8 +132,9 @@ class MassShip extends \Magento\Backend\App\Action
     /**
      * Shipment
      *
-     * @param  \Magento\Framework\Event\Observer $observer
-     * @return \Magento\Framework\Event\Observer
+     * @param Magento\Sales\Model\Order $order
+     * @param object $BetterthatOrder
+     * @return array|false
      */
     public function shipment($order = null, $BetterthatOrder = null)
     {

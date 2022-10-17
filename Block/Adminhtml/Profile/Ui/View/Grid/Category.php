@@ -10,9 +10,21 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Profile\Ui\View\Grid;
 
 class Category extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer
 {
+    /**
+     * @var \Magento\Catalog\Model\CategoryFactory
+     */
     protected $categoryFactory;
+    /**
+     * @var \Magento\Catalog\Model\ProductFactory
+     */
     protected $productFactory;
 
+    /**
+     * Construct
+     *
+     * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
+     * @param \Magento\Catalog\Model\ProductFactory $productFactory
+     */
     public function __construct(
         \Magento\Catalog\Model\CategoryFactory $categoryFactory,
         \Magento\Catalog\Model\ProductFactory $productFactory
@@ -21,6 +33,12 @@ class Category extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstra
         $this->productFactory = $productFactory;
     }
 
+    /**
+     * Render
+     *
+     * @param \Magento\Framework\DataObject $row
+     * @return string
+     */
     public function render(\Magento\Framework\DataObject $row)
     {
         $product = $this->productFactory->create()->load($row->getEntityId());

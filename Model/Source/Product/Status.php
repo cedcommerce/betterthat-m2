@@ -21,11 +21,6 @@ namespace Betterthat\Betterthat\Model\Source\Product;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
-/**
- * Class Status
- *
- * @package Betterthat\Betterthat\Model\Source
- */
 class Status extends AbstractSource
 {
     public const NOT_UPLOADED = 'NOT_UPLOADED';
@@ -46,6 +41,8 @@ class Status extends AbstractSource
     ];
 
     /**
+     * GetAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

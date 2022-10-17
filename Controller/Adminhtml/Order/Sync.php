@@ -50,24 +50,32 @@ class Sync extends \Magento\Backend\App\Action
      * @var \Magento\Framework\Registry
      */
     public $registry;
-
+    /**
+     * @var \Betterthat\Betterthat\Helper\Config
+     */
     public $config;
-
+    /**
+     * @var ordersdk
+     */
     public $ordersdk;
+    /**
+     * @var \Magento\Sales\Model\Order\ShipmentFactory
+     */
     public $shipmentFactory;
 
     /**
-     * Sync constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context                  $context
+     * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
-     * @param \Magento\Framework\View\Result\PageFactory           $resultPageFactory
-     * @param \Betterthat\Betterthat\Helper\Order                         $orderHelper
-     * @param \Magento\Ui\Component\MassAction\Filter              $filter
-     * @param \Betterthat\Betterthat\Model\ResourceModel\Orders           $collection
-     * @param \Betterthat\Betterthat\Helper\Product                       $product
-     * @param \Magento\Framework\Controller\Result\JsonFactory     $resultJsonFactory
-     * @param \Magento\Framework\Registry                          $registry
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Betterthat\Betterthat\Helper\Order $orderHelper
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Betterthat\Betterthat\Model\OrdersFactory $collection
+     * @param \Betterthat\Betterthat\Model\ResourceModel\Orders $resourceCollection
+     * @param \BetterthatSdk\OrderFactory $ordersdk
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Sales\Model\Order\ShipmentFactory $shipmentFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -100,6 +108,8 @@ class Sync extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\Controller\Result\Redirect
      */
     public function execute()
@@ -191,10 +201,15 @@ class Sync extends \Magento\Backend\App\Action
         $resultPage->getConfig()->getTitle()->prepend(__('Sync Orders'));
         return $resultPage;
     }
+
     /**
-     * @param  int    $orderId
-     * @param  string $trackingNumber
-     * @return \Magento\Sales\Model\Shipment $shipment
+     * CreateShipment
+     *
+     * @param object $order
+     * @param string $trackingNumber
+     * @param string $title
+     * @return bool|void
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function createShipment($order, $trackingNumber, $title)
     {
@@ -226,8 +241,10 @@ class Sync extends \Magento\Backend\App\Action
     }
 
     /**
-     * @param  $order \Magento\Sales\Model\Order
-     * @param  $track array
+     * PrepareShipment
+     *
+     * @param  \Magento\Sales\Model\Order $order
+     * @param  array $track
      * @return $this
      */
     protected function prepareShipment($order, $track)
@@ -241,7 +258,9 @@ class Sync extends \Magento\Backend\App\Action
     }
 
     /**
-     * @param  $order \Magento\Sales\Model\Order
+     * PrepareShipmentItems
+     *
+     * @param  \Magento\Sales\Model\Order $order
      * @return array
      */
     protected function prepareShipmentItems($order)

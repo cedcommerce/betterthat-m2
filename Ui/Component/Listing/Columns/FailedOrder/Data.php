@@ -23,11 +23,14 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-/**
- * Class Data
- */
 class Data extends Column
 {
+    /**
+     * PrepareDataSource
+     *
+     * @param array $dataSource
+     * @return array
+     */
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource['data']['items'])) {

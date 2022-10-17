@@ -31,7 +31,7 @@ class Handler extends \Magento\Framework\Logger\Handler\Base
     protected $loggerType = MonologLogger::INFO;
 
     /**
-     * File name
+     * File namee
      *
      * @var string
      */

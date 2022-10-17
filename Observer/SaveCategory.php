@@ -6,11 +6,31 @@ use function GuzzleHttp\json_decode;
 
 class SaveCategory implements \Magento\Framework\Event\ObserverInterface
 {
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
     protected $objectManager;
+    /**
+     * @var API
+     */
     protected $api;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Logger
+     */
     protected $logger;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Config
+     */
     public $config;
 
+    /**
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Betterthat\Betterthat\Helper\Logger $logger
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Action $productAction
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Betterthat\Betterthat\Helper\Logger $logger,
@@ -27,6 +47,13 @@ class SaveCategory implements \Magento\Framework\Event\ObserverInterface
         $this->config = $config;
     }
 
+    /**
+     * Execute
+     *
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return $this|\Magento\Framework\Event\Observer|void
+     * @throws \Exception
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         if ($this->config->isValid() == "0" || $this->config->isValid() == null) {

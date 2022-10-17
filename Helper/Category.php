@@ -26,15 +26,29 @@ use Magento\Framework\Filesystem\DriverPool;
 
 class Category extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    /**
+     * @var ObjectManagerInterface
+     */
     public $objectManager;
-
+    /**
+     * @var Config
+     */
     public $config;
-
+    /**
+     * @var \BetterthatSdk\ProductFactory
+     */
     public $product;
-
+    /**
+     * @var array
+     */
     public $categories = [];
+    /**
+     * @var array
+     */
     public $categoriesTree = [];
-
+    /**
+     * @var string[]
+     */
     public $defaultMapping = [
         'title' => 'name',
         'body_html' => 'description',
@@ -46,13 +60,12 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     ];
 
     /**
-     * Category constructor.
-     *
      * @param Context $context
      * @param ObjectManagerInterface $objectManager
      * @param Config $config
      * @param \BetterthatSdk\ProductFactory $product
      * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
+     * @param \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory
      */
     public function __construct(
         Context $context,
@@ -71,6 +84,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * GetAttributes
+     *
      * @param array $params
      * @return array|array[]
      */
@@ -513,6 +528,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * GetCategoriesTree
+     *
      * @return array
      */
     public function getCategoriesTree()
@@ -526,7 +543,9 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $array
+     * GetHierarchy
+     *
+     * @param  array $array
      * @return mixed
      */
     public function getHierarchy($array)
@@ -548,9 +567,11 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $array
-     * @param $id_level1
-     * @param $i
+     * InnerHeirarchy
+     *
+     * @param array $array
+     * @param string $id_level1
+     * @param string $i
      * @return mixed
      */
     public function innerHeirarchy($array, $id_level1, $i)
@@ -570,6 +591,15 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $array;
     }
 
+    /**
+     * InnerHeirarchyone
+     *
+     * @param array $array
+     * @param string $id_level2
+     * @param string $j
+     * @param string $i
+     * @return mixed
+     */
     public function innerHeirarchyone($array, $id_level2, $j, $i)
     {
         $length = count($array);
@@ -587,6 +617,15 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $array;
     }
 
+    /**
+     * InnerHeirarchytwo
+     *
+     * @param array $array
+     * @param string $k
+     * @param string $j
+     * @param string $i
+     * @return mixed
+     */
     public function innerHeirarchytwo($array, $k, $j, $i)
     {
         $id_level3 = $array[$k]['parent_id'];
@@ -608,7 +647,9 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $array;
     }
     /**
-     * @param  $jsonString
+     * GetCategoriesTreeNode
+     *
+     * @param  json $jsonString
      * @return array
      */
     public function getCategoriesTreeNode($jsonString)
@@ -643,6 +684,17 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $item;
     }
+
+    /**
+     * InnergetCategoryTreeNodeone
+     *
+     * @param string $new_val
+     * @param string $length
+     * @param array $categories
+     * @param string $j
+     * @param bool $isActive
+     * @return mixed
+     */
     public function innergetCategoryTreeNodeone($new_val, $length, $categories, $j, $isActive)
     {
         for ($k = 0; $k < $length; $k++) {
@@ -661,6 +713,17 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $new_val;
     }
+
+    /**
+     * InnergetCatrgoryTreeNodes
+     *
+     * @param string $new_val1
+     * @param string $length
+     * @param array $categories
+     * @param string $k
+     * @param bool $isActive
+     * @return mixed
+     */
     public function innergetCatrgoryTreeNodes($new_val1, $length, $categories, $k, $isActive)
     {
         for ($l = 0; $l < $length; $l++) {
@@ -676,6 +739,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * GetCategories
+     *
      * @param array $params
      * @return array
      */

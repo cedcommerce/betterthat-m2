@@ -24,6 +24,8 @@ use Magento\Framework\Data\Form as DataForm;
 class Form extends Generic
 {
     /**
+     * PrepareForm
+     *
      * @return $this
      */
     protected function _prepareForm()

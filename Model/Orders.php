@@ -20,13 +20,13 @@ namespace Betterthat\Betterthat\Model;
 
 use Magento\Framework\Model\AbstractModel;
 
-/**
- * Class Orders
- *
- * @package Betterthat\Betterthat\Model
- */
 class Orders extends AbstractModel
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */
     public function _construct()
     {
         $this->_init(\Betterthat\Betterthat\Model\ResourceModel\Orders::class);

@@ -26,9 +26,16 @@ class ProductDeleteAfter implements ObserverInterface
      * @var ObjectManagerInterface
      */
     protected $_objectManager;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Config
+     */
     public $config;
+
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param \Betterthat\Betterthat\Helper\Product $betterthat
+     * @param \Betterthat\Betterthat\Helper\Config $config
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -43,7 +50,7 @@ class ProductDeleteAfter implements ObserverInterface
     }
 
     /**
-     * customer register event handler
+     * Customer register event handler
      *
      * @param  \Magento\Framework\Event\Observer $observer
      * @return void

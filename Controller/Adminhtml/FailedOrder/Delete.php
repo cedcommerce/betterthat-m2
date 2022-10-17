@@ -22,15 +22,10 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\FailedOrder;
 use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Delete
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\FailedOrder
- */
 class Delete extends Action
 {
     /**
-     * @var PageFactory
+     * @var PageFactoriee
      */
     public $resultPageFactory;
 
@@ -45,12 +40,10 @@ class Delete extends Action
     public $filter;
 
     /**
-     * Delete constructor.
-     *
-     * @param Action\Context                          $context
-     * @param PageFactory                             $resultPageFactory
+     * @param Action\Context $context
+     * @param PageFactory $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Betterthat\Betterthat\Model\OrderFailed       $orderFailed
+     * @param \Betterthat\Betterthat\Model\OrderFailed $orderFailed
      */
     public function __construct(
         Action\Context $context,
@@ -64,6 +57,12 @@ class Delete extends Action
         $this->orderFailed = $orderFailed;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function execute()
     {
         $isFilter = $this->getRequest()->getParam('filters');

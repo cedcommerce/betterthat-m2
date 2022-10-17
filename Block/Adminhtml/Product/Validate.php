@@ -22,7 +22,7 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Product;
 class Validate extends \Magento\Backend\Block\Widget\Container
 {
     /**
-     * Registry
+     * Registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -40,13 +40,12 @@ class Validate extends \Magento\Backend\Block\Widget\Container
      * @var \Magento\Framework\ObjectManagerInterface $objectManager
      */
     public $objectManager;
+
     /**
-     * BatchUpload constructor.
-     *
+     * @param \Magento\Backend\Block\Widget\Context $context
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Backend\Block\Widget\Context     $context
-     * @param \Magento\Framework\Registry               $registry
-     * @param array                                     $data
+     * @param \Magento\Framework\Registry $registry
+     * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Widget\Context $context,
@@ -61,6 +60,11 @@ class Validate extends \Magento\Backend\Block\Widget\Container
         $this->_getAddButtonOptions();
     }
 
+    /**
+     * GetAddButtonOptions
+     *
+     * @return void
+     */
     public function _getAddButtonOptions()
     {
         $buttonOptions = [
@@ -77,6 +81,12 @@ class Validate extends \Magento\Backend\Block\Widget\Container
         ];
         $this->buttonList->add('export', $buttonOptions);
     }
+
+    /**
+     * GetCreateUrl
+     *
+     * @return string
+     */
     public function _getCreateUrl()
     {
         return $this->getUrl(
@@ -84,6 +94,11 @@ class Validate extends \Magento\Backend\Block\Widget\Container
         );
     }
 
+    /**
+     * GetExportUrl
+     *
+     * @return string
+     */
     public function _getExportUrl()
     {
         return $this->getUrl(
@@ -91,6 +106,11 @@ class Validate extends \Magento\Backend\Block\Widget\Container
         );
     }
 
+    /**
+     * GetAjaxUrl
+     *
+     * @return string
+     */
     public function getAjaxUrl()
     {
         return $this->getUrl('betterthat/product/validate');

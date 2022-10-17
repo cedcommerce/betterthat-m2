@@ -32,12 +32,16 @@ class Products extends \Magento\Backend\App\Action
      * @var Profile
      */
     public $profile;
-
+    /**
+     * @var config
+     */
     public $config;
 
     /**
-     * @param \Magento\Backend\App\Action\Context        $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param PageFactory $resultPageFactory
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Betterthat\Betterthat\Model\Profile $profile
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -52,6 +56,8 @@ class Products extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\View\Result\Page
      */
     public function execute()

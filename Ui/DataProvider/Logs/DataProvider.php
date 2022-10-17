@@ -19,9 +19,6 @@
 
 namespace Betterthat\Betterthat\Ui\DataProvider\Logs;
 
-/**
- * Class DataProvider for Core Categories
- */
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
     /**
@@ -39,6 +36,17 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public $addFilterStrategies;
 
+    /**
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
+     * @param \Betterthat\Betterthat\Model\ResourceModel\Logs\CollectionFactory $collectionFactory
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
+     * @param array $meta
+     * @param array $data
+     */
     public function __construct(
         $name,
         $primaryFieldName,
@@ -56,6 +64,11 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->addFilterStrategies = $addFilterStrategies;
     }
 
+    /**
+     * GetData
+     *
+     * @return array
+     */
     public function getData()
     {
 

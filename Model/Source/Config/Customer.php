@@ -27,7 +27,7 @@ class Customer implements ArrayInterface
 {
     /**
      * @var CustomerRepositoryInterface
-     * */
+     */
     protected $customerRepository;
 
     /**
@@ -46,8 +46,10 @@ class Customer implements ArrayInterface
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
-    /*
-     * Option getter
+
+    /**
+     * ToOptionArray
+     *
      * @return array
      */
     public function toOptionArray()
@@ -63,9 +65,11 @@ class Customer implements ArrayInterface
         return $ret;
     }
 
-    /*
-     * Get options in "key-value" format
+    /**
+     * ToArray
+     *
      * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function toArray()
     {

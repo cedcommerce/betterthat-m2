@@ -46,11 +46,11 @@ class Mail
     public $escaper;
 
     /**
-     * @param \Magento\Framework\App\Action\Context              $context
-     * @param \Magento\Framework\Mail\Template\TransportBuilder  $transportBuilder
+     * @param \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder
      * @param \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Store\Model\StoreManagerInterface         $storeManager
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\Escaper $escaper
      */
     public function __construct(
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
@@ -66,6 +66,12 @@ class Mail
         $this->escaper = $escaper;
     }
 
+    /**
+     * Send
+     *
+     * @param \Magento\Framework\DataObject $data
+     * @return void
+     */
     public function send(\Magento\Framework\DataObject $data)
     {
         try {

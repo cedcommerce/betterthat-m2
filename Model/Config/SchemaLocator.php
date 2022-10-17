@@ -25,6 +25,9 @@ class SchemaLocator extends \Magento\Config\Model\Config\SchemaLocator
      * @var string
      */
     protected $_perFileSchema = null;
+    /**
+     * @var \Magento\Framework\App\ObjectManager
+     */
     protected $_objectManager;
 
     /**

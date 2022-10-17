@@ -17,7 +17,7 @@ use Magento\Ui\Component\Layout\Tabs\TabInterface;
 class Configurations extends \Magento\Backend\Block\Template implements TabInterface
 {
     /**
-     * Core registry
+     * Core registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -38,6 +38,8 @@ class Configurations extends \Magento\Backend\Block\Template implements TabInter
     }
 
     /**
+     * GetTabLabel
+     *
      * @return \Magento\Framework\Phrase
      */
     public function getTabLabel()
@@ -46,6 +48,8 @@ class Configurations extends \Magento\Backend\Block\Template implements TabInter
     }
 
     /**
+     * GetTabTitle
+     *
      * @return \Magento\Framework\Phrase
      */
     public function getTabTitle()
@@ -54,6 +58,8 @@ class Configurations extends \Magento\Backend\Block\Template implements TabInter
     }
 
     /**
+     * CanShowTab
+     *
      * @return bool
      */
     public function canShowTab()
@@ -62,6 +68,8 @@ class Configurations extends \Magento\Backend\Block\Template implements TabInter
     }
 
     /**
+     * IsHidden
+     *
      * @return bool
      */
     public function isHidden()

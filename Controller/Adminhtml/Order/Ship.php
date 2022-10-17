@@ -23,12 +23,25 @@ use Magento\Backend\App\Action;
 
 class Ship extends \Magento\Backend\App\Action
 {
+    /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
     public $resultJsonFactory;
-
+    /**
+     * @var \Magento\Framework\Json\Helper\Data
+     */
     public $json;
-
+    /**
+     * @var \Betterthat\Betterthat\Helper\Order
+     */
     public $order;
 
+    /**
+     * @param Action\Context $context
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\Json\Helper\Data $json
+     * @param \Betterthat\Betterthat\Helper\Order $order
+     */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
@@ -41,6 +54,11 @@ class Ship extends \Magento\Backend\App\Action
         $this->order = $order;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $response = [

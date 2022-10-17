@@ -56,6 +56,8 @@ class Index extends Action
     }
 
     /**
+     * IsAllowed
+     *
      * @return bool
      */
     public function _isAllowed()

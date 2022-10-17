@@ -22,6 +22,8 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 class Orders extends AbstractDb
 {
     /**
+     * Construct
+     *
      * @return void
      */
     public function _construct()

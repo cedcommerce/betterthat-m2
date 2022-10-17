@@ -27,14 +27,11 @@ use \Magento\Sales\Helper\Admin;
 use Magento\Framework\ObjectManagerInterface;
 use Betterthat\Betterthat\Model\Orders;
 
-/**
- * Class Ship
- *
- * @package Betterthat\Betterthat\Block\Adminhtml\Order
- */
 class Ship extends AbstractOrder implements TabInterface
 {
-
+    /**
+     * @var string
+     */
     public $_template = 'order/ship.phtml';
 
     /**
@@ -71,6 +68,8 @@ class Ship extends AbstractOrder implements TabInterface
     }
 
     /**
+     * GetObjectManager
+     *
      * @return ObjectManagerInterface
      */
     public function getObjectManager()
@@ -87,7 +86,12 @@ class Ship extends AbstractOrder implements TabInterface
     {
         return $this->_coreRegistry->registry('current_order');
     }
-
+    /**
+     * GetHelper
+     *
+     * @param string $helper
+     * @return mixed
+     */
     public function getHelper($helper)
     {
         $helper = $this->objectManager->get("Betterthat\Betterthat\Helper" . $helper);
@@ -95,6 +99,8 @@ class Ship extends AbstractOrder implements TabInterface
     }
 
     /**
+     * GetModel
+     *
      * @return \Magento\Framework\DataObject
      */
     public function getModel()
@@ -107,7 +113,9 @@ class Ship extends AbstractOrder implements TabInterface
     }
 
     /**
-     * @param $resultdata
+     * SetOrderResult
+     *
+     * @param array $resultdata
      */
     public function setOrderResult($resultdata)
     {
@@ -115,6 +123,8 @@ class Ship extends AbstractOrder implements TabInterface
     }
 
     /**
+     * GetTabLabel
+     *
      * @return \Magento\Framework\Phrase
      */
     public function getTabLabel()
@@ -123,6 +133,8 @@ class Ship extends AbstractOrder implements TabInterface
     }
 
     /**
+     * GetTabTitle
+     *
      * @return \Magento\Framework\Phrase
      */
     public function getTabTitle()
@@ -131,6 +143,8 @@ class Ship extends AbstractOrder implements TabInterface
     }
 
     /**
+     * CanShowTab
+     *
      * @return bool
      */
     public function canShowTab()
@@ -144,6 +158,8 @@ class Ship extends AbstractOrder implements TabInterface
     }
 
     /**
+     * IsHidden
+     *
      * @return bool
      */
     public function isHidden()

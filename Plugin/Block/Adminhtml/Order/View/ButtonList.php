@@ -10,13 +10,25 @@ class ButtonList
      * @var \Magento\Framework\ObjectManagerInterface $objectManager
      */
     public $objectManager;
-
+    /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
     public $request;
-
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
     public $orderRepository;
-
+    /**
+     * @var \Betterthat\Betterthat\Model\OrdersFactory
+     */
     public $btorder;
 
+    /**
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Framework\App\RequestInterface $request
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param \Betterthat\Betterthat\Model\OrdersFactory $btorder
+     */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\App\RequestInterface $request,
@@ -29,6 +41,13 @@ class ButtonList
         $this->btorder = $btorder;
     }
 
+    /**
+     * AfterGetButtonList
+     *
+     * @param \Magento\Backend\Block\Widget\Context $subject
+     * @param object $buttonList
+     * @return mixed
+     */
     public function afterGetButtonList(
         \Magento\Backend\Block\Widget\Context $subject,
         $buttonList

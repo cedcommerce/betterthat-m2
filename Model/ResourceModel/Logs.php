@@ -19,14 +19,11 @@ namespace Betterthat\Betterthat\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
-/**
- * Class Feeds
- *
- * @package Betterthat\Betterthat\Model\ResourceModel
- */
 class Logs extends AbstractDb
 {
     /**
+     * Construct
+     *
      * @return void
      */
     public function _construct()

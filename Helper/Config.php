@@ -31,7 +31,7 @@ use Magento\Framework\App\Helper\Context;
 class Config extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
-     * Object Manager
+     * Object ManagerR
      *
      * @var \Magento\Framework\ObjectManagerInterface
      */
@@ -61,7 +61,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      * @var $endpoint
      */
     public $endpoint;
-
+    /**
+     * @var domain
+     */
     public $domain;
 
     /**
@@ -74,6 +76,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \BetterthatSdk\Api\ConfigFactory
      */
     public $config;
+    /**
+     * @var \Magento\Framework\Xml\Generator
+     */
     public $generator;
     /**
      * Config constructor.
@@ -117,6 +122,8 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * GetApiConfig
+     *
      * @return \BetterthatSdk\Api\Config|boolean
      */
     public function getApiConfig()
@@ -163,6 +170,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $config;
     }
 
+    /**
+     * IsEnabled
+     *
+     * @return mixed
+     */
     public function isEnabled()
     {
         $enabled = $this->scopeConfigManager
@@ -170,6 +182,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $enabled;
     }
 
+    /**
+     * IsValid
+     *
+     * @return mixed
+     */
     public function isValid()
     {
         $valid = $this->scopeConfigManager
@@ -177,6 +194,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $valid;
     }
 
+    /**
+     * Validate
+     *
+     * @return void
+     */
     public function validate()
     {
         try {
@@ -211,6 +233,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $mode;
     }
 
+    /**
+     * GetOrderSyncCron
+     *
+     * @return mixed
+     */
     public function getOrderSyncCron()
     {
         $orderSyncCron = $this->scopeConfigManager
@@ -218,6 +245,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $orderSyncCron;
     }
 
+    /**
+     * GetOrderCron
+     *
+     * @return mixed
+     */
     public function getOrderCron()
     {
         $orderCron = $this->scopeConfigManager
@@ -225,6 +257,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $orderCron;
     }
 
+    /**
+     * GetOrderShipmentCron
+     *
+     * @return mixed
+     */
     public function getOrderShipmentCron()
     {
         $orderShipmentCron = $this->scopeConfigManager
@@ -232,6 +269,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $orderShipmentCron;
     }
 
+    /**
+     * GetInventoryPriceCron
+     *
+     * @return mixed
+     */
     public function getInventoryPriceCron()
     {
         $invCron = $this->scopeConfigManager
@@ -239,6 +281,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $invCron;
     }
 
+    /**
+     * GetFeedSyncCron
+     *
+     * @return mixed
+     */
     public function getFeedSyncCron()
     {
         $feedCron = $this->scopeConfigManager
@@ -246,6 +293,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $feedCron;
     }
 
+    /**
+     * GetFullOfferSyncCron
+     *
+     * @return mixed
+     */
     public function getFullOfferSyncCron()
     {
         $fullOfferCron = $this->scopeConfigManager
@@ -253,6 +305,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $fullOfferCron;
     }
 
+    /**
+     * GetRefundOnBetterthat
+     *
+     * @return mixed
+     */
     public function getRefundOnBetterthat()
     {
         $refundOnBetterthat = $this->scopeConfigManager
@@ -260,6 +317,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $refundOnBetterthat;
     }
 
+    /**
+     * GetRefundReason
+     *
+     * @return mixed
+     */
     public function getRefundReason()
     {
         $refundReason = $this->scopeConfigManager
@@ -267,6 +329,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $refundReason;
     }
 
+    /**
+     * GetCreditMemoOnMagento
+     *
+     * @return mixed
+     */
     public function getCreditMemoOnMagento()
     {
         $creditOnMagento = $this->scopeConfigManager
@@ -274,6 +341,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $creditOnMagento;
     }
 
+    /**
+     * GetFromParentAttributes
+     *
+     * @return array|string[]
+     */
     public function getFromParentAttributes()
     {
         $fromParentAttrs = [];
@@ -288,6 +360,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $fromParentAttrs;
     }
 
+    /**
+     * GetMergeParentImages
+     *
+     * @return mixed
+     */
     public function getMergeParentImages()
     {
         $mergeImages = $this->scopeConfigManager
@@ -297,6 +374,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $mergeImages;
     }
 
+    /**
+     * GetSkipValidationAttributes
+     *
+     * @return array|string[]
+     */
     public function getSkipValidationAttributes()
     {
         $skipFromValidation = [];
@@ -310,6 +392,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $skipFromValidation;
     }
 
+    /**
+     * GetConfigAsSimple
+     *
+     * @return mixed
+     */
     public function getConfigAsSimple()
     {
         $uploadAsSimple = $this->scopeConfigManager
@@ -319,6 +406,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $uploadAsSimple;
     }
 
+    /**
+     * GetOrderIdPrefix
+     *
+     * @return mixed|string
+     */
     public function getOrderIdPrefix()
     {
         $prefix = $this->scopeConfigManager
@@ -329,6 +421,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '';
     }
 
+    /**
+     * GetPriceType
+     *
+     * @return mixed|string
+     */
     public function getPriceType()
     {
         $priceType = $this->scopeConfigManager
@@ -339,6 +436,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetFixedPrice
+     *
+     * @return mixed|string
+     */
     public function getFixedPrice()
     {
         $fixPrice = $this->scopeConfigManager
@@ -349,6 +451,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetPercentPrice
+     *
+     * @return mixed|string
+     */
     public function getPercentPrice()
     {
         $percentPrice = $this->scopeConfigManager
@@ -359,6 +466,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetDifferPrice
+     *
+     * @return mixed|string
+     */
     public function getDifferPrice()
     {
         $differPrice = $this->scopeConfigManager
@@ -369,6 +481,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetReferenceType
+     *
+     * @return mixed|string
+     */
     public function getReferenceType()
     {
         $product_reference_type = $this->scopeConfigManager
@@ -379,6 +496,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetReferenceValue
+     *
+     * @return mixed|string
+     */
     public function getReferenceValue()
     {
         $product_reference_value = $this->scopeConfigManager
@@ -389,6 +511,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetAutoCancelOrderSetting
+     *
+     * @return mixed|string
+     */
     public function getAutoCancelOrderSetting()
     {
         $auto_cancel_order = $this->scopeConfigManager
@@ -399,6 +526,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetAutoAcceptOrderSetting
+     *
+     * @return mixed|string
+     */
     public function getAutoAcceptOrderSetting()
     {
         $auto_cancel_order = $this->scopeConfigManager
@@ -409,6 +541,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetHoldOrderUntilShipping
+     *
+     * @return mixed
+     */
     public function getHoldOrderUntilShipping()
     {
         $holdOrder = $this->scopeConfigManager
@@ -416,6 +553,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $holdOrder;
     }
 
+    /**
+     * GetStore
+     *
+     * @return mixed|string
+     */
     public function getStore()
     {
         $storeId = $this->scopeConfigManager
@@ -426,24 +568,44 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return '0';
     }
 
+    /**
+     * GetThrottleMode
+     *
+     * @return mixed
+     */
     public function getThrottleMode()
     {
         return $this->throttle = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/throttle");
     }
 
+    /**
+     * GetThresholdStatus
+     *
+     * @return mixed
+     */
     public function getThresholdStatus()
     {
         return $this->throttle = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/inventory_settings/advanced_threshold_status");
     }
 
+    /**
+     * GetThresholdLimit
+     *
+     * @return mixed
+     */
     public function getThresholdLimit()
     {
         return $this->throttle = $this->scopeConfigManager
             ->getValue("betterthat_config/betterthat_product/inventory_settings/inventory_rule_threshold");
     }
 
+    /**
+     * GetThresholdLimitMin
+     *
+     * @return mixed
+     */
     public function getThresholdLimitMin()
     {
         return $this->throttle = $this->scopeConfigManager
@@ -452,6 +614,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
             );
     }
 
+    /**
+     * GetThresholdLimitMax
+     *
+     * @return mixed
+     */
     public function getThresholdLimitMax()
     {
         return $this->throttle = $this->scopeConfigManager
@@ -460,6 +627,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
             );
     }
 
+    /**
+     * GetUseMsi
+     *
+     * @return mixed
+     */
     public function getUseMsi()
     {
         $useMsi = $this->scopeConfigManager
@@ -467,6 +639,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $useMsi;
     }
 
+    /**
+     * GetMsiSourceCode
+     *
+     * @return mixed
+     */
     public function getMsiSourceCode()
     {
         $msiSourceCode = $this->scopeConfigManager
@@ -474,12 +651,22 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $msiSourceCode;
     }
 
+    /**
+     * GetUseSalableQty
+     *
+     * @return mixed
+     */
     public function getUseSalableQty()
     {
         return $this->scopeConfigManager
             ->getValue('betterthat_config/betterthat_product/inventory_settings/use_salable_qty');
     }
 
+    /**
+     * GetSalableStockName
+     *
+     * @return mixed
+     */
     public function getSalableStockName()
     {
         return $this->scopeConfigManager

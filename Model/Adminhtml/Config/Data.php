@@ -22,16 +22,11 @@ namespace Betterthat\Betterthat\Model\Adminhtml\Config;
 class Data extends \Magento\Config\Model\Config
 {
     /**
-     * Save config section
-     * Require set: section, website, store and groups
-     *
-     * @return Mage_Adminhtml_Model_Config_Data
+     * @var \Magento\Framework\ObjectManagerInterface
      */
     protected $_objectManager;
     /**
-     * Config data for sections
-     *
-     * @var array
+     * @var _configData
      */
     protected $_configData;
 
@@ -64,7 +59,7 @@ class Data extends \Magento\Config\Model\Config
     protected $_objectFactory;
 
     /**
-     * TransactionFactory
+     * TransactionFactoriee
      *
      * @var \Magento\Framework\DB\TransactionFactory
      */
@@ -88,7 +83,9 @@ class Data extends \Magento\Config\Model\Config
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     protected $_storeManager;
-
+    /**
+     * @var \Magento\Framework\App\Request\Http
+     */
     protected $_request;
 
     /**
@@ -99,6 +96,9 @@ class Data extends \Magento\Config\Model\Config
      * @param \Magento\Config\Model\Config\Loader $configLoader
      * @param \Magento\Framework\App\Config\ValueFactory $configValueFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Framework\App\Request\Http $request
      * @param array $data
      */
     public function __construct(
@@ -167,12 +167,12 @@ class Data extends \Magento\Config\Model\Config
     }
 
     /**
-     * Get config data value
+     * GetConfigDataValue
      *
      * @param string $path
-     * @param null|bool  &$inherit
-     * @param null|array $configData
-     * @return \Magento\Framework\Simplexml\Element
+     * @param mixed $inherit
+     * @param array $configData
+     * @return \Magento\Framework\Simplexml\Element|mixed
      */
     public function getConfigDataValue($path, &$inherit = null, $configData = null)
     {
@@ -192,6 +192,11 @@ class Data extends \Magento\Config\Model\Config
         return $data;
     }
 
+    /**
+     * Load
+     *
+     * @return array|_configData
+     */
     public function load()
     {
         $is_Betterthat = $this->_objectManager
@@ -204,6 +209,13 @@ class Data extends \Magento\Config\Model\Config
         return $this->_configData;
     }
 
+    /**
+     * InitScope
+     *
+     * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     private function initScope()
     {
         $is_Betterthat = $this->_objectManager
@@ -257,6 +269,20 @@ class Data extends \Magento\Config\Model\Config
         }
     }
 
+    /**
+     * ProcessGroup
+     *
+     * @param int $groupId
+     * @param array $profileData
+     * @param array $groups
+     * @param mixed $sectionPath
+     * @param array $extraOldGroups
+     * @param array $oldConfig
+     * @param \Magento\Framework\DB\Transaction $saveTransaction
+     * @param \Magento\Framework\DB\Transaction $deleteTransaction
+     * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     protected function _processGroup(
         $groupId,
         array $profileData,
@@ -422,6 +448,14 @@ class Data extends \Magento\Config\Model\Config
         }
     }
 
+    /**
+     * ExtendConfig
+     *
+     * @param string $path
+     * @param mixed $full
+     * @param mixed $oldConfig
+     * @return array
+     */
     public function extendConfig($path, $full = true, $oldConfig = [])
     {
         if (!$this->_objectManager->get(\Magento\Framework\Module\Manager::class)
@@ -436,6 +470,15 @@ class Data extends \Magento\Config\Model\Config
         return $extended;
     }
 
+    /**
+     * GetConfigByPath
+     *
+     * @param string $path
+     * @param string $scope
+     * @param int $scopeId
+     * @param mixed $full
+     * @return array
+     */
     protected function getConfigByPath($path, $scope, $scopeId, $full = true)
     {
         $is_Betterthat = $this->_objectManager->get(\Magento\Framework\Module\Manager::class)

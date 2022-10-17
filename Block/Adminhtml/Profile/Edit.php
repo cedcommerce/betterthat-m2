@@ -21,7 +21,7 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Profile;
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
     /**
-     * Core registry
+     * Core registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -43,7 +43,9 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
-     * @return \Magento\Framework\Phrase
+     * GetHeaderText
+     *
+     * @return \Magento\Framework\Phrase|string
      */
     public function getHeaderText()
     {
@@ -61,6 +63,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
+     * GetSaveUrl
+     *
      * @return string
      */
     public function getSaveUrl()
@@ -72,6 +76,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
+     * Construct
+     *
      * @return void
      */
     protected function _construct()
@@ -114,6 +120,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
+     * AddButton
+     *
      * @param  string $buttonId
      * @param  array  $data
      * @param  int    $level
@@ -121,7 +129,6 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      * @param  string $region
      * @return void
      */
-
     public function addButton($buttonId, $data, $level = 0, $sortOrder = 0, $region = 'toolbar')
     {
 
@@ -132,6 +139,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
+     * GetDeleteUrl
+     *
      * @return string
      */
     public function getDeleteUrl()
@@ -142,7 +151,9 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         );
     }
     /**
-     * @param  $back
+     * GetSaveAndContinueUrl
+     *
+     * @param  string $back
      * @return string
      */
     public function getSaveAndContinueUrl($back)

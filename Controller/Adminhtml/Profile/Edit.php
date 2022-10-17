@@ -23,11 +23,6 @@ use Magento\Framework\View\Result\PageFactory;
 use Betterthat\Betterthat\Model\Profile;
 use Magento\Backend\App\Action;
 
-/**
- * Class Edit
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Profile
- */
 class Edit extends Action
 {
     /**
@@ -35,26 +30,29 @@ class Edit extends Action
      */
     public $resultPageFactory;
     /**
-     * @var
+     * @var _entityTypeId
      */
     public $_entityTypeId;
     /**
      * @var \Magento\Framework\Registry
      */
     public $_coreRegistry;
-
     /**
      * @var Profile
      */
     public $profile;
-
+    /**
+     * @var \Betterthat\Betterthat\Helper\Config
+     */
     public $config;
 
     /**
-     * @param Context     $context
+     * @param Context $context
+     * @param \Magento\Framework\Registry $coreRegistry
      * @param PageFactory $resultPageFactory
+     * @param Profile $profile
+     * @param \Betterthat\Betterthat\Helper\Config $config
      */
-
     public function __construct(
         Context $context,
         \Magento\Framework\Registry $coreRegistry,

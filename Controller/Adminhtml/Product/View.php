@@ -19,11 +19,6 @@
 
 namespace Betterthat\Betterthat\Controller\Adminhtml\Product;
 
-/**
- * Class View
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Product
- */
 class View extends \Magento\Backend\App\Action
 {
     /**
@@ -49,14 +44,12 @@ class View extends \Magento\Backend\App\Action
     public $resultJsonFactory;
 
     /**
-     * View constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context              $context
+     * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \Magento\Ui\Component\MassAction\Filter          $filter
-     * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Betterthat\Betterthat\Helper\Config                    $config
-     * @param \BetterthatSdk\ProductFactory                    $Betterthat
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Magento\Catalog\Model\Product $collection
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \BetterthatSdk\ProductFactory $Betterthat
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -75,6 +68,8 @@ class View extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\Controller\Result\Json
      */
     public function execute()

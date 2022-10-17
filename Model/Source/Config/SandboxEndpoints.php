@@ -21,14 +21,11 @@ namespace Betterthat\BetterThat\Model\Source\Config;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
-/**
- * Class ServiceUrl
- *
- * @package Betterthat\Betterthat\Model\Source
- */
 class SandboxEndpoints extends AbstractSource
 {
     /**
+     * GetAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

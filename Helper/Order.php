@@ -20,11 +20,6 @@ namespace Betterthat\Betterthat\Helper;
 
 use Betterthat\Betterthat\Controller\Adminhtml\Order\Sync;
 
-/**
- * Class Order
- *
- * @package Betterthat\Betterthat\Helper
- */
 class Order extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
@@ -110,7 +105,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public $inbox;
 
     /**
-     * @var
+     * @var messageManager
      */
     public $messageManager;
 
@@ -192,14 +187,16 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Betterthat\Betterthat\Model\MailFactory
      */
     public $mailFactory;
-
+    /**
+     * @var \Betterthat\Betterthat\Model\ChangeQuoteControl
+     */
     public $changeQuoteControl;
-
+    /**
+     * @var \Magento\Sales\Model\Order\ShipmentFactory
+     */
     public $shipmentFactory;
 
     /**
-     * Order constructor.
-     *
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\objectManagerInterface $objectManager
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
@@ -224,6 +221,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Config $config
      * @param Logger $logger
      * @param \BetterthatSdk\OrderFactory $Betterthat
+     * @param \Magento\Sales\Model\Order\AddressRepository $repositoryAddress
+     * @param \Magento\Sales\Api\Data\OrderInterface $salesOrderApi
+     * @param Tax $taxHelper
+     * @param \Magento\Quote\Model\Quote\Address\RateFactory $rateFactory
+     * @param \Magento\Framework\DataObjectFactory $dataFactory
+     * @param \Betterthat\Betterthat\Model\MailFactory $mailFactory
+     * @param \Betterthat\Betterthat\Model\ChangeQuoteControl $quoteControl
+     * @param \Magento\Sales\Model\Order\ShipmentFactory $shipmentFactory
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -295,7 +300,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return bool
+     * ImportOrders
+     *
+     * @param array $data
+     * @return array|bool|void
      */
     public function importOrders($data = null)
     {
@@ -382,7 +390,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $string
+     * ValidateString
+     *
+     * @param  string $string
      * @return bool
      */
     public function validateString($string)
@@ -391,6 +401,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         return $stringValidation;
     }
 
+    /**
+     * GetEmail
+     *
+     * @param mixed $order
+     * @return bool|string
+     */
     public function getEmail($order)
     {
         $customerId = $this->config->getDefaultCustomer();
@@ -403,8 +419,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $order
-     * @param  $websiteId
+     * GetCustomer
+     *
+     * @param  mixed $order
+     * @param  string $websiteId
      * @return bool|\Magento\Customer\Model\Customer
      */
     public function getCustomer($order, $websiteId)
@@ -471,8 +489,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
     /**
+     * GenerateQuote
+     *
      * @param string $store
-     * @param  $customer
+     * @param mixed $customer
      * @param array $order
      * @param integer $count
      * @return mixed
@@ -738,8 +758,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $order
-     * @param $quote
+     * AddProductsToQuote
+     *
+     * @param mixed $order
+     * @param mixed $quote
      * @return array
      */
     public function addProductsToQuote($order, $quote)
@@ -808,6 +830,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         ];
     }
     /**
+     * RejectOrder
+     *
      * @param array $order
      * @param array $items
      * @param array $reason
@@ -844,6 +868,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * AutoOrderAccept
+     *
+     * @param string $BetterthatOrderId
+     * @param array $acceptanceArray
+     * @return false
+     */
     public function autoOrderAccept($BetterthatOrderId, $acceptanceArray)
     {
         $acceptanceData = [
@@ -896,6 +927,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         return $response;
     }
 
+    /**
+     * GetShipmentProviders
+     *
+     * @return array
+     */
     public function getShipmentProviders()
     {
         $providers = [];
@@ -911,6 +947,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         return $providers;
     }
 
+    /**
+     * GetCancelReasons
+     *
+     * @param string $type
+     * @return array
+     */
     public function getCancelReasons($type = 'canceled')
     {
         $reasons = [];
@@ -924,11 +966,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $reasons;
     }
-
     /**
-     * @param  $BetterthatOrderId
-     * @param  $mageOrderId
-     * @param  $placeDate
+     * SendMail
+     *
+     * @param mixed $betterthatOrderId
+     * @param mixed $mageOrderId
+     * @param mixed $placeDate
      * @return bool
      */
     public function sendMail($betterthatOrderId, $mageOrderId, $placeDate = null)
@@ -972,7 +1015,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $order
+     * GenerateInvoice
+     *
+     * @param mixed $order
      */
     public function generateInvoice($order)
     {
@@ -1001,6 +1046,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * SubmitMagentoShipment
+     *
+     * @param array $data
+     * @return array|\Magento\Sales\Model\Shipment
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function submitMagentoShipment(array $data = [])
     {
         $orderId = isset($data[0]['order_id']) ? $data[0]['order_id'] : 'N/A';
@@ -1011,10 +1063,15 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->webApiResponse = $this->createShipment($orderId, $trackingNumber, $title);
         return $this->webApiResponse;
     }
+
     /**
-     * @param int $orderId
+     * CreateShipment
+     *
+     * @param string $orderId
      * @param string $trackingNumber
-     * @return \Magento\Sales\Model\Shipment $shipment
+     * @param string $title
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function createShipment($orderId, $trackingNumber, $title)
     {
@@ -1052,6 +1109,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * SaveShipment
+     *
+     * @param mixed $order
+     * @param mixed $shipment
+     * @param mixed $orderId
+     * @return array|\Magento\Sales\Model\Shipment
+     */
     public function saveShipment($order, $shipment, $orderId)
     {
         $order->setIsInProcess(true);
@@ -1132,7 +1197,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $count
+     * NotificationSuccess
+     *
+     * @param  string $count
      * @throws \Exception
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
@@ -1154,8 +1221,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $order
-     * @param $cancelleditems
+     * GenerateShipment
+     *
+     * @param mixed $order
+     * @param mixed $cancelleditems
      */
     public function generateShipment($order, $cancelleditems)
     {
@@ -1185,8 +1254,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
     /**
-     * @param  $order \Magento\Sales\Model\Order
-     * @param  $track array
+     * PrepareShipment
+     *
+     * @param  \Magento\Sales\Model\Order $order
+     * @param  array $track
      * @return $this
      */
     protected function prepareShipment($order, $track)
@@ -1199,7 +1270,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         return $shipment->getTotalQty() ? $shipment->register() : false;
     }
     /**
-     * @param  $order \Magento\Sales\Model\Order
+     * PrepareShipmentItems
+     *
+     * @param  \Magento\Sales\Model\Order $order
      * @return array
      */
     protected function prepareShipmentItems($order)
@@ -1212,8 +1285,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $order
-     * @param $cancelleditems
+     * GenerateCreditMemo
+     *
+     * @param mixed $order
+     * @param mixed $cancelleditems
+     * @param mixed $shippingAmount
+     * @return false|string|void
      */
     public function generateCreditMemo($order, $cancelleditems, $shippingAmount = null)
     {
@@ -1258,7 +1335,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $message
+     * NotificationFailed
+     *
+     * @param  string $message
      * @throws \Exception
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
@@ -1276,6 +1355,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $model->save();
     }
 
+    /**
+     * ProcessOrderItems
+     *
+     * @param mixed $order
+     * @return array|mixed
+     */
     public function processOrderItems($order)
     {
         $items = [];
@@ -1332,6 +1417,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         return false;
     }
 
+    /**
+     * GetCountryId
+     *
+     * @param string $iso3_code
+     * @return string
+     */
     public function getCountryId($iso3_code)
     {
         $country_id = substr($iso3_code, 0, 2);
@@ -1347,7 +1438,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return bool
+     * SyncOrders
+     *
+     * @param array $orderIds
+     * @return bool|void
      */
     public function syncOrders($orderIds)
     {
@@ -1377,8 +1471,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             );
         }
     }
+
     /**
-     * @return bool
+     * OrderIds
+     *
+     * @param array $orderIds
+     * @return bool|void
      */
     public function syncOrdersStatus($orderIds)
     {
@@ -1429,7 +1527,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Ship Betterthat Order
      *
-     * @param array $data
+     * @param array $BetterthatOrders
      * @return array
      */
     public function shipOrders($BetterthatOrders)
@@ -1474,11 +1572,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return true;
     }
+
     /**
-     * Shipment
+     * PrepareShipmentData
      *
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return \Magento\Framework\Event\Observer
+     * @param mixed $order
+     * @param mixed $BetterthatOrder
+     * @return array|false
      */
     public function prepareShipmentData($order = null, $BetterthatOrder = null)
     {
@@ -1543,6 +1643,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
     }
+
+    /**
+     * DownloadOrderDocument
+     *
+     * @param string $BetterthatOrderId
+     * @return bool
+     */
     public function downloadOrderDocument($BetterthatOrderId)
     {
         $order = $this->objectManager
@@ -1555,6 +1662,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * CheckStockQtyStatus
+     *
+     * @param string $product
+     * @param string $qty
+     * @return bool
+     */
     public function checkStockQtyStatus($product, $qty)
     {
         $stockStatus = false;
@@ -1584,8 +1698,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         return $stockStatus;
     }
 
-    /*
-     * @param \Magento\Sales\Model\Order $order
+    /**
+     * AddTransactionToOrder
+     *
+     * @param mixed $order
+     * @param string $BetterthatOrderId
+     * @return bool|void
      */
     public function addTransactionToOrder($order, $BetterthatOrderId)
     {

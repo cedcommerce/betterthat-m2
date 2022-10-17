@@ -18,11 +18,6 @@
 
 namespace Betterthat\Betterthat\Controller\Adminhtml\Profile;
 
-/**
- * Class Save
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Profile
- */
 class Validate extends \Magento\Backend\App\Action
 {
     /**
@@ -34,7 +29,9 @@ class Validate extends \Magento\Backend\App\Action
      * @var CollectionFactory
      */
     public $catalogCollection;
-
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
+     */
     public $categoryCollection;
 
     /**
@@ -56,24 +53,24 @@ class Validate extends \Magento\Backend\App\Action
      * @var \Betterthat\Betterthat\Helper\Profile
      */
     public $profileHelper;
-
+    /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
     public $resultJsonFactory;
 
     /**
-     * Validate constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context                                 $context
-     * @param \Magento\Framework\Registry                                         $registory
-     * @param \Magento\Config\Model\Config\Structure                              $configStructure
-     * @param \Magento\Config\Model\Config\Factory                                $configFactory
-     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory     $categoryCollection
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory      $catalogCollection
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Registry $registory
+     * @param \Magento\Config\Model\Config\Structure $configStructure
+     * @param \Magento\Config\Model\Config\Factory $configFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollection
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $catalogCollection
      * @param \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory $configurable
-     * @param \Magento\Framework\View\Result\PageFactory                          $resultPageFactory
-     * @param \Betterthat\Betterthat\Model\ProfileProductFactory                         $profileProduct
-     * @param \Betterthat\Betterthat\Model\ProfileFactory                                $profileFactory
-     * @param \Betterthat\Betterthat\Helper\Profile                                      $profileHelper
-     * @param \Magento\Framework\Controller\Result\JsonFactory                    $jsonFactory
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Betterthat\Betterthat\Model\ProfileProductFactory $profileProduct
+     * @param \Betterthat\Betterthat\Model\ProfileFactory $profileFactory
+     * @param \Betterthat\Betterthat\Helper\Profile $profileHelper
+     * @param \Magento\Framework\Controller\Result\JsonFactory $jsonFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -103,6 +100,11 @@ class Validate extends \Magento\Backend\App\Action
         $this->resultJsonFactory = $jsonFactory;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $response = new \Magento\Framework\DataObject();

@@ -19,13 +19,11 @@
 
 namespace Betterthat\Betterthat\Controller\Adminhtml\Product;
 
-/**
- * Class View
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Product
- */
 class ValidateSingle extends \Magento\Backend\App\Action
 {
+    /**
+     * @var \Magento\Framework\Registriee
+     */
     public $registry;
 
     /**
@@ -51,15 +49,14 @@ class ValidateSingle extends \Magento\Backend\App\Action
     public $resultJsonFactory;
 
     /**
-     * ValidateSingle constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context              $context
+     * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \Magento\Ui\Component\MassAction\Filter          $filter
-     * @param \Magento\Framework\Registry                      $registry
-     * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Betterthat\Betterthat\Helper\Config                    $config
-     * @param \Betterthat\Betterthat\Helper\Product                   $product
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Catalog\Model\Product $collection
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \Betterthat\Betterthat\Helper\Product $product
+     * @param \Magento\Framework\App\Response\RedirectInterface $redirect
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -81,6 +78,8 @@ class ValidateSingle extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()

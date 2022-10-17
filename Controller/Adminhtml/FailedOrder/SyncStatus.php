@@ -20,6 +20,9 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\FailedOrder;
 
 class SyncStatus extends \Magento\Backend\App\Action
 {
+    /**
+     * const CHUNK_SIZE
+     */
     public const CHUNK_SIZE = 20;
     /**
      * Authorization level of a basic admin session
@@ -52,11 +55,16 @@ class SyncStatus extends \Magento\Backend\App\Action
     public $registry;
 
     /**
-     * Fetch constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context                  $context
+     * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
-     * @param \Betterthat\Betterthat\Helper\Order                         $orderHelper
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Betterthat\Betterthat\Helper\Order $orderHelper
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Betterthat\Betterthat\Model\OrderFailed $collection
+     * @param \Betterthat\Betterthat\Helper\Product $product
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\App\Response\RedirectInterface $redirect
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -84,6 +92,8 @@ class SyncStatus extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\Controller\Result\Redirect
      */
     public function execute()

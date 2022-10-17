@@ -22,22 +22,17 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Index
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Cron
- */
 class Index extends Action
 {
     /**
-     * ResultPageFactory
+     * ResultPageFactorie
      *
      * @var PageFactory
      */
     public $resultPageFactory;
 
     /**
-     * Helper
+     * Helpers
      *
      * @var PageFactory
      */
@@ -58,6 +53,8 @@ class Index extends Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Backend\Model\View\Result\Page
      */
     public function execute()

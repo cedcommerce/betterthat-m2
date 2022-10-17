@@ -20,7 +20,13 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Profile\Edit\Tab;
 
 class Info extends \Magento\Backend\Block\Widget\Form\Generic
 {
-
+    /**
+     * @param \Magento\Backend\Block\Widget\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\Data\FormFactory $formFactory
+     * @param \Magento\Framework\ObjectManagerInterface $objectInterface
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Widget\Context $context,
         \Magento\Framework\Registry $registry,
@@ -33,6 +39,12 @@ class Info extends \Magento\Backend\Block\Widget\Form\Generic
         parent::__construct($context, $registry, $formFactory);
     }
 
+    /**
+     * PrepareForm
+     *
+     * @return Info
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     protected function _prepareForm()
     {
         $form = $this->_formFactory->create();

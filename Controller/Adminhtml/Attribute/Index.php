@@ -31,13 +31,15 @@ class Index extends \Magento\Framework\App\Action\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Backend\Model\View\Result\Page
      */
     public function execute()
     {
         /**
- * @var \Magento\Backend\Model\View\Result\Page $resultPage
-*/
+         * @var \Magento\Backend\Model\View\Result\Page $resultPage
+        */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Betterthat_Betterthat::Betterthat');
         $resultPage->getConfig()->getTitle()->prepend(__('Betterthat Category Attributes'));
@@ -45,6 +47,8 @@ class Index extends \Magento\Framework\App\Action\Action
     }
 
     /**
+     * IsAllowed
+     *
      * @return mixed
      */
     public function _isAllowed()

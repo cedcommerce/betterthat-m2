@@ -20,9 +20,6 @@ namespace Betterthat\Betterthat\Ui\DataProvider\Profile;
 
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
-/**
- * Class ProductDataProvider
- */
 class DataProvider extends AbstractDataProvider
 {
     /**
@@ -53,16 +50,14 @@ class DataProvider extends AbstractDataProvider
     public $collection;
 
     /**
-     * DataProvider constructor.
-     *
      * @param \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
-     * @param string                                                        $name
-     * @param string                                                        $primaryFieldName
-     * @param string                                                        $requestFieldName
-     * @param array                                                         $addFieldStrategies
-     * @param array                                                         $addFilterStrategies
-     * @param array                                                         $meta
-     * @param array                                                         $data
+     * @param stirng $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
+     * @param array $meta
+     * @param array $data
      */
     public function __construct(
         \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory,

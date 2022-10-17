@@ -20,13 +20,13 @@ namespace Betterthat\Betterthat\Model;
 
 use Magento\Framework\Model\AbstractModel;
 
-/**
- * Class Feeds
- *
- * @package Betterthat\Betterthat\Model
- */
 class Logs extends AbstractModel
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */
     public function _construct()
     {
         $this->_init(\Betterthat\Betterthat\Model\ResourceModel\Logs::class);

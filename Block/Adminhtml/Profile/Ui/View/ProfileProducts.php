@@ -74,6 +74,8 @@ class ProfileProducts extends \Magento\Backend\Block\Template
         return $this->getBlockGrid()->toHtml();
     }
     /**
+     * GetProductsJson
+     *
      * @return string
      */
     public function getProductsJson()
@@ -86,6 +88,8 @@ class ProfileProducts extends \Magento\Backend\Block\Template
     }
 
     /**
+     * GetFilters
+     *
      * @return string
      */
     public function getFilters()
@@ -98,7 +102,9 @@ class ProfileProducts extends \Magento\Backend\Block\Template
         return $filters;
     }
     /**
-     * @return $profile
+     * GetProfile
+     *
+     * @return object $profile
      */
     public function getProfile()
     {

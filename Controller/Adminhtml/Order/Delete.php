@@ -19,11 +19,6 @@
 
 namespace Betterthat\Betterthat\Controller\Adminhtml\Order;
 
-/**
- * Class Delete
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Order
- */
 class Delete extends \Magento\Backend\App\Action
 {
     /**
@@ -37,11 +32,9 @@ class Delete extends \Magento\Backend\App\Action
     public $orders;
 
     /**
-     * Delete constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context     $context
+     * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Ui\Component\MassAction\Filter $filter
-     * @param \Betterthat\Betterthat\Model\Orders            $collection
+     * @param \Betterthat\Betterthat\Model\Orders $collection
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -54,6 +47,8 @@ class Delete extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */

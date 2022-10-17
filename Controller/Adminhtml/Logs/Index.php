@@ -21,11 +21,6 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\Logs;
 use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Feeds
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Product
- */
 class Index extends Action
 {
     /**
@@ -47,6 +42,11 @@ class Index extends Action
         $this->resultPageFactory = $resultPageFactory;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Backend\Model\View\Result\Page
+     */
     public function execute()
     {
         /**

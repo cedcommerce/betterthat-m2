@@ -4,10 +4,24 @@ namespace Betterthat\Betterthat\Observer;
 
 class InventoryChangeObserver implements \Magento\Framework\Event\ObserverInterface
 {
+    /**
+     * @var api
+     */
     protected $api;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Logger
+     */
     protected $logger;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Config
+     */
     public $config;
 
+    /**
+     * @param \Betterthat\Betterthat\Helper\Logger $logger
+     * @param \Betterthat\Betterthat\Helper\Product $product
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     */
     public function __construct(
         \Betterthat\Betterthat\Helper\Logger $logger,
         \Betterthat\Betterthat\Helper\Product $product,
@@ -20,6 +34,12 @@ class InventoryChangeObserver implements \Magento\Framework\Event\ObserverInterf
         $this->_productRepository = $this->objectManager->get(\Magento\Catalog\Api\ProductRepositoryInterface::class);
     }
 
+    /**
+     * Execute
+     *
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return \Magento\Framework\Event\Observer
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         try {

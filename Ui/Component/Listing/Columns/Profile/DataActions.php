@@ -29,7 +29,7 @@ class DataActions extends Column
     public const URL_PATH_UPLOAD = 'betterthat/products/index';
 
     /**
-     * URL builder
+     * URL builderr
      *
      * @var \Magento\Framework\UrlInterface
      */

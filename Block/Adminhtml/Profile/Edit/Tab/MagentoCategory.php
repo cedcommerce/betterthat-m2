@@ -22,8 +22,18 @@ use Magento\Backend\Block\Widget\Form\Generic;
 
 class MagentoCategory extends Generic
 {
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
     public $objectManager;
 
+    /**
+     * @param \Magento\Backend\Block\Widget\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\Data\FormFactory $formFactory
+     * @param \Magento\Framework\ObjectManagerInterface $objectInterface
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Widget\Context $context,
         \Magento\Framework\Registry $registry,
@@ -36,9 +46,14 @@ class MagentoCategory extends Generic
         parent::__construct($context, $registry, $formFactory);
     }
 
+    /**
+     * PrepareForm
+     *
+     * @return MagentoCategory
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     protected function _prepareForm()
     {
-
         $form = $this->_formFactory->create();
         $this->setForm($form);
         return parent::_prepareForm();

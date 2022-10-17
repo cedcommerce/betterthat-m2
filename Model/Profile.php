@@ -33,10 +33,14 @@ class Profile extends \Magento\Framework\Model\AbstractModel
      * @var array
      */
     public $productIds = [];
-
+    /**
+     * @var objectManager
+     */
     public $objectManager;
 
     /**
+     * Construct
+     *
      * @return void
      */
     public function _construct()
@@ -44,13 +48,21 @@ class Profile extends \Magento\Framework\Model\AbstractModel
         $this->_init(\Betterthat\Betterthat\Model\ResourceModel\Profile::class);
     }
 
-    //TODO: remove as not needed.
+    /**
+     * GetProductsReadonly
+     *
+     * @return array
+     */
     public function getProductsReadonly()
     {
         return [];
     }
 
-    //@TODO: impliment without object manager
+    /**
+     * GetProductsPosition
+     *
+     * @return array|int[]|string[]
+     */
     public function getProductsPosition()
     {
         if (!isset($this->objectManager)) {
@@ -73,6 +85,12 @@ class Profile extends \Magento\Framework\Model\AbstractModel
         return $this->productIds;
     }
 
+    /**
+     * RemoveProducts
+     *
+     * @param json $values
+     * @return void
+     */
     public function removeProducts($values)
     {
         if ($values) {
@@ -102,6 +120,12 @@ class Profile extends \Magento\Framework\Model\AbstractModel
         }
     }
 
+    /**
+     * AddProducts
+     *
+     * @param json $values
+     * @return void
+     */
     public function addProducts($values)
     {
         if ($values) {
@@ -132,7 +156,7 @@ class Profile extends \Magento\Framework\Model\AbstractModel
     /**
      * Load entity by attribute
      *
-     * @param string|array field
+     * @param string|array $field
      * @param null|string|array $value
      * @param string $additionalAttributes
      * @return mixed

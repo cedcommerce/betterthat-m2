@@ -11,7 +11,7 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Product;
 class UploadProdWithOffer extends \Magento\Backend\Block\Widget\Container
 {
     /**
-     * Registry
+     * Registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -51,6 +51,11 @@ class UploadProdWithOffer extends \Magento\Backend\Block\Widget\Container
         $this->_getAddButtonOptions();
     }
 
+    /**
+     * GetAddButtonOptions
+     *
+     * @return void
+     */
     public function _getAddButtonOptions()
     {
         $backButtonOptions = [
@@ -61,6 +66,11 @@ class UploadProdWithOffer extends \Magento\Backend\Block\Widget\Container
         $this->buttonList->add('add', $backButtonOptions);
     }
 
+    /**
+     * GetCreateUrl
+     *
+     * @return string
+     */
     public function _getCreateUrl()
     {
         return $this->getUrl(
@@ -68,6 +78,11 @@ class UploadProdWithOffer extends \Magento\Backend\Block\Widget\Container
         );
     }
 
+    /**
+     * GetAjaxUrl
+     *
+     * @return string
+     */
     public function getAjaxUrl()
     {
         return $this->getUrl('Betterthat/product/uploadprodwithoffer');

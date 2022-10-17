@@ -21,11 +21,6 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\Product;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 
-/**
- * Class Price
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Product
- */
 class Export extends \Magento\Backend\App\Action
 {
     /**
@@ -47,31 +42,45 @@ class Export extends \Magento\Backend\App\Action
      * @var \Betterthat\Betterthat\Helper\Config
      */
     public $config;
-
+    /**
+     * @var \Magento\Backend\Model\Session
+     */
     public $session;
-
+    /**
+     * @var registry
+     */
     public $registry;
-
+    /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
     public $resultJsonFactory;
-
+    /**
+     * @var resultPageFactory
+     */
     public $resultPageFactory;
-
+    /**
+     * @var filesystem
+     */
     public $filesystem;
-
+    /**
+     * @var \Magento\Framework\Filesystem\Directory\WriteInterface
+     */
     public $directory;
-
+    /**
+     * @var \Magento\Framework\App\Response\Http\FileFactory
+     */
     public $fileFactory;
 
     /**
-     * Export constructor.
-     *
-     * @param  \Magento\Backend\App\Action\Context              $context
-     * @param  \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param  \Magento\Ui\Component\MassAction\Filter          $filter
-     * @param  \Magento\Catalog\Model\Product                   $collection
-     * @param  \Betterthat\Betterthat\Helper\Config                    $config
-     * @param  \BetterthatSdk\ProductFactory                    $Betterthat
-     * @param  \Magento\Framework\Filesystem                    $filesystem
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Magento\Catalog\Model\Product $collection
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \BetterthatSdk\ProductFactory $Betterthat
+     * @param \Magento\Framework\Filesystem $filesystem
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $product
+     * @param \Magento\Framework\App\Response\Http\FileFactory $fileFactory
      * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
@@ -98,6 +107,8 @@ class Export extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return $this|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -139,7 +150,9 @@ class Export extends \Magento\Backend\App\Action
     }
 
     /**
-     * @param  $errorJson
+     * FetchErrors
+     *
+     * @param  string $errorJson
      * @return false|mixed|string|null
      */
     public function fetchErrors($errorJson)

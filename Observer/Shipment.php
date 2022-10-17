@@ -20,10 +20,24 @@ namespace Betterthat\Betterthat\Observer;
 
 class Shipment implements \Magento\Framework\Event\ObserverInterface
 {
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
     protected $objectManager;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Order
+     */
     protected $api;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Logger
+     */
     protected $logger;
 
+    /**
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Betterthat\Betterthat\Helper\Logger $logger
+     * @param \Betterthat\Betterthat\Helper\Order $api
+     */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Betterthat\Betterthat\Helper\Logger $logger,
@@ -34,6 +48,12 @@ class Shipment implements \Magento\Framework\Event\ObserverInterface
         $this->logger = $logger;
     }
 
+    /**
+     * Execute
+     *
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return $this|void
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $this->logger->info('Shipment Observer', ['path' => __METHOD__, 'ShipData' => 'Shipment Observer Working']);

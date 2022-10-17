@@ -61,16 +61,15 @@ class Validate extends Action
     public $resultPageFactory;
 
     /**
-     * Validate constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context              $context
-     * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Betterthat\Betterthat\Helper\Product                   $product
-     * @param \Betterthat\Betterthat\Helper\Config                    $config
-     * @param \Magento\Framework\View\Result\PageFactory       $resultPageFactory
-     * @param \Magento\Ui\Component\MassAction\Filter          $filter
-     * @param \Magento\Framework\Registry                      $registry
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \Betterthat\Betterthat\Helper\Product $product
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Catalog\Model\Product $collection
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\App\Response\RedirectInterface $redirect
      */
     public function __construct(
         \Betterthat\Betterthat\Helper\Config $config,
@@ -96,6 +95,8 @@ class Validate extends Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      * @throws \Magento\Framework\Exception\LocalizedException
      */

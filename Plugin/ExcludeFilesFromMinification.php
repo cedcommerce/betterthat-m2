@@ -17,13 +17,16 @@
  */
 namespace Betterthat\Betterthat\Plugin;
 
-/**
- * Class ExcludeFilesFromMinification
- *
- * @package Betterthat\Betterthat\Plugin
- */
 class ExcludeFilesFromMinification
 {
+    /**
+     * AroundGetExcludes
+     *
+     * @param \Magento\Framework\View\Asset\Minification $subject
+     * @param callable $proceed
+     * @param string $contentType
+     * @return mixed
+     */
     public function aroundGetExcludes(
         \Magento\Framework\View\Asset\Minification $subject,
         callable $proceed,

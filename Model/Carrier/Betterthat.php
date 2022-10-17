@@ -57,13 +57,15 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     public $registry;
 
     /**
-     * ShipbyBetterthat constructor.
+     * Construct
      *
+     * @param \Magento\Framework\App\State $appState
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
      * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
+     * @param \Magento\Framework\Registry $registry
      * @param array $data
      */
     public function __construct(
@@ -85,6 +87,8 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     }
 
     /**
+     * CollectRates
+     *
      * @param RateRequest $request
      * @return bool|\Magento\Shipping\Model\Rate\Result
      */
@@ -136,6 +140,8 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     }
 
     /**
+     * GetAllowedMethods
+     *
      * @return array
      */
     public function getAllowedMethods()
@@ -144,6 +150,8 @@ class Betterthat extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     }
 
     /**
+     * GetCode
+     *
      * @return string
      */
     public function getCode()

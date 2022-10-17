@@ -19,11 +19,6 @@
 
 namespace Betterthat\Betterthat\Controller\Adminhtml\Product;
 
-/**
- * Class Upload
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Product
- */
 class Upload extends \Magento\Backend\App\Action
 {
 
@@ -45,20 +40,23 @@ class Upload extends \Magento\Backend\App\Action
     public $catalogCollection;
 
     /**
-     * @var \Betterthat\Betterthat\Helper\Config
+     * @var \Magento\Backend\Model\Session
      */
-
     public $session;
-
+    /**
+     * @var \Magento\Framework\Registry
+     */
     public $registry;
-
+    /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
     public $resultJsonFactory;
-
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     */
     public $resultPageFactory;
 
     /**
-     * Upload constructor.
-     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter $filter
@@ -67,6 +65,7 @@ class Upload extends \Magento\Backend\App\Action
      * @param \Betterthat\Betterthat\Helper\Config $config
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\App\Response\RedirectInterface $redirect
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -91,6 +90,8 @@ class Upload extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      * @throws \Magento\Framework\Exception\LocalizedException
      */

@@ -22,15 +22,10 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\FailedOrder;
 use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Index
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\FailedOrder
- */
 class Index extends Action
 {
     /**
-     * @var PageFactory
+     * @var PageFactorie
      */
     public $resultPageFactory;
 
@@ -48,6 +43,11 @@ class Index extends Action
         $this->resultPageFactory = $resultPageFactory;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Backend\Model\View\Result\Page
+     */
     public function execute()
     {
         /**

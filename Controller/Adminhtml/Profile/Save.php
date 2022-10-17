@@ -20,15 +20,10 @@ namespace Betterthat\BetterThat\Controller\Adminhtml\Profile;
 
 use Magento\Framework\DataObject;
 
-/**
- * Class Save
- *
- * @package Betterthat\BetterThat\Controller\Adminhtml\Profile
- */
 class Save extends \Magento\Backend\App\Action
 {
     /**
-     * @var \Magento\Framework\Registry
+     * @var \Magento\Framework\Registriee
      */
     public $registory;
 
@@ -66,17 +61,33 @@ class Save extends \Magento\Backend\App\Action
      * @var DataObject
      */
     public $data;
+    /**
+     * @var \Magento\Config\Model\Config\Factory
+     */
     public $configFactory;
-
+    /**
+     * @var \Magento\Config\Model\Config\Structure
+     */
     public $configStructure;
-
+    /**
+     * @var \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory
+     */
     public $productConfigFactory;
-
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     */
     public $resultPageFactory;
-
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     public $logger;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Cache
+     */
     public $BetterThatCache;
-
+    /**
+     * @var \Betterthat\Betterthat\Model\ResourceModel\ProfileFactory
+     */
     public $profileresource;
 
     /**
@@ -132,6 +143,11 @@ class Save extends \Magento\Backend\App\Action
         $this->logger = $logger;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $this->logger->info('Saving Started');
@@ -184,6 +200,11 @@ class Save extends \Magento\Backend\App\Action
         return $resultRedirect;
     }
 
+    /**
+     * Validate
+     *
+     * @return bool
+     */
     private function validate()
     {
         $generalInformation = $this->getRequest()->getParam('general_information');
@@ -238,8 +259,10 @@ class Save extends \Magento\Backend\App\Action
     }
 
     /**
-     * @param  $array
-     * @param  $key
+     * MergeAttributes
+     *
+     * @param array $attributes
+     * @param string $key
      * @return array
      */
     private function mergeAttributes($attributes, $key)

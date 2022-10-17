@@ -20,11 +20,18 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\Profile;
 
 class Delete extends \Magento\Customer\Controller\Adminhtml\Group
 {
+    /**
+     * @var _objectManager
+     */
     protected $_objectManager;
-
+    /**
+     * @var _session
+     */
     protected $_session;
 
     /**
+     * Execute
+     *
      * Delete the Attribute
      */
     public function execute()

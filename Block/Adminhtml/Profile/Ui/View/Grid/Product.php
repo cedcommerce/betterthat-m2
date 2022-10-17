@@ -18,7 +18,7 @@ use Magento\Backend\Block\Widget\Grid\Column;
 class Product extends \Magento\Backend\Block\Widget\Grid\Extended
 {
     /**
-     * Core registry
+     * Core registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -28,19 +28,29 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
      * @var \Magento\Catalog\Model\ProductFactory
      */
     protected $_productFactory;
-
+    /**
+     * @var \Betterthat\Betterthat\Model\Source\Profiles
+     */
     public $profiles;
 
+    /**
+     * @var \Betterthat\Betterthat\Model\Source\Categories
+     */
     public $categories;
-
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
     public $_objectManager;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Backend\Helper\Data            $backendHelper
-     * @param \Magento\Catalog\Model\ProductFactory   $productFactory
-     * @param \Magento\Framework\Registry             $coreRegistry
-     * @param array                                   $data
+     * @param \Magento\Backend\Helper\Data $backendHelper
+     * @param \Magento\Catalog\Model\ProductFactory $productFactory
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Betterthat\Betterthat\Model\Source\Profiles $profiles
+     * @param \Betterthat\Betterthat\Model\Source\Categories $categories
+     * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -61,6 +71,8 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
+     * GetGridUrl
+     *
      * @return string
      */
     public function getGridUrl()
@@ -69,6 +81,8 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
+     * Constructor
+     *
      * @return void
      */
     protected function _construct()
@@ -80,6 +94,8 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
+     * AddColumnFilterToCollection
+     *
      * @param  Column $column
      * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -104,6 +120,8 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
+     * GetSelectedProducts
+     *
      * @return array
      */
     protected function _getSelectedProducts()
@@ -117,6 +135,8 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
+     * GetProfile
+     *
      * @return array|null
      */
     public function getProfile()
@@ -125,6 +145,8 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
+     * PrepareCollection
+     *
      * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -161,6 +183,8 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
+     * PrepareColumns
+     *
      * @return $this
      * @throws \Exception
      */
@@ -231,6 +255,13 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
         return parent::_prepareColumns();
     }
 
+    /**
+     * FilterCallBack
+     *
+     * @param object $collection
+     * @param object $column
+     * @return mixed
+     */
     public function filterCallback($collection, $column)
     {
         $value = $column->getFilter()->getValue();

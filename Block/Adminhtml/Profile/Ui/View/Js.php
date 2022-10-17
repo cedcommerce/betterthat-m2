@@ -19,22 +19,27 @@ use Magento\Ui\Component\Layout\Tabs\TabInterface;
  */
 class Js extends \Magento\Backend\Block\Template
 {
-
+    /**
+     * @var string
+     */
     protected $_template = 'Betterthat_Betterthat::profile/attribute/js.phtml';
 
     /**
-     * Core registry
+     * Core registriee
      *
      * @var \Magento\Framework\Registry
      */
     protected $_coreRegistry;
-
+    /**
+     * @var \Magento\Framework\App\Request\Http
+     */
     public $request;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry             $registry
-     * @param array                                   $data
+     * @param \Magento\Framework\App\Request\Http $request
+     * @param \Magento\Framework\Registry $registry
+     * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -47,6 +52,11 @@ class Js extends \Magento\Backend\Block\Template
         parent::__construct($context, $data);
     }
 
+    /**
+     * GetProfileId
+     *
+     * @return mixed
+     */
     public function getProfileId()
     {
         $id = $this->request->getParam('id');

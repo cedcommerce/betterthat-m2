@@ -22,18 +22,15 @@ use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 
-/**
- * Class MagentoCategoryMapping
- *
- * @package Betterthat\Betterthat\Model\Source\Profile
- */
 class Categories implements OptionSourceInterface
 {
     /**
      * @var CollectionFactory
      */
     public $category;
-
+    /**
+     * @var StoreManagerInterface
+     */
     public $storeManager;
 
     /**
@@ -50,6 +47,13 @@ class Categories implements OptionSourceInterface
         $this->category = $collectionFactory;
     }
 
+    /**
+     * ToOptionArray
+     *
+     * @return \string[][]
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function toOptionArray()
     {
         $categoryFactory = $this->category;
@@ -72,8 +76,13 @@ class Categories implements OptionSourceInterface
         }
         return $options;
     }
+
     /**
+     * GetOptionArray
+     *
      * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getOptionArray()
     {

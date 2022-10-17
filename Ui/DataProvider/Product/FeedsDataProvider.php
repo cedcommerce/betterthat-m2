@@ -22,9 +22,6 @@ namespace Betterthat\Betterthat\Ui\DataProvider\Product;
 use Betterthat\Betterthat\Model\ResourceModel\Feeds\CollectionFactory;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
-/**
- * Class DataProvider for Betterthat Categories
- */
 class FeedsDataProvider extends AbstractDataProvider
 {
     /**
@@ -71,6 +68,8 @@ class FeedsDataProvider extends AbstractDataProvider
     }
 
     /**
+     * GetData
+     *
      * @return array
      */
     public function getData()

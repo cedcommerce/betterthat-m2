@@ -20,14 +20,11 @@ namespace Betterthat\Betterthat\Model\ResourceModel\Feeds;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
-/**
- * Class Collection
- *
- * @package Betterthat\Betterthat\Model\ResourceModel\Feeds
- */
 class Collection extends AbstractCollection
 {
     /**
+     * Construct
+     *
      * @return void
      */
     public function _construct()

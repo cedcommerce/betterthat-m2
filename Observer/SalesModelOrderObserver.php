@@ -30,17 +30,15 @@ class SalesModelOrderObserver implements ObserverInterface
     public $logger;
 
     /**
-     * Object Manager
+     * Object Managerr
      *
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
 
     /**
-     * ProductSaveAfter constructor.
-     *
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Framework\App\RequestInterface $request
+     * @param \Betterthat\Betterthat\Helper\Logger $logger
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,

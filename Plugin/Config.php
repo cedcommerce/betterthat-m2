@@ -2,9 +2,6 @@
 
 namespace Betterthat\Betterthat\Plugin;
 
-/**
- * Directory separator shorthand
- */
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
@@ -35,9 +32,19 @@ class Config
      * @var \Betterthat\Betterthat\Helper\Config
      */
     public $config;
-
+    /**
+     * @var \Magento\Framework\App\Cache\TypeListInterface
+     */
     public $cache;
 
+    /**
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfigManager
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cache
+     * @param \Magento\Config\Model\ResourceModel\Config $config
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
+     * @param \Betterthat\Betterthat\Helper\Config $BetterthatConfig
+     */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfigManager,
         \Magento\Framework\App\Cache\TypeListInterface $cache,
@@ -54,6 +61,12 @@ class Config
         $this->config = $BetterthatConfig;
     }
 
+    /**
+     * AfterSave
+     *
+     * @param \Magento\Config\Model\Config $subject
+     * @return void
+     */
     public function afterSave(
         \Magento\Config\Model\Config $subject
     ) {

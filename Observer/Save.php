@@ -4,10 +4,27 @@ namespace Betterthat\Betterthat\Observer;
 
 class Save implements \Magento\Framework\Event\ObserverInterface
 {
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
     protected $objectManager;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Product
+     */
     protected $productHelper;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Config
+     */
     public $config;
 
+    /**
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Betterthat\Betterthat\Helper\Product $productHelper
+     * @param \Betterthat\Betterthat\Model\ResourceModel\Profile $profileResource
+     * @param \Betterthat\Betterthat\Model\ProfileFactory $profileFactory
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Betterthat\Betterthat\Helper\Product $productHelper,
@@ -24,6 +41,12 @@ class Save implements \Magento\Framework\Event\ObserverInterface
         $this->config = $config;
     }
 
+    /**
+     * Execute
+     *
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return \Magento\Framework\Event\Observer|void
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         if ($this->config->isValid() == "0" || $this->config->isValid() == null) {

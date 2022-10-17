@@ -80,8 +80,9 @@ class Betterthat extends \Magento\Payment\Model\Method\AbstractMethod
      */
     public $_canReviewPayment = false;
 
-    /* START */
-    /* Setting for disable from front-end. */
+    /**
+     * @var bool
+     */
     public $_canUseCheckout = false;
 
     /**
@@ -112,6 +113,8 @@ class Betterthat extends \Magento\Payment\Model\Method\AbstractMethod
     /* END */
 
     /**
+     * IsAvailable
+     *
      * @param  \Magento\Quote\Api\Data\CartInterface|null $quote
      * @return bool
      */
@@ -121,6 +124,8 @@ class Betterthat extends \Magento\Payment\Model\Method\AbstractMethod
     }
 
     /**
+     * GetCode
+     *
      * @return string
      */
     public function getCode()

@@ -4,6 +4,9 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Request;
 
 class Help extends \Magento\Backend\Block\Template
 {
+    /**
+     * @var string
+     */
     public $_template="request/help.phtml";
 
     /**

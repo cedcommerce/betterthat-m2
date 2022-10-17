@@ -20,28 +20,40 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Attribute;
 
 use \Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
 
-/**
- * Rolesedit Tab Display Block.
- *
- * @SuppressWarnings(PHPMD.LongVariable)
- */
 class Attributes extends \Magento\Backend\Block\Widget implements RendererInterface
 {
     /**
      * @var string
      */
     public $_template = 'Betterthat_Betterthat::profile/attribute/attributes.phtml';
-
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
     public $_objectManager;
-
+    /**
+     * @var \Magento\Framework\Registry
+     */
     public $_coreRegistry;
-
+    /**
+     * @var mixed|null
+     */
     public $profile;
-
+    /**
+     * @var \Betterthat\Betterthat\Helper\Category
+     */
     public $category;
-
+    /**
+     * @var BetterthatAttribute
+     */
     public $_BetterthatAttribute;
 
+    /**
+     * @param \Magento\Backend\Block\Template\Context $context
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Framework\Registry $registry
+     * @param \Betterthat\Betterthat\Helper\Category $category
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -66,6 +78,11 @@ class Attributes extends \Magento\Backend\Block\Widget implements RendererInterf
         return $this->getChildHtml('add_button');
     }
 
+    /**
+     * GetBetterthatAttributes
+     *
+     * @return BetterthatAttribute
+     */
     public function getBetterthatAttributes()
     {
         // For AJAX
@@ -116,6 +133,11 @@ class Attributes extends \Magento\Backend\Block\Widget implements RendererInterf
         return $magentoattributeCodeArray;
     }
 
+    /**
+     * GetMappedAttribute
+     *
+     * @return array|mixed
+     */
     public function getMappedAttribute()
     {
         $data = $this->_BetterthatAttribute[0]['value'];
@@ -148,7 +170,6 @@ class Attributes extends \Magento\Backend\Block\Widget implements RendererInterf
     }
 
     /**
-     * Prepare global layout
      * Add "Add tier" button to layout
      *
      * @return $this

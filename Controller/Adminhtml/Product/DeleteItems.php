@@ -19,11 +19,6 @@
 
 namespace Betterthat\Betterthat\Controller\Adminhtml\Product;
 
-/**
- * Class Price
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Product
- */
 class DeleteItems extends \Magento\Backend\App\Action
 {
     public const CHUNK_SIZE = 1;
@@ -47,26 +42,33 @@ class DeleteItems extends \Magento\Backend\App\Action
      * @var \Betterthat\Betterthat\Helper\Config
      */
     public $config;
-
+    /**
+     * @var \Magento\Backend\Model\Session
+     */
     public $session;
-
+    /**
+     * @var \Magento\Framework\Registry
+     */
     public $registry;
-
+    /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
     public $resultJsonFactory;
-
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     */
     public $resultPageFactory;
 
     /**
-     * Price constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context              $context
-     * @param \Magento\Framework\View\Result\PageFactory       $resultPageFactory
-     * @param \Magento\Ui\Component\MassAction\Filter          $filter
-     * @param \Magento\Catalog\Model\Product                   $collection
-     * @param \Betterthat\Betterthat\Helper\Product                   $product
-     * @param \Betterthat\Betterthat\Helper\Config                    $config
-     * @param \Magento\Framework\Registry                      $registry
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Magento\Catalog\Model\Product $collection
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Betterthat\Betterthat\Helper\Product $product
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Backend\Model\View\Result\Redirect $redirect
      */
     public function __construct(
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
@@ -92,6 +94,8 @@ class DeleteItems extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return $this|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      * @throws \Magento\Framework\Exception\LocalizedException
      */

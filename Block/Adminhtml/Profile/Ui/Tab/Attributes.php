@@ -20,7 +20,7 @@ use Magento\Ui\Component\Layout\Tabs\TabInterface;
 class Attributes extends \Magento\Backend\Block\Template implements TabInterface
 {
     /**
-     * Core registry
+     * Core registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -28,8 +28,8 @@ class Attributes extends \Magento\Backend\Block\Template implements TabInterface
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry             $registry
-     * @param array                                   $data
+     * @param \Magento\Framework\Registry $registry
+     * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -41,6 +41,8 @@ class Attributes extends \Magento\Backend\Block\Template implements TabInterface
     }
 
     /**
+     * GetTabLabel
+     *
      * @return \Magento\Framework\Phrase
      */
     public function getTabLabel()
@@ -49,6 +51,8 @@ class Attributes extends \Magento\Backend\Block\Template implements TabInterface
     }
 
     /**
+     * GetTabTitle
+     *
      * @return \Magento\Framework\Phrase
      */
     public function getTabTitle()
@@ -57,6 +61,8 @@ class Attributes extends \Magento\Backend\Block\Template implements TabInterface
     }
 
     /**
+     * CanShowTab
+     *
      * @return bool
      */
     public function canShowTab()
@@ -65,6 +71,8 @@ class Attributes extends \Magento\Backend\Block\Template implements TabInterface
     }
 
     /**
+     * IsHidden
+     *
      * @return bool
      */
     public function isHidden()

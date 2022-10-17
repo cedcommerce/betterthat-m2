@@ -20,11 +20,18 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Profile\Edit;
 
 class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
+    /**
+     * GetAttributeTabBlock
+     *
+     * @return string
+     */
     public function getAttributeTabBlock()
     {
         return \Betterthat\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Info::class;
     }
     /**
+     * Construct
+     *
      * @return void
      */
     protected function _construct()
@@ -36,6 +43,8 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
     }
 
     /**
+     * BeforeToHtml
+     *
      * @return $this
      */
     protected function _beforeToHtml()

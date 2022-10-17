@@ -25,17 +25,17 @@ use Magento\Framework\View\Result\PageFactory;
 class MassDelete extends Action
 {
     /**
-     * @var
+     * @var profile
      */
     protected $profile;
 
     /**
-     * @var
+     * @var profileResource
      */
     protected $profileResource;
 
     /**
-     * @var
+     * @var collection
      */
     protected $collection;
 
@@ -45,14 +45,14 @@ class MassDelete extends Action
     public $filter;
 
     /**
-     * MassDelete constructor.
-     *
-     * @param Action\Context                                                $context
-     * @param PageFactory                                                   $resultPageFactory
-     * @param \Magento\Ui\Component\MassAction\Filter                       $filter
-     * @param \Betterthat\Betterthat\Model\ProfileFactory                          $profile
-     * @param \Betterthat\Betterthat\Model\ResourceModel\Profile                   $profileResource
+     * @param Action\Context $context
+     * @param PageFactory $resultPageFactory
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Betterthat\Betterthat\Model\ProfileFactory $profile
+     * @param \Betterthat\Betterthat\Model\ResourceModel\Profile $profileResource
      * @param \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collection
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Action $productAction
+     * @param \Betterthat\Betterthat\Helper\Config $config
      */
     public function __construct(
         Action\Context $context,
@@ -75,6 +75,8 @@ class MassDelete extends Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
      */
     public function execute()

@@ -18,13 +18,13 @@ class Delete extends GenericButton implements ButtonProviderInterface
      */
     public $container;
     /**
-     * Url Builder
+     * Url Buildera
      *
      * @var \Magento\Framework\UrlInterface
      */
     public $urlBuilder;
     /**
-     * Registry
+     * Registriee
      *
      * @var \Magento\Framework\Registry
      */
@@ -48,6 +48,8 @@ class Delete extends GenericButton implements ButtonProviderInterface
         $this->registry = $registry;
     }
     /**
+     * GetButtonData
+     *
      * @return array|bool
      */
     public function getButtonData()
@@ -67,7 +69,11 @@ class Delete extends GenericButton implements ButtonProviderInterface
         }
         return false;
     }
+
     /**
+     * GetDeleteUrl
+     *
+     * @param int $id
      * @return string
      */
     public function getDeleteUrl($id)

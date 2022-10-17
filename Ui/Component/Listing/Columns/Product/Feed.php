@@ -23,9 +23,6 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-/**
- * Class Feed
- */
 class Feed extends Column
 {
     /**
@@ -46,11 +43,13 @@ class Feed extends Column
     public $json;
 
     /**
-     * @param ContextInterface   $context
+     * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
-     * @param UrlInterface       $urlBuilder
-     * @param array              $components
-     * @param array              $data
+     * @param UrlInterface $urlBuilder
+     * @param \Magento\Framework\Json\Helper\Data $json
+     * @param \Betterthat\Betterthat\Helper\Product $productHelper
+     * @param array $components
+     * @param array $data
      */
     public function __construct(
         ContextInterface $context,

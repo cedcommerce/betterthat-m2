@@ -22,15 +22,10 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Index
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Cron
- */
 class Fetch extends Action
 {
     /**
-     * ResultPageFactory
+     * ResultPageFactorie
      *
      * @var PageFactory
      */
@@ -42,13 +37,16 @@ class Fetch extends Action
      * @var PageFactory
      */
     public $category;
+    /**
+     * @var \Magento\Framework\Registry
+     */
     public $_coreRegistry;
 
     /**
-     * Index constructor.
-     *
-     * @param Context     $context
+     * @param Context $context
      * @param PageFactory $resultPageFactory
+     * @param \Magento\Framework\Registry $registry
+     * @param \Betterthat\Betterthat\Helper\Category $category
      */
     public function __construct(
         Context $context,
@@ -64,6 +62,8 @@ class Fetch extends Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Backend\Model\View\Result\Page
      */
     public function execute()

@@ -22,6 +22,8 @@ namespace Betterthat\Betterthat\Model\ResourceModel;
 class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
+     * Construct
+     *
      * @return void
      */
     public function _construct()
@@ -30,7 +32,9 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
     }
 
     /**
-     * @param  $profileId
+     * GetProfileProducts
+     *
+     * @param  string $profileId
      * @return array
      */
     public function getProfileProducts($profileId)
@@ -41,6 +45,12 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
         return $read->fetchCol($select);
     }
 
+    /**
+     * DeleteFromProfile
+     *
+     * @param int $productId
+     * @return $this
+     */
     public function deleteFromProfile($productId)
     {
 
@@ -55,13 +65,17 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
         return $this;
     }
 
+    /**
+     * DeleteProducts
+     *
+     * @param array $productIds
+     * @return $this
+     */
     public function deleteProducts($productIds)
     {
-
         if (empty($productIds) || !is_array($productIds) || count($productIds) == 0) {
             return $this;
         }
-
         $productIds = array_unique($productIds);
         $dbh = $this->getConnection();
         $condition =
@@ -70,13 +84,18 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
         return $this;
     }
 
+    /**
+     * AddProducts
+     *
+     * @param array $productIds
+     * @param int $profileId
+     * @return $this
+     */
     public function addProducts($productIds, $profileId)
     {
-
         if (empty($productIds) || !is_array($productIds) || count($productIds) == 0 || empty($profileId)) {
             return $this;
         }
-
         $productIds = array_unique($productIds);
         $data = [];
         foreach ($productIds as $productId) {
@@ -91,6 +110,13 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
         return $this;
     }
 
+    /**
+     * ProfileProductExists
+     *
+     * @param int $productId
+     * @param int $profileId
+     * @return array
+     */
     public function profileProductExists($productId, $profileId)
     {
         if ($productId > 0) {
@@ -111,6 +137,8 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
     }
 
     /**
+     * BeforeSave
+     *
      * @param  \Magento\Framework\Model\AbstractModel $profile
      * @return $this
      */
@@ -123,7 +151,6 @@ class ProfileProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractD
                 $profile->unsetData('id');
             }
         }
-
         $profile->setProfileName($profile->getName());
         return $this;
     }

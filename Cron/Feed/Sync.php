@@ -21,13 +21,29 @@ namespace Betterthat\Betterthat\Cron\Feed;
 
 class Sync
 {
+    /**
+     * @var \Betterthat\Betterthat\Helper\Logger
+     */
     public $logger;
+    /**
+     * @var \Betterthat\Betterthat\Model\Feeds
+     */
     public $feeds;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Product
+     */
     public $product;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     public $systemLogger;
 
     /**
+     * @param \Betterthat\Betterthat\Model\Feeds $BetterthatFeeds
      * @param \Betterthat\Betterthat\Helper\Logger $logger
+     * @param \Betterthat\Betterthat\Helper\Product $product
+     * @param \Psr\Log\LoggerInterface $systemLogger
+     * @param \Betterthat\Betterthat\Helper\Config $config
      */
     public function __construct(
         \Betterthat\Betterthat\Model\Feeds $BetterthatFeeds,
@@ -44,6 +60,8 @@ class Sync
     }
 
     /**
+     * Execute
+     *
      * @return bool
      */
     public function execute()

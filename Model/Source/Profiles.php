@@ -20,22 +20,29 @@ namespace Betterthat\Betterthat\Model\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
-/**
- * Class MagentoCategoryMapping
- *
- * @package Betterthat\Betterthat\Model\Source\Profile
- */
 class Profiles implements OptionSourceInterface
 {
-
+    /**
+     * @var \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory
+     */
     public $profile;
 
+    /**
+     * Construct
+     *
+     * @param \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
+     */
     public function __construct(
         \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
     ) {
         $this->profile = $collectionFactory;
     }
 
+    /**
+     * ToOptionArray
+     *
+     * @return \string[][]
+     */
     public function toOptionArray()
     {
         $profiles = $this->profile->create()
@@ -54,6 +61,8 @@ class Profiles implements OptionSourceInterface
         return $options;
     }
     /**
+     * GetOptionArray
+     *
      * @return array
      */
     public function getOptionArray()

@@ -5,6 +5,8 @@ class MassEnable extends \Magento\Backend\App\Action
 {
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
      */
     public function execute()

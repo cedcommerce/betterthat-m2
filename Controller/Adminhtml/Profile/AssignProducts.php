@@ -21,13 +21,11 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\Profile;
 
 use Betterthat\Betterthat\Helper\Logger;
 
-/**
- * Class MassDelete
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Profile
- */
 class AssignProducts extends \Magento\Backend\App\Action
 {
+    /**
+     * ADMIN_RESOURCE
+     */
     public const ADMIN_RESOURCE = 'Betterthat_Betterthat::Betterthat';
 
     /**
@@ -44,9 +42,18 @@ class AssignProducts extends \Magento\Backend\App\Action
      * @var Logger \Betterthat\Betterthat\Helper\Logger
      */
     public $logger;
-
+    /**
+     * @var \Magento\Ui\Component\MassAction\Filter
+     */
     public $filter;
 
+    /**
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $profile
+     * @param \Betterthat\Betterthat\Helper\Profile $profileHelper
+     * @param Logger $logger
+     */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Ui\Component\MassAction\Filter $filter,
@@ -61,6 +68,12 @@ class AssignProducts extends \Magento\Backend\App\Action
         $this->logger = $logger;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function execute()
     {
         $id = $this->getRequest()->getParam('id');

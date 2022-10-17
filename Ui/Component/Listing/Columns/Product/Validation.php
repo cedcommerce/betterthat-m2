@@ -23,9 +23,6 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-/**
- * Class ProductValidation
- */
 class Validation extends Column
 {
     /**
@@ -41,11 +38,12 @@ class Validation extends Column
     public $json;
 
     /**
-     * @param ContextInterface   $context
+     * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
-     * @param UrlInterface       $urlBuilder
-     * @param array              $components
-     * @param array              $data
+     * @param UrlInterface $urlBuilder
+     * @param \Magento\Framework\Json\Helper\Data $json
+     * @param array $components
+     * @param array $data
      */
     public function __construct(
         ContextInterface $context,

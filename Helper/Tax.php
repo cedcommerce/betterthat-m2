@@ -37,7 +37,9 @@ class Tax
     public $taxCalculation;
 
     /**
-     * Tax constructor.
+     * @param \Magento\Tax\Model\Config $taxConfig
+     * @param \Magento\Tax\Model\Calculation $taxCalculationModel
+     * @param \Magento\Tax\Api\TaxCalculationInterface $taxCalculation
      */
     public function __construct(
         \Magento\Tax\Model\Config $taxConfig,
@@ -49,12 +51,26 @@ class Tax
         $this->taxCalculationAPIInterface = $taxCalculation;
     }
 
+    /**
+     * GetProductTaxRate
+     *
+     * @param string $productTaxClassId
+     * @param string $customerId
+     * @param string $storeId
+     * @return float
+     */
     public function getProductTaxRate($productTaxClassId, $customerId, $storeId)
     {
         return $this->taxCalculationAPIInterface
             ->getCalculatedRate($productTaxClassId, $customerId, $storeId);
     }
 
+    /**
+     * GetShippingTaxRate
+     *
+     * @param mixed $store
+     * @return float|int
+     */
     public function getShippingTaxRate($store)
     {
         $request = new \Magento\Framework\DataObject();

@@ -10,10 +10,11 @@ namespace Betterthat\Betterthat\Helper;
 class Generator extends \Magento\Framework\Xml\Generator
 {
     /**
-     * @param                                        array $content
-     * @return                                       $this
-     * @throws                                       \DOMException
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * ArrayToXml
+     *
+     * @param string $content
+     * @return $this|Generator
+     * @throws \DOMException
      */
     public function arrayToXml($content)
     {

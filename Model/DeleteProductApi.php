@@ -5,11 +5,18 @@ use Psr\Log\LoggerInterface;
 
 class DeleteProductApi
 {
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Product
+     */
     public $productHelper;
 
     /**
      * DeleteProductApi constructor.
+     *
      * @param LoggerInterface $logger
      * @param \Betterthat\Betterthat\Helper\Product $productHelper
      */
@@ -20,8 +27,12 @@ class DeleteProductApi
         $this->productHelper = $productHelper;
         $this->logger = $logger;
     }
+
     /**
-     * @inheritdoc
+     * GetPost
+     *
+     * @param array $data
+     * @return array[]
      */
     public function getPost($data)
     {

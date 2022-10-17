@@ -5,10 +5,21 @@ use Psr\Log\LoggerInterface;
 
 class OrderApi
 {
-
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Order
+     */
     public $orderHelper;
 
+    /**
+     * Construct
+     *
+     * @param LoggerInterface $logger
+     * @param \Betterthat\Betterthat\Helper\Order $orderHelper
+     */
     public function __construct(
         LoggerInterface $logger,
         \Betterthat\Betterthat\Helper\Order $orderHelper
@@ -16,8 +27,12 @@ class OrderApi
         $this->orderHelper = $orderHelper;
         $this->logger = $logger;
     }
+
     /**
-     * @inheritdoc
+     * GetPost
+     *
+     * @param array $data
+     * @return array[]
      */
     public function getPost($data)
     {

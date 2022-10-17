@@ -22,13 +22,15 @@ namespace Betterthat\Betterthat\Model\Source\Config;
 class Attributes implements \Magento\Framework\Option\ArrayInterface
 {
     /**
-     * @var \Betterthat\Betterthat\Helper\Category
-     * */
+     * @var \Betterthat\Betterthat\Helper\Category|Category
+     */
     protected $category;
 
     /**
-     * @param Category $category
-     * */
+     * Construct
+     *
+     * @param \Betterthat\Betterthat\Helper\Category $category
+     */
     public function __construct(
         \Betterthat\Betterthat\Helper\Category $category
     ) {

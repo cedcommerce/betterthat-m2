@@ -47,7 +47,9 @@ class Cache extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $key
+     * GetValue
+     *
+     * @param  string $key
      * @return mixed|null
      */
     public function getValue($key)
@@ -58,11 +60,13 @@ class Cache extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $key
-     * @param  $value
-     * @param  array $tags
-     * @param  null  $lifeTime
-     * @throws \Exception
+     * SetValue
+     *
+     * @param string $key
+     * @param string $value
+     * @param array $tags
+     * @param string $lifeTime
+     * @return void
      */
     public function setValue($key, $value, array $tags = [], $lifeTime = null)
     {
@@ -84,17 +88,34 @@ class Cache extends \Magento\Framework\App\Helper\AbstractHelper
         $this->cache->save(json_encode($value), $cacheKey, $preparedTags, (int)$lifeTime);
     }
 
+    /**
+     * RemoveValue
+     *
+     * @param string $key
+     * @return void
+     */
     public function removeValue($key)
     {
         $cacheKey = self::CACHE_KEY_IDENTIFIER . $key;
         $this->cache->remove($cacheKey);
     }
 
+    /**
+     * RemoveAllValues
+     *
+     * @return void
+     */
     public function removeAllValues()
     {
         $this->removeTagValues('main');
     }
 
+    /**
+     * RemoveTagValues
+     *
+     * @param string $tag
+     * @return void
+     */
     public function removeTagValues($tag)
     {
         $tags = [self::CACHE_KEY_IDENTIFIER . '_' . $tag];

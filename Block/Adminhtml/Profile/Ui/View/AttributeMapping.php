@@ -9,18 +9,41 @@ class AttributeMapping extends \Magento\Backend\Block\Template
       */
     public $_template = 'Betterthat_Betterthat::profile/attribute/attributes.phtml';
 
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
     public $_objectManager;
-
+    /**
+     * @var \Magento\Framework\Registry
+     */
     public $_coreRegistry;
-
+    /**
+     * @var \Betterthat\Betterthat\Model\Profile
+     */
     public $profile;
-
+    /**
+     * @var \Betterthat\Betterthat\Helper\Category
+     */
     public $category;
-
+    /**
+     * @var Btattribue
+     */
     public $_BetterthatAttribute;
 
+    /**
+     * @var \Magento\Framework\App\Request\Http
+     */
     public $request;
 
+    /**
+     * @param \Magento\Backend\Block\Template\Context $context
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Framework\App\Request\Http $request
+     * @param \Magento\Framework\Registry $registry
+     * @param \Betterthat\Betterthat\Model\Profile $profile
+     * @param \Betterthat\Betterthat\Helper\Category $category
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -41,6 +64,8 @@ class AttributeMapping extends \Magento\Backend\Block\Template
     }
 
     /**
+     * GetAddButtonHtml
+     *
      * @return mixed
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -60,6 +85,11 @@ class AttributeMapping extends \Magento\Backend\Block\Template
         return $button->toHtml();
     }
 
+    /**
+     * GetBetterthatAttributes
+     *
+     * @return mixed
+     */
     public function getBetterthatAttributes()
     {
         // For AJAX
@@ -166,6 +196,11 @@ class AttributeMapping extends \Magento\Backend\Block\Template
         return $magentoattributeCodeArray;
     }
 
+    /**
+     * GetMappedAttribute
+     *
+     * @return array|mixed
+     */
     public function getMappedAttribute()
     {
         $data = $this->_BetterthatAttribute[0]['value'];

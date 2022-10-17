@@ -12,6 +12,12 @@ use Magento\Config\Block\System\Config\Form\Field;
 
 class Disable extends Field
 {
+    /**
+     * GetElementHtml
+     *
+     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @return string
+     */
     protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $element->setReadonly(true);

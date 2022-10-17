@@ -21,11 +21,6 @@ namespace Betterthat\Betterthat\Helper;
 
 use Magento\Framework\App\Helper\Context;
 
-/**
- * Class Profile For Betterthat Profiling
- *
- * @package Betterthat\Betterthat\Helper
- */
 class Profile extends \Magento\Framework\App\Helper\AbstractHelper
 {
     public const REQUIRED_ATTRIBUTES = [
@@ -72,14 +67,14 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
         'offer-condition/condition' //set NEW
     ];
 
-    /*
-     * Active Profile
+    /**
+     * @var profile
      */
     public $profile;
 
-    /*
-    * Profile Code
-    */
+    /**
+     * @var profileCode
+     */
     public $profileCode;
 
     /**
@@ -88,7 +83,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
     public $categories;
 
     /**
-     * Betterthat Attributes
+     * @var attributes
      */
     public $attributes;
 
@@ -103,19 +98,37 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Magento\Framework\Json\Helper\Data
      */
     public $json;
-
+    /**
+     * @var array
+     */
     public $requiredAttributes = [];
+    /**
+     * @var array
+     */
     public $optionalAttributes = [];
+    /**
+     * @var array
+     */
     public $variantAttributes = [];
+    /**
+     * @var \Magento\Catalog\Model\ProductFactory
+     */
     public $profileProduct;
+    /**
+     * @var \Betterthat\Betterthat\Model\ProfileFactory
+     */
     public $profileFactory;
+    /**
+     * @var Cache
+     */
     public $BetterthatCache;
 
     /**
-     * Profile constructor.
-     *
-     * @param Context                             $context
+     * @param Context $context
      * @param \Magento\Framework\Json\Helper\Data $json
+     * @param \Magento\Catalog\Model\ProductFactory $profileProduct
+     * @param \Betterthat\Betterthat\Model\ProfileFactory $profile
+     * @param Cache $cache
      */
     public function __construct(
         Context $context,
@@ -247,8 +260,9 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Get a Profile Attribute
+     * GetAttribute
      *
+     * @param string $attributeId
      * @return array
      */
     public function getAttribute($attributeId)
@@ -260,10 +274,12 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Get a Mapped magento Profile Attribute
+     * GetMappedAttribute
      *
-     * @return string|boolean
+     * @param string $attributeId
+     * @return false
      */
+
     public function getMappedAttribute($attributeId)
     {
         if (isset($this->profile['profile_attributes'][$attributeId]['magento_attribute_code'])) {
@@ -273,8 +289,9 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Get Profile Attributes
+     * GetAttributes
      *
+     * @param string $type
      * @return array
      */
     public function getAttributes($type = null)
@@ -286,8 +303,9 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Get Profile Attributes
+     * GetRequiredAttributes
      *
+     * @param string $type
      * @return array
      */
     public function getRequiredAttributes($type = null)
@@ -306,7 +324,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Get Profile Category
+     * GetBetterThatCategory
      *
      * @return string
      */
@@ -347,7 +365,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
      /**
       * Get All Products Ids
       *
-      * @param  null $productId
+      * @param  string $productId
       * @return mixed
       */
     public function getProducts($productId = null)

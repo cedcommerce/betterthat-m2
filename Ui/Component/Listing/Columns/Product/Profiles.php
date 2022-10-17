@@ -38,12 +38,11 @@ class Profiles extends Column
     protected $urlBuilder;
 
     /**
-     * @param ContextInterface   $context
+     * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
-     * @param UrlBuilder         $actionUrlBuilder
-     * @param UrlInterface       $urlBuilder
-     * @param array              $components
-     * @param array              $data
+     * @param UrlInterface $urlBuilder
+     * @param array $components
+     * @param array $data
      */
     public function __construct(
         ContextInterface $context,

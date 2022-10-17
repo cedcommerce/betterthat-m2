@@ -22,11 +22,12 @@ namespace Betterthat\Betterthat\Model\ResourceModel;
 class Profile extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
+     * Construct
+     *
      * @return void
      */
     public function _construct()
     {
-
         $this->_init('betterthat_profile', 'id');
     }
 }

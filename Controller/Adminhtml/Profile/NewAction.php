@@ -39,6 +39,8 @@ class NewAction extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Backend\Model\View\Result\Forward
      */
     public function execute()

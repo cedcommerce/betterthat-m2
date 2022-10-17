@@ -43,6 +43,7 @@ class AddAttributes implements DataPatchInterface
     /**
      * @param ModuleDataSetupInterface $moduleDataSetup
      * @param EavSetupFactory $eavSetupFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Eav\Attribute $eavAttribute
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
@@ -54,6 +55,13 @@ class AddAttributes implements DataPatchInterface
         $this->eavAttribute = $eavAttribute;
     }
 
+    /**
+     * Apply
+     *
+     * @return AddAttributes|void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Zend_Validate_Exception
+     */
     public function apply()
     {
         /**
@@ -298,8 +306,11 @@ class AddAttributes implements DataPatchInterface
             ]
         );
     }
+
     /**
-     * {@inheritdoc}
+     * GetDependencies
+     *
+     * @return array|string[]
      */
     public static function getDependencies()
     {
@@ -307,7 +318,9 @@ class AddAttributes implements DataPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * GetAliases
+     *
+     * @return array|string[]
      */
     public function getAliases()
     {
@@ -315,7 +328,9 @@ class AddAttributes implements DataPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * GetVersion
+     *
+     * @return string
      */
     public static function getVersion()
     {

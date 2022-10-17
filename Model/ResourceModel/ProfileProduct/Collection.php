@@ -23,6 +23,11 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */
     public function _construct()
     {
         $this->_init(
@@ -31,6 +36,11 @@ class Collection extends AbstractCollection
         );
     }
 
+    /**
+     * PrepareUpdateUrl
+     *
+     * @return void
+     */
     protected function prepareUpdateUrl()
     {
         if (!isset($this->data['config']['filter_url_params'])) {

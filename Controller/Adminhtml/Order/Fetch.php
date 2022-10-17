@@ -36,11 +36,9 @@ class Fetch extends \Magento\Backend\App\Action
     public $orderHelper;
 
     /**
-     * Fetch constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context                  $context
+     * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
-     * @param \Betterthat\Betterthat\Helper\Order                         $orderHelper
+     * @param \Betterthat\Betterthat\Helper\Order $orderHelper
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -53,6 +51,8 @@ class Fetch extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute
+     *
      * @return \Magento\Framework\Controller\Result\Redirect
      */
     public function execute()

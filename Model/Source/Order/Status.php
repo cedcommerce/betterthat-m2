@@ -21,11 +21,6 @@ namespace Betterthat\Betterthat\Model\Source\Order;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
-/**
- * Class Status
- *
- * @package Betterthat\Betterthat\Model\Source\Order\Status
- */
 class Status extends AbstractSource
 {
     public const PENDING = 'pending';
@@ -36,6 +31,8 @@ class Status extends AbstractSource
     public const CANCELLED = 'cancelled';
 
     /**
+     * GetAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

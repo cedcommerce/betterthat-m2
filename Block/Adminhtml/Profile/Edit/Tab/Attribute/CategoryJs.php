@@ -21,28 +21,31 @@ namespace Betterthat\Betterthat\Block\Adminhtml\Profile\Edit\Tab\Attribute;
 use Magento\Backend\Block\Widget;
 use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
 
-/**
- * Rolesedit Tab Display Block.
- *
- * @SuppressWarnings(PHPMD.LongVariable)
- */
 class CategoryJs extends Widget implements RendererInterface
 {
+    /**
+     * @var string
+     */
     public $_template = 'profile/category.phtml';
-
+    /**
+     * @var mixed|null
+     */
     public $_profile;
-
+    /**
+     * @var \Magento\Framework\Registry
+     */
     public $_coreRegistry;
-
+    /**
+     * @var Betterthat
+     */
     public $Betterthat;
 
     /**
-     * CategoryJs constructor.
-     *
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry             $registry
-     * @param \BetterthatSdk\Product                  $Betterthat
-     * @param array                                   $data
+     * @param \Magento\Framework\Registry $registry
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \BetterthatSdk\ProductFactory $Betterthat
+     * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,

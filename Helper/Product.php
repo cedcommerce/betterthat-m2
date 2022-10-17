@@ -19,18 +19,10 @@
 
 namespace Betterthat\Betterthat\Helper;
 
-/**
- * Directory separator shorthand
- */
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-/**
- * Class Data For Betterthat Authenticated Seller Api
- *
- * @package Betterthat\Betterthat\Helper
- */
 class Product extends \Magento\Framework\App\Helper\AbstractHelper
 {
     public const ATTRIBUTE_TYPE_SKU = 'sku';
@@ -38,35 +30,35 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public const ATTRIBUTE_TYPE_NORMAL = 'normal';
 
     /**
-     * Object Manager
+     * Object Managerr
      *
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
 
     /**
-     * Json Parser
+     * Json Parserr
      *
      * @var \Magento\Framework\Json\Helper\Data
      */
     public $json;
 
     /**
-     * Xml Parser
+     * Xml Parserr
      *
      * @var \Magento\Framework\Convert\Xml
      */
     public $xml;
 
     /**
-     * DirectoryList
+     * DirectoryListt
      *
      * @var \Magento\Framework\Filesystem\DirectoryList
      */
     public $directoryList;
 
     /**
-     * Date/Time
+     * Date/Timee
      *
      * @var $dateTime
      */
@@ -138,22 +130,56 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      * @var string
      */
     public $apiAuthKey;
+    /**
+     * @var \Magento\Framework\UrlInterface
+     */
     public $urlBuilder;
+    /**
+     * @var fulfillmentLagTime
+     */
     public $fulfillmentLagTime;
+    /**
+     * @var array
+     */
     public $ids = [];
+    /**
+     * @var array
+     */
     public $data = [];
+    /**
+     * @var array
+     */
     public $offerData = [];
+    /**
+     * @var int
+     */
     public $key = 0;
+    /**
+     * @var string
+     */
     public $mpn = '';
+    /**
+     * @var \BetterthatSdk\ProductFactory
+     */
     public $Betterthat;
+    /**
+     * @var \Magento\CatalogInventory\Api\StockStateInterface
+     */
     public $stockState;
+    /**
+     * @var bool
+     */
     public $debugMode;
+    /**
+     * @var response
+     */
     public $response;
+    /**
+     * @var images
+     */
     public $images;
 
     /**
-     * Product constructor.
-     *
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Framework\Json\Helper\Data $json
@@ -171,7 +197,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Config $config
      * @param Logger $logger
      * @param Profile $profile
-     * @param \BetterthatSdk\Api\Config $BetterthatConfig
+     * @param \BetterthatSdk\Core\Config $BetterthatConfig
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Action $productAction
+     * @param \Magento\Catalog\Model\ProductFactory $productFactory
+     * @param \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory $configfactory
+     * @param \Magento\Framework\App\Cache $cache
+     * @param \Magento\Framework\Session\SessionManagerInterface $session
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -225,6 +256,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $this->debugMode = $BetterthatConfig->getDebugMode();
     }
 
+    /**
+     * SendBetterthatVisibility
+     *
+     * @param array $data
+     * @return false|string
+     */
     public function _sendBetterthatVisibility($data)
     {
         return $this->Betterthat
@@ -233,7 +270,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $data
+     * DeleteProduct
+     *
+     * @param array $data
      * @return array[]
      */
     public function deleteProduct($data)
@@ -276,7 +315,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $ids
+     * CreateProducts
+     *
+     * @param array $ids
      * @return array|false|string
      */
     public function createProducts($ids = [])
@@ -338,7 +379,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Create/Update Product on Betterthat
      *
-     * @param  [] $ids
+     * @param  array $ids
      * @return bool
      */
     public function updateProducts($ids = [])
@@ -488,6 +529,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * ValidateConfigurableItems
+     *
+     * @param mixed $product
+     * @param mixed $profile
+     * @return array|string[]
+     */
     public function validateConfigurableItems($product, $profile)
     {
         $validatedProducts = [];
@@ -667,6 +715,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return $validatedProducts;
     }
 
+    /**
+     * ArrMerge
+     *
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
     public function arrMerge($array1, $array2)
     {
         return array_merge($array1, $array2);
@@ -675,10 +730,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Validate product for availability of required Betterthat product attribute data
      *
-     * @param  $id
-     * @param null $product
-     * @param null $profile
-     * @param null $parentId
+     * @param string $id
+     * @param mixed $product
+     * @param mixed $profile
+     * @param mixed $parentId
      * @return bool
      */
     public function validateProduct($id, $product = null, $profile = null, $parentId = null)
@@ -772,6 +827,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * InnerValidateItems
+     *
+     * @param mixed $profile
+     * @param mixed $product
+     * @param mixed $category
+     * @return array
+     */
     public function innerValidateItems($profile, $product, $category)
     {
         $errors = [];
@@ -846,6 +909,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return $errors;
     }
 
+    /**
+     * PrepareSimpleProducts
+     *
+     * @param array $ids
+     * @return false|void
+     */
     private function prepareSimpleProducts($ids = [])
     {
         try {
@@ -1000,9 +1069,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Prepare Attributes for Products
      *
-     * @param  $product
-     * @param null $profile
-     * @param  $type
+     * @param mixed $product
+     * @param mixed $profile
+     * @param mixed $type
      * @return array
      */
     private function prepareAttributes($product, $profile = null, $type = "normal")
@@ -1036,6 +1105,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * InnerPrepareAttributes
+     *
+     * @param mixed $mapping
+     * @param mixed $product
+     * @return array
+     */
     public function innerPrepareAttributes($mapping, $product)
     {
         foreach ($mapping as $id => $attribute) {
@@ -1091,8 +1167,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $productObject
-     * @return array
+     * GetPrice
+     *
+     * @param mixed $productObject
+     * @param mixed $attrValue
+     * @return string[]
      */
     public function getPrice($productObject, $attrValue = null)
     {
@@ -1153,9 +1232,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * ForFixPrice
      *
-     * @param null $price
-     * @param null $fixedPrice
-     * @param string $configPrice
+     * @param mixed $price
+     * @param mixed $fixedPrice
+     * @param mixed $configPrice
      * @return float|null
      */
     public function forFixPrice($price = null, $fixedPrice = null, $configPrice = null)
@@ -1173,9 +1252,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * ForPerPrice
      *
-     * @param null $price
-     * @param null $percentPrice
-     * @param string $configPrice
+     * @param mixed $price
+     * @param mixed $percentPrice
+     * @param mixed $configPrice
      * @return float|null
      */
     public function forPerPrice($price = null, $percentPrice = null, $configPrice = null)
@@ -1238,11 +1317,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
     }
+
     /**
-     * Prepare images
+     * PrepareImages
      *
-     * @param Object $product
-     * @return string|array
+     * @param mixed $product
+     * @param bool $config
+     * @return array|false
      */
     private function prepareImages($product, $config = false)
     {
@@ -1296,6 +1377,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * PrepareConfigurableProducts
+     *
+     * @param array $ids
+     * @return array|false
+     */
     private function prepareConfigurableProducts($ids = [])
     {
         try {
@@ -1381,8 +1468,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * PrepareVariants
+     *
      * @param array $ids
-     * @param null $profile
+     * @param mixed $profile
+     * @param mixed $variantAttributes
+     * @param string $parentId
      * @return array
      */
     public function prepareVariants($ids = [], $profile = null, $variantAttributes = null, $parentId = null): array
@@ -1415,7 +1506,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 "compare_at_price" => $childproduct->getFinalPrice(),
                 "inventory_quantity" => $qty
             ];
-            //print_r($variant);die;
             $optionIndex = 1;
             foreach ($variantAttributes as $variantAttribute) {
                 $variant[$varindex]['option' . $optionIndex]
@@ -1446,12 +1536,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Save Response to db
      *
-     * @param array $response
+     * @param array $responses
      * @return boolean
      */
     public function saveResponse($responses = [])
     {
-        //remove index if already set.
         $this->registry->unregister('Betterthat_product_errors');
         if (is_array($responses)) {
             try {
@@ -1502,6 +1591,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * DeleteProducts
+     *
      * @param array $ids
      * @return array
      */
@@ -1524,7 +1615,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return bool
+     * UpdatePriceInventory
+     *
+     * @param array $ids
+     * @param array $withProducts
+     * @param array $makeInactive
+     * @return false|string
      */
     public function updatePriceInventory($ids = [], $withProducts = false, $makeInactive = false)
     {
@@ -1631,6 +1727,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Update Product Status
      *
+     * @param array $ids
      * @param string $status
      * @return bool
      */
@@ -1679,6 +1776,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->config->isValid();
     }
 
+    /**
+     * GetProductReference
+     *
+     * @param string $type
+     * @param string $product
+     * @return bool|mixed|string
+     */
     public function getProductReference($type = '', $product = '')
     {
         if ($type == 'type') {
@@ -1723,8 +1827,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param  $productID
-     * @param  $barcodeType
+     * ValidateProductId
+     *
+     * @param  string $productID
+     * @param  string $barcodeType
      * @return bool
      */
     public function validateProductId($productID, $barcodeType)
@@ -1814,6 +1920,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * GetFinalQuantityToUpload
+     *
+     * @param mixed $product
+     * @return int|mixed|string
+     */
     public function getFinalQuantityToUpload($product)
     {
         $quantity = 0;

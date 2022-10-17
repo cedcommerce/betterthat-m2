@@ -21,11 +21,6 @@ namespace Betterthat\Betterthat\Model\Source\Feed;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
-/**
- * Class Status
- *
- * @package Betterthat\Betterthat\Model\Source
- */
 class Status extends AbstractSource
 {
     public const SUCCESS = 'success';
@@ -35,6 +30,8 @@ class Status extends AbstractSource
     public const SENT = 'SENT';
 
     /**
+     * GetAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

@@ -26,9 +26,6 @@ use Magento\Framework\UrlInterface;
 
 class Actions extends Column
 {
-    /**
- * Url path
-*/
     public const URL_PATH_EDIT = 'sales/order/view';
     public const URL_PATH_VIEW = 'betterthat/order/view';
     public const URL_PATH_SYNC = 'betterthat/order/sync';
@@ -46,13 +43,11 @@ class Actions extends Column
     protected $urlBuilder;
 
     /**
-     * Actions constructor.
-     *
-     * @param ContextInterface   $context
+     * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
-     * @param UrlInterface       $urlBuilder
-     * @param array              $components
-     * @param array              $data
+     * @param UrlInterface $urlBuilder
+     * @param array $components
+     * @param array $data
      */
     public function __construct(
         ContextInterface $context,

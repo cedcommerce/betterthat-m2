@@ -21,11 +21,6 @@ namespace Betterthat\Betterthat\Model\Source\Config;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
-/**
- * Class ServiceUrl
- *
- * @package Betterthat\Wish\Model\Source
- */
 class Time extends AbstractSource
 {
     public const CRON_5MINUTES = '*/5 * * * *';
@@ -38,6 +33,8 @@ class Time extends AbstractSource
     public const CRON_DAILY = '0 0 * * *';
 
     /**
+     * GetAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

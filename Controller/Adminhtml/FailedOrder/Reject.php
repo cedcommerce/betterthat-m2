@@ -52,11 +52,16 @@ class Reject extends \Magento\Backend\App\Action
     public $registry;
 
     /**
-     * Fetch constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context                  $context
+     * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
-     * @param \Betterthat\Betterthat\Helper\Order                         $orderHelper
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Betterthat\Betterthat\Helper\Order $orderHelper
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Betterthat\Betterthat\Model\OrderFailed $collection
+     * @param \Betterthat\Betterthat\Helper\Product $product
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\App\Response\RedirectInterface $redirect
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -84,7 +89,10 @@ class Reject extends \Magento\Backend\App\Action
     }
 
     /**
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute()
     {

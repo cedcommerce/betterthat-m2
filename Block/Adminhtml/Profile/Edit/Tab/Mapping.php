@@ -22,13 +22,28 @@ use BetterthatSdk\Product;
 
 class Mapping extends \Magento\Backend\Block\Widget\Form\Generic
 {
-
+    /**
+     * @var Betterthat
+     */
     public $Betterthat;
-
+    /**
+     * @var product
+     */
     public $product;
-
+    /**
+     * @var config
+     */
     public $config;
 
+    /**
+     * @param \Magento\Backend\Block\Widget\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\Data\FormFactory $formFactory
+     * @param \Magento\Framework\ObjectManagerInterface $objectInterface
+     * @param \Betterthat\Betterthat\Helper\Config $config
+     * @param \BetterthatSdk\ProductFactory $product
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Widget\Context $context,
         \Magento\Framework\Registry $registry,
@@ -45,6 +60,12 @@ class Mapping extends \Magento\Backend\Block\Widget\Form\Generic
         parent::__construct($context, $registry, $formFactory);
     }
 
+    /**
+     * PrepareForm
+     *
+     * @return Mapping
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     protected function _prepareForm()
     {
         $form = $this->_formFactory->create();

@@ -121,6 +121,8 @@ class Conditions extends Generic implements TabInterface
     }
 
     /**
+     * PrepareForm
+     *
      * @return Form
      */
     protected function _prepareForm()
@@ -137,6 +139,8 @@ class Conditions extends Generic implements TabInterface
     }
 
     /**
+     * SetConditionFormName
+     *
      * @param  AbstractCondition $conditions
      * @param  string            $formName
      * @param  string            $jsFormName
@@ -154,6 +158,8 @@ class Conditions extends Generic implements TabInterface
     }
 
     /**
+     * AddTabToForm
+     *
      * @param  \Magento\CatalogRule\Api\Data\RuleInterface $model
      * @param  string                                      $fieldsetId
      * @param  string                                      $formName
@@ -163,8 +169,8 @@ class Conditions extends Generic implements TabInterface
     protected function addTabToForm($model, $fieldsetId = 'conditions_fieldset', $formName = 'catalog_rule_form')
     {
         /**
- * @var \Magento\Framework\Data\Form $form
-*/
+         * @var \Magento\Framework\Data\Form $form
+        */
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('rule_');
         $conditionsFieldSetId = $model->getConditionsFieldSetId($formName);

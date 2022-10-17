@@ -75,7 +75,9 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      * @var \DateTimeZone
      */
     public $timezone;
-
+    /**
+     * @var string[]
+     */
     public $levels;
 
     /**
@@ -84,7 +86,7 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     public $name;
 
     /**
-     * The handler Model
+     * @var \Betterthat\Betterthat\Model\LogsFactory
      */
     public $handler;
 
@@ -97,6 +99,11 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
      */
     public $processors;
 
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Betterthat\Betterthat\Model\LogsFactory $logs
+     * @param string $name
+     */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Betterthat\Betterthat\Model\LogsFactory $logs,
@@ -140,6 +147,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     }
 
     /**
+     * GetName
+     *
      * @return string
      */
     public function getName()
@@ -148,6 +157,8 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     }
 
     /**
+     * SetName
+     *
      * @param string $name
      * @return void
      */
@@ -156,6 +167,11 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
         $this->name = $name;
     }
 
+    /**
+     * GetHandler
+     *
+     * @return \Betterthat\Betterthat\Model\LogsFactory
+     */
     public function getHandler()
     {
         return $this->handler;
@@ -164,7 +180,7 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Set handler, replacing all existing ones.
      *
-     * @param  $handler
+     * @param  mixed $handler
      * @return $this
      */
     public function setHandler($handler)
@@ -344,7 +360,7 @@ class Logger extends \Magento\Framework\App\Helper\AbstractHelper implements \Ps
     /**
      * Converts PSR-3 levels to Monolog ones if necessary
      *
-     * @param string|int Level number (monolog) or name (PSR-3)
+     * @param string|int $level number (monolog) or name (PSR-3)
      * @return int
      */
     public function toMonologLevel($level)

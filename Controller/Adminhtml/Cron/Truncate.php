@@ -22,11 +22,6 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\Cron;
 use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Truncate
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Cron
- */
 class Truncate extends Action
 {
     /**
@@ -56,6 +51,11 @@ class Truncate extends Action
         $this->cron = $cron;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         // Delete Crons from db

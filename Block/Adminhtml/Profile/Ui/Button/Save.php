@@ -31,6 +31,11 @@ class Save extends GenericButton implements ButtonProviderInterface
         ];
     }
 
+    /**
+     * GetBackUrl
+     *
+     * @return string
+     */
     public function getBackUrl()
     {
         return $this->getUrl('*/*/save');

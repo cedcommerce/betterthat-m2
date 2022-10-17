@@ -22,11 +22,6 @@ namespace Betterthat\Betterthat\Controller\Adminhtml\Logs;
 use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Truncate
- *
- * @package Betterthat\Betterthat\Controller\Adminhtml\Feeds
- */
 class Truncate extends Action
 {
     /**
@@ -45,12 +40,11 @@ class Truncate extends Action
     public $fileIo;
 
     /**
-     * Delete constructor.
-     *
-     * @param Action\Context                        $context
-     * @param PageFactory                           $resultPageFactory
+     * @param Action\Context $context
+     * @param PageFactory $resultPageFactory
      * @param \Magento\Framework\Filesystem\Io\File $fileIo
-     * @param \Betterthat\Betterthat\Model\Feeds           $BetterthatFeeds
+     * @param \Betterthat\Betterthat\Model\Logs $BetterthatLogs
+     * @param \Magento\Framework\App\Response\RedirectInterface $redirect
      */
     public function __construct(
         Action\Context $context,
@@ -66,6 +60,11 @@ class Truncate extends Action
         $this->redirect = $redirect;
     }
 
+    /**
+     * Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $collection = $this->feeds->getCollection();

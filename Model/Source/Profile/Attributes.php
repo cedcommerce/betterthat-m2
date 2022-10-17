@@ -22,13 +22,20 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Attributes implements OptionSourceInterface
 {
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory
+     */
     public $magentoAttributes;
+    /**
+     * @var \Magento\Framework\Json\Helper\Data
+     */
     public $json;
 
     /**
-     * Get options
+     * Construct
      *
-     * @return array
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory $magentoAttributes
+     * @param \Magento\Framework\Json\Helper\Data $json
      */
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory $magentoAttributes,
@@ -37,13 +44,19 @@ class Attributes implements OptionSourceInterface
         $this->magentoAttributes = $magentoAttributes;
         $this->json = $json;
     }
-
+    /**
+     * ToAllOptions
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         return $this->getMagentoAttributes();
     }
 
     /**
+     * GetMagentoAttributes
+     *
      * @return array
      */
     private function getMagentoAttributes()

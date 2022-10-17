@@ -21,18 +21,21 @@ namespace Betterthat\Betterthat\Cron\Order;
 
 class Shipment
 {
+    /**
+     * @var \Betterthat\Betterthat\Helper\Logger
+     */
     public $logger;
 
     /**
-     * @var $config
+     * @var \Betterthat\Betterthat\Helper\Config
      */
     public $config;
 
     /**
-     * Import constructor.
-     *
-     * @param \Betterthat\Betterthat\Helper\Order  $order
+     * @param \Betterthat\Betterthat\Helper\Order $order
      * @param \Betterthat\Betterthat\Helper\Logger $logger
+     * @param \Betterthat\Betterthat\Model\Orders $collection
+     * @param \Betterthat\Betterthat\Helper\Config $config
      */
     public function __construct(
         \Betterthat\Betterthat\Helper\Order $order,
@@ -47,6 +50,8 @@ class Shipment
     }
 
     /**
+     * Execute
+     *
      * @return bool
      */
     public function execute()
