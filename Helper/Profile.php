@@ -193,7 +193,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
                     try {
                            $options = $this->json->jsonDecode($attribute['option_mapping']);
                            $validOptions = $this->json->jsonDecode($attribute['options']);
-                    } catch (\Zend_Json_Exception $e) {
+                    } catch (\Exception $e) {
                         $options = [];
                         $validOptions = [];
                     }
@@ -227,7 +227,7 @@ class Profile extends \Magento\Framework\App\Helper\AbstractHelper
                         try {
                             $options = $this->json->jsonDecode($attribute['option_mapping']);
                             $validOptions = $this->json->jsonDecode($attribute['options']);
-                        } catch (\Zend_Json_Exception $e) {
+                        } catch (\Exception $e) {
                             $options = [];
                             $validOptions = [];
                         }
