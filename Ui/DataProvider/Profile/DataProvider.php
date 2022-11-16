@@ -51,7 +51,7 @@ class DataProvider extends AbstractDataProvider
 
     /**
      * @param \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
-     * @param stirng $name
+     * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
      * @param array $addFieldStrategies
