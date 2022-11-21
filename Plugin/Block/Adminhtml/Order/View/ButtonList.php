@@ -56,7 +56,7 @@ class ButtonList
             $order = $this->orderRepository->get($this->request->getParam('order_id'));
             if ($order) {
                 $btorder = $this->btorder->create()->load($order->getIncrementId(), 'increment_id');
-                if ($btorder) {
+                if ($btorder && $btorder->getId()) {
                     $shipDesc = $order->getShippingDescription();
                     if (str_contains($shipDesc, 'Express')
                         || str_contains($shipDesc, 'Instore')
