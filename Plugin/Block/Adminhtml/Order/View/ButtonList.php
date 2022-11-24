@@ -15,7 +15,7 @@ class ButtonList
             $order = $this->objectManager->get('\Magento\Sales\Api\OrderRepositoryInterface')->get($request->getParam('order_id'));
             if($order){
                 $btorder = $this->objectManager->get('\Ced\Betterthat\Model\OrdersFactory')->create()->load($order->getIncrementId(),'increment_id');
-                if($btorder){
+                if ($btorder && $btorder->getId()) {
                     $shipDesc = $order->getShippingDescription();
                     if (str_contains($shipDesc,'Express' ) || str_contains($shipDesc,'Instore') || str_contains($shipDesc,'BetterThat') ){
                         $buttonList->remove('order_ship');
