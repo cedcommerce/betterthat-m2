@@ -1,0 +1,393 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Betterthat
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement(EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://betterthat.com/license-agreement.txt
+ *
+ * @category  Betterthat
+ * @package   Betterthat_Betterthat
+ * @author    Betterthat Core Team <connect@betterthat.com>
+ * @copyright Copyright BETTERTHAT(https://betterthat.com/)
+ * @license   https://betterthat.com/license-agreement.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Betterthat_Betterthat:etc/system_file.xsd">
+    <system>
+        <tab id="betterthat" translate="label" sortOrder="1">
+            <label>Betterthat</label>
+        </tab>
+        <!-- section start for Betterthat Configuration Tab in Betterthat section -->
+        <section id="betterthat_config" translate="label"
+                 sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Betterthat Configuration</label>
+            <tab>betterthat</tab>
+            <resource>Betterthat_Betterthat::system_config</resource>
+            <group id="betterthat_setting" translate="label" type="text" sortOrder="1" showInDefault="1"
+                   showInWebsite="0"
+                   showInStore="0"
+            >
+                <label>Betterthat Seller/Developer Settings</label>
+                <field id="enable" translate="label" type="select"
+                       sortOrder="10" showInDefault="1" showInWebsite="0"
+                       showInStore="0"
+                >
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="client_id" translate="label" type="text"
+                       sortOrder="50" showInDefault="1" showInWebsite="0"
+                       showInStore="0"
+                >
+                    <label>Client Id</label>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="client_secret" translate="label" type="password"
+                       sortOrder="60" showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0"
+                >
+                    <label>Client Secret</label>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="client_domain" translate="label" type="text"
+                       sortOrder="70" showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0"
+                >
+                    <label>Client Domain</label>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="retailer_id" translate="label" type="text"
+                       sortOrder="80" showInDefault="1" showInWebsite="0"
+                       showInStore="0"
+                >
+                    <label>Retailer Id</label>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="storeid" translate="label" type="select"
+                       sortOrder="90" showInDefault="1" showInWebsite="0"
+                       showInStore="0"
+                >
+                    <label>Select Store</label>
+                    <source_model>Magento\Config\Model\Config\Source\Store</source_model>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="debug_mode" translate="label" type="select"
+                       sortOrder="100" showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0"
+                       >
+                    <label>Debug Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="betterthat_product" translate="label" type="text"
+                   sortOrder="50" showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="0"
+            >
+                <label>Betterthat Product Settings</label>
+                <group id="price_settings" translate="label" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1"  >
+                    <label>Betterthat Price Settings</label>
+                    <field id="price" translate="label" type="select"
+                           sortOrder="10" showInDefault="1" showInWebsite="0"
+                           showInStore="0" >
+                        <label>Product Price</label>
+                        <source_model>Betterthat\Betterthat\Model\Source\Config\Price</source_model>
+                        <comment>
+                            <![CDATA[Select to send a different product price to <b>Betterthat</b>]]>
+                        </comment>
+                    </field>
+                    <field id="fix_price" translate="label" type="text"
+                           sortOrder="11" showInDefault="1"
+                           showInWebsite="0" showInStore="0">
+                        <label>Modify by Fix Price</label>
+                        <validate>required-entry validate-number</validate>
+                        <depends>
+                            <field id="price" separator=",">plus_fixed,min_fixed</field>
+                        </depends>
+                    </field>
+                    <field id="percentage_price" translate="label" type="text"
+                           sortOrder="12" showInDefault="1"
+                           showInWebsite="0" showInStore="0" >
+                        <label>Modify by Percenctage Price</label>
+                        <validate>required-entry validate-number</validate>
+                        <comment>
+                            <![CDATA[Numeric value Required for
+                            <b>Add/subtract % on Magento price</b>
+                            5 for Example: Magento price +/- 5% of Magento price.<b>]]>
+                        </comment>
+                        <depends>
+                            <field id="price" separator=",">plus_per,min_per</field>
+                        </depends>
+                    </field>
+                    <field id="different_price" translate="label" type="text"
+                           sortOrder="13" showInDefault="1"
+                           showInWebsite="0" showInStore="0"  >
+                        <label>Map Price Attribute</label>
+                        <validate>required-entry</validate>
+                        <comment>
+                            <![CDATA[<b>Attribute Code Required in case of <b>Custom Fixed Price</b>]]>
+                        </comment>
+                        <depends>
+                            <field id="price">differ</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="inventory_settings" translate="label" type="text"
+                       sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1"  >
+                    <label>Betterthat Inventory Settings</label>
+                    <field id="advanced_threshold_status" translate="label" type="select" sortOrder="10"
+                           showInDefault="1" showInWebsite="0" showInStore="0"  >
+                        <label>Set Inventory on Basis of Threshold</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                        <comment>Choose yes to send inventory on Betterthat by condition</comment>
+                    </field>
+                    <field id="inventory_rule_threshold" translate="label comment" type="text" sortOrder="20"
+                           showInDefault="1" showInWebsite="0" showInStore="0"  >
+                        <label>Inventory Threshold Value</label>
+                        <comment>
+                            Set inventory quantity on which lesser and greater condition can control.
+                        </comment>
+                        <depends>
+                            <field id="advanced_threshold_status">1</field>
+                        </depends>
+                    </field>
+                    <field id="send_inventory_for_lesser_than_threshold" translate="label comment" type="text"
+                           sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0"  >
+                        <label>Send Inventory for Lesser Than Threshold Case</label>
+                        <comment>Send Quantity to Betterthat for those products,
+                            whose inventory is LESSER than the
+                            inventory threshold.
+                        </comment>
+                        <depends>
+                            <field id="advanced_threshold_status">1</field>
+                        </depends>
+                    </field>
+                    <field id="use_msi" translate="label comment" type="select"
+                           sortOrder="50" showInDefault="1"
+                           showInWebsite="0" showInStore="0">
+                        <label>Use MSI</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="msi_source_code" translate="label" type="text"
+                           sortOrder="55" showInDefault="1"
+                           showInWebsite="0" showInStore="0"  >
+                        <label>MSI Source Code</label>
+                        <validate>required-entry</validate>
+                        <comment>
+                            <![CDATA[Put name of your Source ( Stores -> Inventory -> Sources )
+                            which you would like to use for Betterthat e.g,
+                            default for Default Source]]>
+                        </comment>
+                        <depends>
+                            <field id="use_msi">1</field>
+                        </depends>
+                    </field>
+                    <field id="use_salable_qty" translate="label comment" type="select"
+                           sortOrder="60" showInDefault="1"
+                           showInWebsite="0" showInStore="0">
+                        <label>Use Salable Quantity</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <depends>
+                            <field id="use_msi">1</field>
+                        </depends>
+                    </field>
+                    <field id="salable_stock_name" translate="label" type="text"
+                           sortOrder="70" showInDefault="1"
+                           showInWebsite="0" showInStore="0"  >
+                        <label>MSI Stock Name</label>
+                        <validate>required-entry</validate>
+                        <comment>
+                            <![CDATA[Put name of your Stock ( Stores -> Inventory -> Stocks )
+                            which you would like to use for Betterthat e.g, Default Stock]]>
+                        </comment>
+                        <depends>
+                            <field id="use_salable_qty">1</field>
+                        </depends>
+                    </field>
+                </group>
+            </group>
+            <group id="betterthat_order" translate="label" type="text"
+                   sortOrder="60" showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="0"
+            >
+                <label>Betterthat Order Settings</label>
+                <field id="order_id_prefix" translate="label" type="text"
+                       sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Betterthat Order Id Prefix</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Prefix for Betterthat Increment ID</comment>
+                </field>
+                <field id="order_notify_email" translate="label comment" type="text"
+                       sortOrder="20" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Order Notification Email</label>
+                </field>
+
+                <field id="enable_default_customer" translate="label comment" type="select"
+                       sortOrder="40"
+                       showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Enable Default Customer</label>
+                    <validate>required-entry</validate>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="default_customer_email" translate="label comment" type="text" sortOrder="40"
+                       showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Default Customer Email</label>
+                    <depends>
+                        <field id="enable_default_customer">1</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+            </group>
+            <group id="betterthat_cron" translate="label" type="text"
+                   sortOrder="70" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Betterthat Cron Settings</label>
+                <field id="order_cron" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Order Cron</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Order Fetch Cron</comment>
+                </field>
+                <field id="order_cron_schedule" translate="label"
+                       type="select" sortOrder="10" showInDefault="1">
+                    <label>Order Import Cron Time</label>
+                    <source_model>Betterthat\Betterthat\Model\Source\Config\Time</source_model>
+                    <comment>Order Fetch Cron Time</comment>
+                    <depends>
+                        <field id="betterthat_config/betterthat_cron/order_cron">1</field>
+                    </depends>
+                </field>
+                <field id="order_sync_cron" translate="label" type="select"
+                       sortOrder="20" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Order Sync Cron</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Order Sync Cron</comment>
+                </field>
+                <field id="order_sync_cron_schedule" translate="label" type="select"
+                       sortOrder="30" showInDefault="1">
+                    <label>Order Sync Cron Time</label>
+                    <source_model>Betterthat\Betterthat\Model\Source\Config\Time</source_model>
+                    <comment>Order Sync Cron Time</comment>
+                    <depends>
+                        <field id="betterthat_config/betterthat_cron/order_sync_cron">1</field>
+                    </depends>
+                </field>
+                <field id="inventory_price_cron" translate="label comment" type="select"
+                       sortOrder="30"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Inventory|Price Cron</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Inventory Sync Cron</comment>
+                </field>
+                <field id="inv_sync_cron_schedule" translate="label" type="select"
+                       sortOrder="30" showInDefault="1">
+                    <label>Inventory|Price Sync Cron Time</label>
+                    <source_model>Betterthat\Betterthat\Model\Source\Config\Time</source_model>
+                    <comment>Inventory|Price Sync Cron Time</comment>
+                    <depends>
+                        <field id="betterthat_config/betterthat_cron/order_sync_cron">1</field>
+                    </depends>
+                </field>
+                <field id="order_shipment_cron" translate="label" type="select"
+                       sortOrder="50" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Order Shipment Cron</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Completed magento order will automatically ship</comment>
+                </field>
+                <field id="order_shipment_cron_schedule" translate="label" type="select"
+                       sortOrder="90"
+                       showInDefault="1">
+                    <label>Order Shipment Cron Time</label>
+                    <source_model>Betterthat\Betterthat\Model\Source\Config\Time</source_model>
+                    <comment>Order Shipment Cron Time Cron Time</comment>
+                    <depends>
+                        <field id="betterthat_config/betterthat_cron/order_shipment_cron">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <!-- section end for Betterthat Cofiguration Tab in Betterthat Tab -->
+
+        <!-- section start for Shipping Methods Tab in Sales Tab -->
+        <section id="carriers">
+            <group id="shipbyBetterthat" translate="label" type="text"
+                   sortOrder="21" showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Betterthat Payment Method(Default)</label>
+                <field id="active" translate="label" type="select"
+                       sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text"
+                       sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Title</label>
+                </field>
+            </group>
+        </section>
+        <!-- section end for Shipping Methods Tab in Sales Tab -->
+
+        <!-- section start for Payment Methods Tab in Sales Tab -->
+        <section id="payment">
+            <group id="paybyBetterthat" translate="label" type="text"
+                   sortOrder="22" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Betterthat</label>
+                <field id="active" translate="label" type="select"
+                       sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text"
+                       sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="order_status" translate="label" type="select"
+                       sortOrder="3" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>New order status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

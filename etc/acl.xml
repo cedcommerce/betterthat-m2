@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Betterthat
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement(EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://betterthat.com/license-agreement.txt
+ *
+ * @category  Betterthat
+ * @package   Betterthat_Betterthat
+ * @author    Betterthat Core Team <connect@betterthat.com>
+ * @copyright Copyright BETTERTHAT(https://betterthat.com/)
+ * @license   https://betterthat.com/license-agreement.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Betterthat_Betterthat::Betterthat" title="Betterthat" sortOrder="50">
+                    <resource id="Betterthat_Betterthat::product" title="Products">
+                        <resource id="Betterthat_Betterthat::Betterthat_profile" title="Manage Profiles"/>
+                        <resource id="Betterthat_Betterthat::Betterthat_product" title="Manage Products"/>
+                    </resource>
+                    <resource id="Betterthat_Betterthat::Betterthat_orders" title="Orders">
+                        <resource id="Betterthat_Betterthat::Betterthat_order_listing" title="Manage Orders"/>
+                        <resource id="Betterthat_Betterthat::Betterthat_failed_order" title="Failed Orders"/>
+                    </resource>
+                    <resource id="Betterthat_Betterthat::developer" title="Developer">
+                        <resource id="Betterthat_Betterthat::Betterthat_cron" title="Cron Logs"/>
+                        <resource id="Betterthat_Betterthat::Betterthat_logs" title="Betterthat Logs"/>
+                    </resource>
+
+                    <resource id="Betterthat_Betterthat::configuration" title="Configuration">
+                        <resource id="Betterthat_Betterthat::Betterthat_configuration" title="Configuration"/>
+                    </resource>
+                </resource>
+
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Betterthat_Betterthat::system_config" title="Betterthat Configurations"/>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

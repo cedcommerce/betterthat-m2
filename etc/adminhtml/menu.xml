@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Betterthat
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement(EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://betterthat.com/license-agreement.txt
+ *
+ * @category  Betterthat
+ * @package   Betterthat_Betterthat
+ * @author    Betterthat Core Team <connect@betterthat.com>
+ * @copyright Copyright BETTERTHAT(https://betterthat.com/)
+ * @license   https://betterthat.com/license-agreement.txt
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Betterthat_Betterthat::Betterthat"
+             title="Betterthat Integration"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="14"
+             resource="Betterthat_Betterthat::Betterthat"
+        />
+
+        <add id="Betterthat_Betterthat::product"
+             title="Products"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="10"
+             parent="Betterthat_Betterthat::Betterthat"
+             resource="Betterthat_Betterthat::product"
+        />
+        <add id="Betterthat_Betterthat::Betterthat_profile"
+             title="Profile Manager"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="1"
+             parent="Betterthat_Betterthat::product"
+             action="betterthat/profile/index"
+             resource="Betterthat_Betterthat::Betterthat_profile"
+        />
+        <add id="Betterthat_Betterthat::Betterthat_product"
+             title="Product Listing"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="2"
+             parent="Betterthat_Betterthat::product"
+             action="betterthat/product/index"
+             resource="Betterthat_Betterthat::Betterthat_product"
+        />
+
+
+        <!--orders start-->
+        <add id="Betterthat_Betterthat::Betterthat_orders"
+             title="Orders"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="20"
+             parent="Betterthat_Betterthat::Betterthat"
+             resource="Betterthat_Betterthat::Betterthat_orders"
+        />
+
+        <add id="Betterthat_Betterthat::Betterthat_order_listing"
+             title="Orders Listing"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="10"
+             parent="Betterthat_Betterthat::Betterthat_orders"
+             action="betterthat/order/index"
+             resource="Betterthat_Betterthat::Betterthat_order_listing"
+        />
+        <add id="Betterthat_Betterthat::Betterthat_failed_order"
+             title="Failed Orders"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="20"
+             parent="Betterthat_Betterthat::Betterthat_orders"
+             action="betterthat/failedorder"
+             resource="Betterthat_Betterthat::Betterthat_failed_order"
+        />
+        <!--orders end-->
+
+        <!--developer start-->
+        <add id="Betterthat_Betterthat::developer"
+             title="Developer"
+             module="Betterthat_Betterthat"
+             sortOrder="35"
+             parent="Betterthat_Betterthat::Betterthat"
+             resource="Betterthat_Betterthat::developer"
+        />
+
+        <add id="Betterthat_Betterthat::Betterthat_cron"
+             title="Cron Logs"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="30"
+             parent="Betterthat_Betterthat::developer"
+             action="betterthat/cron"
+             resource="Betterthat_Betterthat::Betterthat_cron"
+        />
+
+        <add id="Betterthat_Betterthat::Betterthat_logs"
+             title="Activity Logs"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="40"
+             parent="Betterthat_Betterthat::developer"
+             action="betterthat/logs"
+             resource="Betterthat_Betterthat::Betterthat_logs"
+        />
+
+        <!-- <add id="Betterthat_Betterthat::Betterthat_category"
+             title="Categories"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="50"
+             parent="Betterthat_Betterthat::developer"
+             action="Betterthat/category/index"
+             resource="Betterthat_Betterthat::Betterthat_category"
+        />
+
+        <add id="Betterthat_Betterthat::Betterthat_attribute"
+             title="Attributes"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="60"
+             parent="Betterthat_Betterthat::developer"
+             action="Betterthat/attribute/index"
+             resource="Betterthat_Betterthat::Betterthat_attribute"
+        /> -->
+        <!--developer end-->
+
+        <add id="Betterthat_Betterthat::configuration"
+             title="Configurations"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="30"
+             parent="Betterthat_Betterthat::Betterthat"
+             resource="Betterthat_Betterthat::configuration"
+        />
+        <add id="Betterthat_Betterthat::1"
+             title="Configuration"
+             module="Betterthat_Betterthat"
+             sortOrder="1"
+             parent="Betterthat_Betterthat::configuration"
+             action="adminhtml/system_config/edit/section/betterthat_config"
+             resource="Betterthat_Betterthat::Betterthat_configuration"
+        />
+
+
+        <!-- add id="Betterthat_Betterthat::"
+             title="Extras"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="40"
+             parent="Betterthat_Betterthat::Betterthat"
+             resource="Betterthat_Betterthat::extras"
+        />
+
+        <add id="Betterthat_Betterthat::Betterthat_support"
+             title="Help and Support"
+             translate="title"
+             module="Betterthat_Betterthat"
+             sortOrder="10"
+             parent="Betterthat_Betterthat::extras"
+             action="betterthat/help"
+             resource="Betterthat_Betterthat::Betterthat_support"
+        / -->
+
+    </menu>
+</config>
