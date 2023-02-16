@@ -7,6 +7,9 @@
    <event name="catalog_product_save_before">
         <observer name="Betterthat_product_save_after" instance="Betterthat\Betterthat\Observer\Save" />
     </event>
+    <event name="catalog_product_save_after">
+        <observer name="Betterthat_product_save_after" instance="Betterthat\Betterthat\Observer\SaveBefore" />
+    </event>
     <event name="catalog_category_change_products">
         <observer name="catalog_category_change_products" instance="Betterthat\Betterthat\Observer\SaveCategory" />
     </event>

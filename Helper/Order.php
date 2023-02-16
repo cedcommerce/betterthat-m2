@@ -528,9 +528,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             if (isset($order['Product_data'][0])) {
                 $failedOrder = false;
                 $addedItems = $this->addProductsToQuote($order, $quote);
-                $quote = $addedItems['quote'];
-                $failedOrder = $addedItems['failedOrder'];
-                $reason = $addedItems['reason'];
+                $quote = isset($addedItems['quote']) ? $addedItems['quote'] : false;
+                $failedOrder = isset($addedItems['failedOrder']) ? $addedItems['failedOrder'] : false;
+                $reason = isset($addedItems['reason']) ? $addedItems['reason'] : false;
                 if ($failedOrder) {
                     $this->webapiResponse =
                         [

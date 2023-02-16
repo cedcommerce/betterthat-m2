@@ -1445,7 +1445,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     "variants" => isset($collectVariant['variant'])
                         ? $collectVariant['variant'] : '',
                     "options" => isset($collectVariant['variantOptions'])
-                        ? $collectVariant['variant'] : '',
+                        ? $collectVariant['variantOptions'] : '',
                     "images" => $this->images,
                     "image" => isset($this->images[0])
                         ? $this->images[0] : [],
@@ -1634,9 +1634,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 foreach ($ids as $origIndex => $id) {
                     $product = $this->product->create()->load($id);
                     // configurable Product
-                    if ($product->getTypeId() == 'configurable'
-                        && $product->getVisibility() != 1
-                    ) {
+                    if ($product->getTypeId() == 'configurable') {
                         $this->ids[] = $product->getId();
                         $configurableProduct = $product;
                         $productType = $configurableProduct->getTypeInstance();
@@ -1676,9 +1674,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 ]
                             )->updateInventory($invupdate);
                         $index = $cindex;
-                    } elseif ($product->getTypeId() == 'simple'
-                        && $product->getVisibility() != 1
-                    ) {
+                    } elseif ($product->getTypeId() == 'simple') {
                         $this->ids[] = $product->getId();
                         $price = $this->getPrice($product);
                         $quantity = $this->getFinalQuantityToUpload($product);
@@ -1701,7 +1697,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 ]
                             ]
                         ];
-
+                        
                         $response = $this->Betterthat
                             ->create(['config' => $this->config->getApiConfig()])
                             ->updateInventory($invupdate);

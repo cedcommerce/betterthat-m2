@@ -59,7 +59,7 @@ class SaveCategory implements \Magento\Framework\Event\ObserverInterface
         if ($this->config->isValid() == "0" || $this->config->isValid() == null) {
             return $observer;
         }
-        $this->logger->info('category_save', ['path' => __METHOD__, 'category_data' => 'Category Observer Working']);
+        //$this->logger->info('category_save', ['path' => __METHOD__, 'category_data' => 'Category Observer Working']);
         $productIds = $observer->getEvent()->getProductIds();
         $categoryId = $observer->getEvent()->getCategory()->getId();
         $profileId = '';
@@ -68,6 +68,7 @@ class SaveCategory implements \Magento\Framework\Event\ObserverInterface
             $data = $this->profileCollection
                 ->create()
                 ->addFieldToFilter("magento_category", ["like" => "%" . $categoryId . "%"]);
+            if(count($data) > 0)
             foreach ($data as $item) {
                 $magento_cat = json_decode($item->getMagentoCategory());
                 if (in_array($categoryId, $magento_cat)) {

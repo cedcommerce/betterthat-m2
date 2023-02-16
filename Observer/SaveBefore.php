@@ -4,7 +4,7 @@ namespace Betterthat\Betterthat\Observer;
 
 use function GuzzleHttp\json_decode;
 
-class Save implements \Magento\Framework\Event\ObserverInterface
+class SaveBefore implements \Magento\Framework\Event\ObserverInterface
 {
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -72,39 +72,37 @@ class Save implements \Magento\Framework\Event\ObserverInterface
         if ($product = $observer->getEvent()->getProduct()) {
             $storeId = $product->getStoreId();
             try {
-                if ($product->dataHasChangedFor('betterthat_profile_id') && $this->config->isValid()) {
-                    if ($product->getbetterthat_profile_id()) {
-                        die('bt_profile_id_changed');
-                        $profileModel = $this->profileModel->create();
-                        $this->profileResource->load($profileModel, $product->getbetterthat_profile_id(), 'id');
-                        if ($profileModel->getId() == null) {
-                            $message = __('Betterthat profile id is invalid,
-                             please fill correct id and previous id has been reset.');
-                            $this->messageManager->addWarningMessage($message);
-                            $product->setbetterthat_profile_id($product->getOrigData('betterthat_profile_id'));
+                if($product->dataHasChangedFor('category_ids') && $product->getId()) {
+                    $originalCategoryIds = $product->getOrigData('category_ids');
+                    if(!$originalCategoryIds)
+                        $originalCategoryIds = [];
+                    $newCategoryIds = $product->getCategoryIds();
+                    $categoryIdsAdded = array_diff($newCategoryIds, $originalCategoryIds);
+                    if(count($categoryIdsAdded) > 0) {
+                        foreach ($categoryIdsAdded as $categoryId) {
+                            $profileId = NULL;
+                            $data = $this->profileCollection
+                                ->create()
+                                ->addFieldToFilter("magento_category", ["like" => "%" . $categoryId . "%"]);
+                            if(count($data) > 0)
+                                foreach ($data as $item) {
+                                    $magento_cat = json_decode($item->getMagentoCategory());
+                                    if (in_array($categoryId, $magento_cat)) {
+                                        $profileId = $item->getId();
+                                    }
+                                }
+
+                            if ($profileId) {
+                                try{
+                                    $this->productAction
+                                        ->updateAttributes([$product->getId()], ['betterthat_profile_id' => $profileId],$storeId);
+                                }catch(\Exception $e) {
+                                }
+                            }
                         }
                     }
                 }
-                if ($product->dataHasChangedFor('betterthat_visibility') && $this->config->isValid()) {
-                    $response = $this->productHelper
-                        ->_sendBetterthatVisibility(
-                            ["product_id" => $product->getId(),
-                                "visible_status" => $product->getBetterthatVisibility() ? "true" : "false"
-                            ]
-                        );
-                    if (isset($response['status']) && $response['status']) {
-                        $this->messageManager->addSuccessMessage($response["message"]);
-                    }
-                }
-                if($product->dataHasChangedFor('price')){ // need price and inv seperately since this observer unable to track inventory due to bottle neck firing of stock save
-                  $response = $this->productHelper->updatePriceInventory([$product->getId()]);
-                  if(@$response['status'] && $response['status'] == "OK") {
-                      $this->messageManager->addSuccessMessage("Price/Inventory updated on BetterThat");
-                  }
-              }
-
             } catch (\Exception $e) {
-
             }
         }
     }

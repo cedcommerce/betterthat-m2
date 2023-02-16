@@ -41,7 +41,8 @@ class InventoryChangeObserver implements \Magento\Framework\Event\ObserverInterf
      * @return \Magento\Framework\Event\Observer
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
-    {
+    {           
+
         try {
             if ($this->config->isValid() == "0"
                 || $this->config->isValid() == null
@@ -67,6 +68,8 @@ class InventoryChangeObserver implements \Magento\Framework\Event\ObserverInterf
                 $this->product->updatePriceInventory([$productId]);
             }
         } catch (\Exception $e) {
+
+            die('sds');
             $this->logger->error(
                 'InventorySaveAfter Observer',
                 ['path' => __METHOD__,
