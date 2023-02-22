@@ -44,17 +44,20 @@ class Delete extends Action
      * @param PageFactory $resultPageFactory
      * @param \Magento\Ui\Component\MassAction\Filter $filter
      * @param \Betterthat\Betterthat\Model\OrderFailed $orderFailed
+     * @param \Magento\Backend\Model\View\Result\Redirect $redirect
      */
     public function __construct(
         Action\Context $context,
         PageFactory $resultPageFactory,
         \Magento\Ui\Component\MassAction\Filter $filter,
-        \Betterthat\Betterthat\Model\OrderFailed $orderFailed
+        \Betterthat\Betterthat\Model\OrderFailed $orderFailed,
+        \Magento\Backend\Model\View\Result\Redirect $redirect
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->filter = $filter;
         $this->orderFailed = $orderFailed;
+        $this->resultRedirect = $redirect;
     }
 
     /**
@@ -89,7 +92,6 @@ class Delete extends Action
             $this->messageManager
                 ->addErrorMessage('Failed orders delete failed.');
         }
-        $resultRedirect = $this->resultFactory->create('redirect');
-        $resultRedirect->setUrl('*/betterthat/failedorder');
+        return $this->resultRedirect->setPath('*/failedorder/index');
     }
 }

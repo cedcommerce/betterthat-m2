@@ -149,32 +149,6 @@
                     </item>
                 </argument>
             </action>
-            <action name="sync">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">sync</item>
-                        <item name="label" xsi:type="string" translate="true">Sync Order Status</item>
-                        <item name="url" xsi:type="url" path="betterthat/failedorder/syncStatus"/>
-                    </item>
-                </argument>
-            </action>
-            <action name="reject">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Reject</item>
-                            <item name="message" xsi:type="string" translate="true">
-                                Reject Betterthat Orders ?
-                            </item>
-                        </item>
-                        <item name="type" xsi:type="string">reject</item>
-                        <item name="label" xsi:type="string" translate="true">
-                            Reject/Cancel Order
-                        </item>
-                        <item name="url" xsi:type="url" path="betterthat/failedorder/reject"/>
-                    </item>
-                </argument>
-            </action>
         </massaction>
         <paging name="listing_paging">
             <argument name="data" xsi:type="array">
@@ -233,7 +207,7 @@
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="Betterthat_order_id">
+        <column name="betterthat_order_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

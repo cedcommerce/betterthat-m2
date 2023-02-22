@@ -38,7 +38,7 @@ class OrderItems extends Column
                 $response = $item[$name];
                 $item[$name] = [];
                 if (isset($item['id'])) {
-                    $orderId = $item['Betterthat_order_id'];
+                    $orderId = $item['betterthat_order_id'];
                     $item[$name]['view'] = [
                         'label' => __('View'),
                         'class' => 'betterthat actions view',

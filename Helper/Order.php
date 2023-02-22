@@ -330,11 +330,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $count = 0;
 
             if (isset($response['data']) && count($response['data']) > 0) {
-                foreach ($response['data'] as $order) {
+                if(isset($response['data'][0]))
+                    $response = $response['data'];
+                foreach ($response as $order) {
                     $BetterthatOrderId = $order['_id'];
                     $BetterthatOrder = $this->orders->create()
                         ->getCollection()
-                        ->addFieldToFilter('Betterthat_order_id', $BetterthatOrderId);
+                        ->addFieldToFilter('betterthat_order_id', $BetterthatOrderId);
                     $magentoOrderId = $BetterthatOrder->getColumnValues('increment_id');
                     if (!$this->validateString($BetterthatOrder->getData())) {
                         $customer = $this->getCustomer($order, $websiteId);
@@ -511,12 +513,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $quote->setCustomerNoteNotify(false);
         $customer = $this->customerRepository->getById($customer->getId());
         $quote->assignCustomer($customer);
-        $itemAccepted = 0;
-        $subTotal = 0;
-        $rejectItemsArray = $acceptItemsArray = [];
-
         try {
-
             $reason = [];
             $qtyArray = [];
             //**grab qty
@@ -547,11 +544,13 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         && $order['Country_Name']['name'] == 'Australia'
                             ? 'AU' : 'AU') : 'AU';
 
-                    $stateName = isset($order['State_Name']['name'])
-                        ? $order['State_Name']['name'] :
-                        (isset($shippingData['state'])
-                            ? $shippingData['state'] : ''
+                    $stateName = isset($order['stateName']['name'])
+                        ? $order['stateName']['name'] :
+                        (isset($shippingData['stateName'])
+                            ? $shippingData['stateName']['name'] : ''
                         );
+
+
                     $stateModel = $this->objectManager
                         ->create(\Magento\Directory\Model\RegionFactory::class)
                         ->create()
@@ -562,6 +561,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     if ($stateModel && $stateModel->getCode()) {
                         $stateCode = $stateModel->getCode();
                     }
+
                     try {
                         $shipAddress = [
                             'firstname' => isset($shippingData['first_name'])
@@ -578,7 +578,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                 ? $shippingData['Suburb'] : ' ',
                             'country' => $countryCode,
                             'country_id' => $countryCode,
-                            'region' => isset($stateCode) ? $stateCode : '',
+                            'region' => isset($stateCode) ? $stateCode : (isset($shippingData['stateName']['code']) ? $shippingData['stateName']['code'] : ''),
                             'postcode' => isset($shippingData['postcode'])
                                 ? $shippingData['postcode'] : '',
                             'telephone' => isset($shippingData['phonenumber'])
@@ -601,14 +601,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         if (!$rate instanceof \Magento\Quote\Model\Quote\Address\Rate) {
                             $rate = $this->rateFactory->create();
                         }
-                        $titles = [
+                        /*$titles = [
                             'Standard' => 'Standard Delivery - Retailer Managed',
                             'Instore' => 'Instore (BT managed)',
                             'International' => 'International Delivery - Retailer Managed',
                             'InternationalDelivery' => 'International Delivery(BT managed)',
                             'StandardDeliverySendle' => 'Standard Delivery - Sendle(BT managed)',
                             'ExpressDelivery' => 'Express Delivery(BT managed)'
-                        ];
+                        ];*/
                         $shipTitle = isset($order['formatted_shipping_type']) ? $order['formatted_shipping_type'] : '';
                         $rate->setCode($shippingMethod)
                             ->setMethod($shippingMethod)
@@ -645,15 +645,40 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         }
                         $this->changeQuoteControl->forceIsAllowed(true);
                         $quote->setIsSuperMode(true);
-                        $magentoOrder = $this->cartManagementInterface->submit($quote);
+                        try{
+                            $magentoOrder = $this->cartManagementInterface->submit($quote);
+                        }catch(\Exception $exception) {
+                            $this->webapiResponse =
+                                [
+                                    'success' => false,
+                                    'message' => $exception->getMessage(),
+                                    'orderId' => 'N/A',
+                                    'btorderId' => isset($order['_id']) ? $order['_id'] : 'N/A'
+                                ];
+                            $reason[] = $exception->getMessage();
+                            $orderFailed = $this->orderFailed->create()
+                                ->load($order['_id'], 'betterthat_order_id');
+                            $addData = [
+                                'betterthat_order_id' => isset($order['_id']) ? $order['_id'] : '',
+                                'status' => isset($order['order_status']) ? $order['order_status'] : '',
+                                'reason' => $this->json->jsonEncode($reason),
+                                'order_date' => isset($order['createdAt']) ? $order['createdAt'] : '',
+                                'order_data' => $this->json->jsonEncode($order),
+                                'order_items' => isset($order['Product_data'])
+                                    ? $this->json->jsonEncode($order['Product_data']) : '',
+                            ];
+                            $this->failedCount++;
+                            $orderFailed->addData($addData)->save();
+                            return;
+                        }
                         $subTotal = $order['total_price'];
                         $shippingcost = $order['shipping_price'];
                         $magentoOrder->setShippingAmount($shippingcost)
                             ->setBaseShippingAmount($shippingcost)
                             ->setShippingInclTax($shippingcost)
                             ->setBaseShippingInclTax($shippingcost)
-                            ->setBaseSubTotal($orderSubtotal)
-                            ->setSubTotal($orderSubtotal)
+                            ->setBaseSubTotal($subTotal)
+                            ->setSubTotal($subTotal)
                             ->setGrandTotal($subTotal)
                             ->setIncrementId($this->config->getOrderIdPrefix() . $magentoOrder->getIncrementId())
                             ->setTotalDue(0)
@@ -678,7 +703,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
                         // after save order
                         $orderData = [
-                            'Betterthat_order_id' => isset($order['_id']) ? $order['_id'] : 'N/A',
+                            'betterthat_order_id' => isset($order['_id']) ? $order['_id'] : 'N/A',
                             'order_place_date' => isset($order['createdAt']) ?
                                 $order['createdAt'] : date('Y-m-d h:i:s'),
                             'magento_order_id' => $magentoOrder->getId(),
@@ -713,9 +738,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             ];
                         $reason[] = $exception->getMessage();
                         $orderFailed = $this->orderFailed->create()
-                            ->load($order['_id'], 'Betterthat_order_id');
+                            ->load($order['_id'], 'betterthat_order_id');
                         $addData = [
-                            'Betterthat_order_id' => isset($order['_id']) ? $order['_id'] : '',
+                            'betterthat_order_id' => isset($order['_id']) ? $order['_id'] : '',
                             'status' => isset($order['order_status']) ? $order['order_status'] : '',
                             'reason' => $this->json->jsonEncode($reason),
                             'order_date' => isset($order['createdAt']) ? $order['createdAt'] : '',
@@ -766,6 +791,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function addProductsToQuote($order, $quote)
     {
+        $failedOrder = false;
+        $qtyArray = [];
+        $reason = [];
+        foreach ($order['Order_product'] as $prod_data) {
+            $qtyArray[$prod_data['product_id']] = $prod_data['quantity'];
+        }
         foreach ($order['Product_data'] as $item) {
             $item['product_id'] = isset($item['product_id'][0]) ? $item['product_id'][0] : '';
             /*                    $sku = [
@@ -788,9 +819,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     if ($product->getStatus() == '1') {
                         $stockStatus = $this->checkStockQtyStatus($product, $qty);
                         if ($stockStatus) {
-                            $itemAccepted++;
                             $price = $item['rrp'];
-                            $orderSubtotal = $orderSubtotal + $price;
                             $baseprice = $qty * $price;
                             $priceArr[$item['product_id']] = $price;
                             $product->setPrice($price)
@@ -841,9 +870,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     {
         try {
             $orderFailed = $this->orderFailed->create()
-                ->load($order['_id'], 'Betterthat_order_id');
+                ->load($order['_id'], 'betterthat_order_id');
             $addData = [
-                'Betterthat_order_id' => $order['_id'],
+                'betterthat_order_id' => $order['_id'],
                 'status' => $order['order_status'],
                 'reason' => $this->json->jsonEncode($reason),
                 'order_date' => $order['createdAt'],
@@ -904,7 +933,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             $BetterthatOrder = $this->orders->create()
                 ->getCollection()
-                ->addFieldToFilter('Betterthat_order_id', $BetterthatOrderId)
+                ->addFieldToFilter('betterthat_order_id', $BetterthatOrderId)
                 ->getData();
 
             if (!empty($BetterthatOrder)) {
@@ -1481,7 +1510,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     public function syncOrdersStatus($orderIds)
     {
         try {
-            //$orderIds = $orderCollection->getColumnValues('Betterthat_order_id');
+            //$orderIds = $orderCollection->getColumnValues('betterthat_order_id');
             $orderIds = implode(',', $orderIds);
             $orderList = $this->Betterthat->create(
                 [
@@ -1501,7 +1530,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 foreach ($response['body']['orders']['order'] as $order) {
                     $orderFailed = $this->orderFailed
                         ->create()
-                        ->load($order['order_id'], 'Betterthat_order_id');
+                        ->load($order['order_id'], 'betterthat_order_id');
                     $orderFailed
                         ->setStatus($order['order_state'])
                         ->save();
