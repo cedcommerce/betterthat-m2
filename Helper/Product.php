@@ -227,7 +227,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Catalog\Model\ProductFactory $productFactory,
         \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory $configfactory,
         \Magento\Framework\App\Cache $cache,
-        \Magento\Framework\Session\SessionManagerInterface $session
+        \Magento\Framework\Session\SessionManagerInterface $session,
+        \Magento\InventoryApi\Api\GetSourceItemsBySkuInterface $stockItemRepository,
+        \Magento\Indexer\Model\IndexerFactory $indexFactory
+
     ) {
         parent::__construct($context);
         $this->objectManager = $objectManager;
@@ -254,6 +257,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $this->session = $session;
         $this->selectedStore = $config->getStore();
         $this->debugMode = $BetterthatConfig->getDebugMode();
+        $this->stockItemRepository = $stockItemRepository;
+        $this->indexFactory = $indexFactory;
     }
 
     /**
@@ -1702,6 +1707,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             ->create(['config' => $this->config->getApiConfig()])
                             ->updateInventory($invupdate);
                     }
+                    $this->registry->register('changed_product_id',$product->getId());
                     $index++;
                 }
             }
@@ -1934,8 +1940,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
                     $invSourceData = array_column($invSourceData, 'qty', 'stock_name');
                     $quantity = isset($invSourceData[$msiStockName]) ? $invSourceData[$msiStockName] : 0;
+                }else {
+                    $quantity = 0;
                 }
             } else {
+
                 $msiSourceCode = $this->config->getMsiSourceCode();
                 $msiSourceDataModel = $this->objectManager
                     ->create(\Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku::class);
@@ -1943,8 +1952,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
                     $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
                     $quantity = isset($invSourceData[$msiSourceCode]) ? $invSourceData[$msiSourceCode] : 0;
+                }else {
+                    $quantity = 0;
                 }
             }
+
         } else {
             $quantity = (string)$this->stockState->getStockQty(
                 $product->getId(),

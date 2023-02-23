@@ -74,7 +74,6 @@ class Save implements \Magento\Framework\Event\ObserverInterface
             try {
                 if ($product->dataHasChangedFor('betterthat_profile_id') && $this->config->isValid()) {
                     if ($product->getbetterthat_profile_id()) {
-                        die('bt_profile_id_changed');
                         $profileModel = $this->profileModel->create();
                         $this->profileResource->load($profileModel, $product->getbetterthat_profile_id(), 'id');
                         if ($profileModel->getId() == null) {

@@ -65,11 +65,10 @@ class InventoryChangeObserver implements \Magento\Framework\Event\ObserverInterf
                         $productId = $product[0];
                     }
                 }
+                //debug inside update inv
                 $this->product->updatePriceInventory([$productId]);
             }
         } catch (\Exception $e) {
-
-            die('sds');
             $this->logger->error(
                 'InventorySaveAfter Observer',
                 ['path' => __METHOD__,

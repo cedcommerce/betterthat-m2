@@ -33,4 +33,9 @@
             <plugin name="add_custom_button_sales_view"
                     type="Betterthat\Betterthat\Plugin\Block\Adminhtml\Order\View\ButtonList" sortOrder="1"/>
         </type>
+    <type name="Magento\InventoryCatalogApi\Model\SourceItemsProcessorInterface">
+        <plugin name="custom_stock_save"
+                type="Betterthat\Betterthat\Plugin\AfterExecute" sortOrder="1"/>
+    </type>
+
 </config>
