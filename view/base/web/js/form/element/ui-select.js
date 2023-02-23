@@ -717,7 +717,6 @@ define([
         },
 
         parseInner : function (data) {
-            var optgroup;
             if(typeof data.optgroup !== "undefined") {
                 var self = this;
                 _.each(data.optgroup, function (opt, id) {
@@ -725,11 +724,9 @@ define([
                         self.value.push(opt.value);
                     else
                         self.value(_.without(self.value(), opt.value));
-                    optgroup = opt;
+                    self.parseInner(opt);
                 });
-                this.parseInner(optgroup);
             }
-
         },
 
 
