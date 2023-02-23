@@ -7,10 +7,12 @@
     ],
     "version": "1.0.2",
     "require": {
-        "ced/betterthat-sdk":"*"
+        "../../../../vendor/ced/betterthat-sdk":"*"
     },
     "autoload": {
-        "files": [ "registration.php" ],
+        "files": [
+          "registration.php"
+        ],
         "psr-4": {
             "Betterthat\\Betterthat\\": ""
         }

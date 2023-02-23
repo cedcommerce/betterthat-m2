@@ -137,7 +137,7 @@
                     <item name="label" xsi:type="string" translate="true">Store Categories</item>
                     <item name="componentType" xsi:type="string">field</item>
                     <item name="formElement" xsi:type="string">select</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                    <item name="component" xsi:type="string">Betterthat_Betterthat/js/form/element/ui-select</item>
                     <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
                     <item name="dataScope" xsi:type="string">magento_category</item>
                     <item name="filterOptions" xsi:type="boolean">true</item>

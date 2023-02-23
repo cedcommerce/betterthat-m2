@@ -360,7 +360,7 @@ class Data extends \Magento\Config\Model\Config
                 if (false == isset($fieldData['value'])) {
                     $fieldData['value'] = null;
                 }
-                $path = $field->getGroupPath() . '/' . $fieldId;
+                $path = $field->getGroupPath() . 'Data.php/' . $fieldId;
                 /**
                  * Look for custom defined field path
                  */
@@ -503,7 +503,7 @@ class Data extends \Magento\Config\Model\Config
                 $vendorId = $this->_request->getParam('vendor_id', 0);
                 $vendor = $this->_objectManager->get(\Betterthat\CsMarketplace\Model\Vendor::class)->load($vendorId);
                 if ($vendor && $vendor->getId()) {
-                    $path = $vendor->getId() . '/' . $path;
+                    $path = $vendor->getId() . 'Data.php/' . $path;
                 }
         }
         $configDataCollection = $this->_configValueFactory->create()

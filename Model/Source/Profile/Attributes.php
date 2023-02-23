@@ -98,7 +98,7 @@ class Attributes implements OptionSourceInterface
                 $attribute->getAttributecode();
             $magentoAttributes[$attribute->getAttributecode()]['label'] =
                 is_object($attribute->getFrontendLabel()) ?
-                $attribute->getFrontendLabel()->getText() . $type :
+                    $attribute->getFrontendLabel()->getText() . $type :
                 $attribute->getFrontendLabel() . $type;
             $magentoAttributes[$attribute->getAttributecode()]['option_values'] =
                 $optionValues;

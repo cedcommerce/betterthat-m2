@@ -10,6 +10,7 @@ https://kingrayhan.github.io/LineProgressbar/demos.html
 
 
 ##### Include
+
 ```html
 <!-- In header -->
 <link rel="stylesheet" href="jquery.lineProgressbar.css">

@@ -77,7 +77,7 @@ class Customer implements ArrayInterface
         $customers = $this->customerRepository->getList($searchCriteria)->getItems();
         $customersList = [];
         foreach ($customers as $customer) {
-            $customersList[$customer->getId()] = __($customer->getFirstname() . ' ' . $customer->getLastname());
+            $customersList[$customer->getId()] = __($customer->getFirstname() . ' Customer.php' . $customer->getLastname());
         }
         return $customersList;
     }
