@@ -22,8 +22,6 @@ class Save implements \Magento\Framework\Event\ObserverInterface
      * @var productRepository
      */
     protected $_productRepository;
-
-
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Betterthat\Betterthat\Helper\Product $productHelper
@@ -34,7 +32,6 @@ class Save implements \Magento\Framework\Event\ObserverInterface
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product\Action $productAction
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -95,15 +92,16 @@ class Save implements \Magento\Framework\Event\ObserverInterface
                         $this->messageManager->addSuccessMessage($response["message"]);
                     }
                 }
-                if($product->dataHasChangedFor('price')){ // need price and inv seperately since this observer unable to track inventory due to bottle neck firing of stock save
-                  $response = $this->productHelper->updatePriceInventory([$product->getId()]);
-                  if(@$response['status'] && $response['status'] == "OK") {
-                      $this->messageManager->addSuccessMessage("Price/Inventory updated on BetterThat");
-                  }
-              }
+                if ($product->dataHasChangedFor('price')) {
+                    $response = $this->productHelper
+                      ->updatePriceInventory([$product->getId()]);
+                    if (isset($response['status']) && $response['status'] == "OK") {
+                        $this->messageManager->addSuccessMessage("Price/Inventory updated on BetterThat");
+                    }
+                }
 
             } catch (\Exception $e) {
-
+                $e->getMessage();
             }
         }
     }

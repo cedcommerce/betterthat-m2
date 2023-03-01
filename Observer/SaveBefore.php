@@ -1,5 +1,4 @@
 <?php
-
 namespace Betterthat\Betterthat\Observer;
 
 use function GuzzleHttp\json_decode;
@@ -22,8 +21,6 @@ class SaveBefore implements \Magento\Framework\Event\ObserverInterface
      * @var productRepository
      */
     protected $_productRepository;
-
-
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Betterthat\Betterthat\Helper\Product $productHelper
@@ -34,7 +31,6 @@ class SaveBefore implements \Magento\Framework\Event\ObserverInterface
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory $collectionFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product\Action $productAction
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -72,37 +68,54 @@ class SaveBefore implements \Magento\Framework\Event\ObserverInterface
         if ($product = $observer->getEvent()->getProduct()) {
             $storeId = $product->getStoreId();
             try {
-                if($product->dataHasChangedFor('category_ids') && $product->getId()) {
+                if ($product->dataHasChangedFor('category_ids') && $product->getId()) {
                     $originalCategoryIds = $product->getOrigData('category_ids');
-                    if(!$originalCategoryIds)
+                    if (!$originalCategoryIds) {
                         $originalCategoryIds = [];
+                    }
                     $newCategoryIds = $product->getCategoryIds();
                     $categoryIdsAdded = array_diff($newCategoryIds, $originalCategoryIds);
-                    if(count($categoryIdsAdded) > 0) {
-                        foreach ($categoryIdsAdded as $categoryId) {
-                            $profileId = NULL;
-                            $data = $this->profileCollection
-                                ->create()
-                                ->addFieldToFilter("magento_category", ["like" => "%" . $categoryId . "%"]);
-                            if(count($data) > 0)
-                                foreach ($data as $item) {
-                                    $magento_cat = json_decode($item->getMagentoCategory());
-                                    if (in_array($categoryId, $magento_cat)) {
-                                        $profileId = $item->getId();
-                                    }
-                                }
-
-                            if ($profileId) {
-                                try{
-                                    $this->productAction
-                                        ->updateAttributes([$product->getId()], ['betterthat_profile_id' => $profileId],$storeId);
-                                }catch(\Exception $e) {
-                                }
-                            }
-                        }
+                    if (count($categoryIdsAdded) > 0) {
+                        $this->updateItem($categoryIdsAdded, $product, $storeId);
                     }
                 }
             } catch (\Exception $e) {
+                $e->getMessage();
+            }
+        }
+    }
+
+    /**
+     * UpdateItem
+     *
+     * @param  array $categoryIdsAdded
+     * @param  \Magento\Catalog\Model\Product $product
+     * @param  mixed $storeId
+     * @return void
+     * @throws \Exception
+     */
+    public function updateItem($categoryIdsAdded, $product, $storeId)
+    {
+        foreach ($categoryIdsAdded as $categoryId) {
+            $profileId = null;
+            $data = $this->profileCollection
+                ->create()
+                ->addFieldToFilter("magento_category", ["like" => "%" . $categoryId . "%"]);
+            if (count($data) > 0) {
+                foreach ($data as $item) {
+                    $magento_cat = json_decode($item->getMagentoCategory());
+                    if (in_array($categoryId, $magento_cat)) {
+                        $profileId = $item->getId();
+                    }
+                }
+            }
+            if ($profileId) {
+                $this->productAction
+                    ->updateAttributes(
+                        [$product->getId()],
+                        ['betterthat_profile_id' => $profileId],
+                        $storeId
+                    );
             }
         }
     }

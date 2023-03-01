@@ -68,11 +68,12 @@ class SaveCategory implements \Magento\Framework\Event\ObserverInterface
             $data = $this->profileCollection
                 ->create()
                 ->addFieldToFilter("magento_category", ["like" => "%" . $categoryId . "%"]);
-            if(count($data) > 0)
-            foreach ($data as $item) {
-                $magento_cat = json_decode($item->getMagentoCategory());
-                if (in_array($categoryId, $magento_cat)) {
-                    $profileId = $item->getId();
+            if (count($data) > 0) {
+                foreach ($data as $item) {
+                    $magento_cat = json_decode($item->getMagentoCategory());
+                    if (in_array($categoryId, $magento_cat)) {
+                        $profileId = $item->getId();
+                    }
                 }
             }
 

@@ -58,7 +58,8 @@ class ProductDeleteAfter implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $_product = $observer->getProduct();
-        if ($this->config->isValid() == "0" || $this->config->isValid() == null || !$_product->getBetterthatProductId()) {
+        if ($this->config->isValid() == "0" ||
+            $this->config->isValid() == null || !$_product->getBetterthatProductId()) {
             return $observer;
         }
         $_product = $observer->getProduct();

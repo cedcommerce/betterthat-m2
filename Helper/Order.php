@@ -330,8 +330,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             $count = 0;
 
             if (isset($response['data']) && count($response['data']) > 0) {
-                if(isset($response['data'][0]))
+                if (isset($response['data'][0])) {
                     $response = $response['data'];
+                }
                 foreach ($response as $order) {
                     $BetterthatOrderId = $order['_id'];
                     $BetterthatOrder = $this->orders->create()
@@ -549,8 +550,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         (isset($shippingData['stateName'])
                             ? $shippingData['stateName']['name'] : ''
                         );
-
-
                     $stateModel = $this->objectManager
                         ->create(\Magento\Directory\Model\RegionFactory::class)
                         ->create()
@@ -578,7 +577,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                 ? $shippingData['Suburb'] : ' ',
                             'country' => $countryCode,
                             'country_id' => $countryCode,
-                            'region' => isset($stateCode) ? $stateCode : (isset($shippingData['stateName']['code']) ? $shippingData['stateName']['code'] : ''),
+                            'region' => isset($stateCode) ? $stateCode :
+                                (isset($shippingData['stateName']['code'])
+                                    ? $shippingData['stateName']['code'] : ''),
                             'postcode' => isset($shippingData['postcode'])
                                 ? $shippingData['postcode'] : '',
                             'telephone' => isset($shippingData['phonenumber'])
@@ -645,9 +646,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         }
                         $this->changeQuoteControl->forceIsAllowed(true);
                         $quote->setIsSuperMode(true);
-                        try{
+                        try {
                             $magentoOrder = $this->cartManagementInterface->submit($quote);
-                        }catch(\Exception $exception) {
+                        } catch (\Exception $exception) {
                             $this->webapiResponse =
                                 [
                                     'success' => false,

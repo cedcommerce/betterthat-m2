@@ -84,35 +84,40 @@ class Config
                         'default',
                         0
                     );
-                } elseif(isset($response['message'])) {
-                    if($response['message'] == 'Invalid client id.'
+                } elseif (isset($response['message'])) {
+                    if ($response['message'] == 'Invalid client id.'
                         || $response['message'] == 'Header is missing.'
-                        || $response['message'] =='Domain is not secure.')
+                        || $response['message'] =='Domain is not secure.') {
                         $this->scopeConfigResource->saveConfig(
                             'betterthat_config/betterthat_setting/client_id',
                             '',
                             'default',
                             0
                         );
-                    if($response['message'] == 'Invalid client secret key.'
+                    }
+
+                    if ($response['message'] == 'Invalid client secret key.'
                         || $response['message'] == 'Header is missing.'
-                        || $response['message'] =='Domain is not secure.')
+                        || $response['message'] =='Domain is not secure.') {
                         $this->scopeConfigResource->saveConfig(
                             'betterthat_config/betterthat_setting/client_secret',
                             '',
                             'default',
                             0
                         );
-                    if($response['message'] == "This domain is not allowed with this key."
+                    }
+
+                    if ($response['message'] == "This domain is not allowed with this key."
                         || $response['message'] =='Domain is not secure.'
-                        || $response['message'] == 'Header is missing.'
-                    )
+                        || $response['message'] == 'Header is missing.') {
                         $this->scopeConfigResource->saveConfig(
                             'betterthat_config/betterthat_setting/client_domain',
                             '',
                             'default',
                             0
                         );
+                    }
+
                     $this->messageManager
                         ->addErrorMessage(
                             isset($response['message'])

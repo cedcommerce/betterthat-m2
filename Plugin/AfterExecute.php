@@ -2,8 +2,6 @@
 
 namespace Betterthat\Betterthat\Plugin;
 
-
-
 class AfterExecute
 {
     /**
@@ -25,13 +23,14 @@ class AfterExecute
     ) {
         $this->registry = $registry;
         $this->product = $product;
-
     }
 
     /**
-     * @param \Magento\Catalog\Model\Product $subject
-     * @param $result
-     * @return void
+     * AfterExecute
+     *
+     * @param \Magento\InventoryCatalog\Model\SourceItemsProcessor $subject
+     * @param array $result
+     * @return mixed
      */
     public function afterExecute(\Magento\InventoryCatalog\Model\SourceItemsProcessor $subject, $result)
     {
