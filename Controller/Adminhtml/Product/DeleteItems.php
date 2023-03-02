@@ -105,6 +105,7 @@ class DeleteItems extends \Magento\Backend\App\Action
             ->create(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class)
             ->create();
         $collection = $this->filter->getCollection($collectionFactory);
+        $collection->addFieldToFilter('betterthat_product_status',['eq' => 'UPLOADED']);
         $deletedIds = $this->Betterthat->deleteProducts($collection->getAllIds());
         foreach ($collection as $product) {
             if (in_array($product->getId(), $deletedIds)) {
@@ -122,7 +123,7 @@ class DeleteItems extends \Magento\Backend\App\Action
                  ->addSuccessMessage(json_encode($deletedIds) . ' item(s) deleted successfully');
         } else {
             $this->messageManager
-                ->addErrorMessage('Something went wrong');
+                ->addErrorMessage('Only Uploaded items can be deleted!');
         }
         return $this->resultRedirect->setPath('*/product/index');
     }

@@ -1608,7 +1608,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $response = $this->Betterthat
                     ->create(['config' => $this->config->getApiConfig()])
                     ->deleteProduct($id, ["product_id" => $id]);
-                if (isset($response['status']) && $response['status']) {
+                if (isset($response['status'])) {
                     $deletedIds[] = $id;
                 }
             }
