@@ -105,7 +105,7 @@ class DeleteItems extends \Magento\Backend\App\Action
             ->create(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class)
             ->create();
         $collection = $this->filter->getCollection($collectionFactory);
-        $collection->addFieldToFilter('betterthat_product_status',['eq' => 'UPLOADED']);
+        $collection->addFieldToFilter('betterthat_product_status', ['eq' => 'UPLOADED']);
         $deletedIds = $this->Betterthat->deleteProducts($collection->getAllIds());
         foreach ($collection as $product) {
             if (in_array($product->getId(), $deletedIds)) {

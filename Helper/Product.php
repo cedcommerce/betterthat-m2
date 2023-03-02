@@ -328,7 +328,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function createProducts($ids = [])
     {
-
         try {
             $ids = $this->validateAllProducts($ids);
             if (!empty($ids['simple']) || !empty($ids['configurable'])) {
