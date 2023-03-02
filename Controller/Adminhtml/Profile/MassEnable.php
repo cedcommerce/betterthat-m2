@@ -19,6 +19,8 @@ class MassEnable extends \Magento\Backend\App\Action
             $profileIds  = $this->_objectManager
                 ->create(\Betterthat\Betterthat\Model\Profile::class)
                 ->getCollection()->getAllIds();
+        } elseif(is_array($excluded)) {
+            $profileIds = $excluded;
         }
 
         if (!empty($profileIds)) {

@@ -17,6 +17,8 @@ class MassDisable extends \Magento\Backend\App\Action
         } elseif ($excluded == "false") {
             $profileIdsToDisable  = $this->_objectManager->create(\Betterthat\Betterthat\Model\Profile::class)
                 ->getCollection()->getAllIds();
+        } elseif (is_array($excluded)) {
+            $profileIdsToDisable = $excluded;
         }
 
         if (!empty($profileIdsToDisable)) {
