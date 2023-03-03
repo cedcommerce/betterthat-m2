@@ -277,10 +277,10 @@ define([
 
                 if (!_.findWhere(
                     this.cacheOptions.lastOptions,
-                        {
-                            value: data.value
-                        }
-                    )
+                    {
+                        value: data.value
+                    }
+                )
                 ) {
                     this.cacheOptions.lastOptions.push(data);
                 }
@@ -684,7 +684,7 @@ define([
             return this.cacheOptions.plain.filter(function (opt) {
                 return _.isArray(selected) ?
                     _.contains(selected, opt.value) :
-                selected == opt.value;//eslint-disable-line eqeqeq
+                    selected == opt.value;//eslint-disable-line eqeqeq
             });
         },
 
@@ -712,7 +712,9 @@ define([
                     this.value(_.without(this.value(), data.value));
                 }
             }
-            this.parseInner(data)
+            if(data.value.length < 20)
+                this.parseInner(data);
+
             return this;
         },
 
