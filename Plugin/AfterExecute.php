@@ -19,7 +19,7 @@ class AfterExecute
      */
     public function __construct(
         \Magento\Framework\Registry $registry,
-        \Betterthat\Betterthat\Helper\Product $product,
+        \Betterthat\Betterthat\Helper\Product $product
     ) {
         $this->registry = $registry;
         $this->product = $product;
