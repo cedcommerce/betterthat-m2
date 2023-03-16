@@ -3,7 +3,7 @@
     "description": "Betterthat Magento2 integration",
     "type": "magento2-module",
     "license": [
-        "EULA"
+        "proprietary"
     ],
     "version": "1.0.4",
     "require": {
