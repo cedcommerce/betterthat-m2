@@ -59,12 +59,11 @@ class Shipment implements \Magento\Framework\Event\ObserverInterface
         $this->logger->info('Shipment Observer', ['path' => __METHOD__, 'ShipData' => 'Shipment Observer Working']);
         if ($observer->getEvent()->getTrack()) {
             $order_id = $observer->getEvent()->getTrack()->getOrderId();
-
             if ($order_id) {
                 try {
-                    $bo_order = $this->objectManager->get(\Betterthat\Betterthat\Model\Orders::class)
+                    $bo_order = $this->objectManager->create(\Betterthat\Betterthat\Model\Orders::class)
                         ->load($order_id, 'magento_order_id');
-                    if ($bo_order && $bo_order->getData('Betterthat_order_id')) {
+                    if ($bo_order && $bo_order->getData('betterthat_order_id')) {
                         $tracking_number = $observer->getEvent()->getTrack()->getTrackNumber();
                         $carrier_code = $observer->getEvent()->getTrack()->getCarrierCode();
                         $carrier_name = $observer->getEvent()->getTrack()->getTitle();
@@ -73,7 +72,7 @@ class Shipment implements \Magento\Framework\Event\ObserverInterface
                                 'OrderShipDate' => date('d-m-y'),
                                 'TrackingNumber' => $tracking_number,
                                 'ShippingProvider' => strtoupper($carrier_code),
-                                'BetterthatOrderID' => $bo_order->getData('Betterthat_order_id'),
+                                'BetterthatOrderID' => $bo_order->getData('betterthat_order_id'),
                                 'ShippingProviderName' => strtolower($carrier_name)
                             ];
                         $response = $this->api->shipOrder($args);

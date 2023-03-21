@@ -121,7 +121,7 @@ class Sync extends \Magento\Backend\App\Action
             $id = isset($ids[0]) ? $ids[0] : null;
         }
         $this->orders->load($this->orderModel, $id, 'id');
-        $betterthatOrderId = $this->orderModel->getData('Betterthat_order_id');
+        $betterthatOrderId = $this->orderModel->getData('betterthat_order_id');
         $orderList = $this->Betterthat->create(
             [
                 'config' => $this->config->getApiConfig(),
