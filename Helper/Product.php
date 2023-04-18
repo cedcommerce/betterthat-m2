@@ -293,20 +293,20 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $product->setData("betterthat_feed_errors", '');
                 $product->save();
                 return [
-                        [
-                            'success' => "true",
-                            "message" => "Item deleted successfully",
-                            "data" => $data
-                        ]
-                    ];
+                    [
+                        'success' => "true",
+                        "message" => "Item deleted successfully",
+                        "data" => $data
+                    ]
+                ];
             } else {
                 return [
-                        [
-                            'success' => "false",
-                            "message" => "Item Id not found",
-                            "data" => $data
-                        ]
-                      ];
+                    [
+                        'success' => "false",
+                        "message" => "Item Id not found",
+                        "data" => $data
+                    ]
+                ];
             }
         } else {
             return [
@@ -514,7 +514,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 'betterthat_product_validaton_errors',
                                 is_array($errorsInRegistry) ?
                                     $this->arrMerge($errorsInRegistry, $errors) :
-                                     $errors
+                                    $errors
                             );
                     }
                 }
@@ -857,7 +857,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 // Validation case 1 skip some attributes that are not to be validated.
                 continue;
             } elseif ((!isset($productArray[$BetterthatAttribute['magento_attribute_code']])
-                || empty($productArray[$BetterthatAttribute['magento_attribute_code']]) )
+                    || empty($productArray[$BetterthatAttribute['magento_attribute_code']]) )
                 && empty($BetterthatAttribute['default'])
             ) {
                 // Validation case 2 Empty or blank value check
@@ -1291,19 +1291,19 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         break;
                     }
                     if ($image && $image->getUrl()) {
-                            //list($prodWidth, $prodHeight) = getimagesize($image->getUrl());
-                            //if ($prodWidth > 450 && $prodHeight > 367) {
-                            $this->images[] =
-                                [
-                                    "id" => $product->getId(),
-                                    "product_id" => $product->getId(),
-                                    "position" => $image_index,
-                                    "alt" => null,
-                                    "src" => $image->getUrl(),
-                                    "variant_ids" => [(int)$product->getId()]
-                                ];
-                            $image_index++;
-                            //}
+                        //list($prodWidth, $prodHeight) = getimagesize($image->getUrl());
+                        //if ($prodWidth > 450 && $prodHeight > 367) {
+                        $this->images[] =
+                            [
+                                "id" => $product->getId(),
+                                "product_id" => $product->getId(),
+                                "position" => $image_index,
+                                "alt" => null,
+                                "src" => $image->getUrl(),
+                                "variant_ids" => [(int)$product->getId()]
+                            ];
+                        $image_index++;
+                        //}
 
                     }
                 }
@@ -1363,7 +1363,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     "variant_ids" => [(int)$product->getId()]
                                 ];
                         }
-                            $image_index++;
+                        $image_index++;
                     }
                 }
             }
@@ -1643,14 +1643,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         $this->ids[] = $product->getId();
                         $configurableProduct = $product;
                         $productType = $configurableProduct->getTypeInstance();
-                        $products = $productType->getUsedProducts($configurableProduct);
+                        $childProducts = $productType->getUsedProducts($configurableProduct);
                         $cindex = $index;
                         $configId = $configurableProduct->getId();
-                        foreach ($products as $product) {
-                            $product = $this->product->create()->load($product->getId());
-                            $price = $this->getPrice($product);
-                            $product_id = $product->getId();
-                            $quantity = $this->getFinalQuantityToUpload($product);
+                        foreach ($childProducts as $childProduct) {
+                            $childProductLoad = $this->product->create()->load($childProduct->getId());
+                            $price = $this->getPrice($childProductLoad);
+                            $product_id = $childProductLoad->getId();
+                            $quantity = $this->getFinalQuantityToUpload($childProductLoad);
                             $stock[] =
                                 [
                                     "variant_id" => $product_id,
@@ -1671,7 +1671,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 ]
                             ]
                         ];
-
                         $response = $this->Betterthat
                             ->create(
                                 [
@@ -1702,11 +1701,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 ]
                             ]
                         ];
-
                         $response = $this->Betterthat
                             ->create(['config' => $this->config->getApiConfig()])
                             ->updateInventory($invupdate);
                     }
+                    $this->registry->unregister('changed_product_id');
                     $this->registry->register('changed_product_id', $product->getId());
                     $index++;
                 }

@@ -12,16 +12,23 @@ class AfterExecute
      * @var \Magento\Framework\Registry
      */
     protected $registry;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Logger
+     */
+    protected $logger;
 
     /**
      * @param \Magento\Framework\Registry $registry
+     * @param \Betterthat\Betterthat\Helper\Logger $logger
      * @param \Betterthat\Betterthat\Helper\Product $product
      */
     public function __construct(
         \Magento\Framework\Registry $registry,
+        \Betterthat\Betterthat\Helper\Logger $logger,
         \Betterthat\Betterthat\Helper\Product $product
     ) {
         $this->registry = $registry;
+        $this->logger = $logger;
         $this->product = $product;
     }
 

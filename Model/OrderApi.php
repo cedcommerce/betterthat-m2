@@ -1,12 +1,10 @@
 <?php
 namespace Betterthat\Betterthat\Model;
 
-use Psr\Log\LoggerInterface;
-
 class OrderApi
 {
     /**
-     * @var LoggerInterface
+     * @var \Betterthat\Betterthat\Helper\Logger
      */
     protected $logger;
     /**
@@ -17,11 +15,11 @@ class OrderApi
     /**
      * Construct
      *
-     * @param LoggerInterface $logger
+     * @param \Betterthat\Betterthat\Helper\Logger $logger
      * @param \Betterthat\Betterthat\Helper\Order $orderHelper
      */
     public function __construct(
-        LoggerInterface $logger,
+        \Betterthat\Betterthat\Helper\Logger $logger,
         \Betterthat\Betterthat\Helper\Order $orderHelper
     ) {
         $this->orderHelper = $orderHelper;
@@ -38,10 +36,23 @@ class OrderApi
     {
         try {
             // Your Code here
+            $this->logger->info(
+                'Betterthat Webhook Order Creation Data',
+                [
+                    'path' => __METHOD__,
+                    'Data' => json_encode($data)
+                ]
+            );
             $response = $this->orderHelper->importOrders($data);
         } catch (\Exception $e) {
             $response =  ['success' => false, 'message' => $e->getMessage()];
-            $this->logger->info($e->getMessage());
+            $this->logger->info(
+                'Betterthat Webhook Order Creation Exception : ' . $e->getMessage(),
+                [
+                    'path' => __METHOD__,
+                    'Data' => json_encode($data)
+                ]
+            );
         }
         return [$response];
     }
