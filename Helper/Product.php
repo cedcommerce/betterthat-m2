@@ -178,6 +178,38 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      * @var images
      */
     public $images;
+    /**
+     * @var \Magento\Indexer\Model\IndexerFactory
+     */
+    public $indexFactory;
+    /**
+     * @var \Magento\InventoryApi\Api\GetSourceItemsBySkuInterface
+     */
+    public $stockItemRepository;
+    /**
+     * @var \Magento\Framework\Session\SessionManagerInterface
+     */
+    public $session;
+    /**
+     * @var \Magento\Framework\App\Cache
+     */
+    public $cache;
+    /**
+     * @var \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory
+     */
+    public $configProduct;
+    /**
+     * @var \Magento\Catalog\Model\ProductFactory
+     */
+    public $prodCollection;
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\Action
+     */
+    public $_prodAction;
+    /**
+     * @var $serverResponse
+     */
+    public $serverResponse;
 
     /**
      * @param \Magento\Framework\App\Helper\Context $context

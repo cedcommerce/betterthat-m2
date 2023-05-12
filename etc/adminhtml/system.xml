@@ -30,12 +30,12 @@
             <tab>betterthat</tab>
             <resource>Betterthat_Betterthat::system_config</resource>
             <group id="betterthat_setting" translate="label" type="text" sortOrder="1" showInDefault="1"
-                   showInWebsite="0"
+                   showInWebsite="1"
                    showInStore="0"
             >
                 <label>Betterthat Seller/Developer Settings</label>
                 <field id="enable" translate="label" type="select"
-                       sortOrder="10" showInDefault="1" showInWebsite="0"
+                       sortOrder="10" showInDefault="1" showInWebsite="1"
                        showInStore="0"
                 >
                     <label>Enabled</label>
@@ -43,7 +43,7 @@
                 </field>
 
                 <field id="client_id" translate="label" type="text"
-                       sortOrder="50" showInDefault="1" showInWebsite="0"
+                       sortOrder="50" showInDefault="1" showInWebsite="1"
                        showInStore="0"
                 >
                     <label>Client Id</label>
@@ -54,7 +54,7 @@
 
                 <field id="client_secret" translate="label" type="password"
                        sortOrder="60" showInDefault="1"
-                       showInWebsite="0"
+                       showInWebsite="1"
                        showInStore="0"
                 >
                     <label>Client Secret</label>
@@ -65,7 +65,7 @@
 
                 <field id="client_domain" translate="label" type="text"
                        sortOrder="70" showInDefault="1"
-                       showInWebsite="0"
+                       showInWebsite="1"
                        showInStore="0"
                 >
                     <label>Client Domain</label>
@@ -75,7 +75,7 @@
                 </field>
 
                 <field id="retailer_id" translate="label" type="text"
-                       sortOrder="80" showInDefault="1" showInWebsite="0"
+                       sortOrder="80" showInDefault="1" showInWebsite="1"
                        showInStore="0"
                 >
                     <label>Retailer Id</label>
@@ -85,7 +85,7 @@
                 </field>
 
                 <field id="storeid" translate="label" type="select"
-                       sortOrder="90" showInDefault="1" showInWebsite="0"
+                       sortOrder="90" showInDefault="1" showInWebsite="1"
                        showInStore="0"
                 >
                     <label>Select Store</label>
@@ -97,7 +97,7 @@
 
                 <field id="debug_mode" translate="label" type="select"
                        sortOrder="100" showInDefault="1"
-                       showInWebsite="0"
+                       showInWebsite="1"
                        showInStore="0"
                        >
                     <label>Debug Mode</label>
@@ -124,7 +124,7 @@
                     </field>
                     <field id="fix_price" translate="label" type="text"
                            sortOrder="11" showInDefault="1"
-                           showInWebsite="0" showInStore="0">
+                           showInWebsite="1" showInStore="0">
                         <label>Modify by Fix Price</label>
                         <validate>required-entry validate-number</validate>
                         <depends>
@@ -133,7 +133,7 @@
                     </field>
                     <field id="percentage_price" translate="label" type="text"
                            sortOrder="12" showInDefault="1"
-                           showInWebsite="0" showInStore="0" >
+                           showInWebsite="1" showInStore="0" >
                         <label>Modify by Percenctage Price</label>
                         <validate>required-entry validate-number</validate>
                         <comment>
@@ -147,7 +147,7 @@
                     </field>
                     <field id="different_price" translate="label" type="text"
                            sortOrder="13" showInDefault="1"
-                           showInWebsite="0" showInStore="0"  >
+                           showInWebsite="1" showInStore="0"  >
                         <label>Map Price Attribute</label>
                         <validate>required-entry</validate>
                         <comment>
@@ -163,13 +163,13 @@
                        showInWebsite="1" showInStore="1"  >
                     <label>Betterthat Inventory Settings</label>
                     <field id="advanced_threshold_status" translate="label" type="select" sortOrder="10"
-                           showInDefault="1" showInWebsite="0" showInStore="0"  >
+                           showInDefault="1" showInWebsite="1" showInStore="0"  >
                         <label>Set Inventory on Basis of Threshold</label>
                         <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                         <comment>Choose yes to send inventory on Betterthat by condition</comment>
                     </field>
                     <field id="inventory_rule_threshold" translate="label comment" type="text" sortOrder="20"
-                           showInDefault="1" showInWebsite="0" showInStore="0"  >
+                           showInDefault="1" showInWebsite="1" showInStore="0"  >
                         <label>Inventory Threshold Value</label>
                         <comment>
                             Set inventory quantity on which lesser and greater condition can control.
@@ -179,7 +179,7 @@
                         </depends>
                     </field>
                     <field id="send_inventory_for_lesser_than_threshold" translate="label comment" type="text"
-                           sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0"  >
+                           sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0"  >
                         <label>Send Inventory for Lesser Than Threshold Case</label>
                         <comment>Send Quantity to Betterthat for those products,
                             whose inventory is LESSER than the
@@ -191,13 +191,13 @@
                     </field>
                     <field id="use_msi" translate="label comment" type="select"
                            sortOrder="50" showInDefault="1"
-                           showInWebsite="0" showInStore="0">
+                           showInWebsite="1" showInStore="0">
                         <label>Use MSI</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
                     <field id="msi_source_code" translate="label" type="text"
                            sortOrder="55" showInDefault="1"
-                           showInWebsite="0" showInStore="0"  >
+                           showInWebsite="1" showInStore="0"  >
                         <label>MSI Source Code</label>
                         <validate>required-entry</validate>
                         <comment>
@@ -211,7 +211,7 @@
                     </field>
                     <field id="use_salable_qty" translate="label comment" type="select"
                            sortOrder="60" showInDefault="1"
-                           showInWebsite="0" showInStore="0">
+                           showInWebsite="1" showInStore="0">
                         <label>Use Salable Quantity</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <depends>
@@ -220,7 +220,7 @@
                     </field>
                     <field id="salable_stock_name" translate="label" type="text"
                            sortOrder="70" showInDefault="1"
-                           showInWebsite="0" showInStore="0"  >
+                           showInWebsite="1" showInStore="0"  >
                         <label>MSI Stock Name</label>
                         <validate>required-entry</validate>
                         <comment>
@@ -241,28 +241,28 @@
                 <label>Betterthat Order Settings</label>
                 <field id="order_id_prefix" translate="label" type="text"
                        sortOrder="10" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="1" showInStore="0">
                     <label>Betterthat Order Id Prefix</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Prefix for Betterthat Increment ID</comment>
                 </field>
                 <field id="order_notify_email" translate="label comment" type="text"
                        sortOrder="20" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="1" showInStore="0">
                     <label>Order Notification Email</label>
                 </field>
 
                 <field id="enable_default_customer" translate="label comment" type="select"
                        sortOrder="40"
                        showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="1" showInStore="0">
                     <label>Enable Default Customer</label>
                     <validate>required-entry</validate>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="default_customer_email" translate="label comment" type="text" sortOrder="40"
                        showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="1" showInStore="0">
                     <label>Default Customer Email</label>
                     <depends>
                         <field id="enable_default_customer">1</field>
@@ -275,13 +275,13 @@
                    showInStore="1">
                 <label>Betterthat Cron Settings</label>
                 <field id="order_cron" translate="label" type="select" sortOrder="10" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="1" showInStore="0">
                     <label>Order Cron</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Order Fetch Cron</comment>
                 </field>
                 <field id="order_cron_schedule" translate="label"
-                       type="select" sortOrder="10" showInDefault="1">
+                       type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Order Import Cron Time</label>
                     <source_model>Betterthat\Betterthat\Model\Source\Config\Time</source_model>
                     <comment>Order Fetch Cron Time</comment>
@@ -291,13 +291,13 @@
                 </field>
                 <field id="order_sync_cron" translate="label" type="select"
                        sortOrder="20" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="1" showInStore="0">
                     <label>Order Sync Cron</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Order Sync Cron</comment>
                 </field>
                 <field id="order_sync_cron_schedule" translate="label" type="select"
-                       sortOrder="30" showInDefault="1">
+                       sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Order Sync Cron Time</label>
                     <source_model>Betterthat\Betterthat\Model\Source\Config\Time</source_model>
                     <comment>Order Sync Cron Time</comment>
@@ -307,13 +307,13 @@
                 </field>
                 <field id="inventory_price_cron" translate="label comment" type="select"
                        sortOrder="30"
-                       showInDefault="1" showInWebsite="0" showInStore="0">
+                       showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Inventory|Price Cron</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Inventory Sync Cron</comment>
                 </field>
                 <field id="inv_sync_cron_schedule" translate="label" type="select"
-                       sortOrder="30" showInDefault="1">
+                       sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Inventory|Price Sync Cron Time</label>
                     <source_model>Betterthat\Betterthat\Model\Source\Config\Time</source_model>
                     <comment>Inventory|Price Sync Cron Time</comment>
@@ -323,14 +323,14 @@
                 </field>
                 <field id="order_shipment_cron" translate="label" type="select"
                        sortOrder="50" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="1" showInStore="0">
                     <label>Order Shipment Cron</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Completed magento order will automatically ship</comment>
                 </field>
                 <field id="order_shipment_cron_schedule" translate="label" type="select"
                        sortOrder="90"
-                       showInDefault="1">
+                       showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Order Shipment Cron Time</label>
                     <source_model>Betterthat\Betterthat\Model\Source\Config\Time</source_model>
                     <comment>Order Shipment Cron Time Cron Time</comment>

@@ -22,6 +22,18 @@ class SaveCategory implements \Magento\Framework\Event\ObserverInterface
      * @var \Betterthat\Betterthat\Helper\Config
      */
     public $config;
+    /**
+     * @var \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory
+     */
+    public $profileCollection;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    public $storeManager;
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\Action
+     */
+    public $productAction;
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager

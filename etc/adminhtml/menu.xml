@@ -145,7 +145,7 @@
              parent="Betterthat_Betterthat::Betterthat"
              resource="Betterthat_Betterthat::configuration"
         />
-        <add id="Betterthat_Betterthat::1"
+        <add id="Betterthat_Betterthat::Betterthat_configuration"
              title="Configuration"
              module="Betterthat_Betterthat"
              sortOrder="1"

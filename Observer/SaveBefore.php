@@ -22,6 +22,31 @@ class SaveBefore implements \Magento\Framework\Event\ObserverInterface
      */
     protected $_productRepository;
     /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\Action
+     */
+    protected $productAction;
+    /**
+     * @var \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory
+     */
+    protected $profileCollection;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+    /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
+    /**
+     * @var \Betterthat\Betterthat\Model\ResourceModel\Profile
+     */
+    protected $profileResource;
+    /**
+     * @var \Betterthat\Betterthat\Model\ProfileFactory
+     */
+    protected $profileModel;
+
+    /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Betterthat\Betterthat\Helper\Product $productHelper
      * @param \Betterthat\Betterthat\Model\ResourceModel\Profile $profileResource

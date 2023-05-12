@@ -57,6 +57,22 @@ class Validate extends \Magento\Backend\App\Action
      * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     public $resultJsonFactory;
+    /**
+     * @var \Magento\ConfigurableProduct\Model\Product\Type\ConfigurableFactory
+     */
+    public $productConfigFactory;
+    /**
+     * @var \Magento\Config\Model\Config\Factory
+     */
+    public $configFactory;
+    /**
+     * @var \Magento\Config\Model\Config\Structure
+     */
+    public $configStructure;
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     */
+    public $resultPageFactory;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context

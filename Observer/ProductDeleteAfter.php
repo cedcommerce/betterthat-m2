@@ -30,6 +30,14 @@ class ProductDeleteAfter implements ObserverInterface
      * @var \Betterthat\Betterthat\Helper\Config
      */
     public $config;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Product
+     */
+    public $betterthat;
+    /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    public $messageManager;
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager

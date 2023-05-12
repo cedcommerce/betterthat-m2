@@ -38,6 +38,10 @@ class Truncate extends Action
      * @var \Magento\Framework\Filesystem\Io\File
      */
     public $fileIo;
+    /**
+     * @var \Magento\Framework\App\Response\RedirectInterface
+     */
+    public $redirect;
 
     /**
      * @param Action\Context $context

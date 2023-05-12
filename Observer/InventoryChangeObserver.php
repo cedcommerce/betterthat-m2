@@ -16,6 +16,18 @@ class InventoryChangeObserver implements \Magento\Framework\Event\ObserverInterf
      * @var \Betterthat\Betterthat\Helper\Config
      */
     public $config;
+    /**
+     * @var mixed
+     */
+    public $_productRepository;
+    /**
+     * @var \Magento\Framework\App\ObjectManager
+     */
+    public $objectManager;
+    /**
+     * @var \Betterthat\Betterthat\Helper\Product
+     */
+    public $product;
 
     /**
      * @param \Betterthat\Betterthat\Helper\Logger $logger

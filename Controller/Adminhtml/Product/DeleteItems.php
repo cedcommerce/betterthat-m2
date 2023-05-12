@@ -58,6 +58,10 @@ class DeleteItems extends \Magento\Backend\App\Action
      * @var \Magento\Framework\View\Result\PageFactory
      */
     public $resultPageFactory;
+    /**
+     * @var \Magento\Backend\Model\View\Result\Redirect
+     */
+    public $resultRedirect;
 
     /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory

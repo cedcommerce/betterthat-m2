@@ -58,6 +58,14 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         'shipping_option_charges' => '',
         'product_return_window' => '',
     ];
+    /**
+     * @var \Magento\Framework\Filesystem\Directory\ReadFactory
+     */
+    public $filedriver;
+    /**
+     * @var \Magento\Framework\Filesystem\DirectoryList
+     */
+    public $dl;
 
     /**
      * @param Context $context

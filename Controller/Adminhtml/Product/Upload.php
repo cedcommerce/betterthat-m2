@@ -55,6 +55,10 @@ class Upload extends \Magento\Backend\App\Action
      * @var \Magento\Framework\View\Result\PageFactory
      */
     public $resultPageFactory;
+    /**
+     * @var \Magento\Framework\App\Response\RedirectInterface
+     */
+    public $redirect;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context

@@ -19,9 +19,30 @@ class Save implements \Magento\Framework\Event\ObserverInterface
      */
     public $config;
     /**
-     * @var productRepository
+     * @var \Magento\Catalog\Model\ResourceModel\Product\Action
      */
-    protected $_productRepository;
+    protected $productAction;
+    /**
+     * @var \Betterthat\Betterthat\Model\ResourceModel\Profile\CollectionFactory
+     */
+    protected $profileCollection;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+    /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
+    /**
+     * @var \Betterthat\Betterthat\Model\ProfileFactory
+     */
+    protected $profileModel;
+    /**
+     * @var \Betterthat\Betterthat\Model\ResourceModel\Profile
+     */
+    protected $profileResource;
+
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Betterthat\Betterthat\Helper\Product $productHelper

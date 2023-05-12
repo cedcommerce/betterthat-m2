@@ -46,6 +46,10 @@ class FailedDataProvider extends AbstractDataProvider
      * @var \Magento\Ui\DataProvider\AddFilterToCollectionInterface[]
      */
     public $addFilterStrategies;
+    /**
+     * @var int|void
+     */
+    public $size;
 
     /**
      * DataProvider constructor.

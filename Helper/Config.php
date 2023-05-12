@@ -80,6 +80,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Magento\Framework\Xml\Generator
      */
     public $generator;
+    public $client_id;
+    public $client_domain;
+    public $client_secret;
+    public $throttle;
+
     /**
      * Config constructor.
      *

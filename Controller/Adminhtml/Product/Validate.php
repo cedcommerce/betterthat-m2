@@ -59,6 +59,14 @@ class Validate extends Action
      * @var \Magento\Framework\View\Result\PageFactory
      */
     public $resultPageFactory;
+    /**
+     * @var \Magento\Framework\App\Response\RedirectInterface
+     */
+    public $redirect;
+    /**
+     * @var \Magento\Framework\App\Response\RedirectInterface
+     */
+    public $resultRedirect;
 
     /**
      * @param \Betterthat\Betterthat\Helper\Config $config
